@@ -537,15 +537,94 @@
       "operator": "Unknown",
       "reservationRequired": "Unknown",
       "appRequired": "Unknown",
-      "lastChecked": "2026-04-29",
+      "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
       "kakaoMapVerified": true,
       "sourceUrls": [
         "https://map.kakao.com"
       ],
-      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:40 KST",
-      "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 23:28 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding.",
+      "stops": [
+        {
+          "seq": 1,
+          "nameKo": "숭실대중문앞",
+          "nameEn": null,
+          "stopId": "20170",
+          "isTurnaround": false
+        },
+        {
+          "seq": 2,
+          "nameKo": "숭실대입구역",
+          "nameEn": null,
+          "stopId": "20166",
+          "isTurnaround": false
+        },
+        {
+          "seq": 3,
+          "nameKo": "상도1동주민센터.상도3차래미안",
+          "nameEn": null,
+          "stopId": "20245",
+          "isTurnaround": false
+        },
+        {
+          "seq": 4,
+          "nameKo": "상도3차삼성래미안후문",
+          "nameEn": null,
+          "stopId": "20243",
+          "isTurnaround": false
+        },
+        {
+          "seq": 5,
+          "nameKo": "상도SH빌아파트상도팰리스후문",
+          "nameEn": null,
+          "stopId": "20241",
+          "isTurnaround": false
+        },
+        {
+          "seq": 6,
+          "nameKo": "중앙대후문",
+          "nameEn": null,
+          "stopId": "20202",
+          "isTurnaround": true
+        },
+        {
+          "seq": 7,
+          "nameKo": "중앙대후문",
+          "nameEn": null,
+          "stopId": "20203",
+          "isTurnaround": false
+        },
+        {
+          "seq": 8,
+          "nameKo": "상도SH빌아파트상도팰리스후문",
+          "nameEn": null,
+          "stopId": "20242",
+          "isTurnaround": false
+        },
+        {
+          "seq": 9,
+          "nameKo": "상도3차삼성래미안후문",
+          "nameEn": null,
+          "stopId": "20244",
+          "isTurnaround": false
+        },
+        {
+          "seq": 10,
+          "nameKo": "숭실대입구역",
+          "nameEn": null,
+          "stopId": "20164",
+          "isTurnaround": false
+        },
+        {
+          "seq": 11,
+          "nameKo": "숭실대중문앞",
+          "nameEn": null,
+          "stopId": "20169",
+          "isTurnaround": false
+        }
+      ]
     },
     {
       "id": "dongdaemun-a01",
@@ -563,15 +642,178 @@
       "operator": "Unknown",
       "reservationRequired": "Unknown",
       "appRequired": "Unknown",
-      "lastChecked": "2026-04-29",
+      "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
       "kakaoMapVerified": true,
       "sourceUrls": [
         "https://map.kakao.com"
       ],
-      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:40 KST",
-      "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 23:29 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding.",
+      "stops": [
+        {
+          "seq": 1,
+          "nameKo": "장한평역3번출구",
+          "nameEn": null,
+          "stopId": "06252",
+          "isTurnaround": false
+        },
+        {
+          "seq": 2,
+          "nameKo": "현대벤처빌",
+          "nameEn": null,
+          "stopId": "06247",
+          "isTurnaround": false
+        },
+        {
+          "seq": 3,
+          "nameKo": "새서울병원",
+          "nameEn": null,
+          "stopId": "06242",
+          "isTurnaround": false
+        },
+        {
+          "seq": 4,
+          "nameKo": "장안2동주민센터",
+          "nameEn": null,
+          "stopId": "06212",
+          "isTurnaround": false
+        },
+        {
+          "seq": 5,
+          "nameKo": "전동초등학교.전농동SK아파트",
+          "nameEn": null,
+          "stopId": "06304",
+          "isTurnaround": false
+        },
+        {
+          "seq": 6,
+          "nameKo": "동대문중학교",
+          "nameEn": null,
+          "stopId": "06204",
+          "isTurnaround": false
+        },
+        {
+          "seq": 7,
+          "nameKo": "래미안크레시티.답십리도서관",
+          "nameEn": null,
+          "stopId": "06220",
+          "isTurnaround": false
+        },
+        {
+          "seq": 8,
+          "nameKo": "청량리역6번출구",
+          "nameEn": null,
+          "stopId": "06216",
+          "isTurnaround": false
+        },
+        {
+          "seq": 9,
+          "nameKo": "현대코아",
+          "nameEn": null,
+          "stopId": "06284",
+          "isTurnaround": false
+        },
+        {
+          "seq": 10,
+          "nameKo": "세종대왕기념관",
+          "nameEn": null,
+          "stopId": "06279",
+          "isTurnaround": false
+        },
+        {
+          "seq": 11,
+          "nameKo": "서울바이오허브",
+          "nameEn": null,
+          "stopId": "06272",
+          "isTurnaround": false
+        },
+        {
+          "seq": 12,
+          "nameKo": "경희대의료원.경희여중고",
+          "nameEn": null,
+          "stopId": "06510",
+          "isTurnaround": true
+        },
+        {
+          "seq": 13,
+          "nameKo": "서울바이오허브",
+          "nameEn": null,
+          "stopId": "06273",
+          "isTurnaround": false
+        },
+        {
+          "seq": 14,
+          "nameKo": "세종대왕기념관",
+          "nameEn": null,
+          "stopId": "06278",
+          "isTurnaround": false
+        },
+        {
+          "seq": 15,
+          "nameKo": "현대코아",
+          "nameEn": null,
+          "stopId": "06285",
+          "isTurnaround": false
+        },
+        {
+          "seq": 16,
+          "nameKo": "청량리역6번출구",
+          "nameEn": null,
+          "stopId": "06217",
+          "isTurnaround": false
+        },
+        {
+          "seq": 17,
+          "nameKo": "동대문구답십리도서관앞",
+          "nameEn": null,
+          "stopId": "06221",
+          "isTurnaround": false
+        },
+        {
+          "seq": 18,
+          "nameKo": "동대문중학교",
+          "nameEn": null,
+          "stopId": "06205",
+          "isTurnaround": false
+        },
+        {
+          "seq": 19,
+          "nameKo": "전동초등학교.전농동SK아파트",
+          "nameEn": null,
+          "stopId": "06298",
+          "isTurnaround": false
+        },
+        {
+          "seq": 20,
+          "nameKo": "장안2동주민센터",
+          "nameEn": null,
+          "stopId": "06213",
+          "isTurnaround": false
+        },
+        {
+          "seq": 21,
+          "nameKo": "코리아병원",
+          "nameEn": null,
+          "stopId": "06241",
+          "isTurnaround": false
+        },
+        {
+          "seq": 22,
+          "nameKo": "현대벤처빌.현대썬앤빌",
+          "nameEn": null,
+          "stopId": "06246",
+          "isTurnaround": false
+        },
+        {
+          "seq": 23,
+          "nameKo": "장한평역2번출구",
+          "nameEn": null,
+          "stopId": "06251",
+          "isTurnaround": false
+        }
+      ]
     },
     {
       "id": "seodaemun-a01",
@@ -589,15 +831,115 @@
       "operator": "Unknown",
       "reservationRequired": "Unknown",
       "appRequired": "Unknown",
-      "lastChecked": "2026-04-29",
+      "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
       "kakaoMapVerified": true,
       "sourceUrls": [
         "https://map.kakao.com"
       ],
-      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:41 KST",
-      "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 23:29 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding.",
+      "stops": [
+        {
+          "seq": 1,
+          "nameKo": "서대문구청.보건소.구의회",
+          "nameEn": null,
+          "stopId": "13156",
+          "isTurnaround": false
+        },
+        {
+          "seq": 2,
+          "nameKo": "서대문문화체육회관입구",
+          "nameEn": null,
+          "stopId": "13201",
+          "isTurnaround": false
+        },
+        {
+          "seq": 3,
+          "nameKo": "홍연2교.두산아파트앞",
+          "nameEn": null,
+          "stopId": "13202",
+          "isTurnaround": false
+        },
+        {
+          "seq": 4,
+          "nameKo": "홍남교",
+          "nameEn": null,
+          "stopId": "13203",
+          "isTurnaround": false
+        },
+        {
+          "seq": 5,
+          "nameKo": "홍남교.백련시장입구",
+          "nameEn": null,
+          "stopId": "13262",
+          "isTurnaround": false
+        },
+        {
+          "seq": 6,
+          "nameKo": "연가교",
+          "nameEn": null,
+          "stopId": "13256",
+          "isTurnaround": false
+        },
+        {
+          "seq": 7,
+          "nameKo": "서대문종합사회복지관",
+          "nameEn": null,
+          "stopId": "13260",
+          "isTurnaround": false
+        },
+        {
+          "seq": 8,
+          "nameKo": "DMC파크뷰자이1단지입구",
+          "nameEn": null,
+          "stopId": "13243",
+          "isTurnaround": false
+        },
+        {
+          "seq": 9,
+          "nameKo": "모래내삼거리",
+          "nameEn": null,
+          "stopId": "13182",
+          "isTurnaround": false
+        },
+        {
+          "seq": 10,
+          "nameKo": "가좌역3번출구",
+          "nameEn": null,
+          "stopId": "13257",
+          "isTurnaround": true
+        },
+        {
+          "seq": 11,
+          "nameKo": "서대문종합사회복지관",
+          "nameEn": null,
+          "stopId": "13261",
+          "isTurnaround": false
+        },
+        {
+          "seq": 12,
+          "nameKo": "연가교",
+          "nameEn": null,
+          "stopId": "13204",
+          "isTurnaround": false
+        },
+        {
+          "seq": 13,
+          "nameKo": "연희지하차도",
+          "nameEn": null,
+          "stopId": "13213",
+          "isTurnaround": false
+        },
+        {
+          "seq": 14,
+          "nameKo": "서대문구청.보건소.구의회",
+          "nameEn": null,
+          "stopId": "13156",
+          "isTurnaround": false
+        }
+      ]
     },
     {
       "id": "sangam-a21",

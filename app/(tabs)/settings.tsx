@@ -1,7 +1,7 @@
-import { View, Text, ScrollView, Pressable, StyleSheet, Linking } from 'react-native';
+import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { colors, spacing, radius, typography, shadows } from '../../lib/design/tokens';
+import { colors, spacing, radius } from '../../lib/design/tokens';
 import { KrLine } from '../../components/ui/KrLine';
 import { Eyebrow } from '../../components/ui/Eyebrow';
 import { IconChevR } from '../../components/ui/icons';
@@ -18,10 +18,7 @@ function LangSwitch({ lang, onChange }: { lang: string; onChange: (v: string) =>
           <Pressable
             key={v}
             onPress={() => onChange(v)}
-            style={[
-              langStyles.button,
-              on && langStyles.buttonActive,
-            ]}
+            style={[langStyles.button, on && langStyles.buttonActive]}
           >
             <Text style={[langStyles.label, on && langStyles.labelActive]}>{v}</Text>
           </Pressable>
@@ -136,8 +133,9 @@ const rowStyles = StyleSheet.create({
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
-  const { i18n } = useTranslation();
-  const lang = i18n.language === 'ko' ? 'KO' : 'EN';
+  const { t, i18n } = useTranslation();
+  const isKo = i18n.language === 'ko';
+  const lang = isKo ? 'KO' : 'EN';
 
   const handleLangChange = (v: string) => {
     i18n.changeLanguage(v.toLowerCase());
@@ -147,8 +145,10 @@ export default function SettingsScreen() {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.heading}>Settings</Text>
-        <KrLine>설정</KrLine>
+        <Text style={[styles.heading, isKo && styles.headingKo]}>
+          {t('settings.title')}
+        </Text>
+        {!isKo && <KrLine>{t('settings.titleKr')}</KrLine>}
       </View>
 
       <ScrollView
@@ -157,37 +157,36 @@ export default function SettingsScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Language */}
-        <Eyebrow>Language</Eyebrow>
+        <Eyebrow>{t('settings.section.language')}</Eyebrow>
         <Group>
           <Row
-            label="App language"
+            label={t('settings.row.appLanguage')}
             action={<LangSwitch lang={lang} onChange={handleLangChange} />}
             isLast
           />
         </Group>
 
         {/* About */}
-        <Eyebrow>About</Eyebrow>
+        <Eyebrow>{t('settings.section.about')}</Eyebrow>
         <Group>
-          <Row label="App version" value={APP_VERSION} />
-          <Row label="Information verified" value={VERIFIED_DATE} isLast />
+          <Row label={t('settings.row.appVersion')} value={APP_VERSION} />
+          <Row label={t('settings.row.informationVerified')} value={VERIFIED_DATE} isLast />
         </Group>
 
-        <Text style={styles.aboutNote}>
-          Route information is curated and last verified on the date above.
-          Always confirm operating status with the operator before riding.
+        <Text style={[styles.aboutNote, isKo && styles.textKo]}>
+          {t('settings.about.note')}
         </Text>
 
         {/* Legal */}
-        <Eyebrow>Legal</Eyebrow>
+        <Eyebrow>{t('settings.section.legal')}</Eyebrow>
         <Group>
           <Row
-            label="Privacy policy"
+            label={t('settings.row.privacyPolicy')}
             action={<IconChevR size={16} color={colors.fg[4]} />}
             onPress={() => {}}
           />
           <Row
-            label="Terms of use"
+            label={t('settings.row.termsOfUse')}
             action={<IconChevR size={16} color={colors.fg[4]} />}
             onPress={() => {}}
             isLast
@@ -195,7 +194,7 @@ export default function SettingsScreen() {
         </Group>
 
         {/* Footer */}
-        <Text style={styles.footer}>SEOUL AUTONOMOUS · MVP</Text>
+        <Text style={styles.footer}>{t('settings.footer')}</Text>
       </ScrollView>
     </View>
   );
@@ -220,6 +219,9 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 4,
   },
+  headingKo: {
+    fontFamily: 'Pretendard-SemiBold',
+  },
   scroll: {
     flex: 1,
   },
@@ -231,6 +233,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     color: colors.fg[4],
+  },
+  textKo: {
+    fontFamily: 'Pretendard-Regular',
   },
   footer: {
     fontFamily: 'GeistMono-Medium',

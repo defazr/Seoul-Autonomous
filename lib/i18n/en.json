@@ -47,8 +47,23 @@
   },
   "settings": {
     "title": "Settings",
-    "language": "Language",
-    "about": "About"
+    "titleKr": "설정",
+    "section": {
+      "language": "LANGUAGE",
+      "about": "ABOUT",
+      "legal": "LEGAL"
+    },
+    "row": {
+      "appLanguage": "App language",
+      "appVersion": "App version",
+      "informationVerified": "Information verified",
+      "privacyPolicy": "Privacy policy",
+      "termsOfUse": "Terms of use"
+    },
+    "about": {
+      "note": "Route information is curated and last verified on the date above. Always confirm operating status with the operator before riding."
+    },
+    "footer": "SEOUL AUTONOMOUS · MVP"
   },
   "status": {
     "recently_verified": "RECENTLY VERIFIED",

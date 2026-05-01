@@ -42,8 +42,67 @@
     }
   },
   "howToRide": {
-    "title": "How to Ride",
-    "subtitle": "Step-by-step guide to autonomous buses"
+    "title": "How to ride",
+    "filter": {
+      "buses": "Buses",
+      "robotaxis": "Robotaxis"
+    },
+    "hero": {
+      "title": "First time? Start here.",
+      "description": "Autonomous buses and robotaxis run on listed pilot routes in Seoul. Information is curated and manually verified. Always check before riding.",
+      "bullet1": "Listed routes only — verified stops and schedules",
+      "bullet2": "No live tracking — check before riding",
+      "bullet3": "A safety operator may be onboard during pilot operations"
+    },
+    "faq": {
+      "sectionTitle": "Common questions",
+      "q1": {
+        "q": "Do I need an app?",
+        "a1": "Buses: No app required. T-money or a contactless card can be used at the stop where accepted.",
+        "a2": "Robotaxis: Yes. Kakao T is used to request service."
+      },
+      "q2": {
+        "q": "Can tourists ride?",
+        "a1": "Most listed services are public pilot routes. International visitors can usually ride if they follow the route or app instructions."
+      },
+      "q3": {
+        "q": "How do I pay?",
+        "a1": "Buses: Use T-money or a contactless card where accepted. Fare rules may vary by route.",
+        "a2": "Robotaxis: Payment is handled in Kakao T."
+      },
+      "q4": {
+        "q": "Are these services real-time?",
+        "a1": "No. Information is curated manually and may not reflect live status. Always check before riding."
+      },
+      "q5": {
+        "q": "What should I check before riding?",
+        "a1": "First/last service times, day of operation, and current operating status via the official source."
+      }
+    },
+    "steps": {
+      "sectionTitle": "Visual guide",
+      "s1": { "title": "Find a listed stop", "desc": "Use the Routes tab to locate verified stops near you." },
+      "s2": { "title": "Check the route and time", "desc": "First/last service times and operating days are listed in each route." },
+      "s3": { "title": "Tap your card or follow app instructions", "desc": "Buses: Tap T-money or a contactless card where accepted. Robotaxis: Follow Kakao T instructions." },
+      "s4": { "title": "Ride with the safety operator if onboard", "desc": "A safety operator may be onboard during pilot operations. Follow their guidance." }
+    },
+    "kakao": {
+      "sectionTitle": "For robotaxi riders",
+      "title": "Using Kakao T for Robotaxi",
+      "titleKr": "카카오 T 사용법",
+      "step1": "Open Kakao T",
+      "step2": "Enter pickup and destination",
+      "step3": "If service is available in your area, an autonomous option may appear",
+      "step4": "Confirm details in Kakao T before riding",
+      "note": "Service availability may vary. Always confirm in the official Kakao T app."
+    },
+    "tips": {
+      "sectionTitle": "Good to know",
+      "t1": "Check before riding",
+      "t2": "Bring a T-money or contactless card",
+      "t3": "Use Kakao T for robotaxi services",
+      "t4": "Service may change during pilot operations"
+    }
   },
   "settings": {
     "title": "Settings",

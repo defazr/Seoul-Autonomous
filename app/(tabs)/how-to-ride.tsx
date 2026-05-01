@@ -1,9 +1,11 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, spacing } from '../../lib/design/tokens';
 
 export default function HowToRideScreen() {
+  const insets = useSafeAreaInsets();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <Text style={styles.title}>How to Ride</Text>
       <Text style={styles.subtitle}>Step-by-step guide to autonomous buses</Text>
     </View>
@@ -19,12 +21,13 @@ const styles = StyleSheet.create({
     padding: spacing.screenPadding,
   },
   title: {
-    color: colors.fg[0],
+    fontFamily: 'Geist-Bold',
+    color: colors.fg[1],
     fontSize: 24,
-    fontWeight: '700',
   },
   subtitle: {
-    color: colors.fg[1],
+    fontFamily: 'Geist-Regular',
+    color: colors.fg[3],
     fontSize: 14,
     marginTop: 8,
   },

@@ -1,35 +1,127 @@
+// Design tokens — aligned with colors_and_type.css (design source of truth)
+
 export const colors = {
+  // Backgrounds (deepest → highest elevation)
   bg: {
-    0: '#000000',
-    1: '#0A0A0A',
-    2: '#111111',
-    3: '#1A1A1A',
-    4: '#1F1F1F',
+    0: '#000000',  // page void / map base
+    1: '#0A0A0A',  // primary surface
+    2: '#111111',  // card / sheet
+    3: '#1A1A1A',  // raised card
+    4: '#1F1F1F',  // hovered card
   },
+  // Foregrounds
   fg: {
-    0: '#FFFFFF',
-    1: '#A0A0B0',
-    2: '#6B6B7B',
+    1: '#FFFFFF',  // primary text, headlines
+    2: '#EDEDED',  // secondary text, dense body
+    3: '#A1A1A1',  // tertiary, captions, labels
+    4: '#8F8F8F',  // quaternary, hint
+    5: '#555555',  // disabled
   },
-  accent: '#00D4FF',
+  // Borders / strokes
+  border: {
+    1: '#1F1F1F',  // hairline card border
+    2: '#2E2E2E',  // visible border
+    3: '#454545',  // hovered/focused
+  },
+  // Accent — Electric Cyan
+  accent: {
+    DEFAULT: '#00D4FF',
+    hi: '#5BE6FF',     // lighter, hover
+    lo: '#0099BF',     // deeper, pressed
+    glow: 'rgba(0, 212, 255, 0.32)',
+    faint: 'rgba(0, 212, 255, 0.10)',
+  },
+  // Status / semantic
   status: {
-    success: '#22C55E',
-    warning: '#F59E0B',
-    info: '#00D4FF',
-    danger: '#EF4444',
+    success: '#45A557',  // on-route, operational
+    warning: '#FFB224',  // delay, caution
+    danger: '#E5484D',   // offline, error
+    info: '#0072F5',     // informational blue
   },
 };
 
+// Spacing scale (4pt)
 export const spacing = {
-  cardGap: 16,
-  sectionGap: 32,
+  1: 4,
+  2: 8,
+  3: 12,
+  4: 16,
+  5: 20,
+  6: 24,
+  7: 32,
+  8: 40,
+  9: 48,
+  10: 64,
+  // Semantic aliases
   screenPadding: 20,
   cardPadding: 16,
+  cardGap: 12,
+  sectionGap: 32,
 };
 
+// Border radius
 export const radius = {
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 24,
+  xs: 4,
+  sm: 6,
+  md: 8,
+  lg: 12,
+  xl: 16,
+  '2xl': 24,
+  pill: 999,
+};
+
+// Shadows (iOS shadowX props + Android elevation)
+export const shadows = {
+  sm: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.4,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  md: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 16,
+    elevation: 6,
+  },
+  lg: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 16 },
+    shadowOpacity: 0.7,
+    shadowRadius: 48,
+    elevation: 12,
+  },
+  glow: {
+    shadowColor: '#00D4FF',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.32,
+    shadowRadius: 24,
+    elevation: 8,
+  },
+  inner: {
+    // RN doesn't support inset shadows natively; handled via border/overlay
+  },
+};
+
+// Typography
+export const fonts = {
+  sans: 'Geist',
+  mono: 'GeistMono',
+  kr: 'Pretendard',
+};
+
+export const typography = {
+  display: { fontFamily: 'Geist-Bold', fontSize: 40, lineHeight: 44, letterSpacing: -0.02 * 40 },
+  h1: { fontFamily: 'Geist-SemiBold', fontSize: 32, lineHeight: 36, letterSpacing: -0.02 * 32 },
+  h2: { fontFamily: 'Geist-SemiBold', fontSize: 24, lineHeight: 28, letterSpacing: -0.02 * 24 },
+  h3: { fontFamily: 'Geist-SemiBold', fontSize: 20, lineHeight: 24 },
+  title: { fontFamily: 'Geist-Medium', fontSize: 17, lineHeight: 22 },
+  body: { fontFamily: 'Geist-Regular', fontSize: 15, lineHeight: 22 },
+  bodyMd: { fontFamily: 'Geist-Medium', fontSize: 15, lineHeight: 22 },
+  caption: { fontFamily: 'Geist-Regular', fontSize: 13, lineHeight: 18 },
+  label: { fontFamily: 'Geist-Medium', fontSize: 12, lineHeight: 16, letterSpacing: 0.08 * 12, textTransform: 'uppercase' as const },
+  mono: { fontFamily: 'GeistMono-Medium', fontSize: 13, lineHeight: 18 },
+  monoLg: { fontFamily: 'GeistMono-Medium', fontSize: 16, lineHeight: 20 },
 };

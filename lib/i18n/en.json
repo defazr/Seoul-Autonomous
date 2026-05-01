@@ -1,0 +1,38 @@
+{
+  "home": {
+    "headline": "Try Seoul's autonomous future",
+    "subtitle": "Self-driving buses and robotaxis in Seoul"
+  },
+  "routes": {
+    "title": "Routes",
+    "fixedRoutes": "Fixed Routes",
+    "onDemand": "On-Demand Services",
+    "stops": "Stops",
+    "headway": "Headway",
+    "fare": "Fare",
+    "operator": "Operator",
+    "firstBus": "First bus",
+    "lastBus": "Last bus",
+    "unknown": "Unknown"
+  },
+  "howToRide": {
+    "title": "How to Ride",
+    "subtitle": "Step-by-step guide to autonomous buses"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "about": "About"
+  },
+  "status": {
+    "recently_verified": "RECENTLY VERIFIED",
+    "check_before": "CHECK BEFORE RIDING",
+    "reservation_required": "RESERVATION REQUIRED"
+  },
+  "common": {
+    "lastChecked": "Last checked",
+    "disclaimer": "Please confirm before riding.",
+    "openInKakaoMap": "Open in Kakao Map",
+    "openInGoogleMaps": "Open in Google Maps"
+  }
+}

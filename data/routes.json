@@ -1,0 +1,329 @@
+{
+  "_meta": {
+    "version": "0.1.0",
+    "stage": "seed",
+    "lastUpdated": "2026-04-29",
+    "publicReady": false,
+    "warnings": [
+      "This is v0.1 seed data for development.",
+      "Before public release, the following must be verified for each route:",
+      "- fare (currently Unknown)",
+      "- operator (currently Unknown)",
+      "- reservationRequired (currently Unknown)",
+      "- appRequired (currently Unknown)",
+      "- stops array (not yet included)",
+      "- sourceUrls (currently Kakao Map only, needs official Seoul/operator URLs)"
+    ],
+    "pendingTasks": [
+      "Add stops array to each fixed route before Route Detail implementation",
+      "Boost sourceUrls with official Seoul Metropolitan Government or operator URLs",
+      "Re-verify A504 in Kakao Map (added 2026-04-29)",
+      "Verify daysOfOperation for routes currently marked Unknown"
+    ]
+  },
+  "version": "0.1.0",
+  "lastUpdated": "2026-04-29",
+  "fixedRoutes": [
+    {
+      "id": "saebyeok-a160",
+      "displayName": "Saebyeok A160",
+      "displayNameKo": "새벽A160",
+      "startPoint": "Dobongsan Station Transfer Center",
+      "startPointKo": "도봉산역광역환승센터",
+      "endPoint": "Yeongdeungpo Station",
+      "endPointKo": "영등포역",
+      "firstBus": "03:30",
+      "lastBus": "03:30",
+      "headway": "Unknown",
+      "daysOfOperation": "weekday",
+      "fare": "Unknown",
+      "operator": "Unknown",
+      "reservationRequired": "Unknown",
+      "appRequired": "Unknown",
+      "lastChecked": "2026-04-29",
+      "verifiedBy": "manual",
+      "verificationLevel": "kakao_seoul_verified",
+      "kakaoMapVerified": true,
+      "sourceUrls": [
+        "https://map.kakao.com"
+      ],
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:37 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+    },
+    {
+      "id": "saebyeok-a741",
+      "displayName": "Saebyeok A741",
+      "displayNameKo": "새벽A741",
+      "startPoint": "Gupabal Station Entrance",
+      "startPointKo": "구파발역입구",
+      "endPoint": "Yangjae Station / Seocho Arts Center",
+      "endPointKo": "양재역.서초문화예술회관",
+      "firstBus": "03:30",
+      "lastBus": "03:30",
+      "headway": "Unknown",
+      "daysOfOperation": "Unknown",
+      "fare": "Unknown",
+      "operator": "Unknown",
+      "reservationRequired": "Unknown",
+      "appRequired": "Unknown",
+      "lastChecked": "2026-04-29",
+      "verifiedBy": "manual",
+      "verificationLevel": "kakao_seoul_verified",
+      "kakaoMapVerified": true,
+      "sourceUrls": [
+        "https://map.kakao.com"
+      ],
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:37 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+    },
+    {
+      "id": "saebyeok-a148",
+      "displayName": "Saebyeok A148",
+      "displayNameKo": "새벽A148",
+      "startPoint": "Sanggye Station Exit 5 / Sanggye Byuksan Apt",
+      "startPointKo": "상계역5번출구.상계벽산아파트",
+      "endPoint": "Express Bus Terminal",
+      "endPointKo": "고속터미널",
+      "firstBus": "03:30",
+      "lastBus": "03:30",
+      "headway": "Unknown",
+      "daysOfOperation": "Unknown",
+      "fare": "Unknown",
+      "operator": "Unknown",
+      "reservationRequired": "Unknown",
+      "appRequired": "Unknown",
+      "lastChecked": "2026-04-29",
+      "verifiedBy": "manual",
+      "verificationLevel": "kakao_seoul_verified",
+      "kakaoMapVerified": true,
+      "sourceUrls": [
+        "https://map.kakao.com"
+      ],
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:38 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+    },
+    {
+      "id": "simya-a21",
+      "displayName": "Simya A21",
+      "displayNameKo": "심야A21",
+      "startPoint": "Dongdaemun Station",
+      "startPointKo": "동대문역",
+      "endPoint": "Hapjeong Station",
+      "endPointKo": "합정역",
+      "firstBus": "23:00",
+      "lastBus": "03:40",
+      "headway": "140 min",
+      "daysOfOperation": "weekday",
+      "fare": "Unknown",
+      "operator": "Unknown",
+      "reservationRequired": "Unknown",
+      "appRequired": "Unknown",
+      "lastChecked": "2026-04-29",
+      "verifiedBy": "manual",
+      "verificationLevel": "kakao_seoul_verified",
+      "kakaoMapVerified": true,
+      "sourceUrls": [
+        "https://map.kakao.com"
+      ],
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:39 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+    },
+    {
+      "id": "cheonggye-a01",
+      "displayName": "Cheonggye A01",
+      "displayNameKo": "청계A01",
+      "startPoint": "Cheonggye Plaza",
+      "startPointKo": "청계광장",
+      "endPoint": "Cheonggye 5-ga / Gwangjang Market",
+      "endPointKo": "청계5가.광장시장",
+      "firstBus": "10:00",
+      "lastBus": "16:00",
+      "headway": "30 min",
+      "daysOfOperation": "Unknown",
+      "fare": "Unknown",
+      "operator": "Unknown",
+      "reservationRequired": "Unknown",
+      "appRequired": "Unknown",
+      "lastChecked": "2026-04-29",
+      "verifiedBy": "manual",
+      "verificationLevel": "kakao_seoul_verified",
+      "kakaoMapVerified": true,
+      "sourceUrls": [
+        "https://map.kakao.com"
+      ],
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:40 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+    },
+    {
+      "id": "dongjak-a01",
+      "displayName": "Dongjak A01",
+      "displayNameKo": "동작A01",
+      "startPoint": "Soongsil University Middle Gate",
+      "startPointKo": "숭실대중문",
+      "endPoint": "Chung-Ang University Back Gate",
+      "endPointKo": "중앙대후문",
+      "firstBus": "07:30",
+      "lastBus": "13:50",
+      "headway": "25 min",
+      "daysOfOperation": "weekday",
+      "fare": "Unknown",
+      "operator": "Unknown",
+      "reservationRequired": "Unknown",
+      "appRequired": "Unknown",
+      "lastChecked": "2026-04-29",
+      "verifiedBy": "manual",
+      "verificationLevel": "kakao_seoul_verified",
+      "kakaoMapVerified": true,
+      "sourceUrls": [
+        "https://map.kakao.com"
+      ],
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:40 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+    },
+    {
+      "id": "dongdaemun-a01",
+      "displayName": "Dongdaemun A01",
+      "displayNameKo": "동대문A01",
+      "startPoint": "Janghanpyeong Station",
+      "startPointKo": "장한평역",
+      "endPoint": "Kyung Hee University Medical Center",
+      "endPointKo": "경희의료원",
+      "firstBus": "09:00",
+      "lastBus": "16:15",
+      "headway": "75 min",
+      "daysOfOperation": "Unknown",
+      "fare": "Unknown",
+      "operator": "Unknown",
+      "reservationRequired": "Unknown",
+      "appRequired": "Unknown",
+      "lastChecked": "2026-04-29",
+      "verifiedBy": "manual",
+      "verificationLevel": "kakao_seoul_verified",
+      "kakaoMapVerified": true,
+      "sourceUrls": [
+        "https://map.kakao.com"
+      ],
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:40 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+    },
+    {
+      "id": "seodaemun-a01",
+      "displayName": "Seodaemun A01",
+      "displayNameKo": "서대문A01",
+      "startPoint": "Seodaemun-gu Office",
+      "startPointKo": "서대문구청",
+      "endPoint": "Gajwa Station Exit 3",
+      "endPointKo": "가좌역3번출구",
+      "firstBus": "09:20",
+      "lastBus": "16:35",
+      "headway": "25 min",
+      "daysOfOperation": "Unknown",
+      "fare": "Unknown",
+      "operator": "Unknown",
+      "reservationRequired": "Unknown",
+      "appRequired": "Unknown",
+      "lastChecked": "2026-04-29",
+      "verifiedBy": "manual",
+      "verificationLevel": "kakao_seoul_verified",
+      "kakaoMapVerified": true,
+      "sourceUrls": [
+        "https://map.kakao.com"
+      ],
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:41 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+    },
+    {
+      "id": "sangam-a21",
+      "displayName": "Sangam A21",
+      "displayNameKo": "상암A21",
+      "startPoint": "World Cup Stadium South / World Cup Park",
+      "startPointKo": "월드컵경기장남측.월드컵공원",
+      "endPoint": "AREX Digital Media City Station",
+      "endPointKo": "공항철도디지털미디어시티역",
+      "firstBus": "10:00",
+      "lastBus": "17:00",
+      "headway": "60 min",
+      "daysOfOperation": "Unknown",
+      "fare": "Unknown",
+      "operator": "Unknown",
+      "reservationRequired": "Unknown",
+      "appRequired": "Unknown",
+      "lastChecked": "2026-04-29",
+      "verifiedBy": "manual",
+      "verificationLevel": "kakao_seoul_verified",
+      "kakaoMapVerified": true,
+      "sourceUrls": [
+        "https://map.kakao.com"
+      ],
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:42 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+    },
+    {
+      "id": "cheongwadae-a01",
+      "displayName": "Cheongwadae A01",
+      "displayNameKo": "청와대A01",
+      "startPoint": "Gyeongbokgung Station",
+      "startPointKo": "경복궁역",
+      "endPoint": "Cheongwadae (Blue House)",
+      "endPointKo": "청와대",
+      "firstBus": "09:30",
+      "lastBus": "17:00",
+      "headway": "15 min",
+      "daysOfOperation": "weekday",
+      "fare": "Unknown",
+      "operator": "Unknown",
+      "reservationRequired": "Unknown",
+      "appRequired": "Unknown",
+      "lastChecked": "2026-04-29",
+      "verifiedBy": "manual",
+      "verificationLevel": "kakao_seoul_verified",
+      "kakaoMapVerified": true,
+      "sourceUrls": [
+        "https://map.kakao.com"
+      ],
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:43 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+    }
+  ],
+  "onDemandServices": [
+    {
+      "id": "gangnam-robotaxi",
+      "displayName": "Gangnam Robotaxi",
+      "displayNameKo": "강남 로보택시",
+      "serviceArea": "Gangnam-gu, Seocho-gu (Late-night)",
+      "serviceAreaKo": "강남구, 서초구 (심야)",
+      "appRequired": true,
+      "appName": "Kakao T",
+      "operatingHours": "Unknown",
+      "operatingDays": "Unknown",
+      "fare": "Unknown",
+      "operator": "Unknown",
+      "officialServiceUrl": "Unknown",
+      "lastChecked": "2026-04-29",
+      "verifiedBy": "manual",
+      "verificationLevel": "official_pending",
+      "kakaoMapVerified": false,
+      "sourceUrls": [],
+      "sourceNote": "On-demand service. Detail page generation deferred until official_confirmed.",
+      "disclaimer": "Service details require additional official verification. Please confirm in Kakao T before riding."
+    }
+  ],
+  "_pendingRoutes": [
+    {
+      "id": "saebyeok-a504",
+      "reason": "Opened 2026-04-29. Awaiting Kakao Map indexing."
+    },
+    {
+      "id": "sangam-a01",
+      "reason": "Not confirmed in Kakao Map."
+    },
+    {
+      "id": "sangam-a02",
+      "reason": "Not confirmed in Kakao Map."
+    },
+    {
+      "id": "yeouido-a01",
+      "reason": "2026 operation status requires re-verification."
+    }
+  ]
+}

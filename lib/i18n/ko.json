@@ -1,0 +1,38 @@
+{
+  "home": {
+    "headline": "서울의 자율주행을 체험하세요",
+    "subtitle": "서울 자율주행 버스와 로보택시"
+  },
+  "routes": {
+    "title": "노선",
+    "fixedRoutes": "고정 노선",
+    "onDemand": "온디맨드 서비스",
+    "stops": "정류장",
+    "headway": "배차 간격",
+    "fare": "요금",
+    "operator": "운영사",
+    "firstBus": "첫차",
+    "lastBus": "막차",
+    "unknown": "미확인"
+  },
+  "howToRide": {
+    "title": "이용 방법",
+    "subtitle": "자율주행 버스 탑승 가이드"
+  },
+  "settings": {
+    "title": "설정",
+    "language": "언어",
+    "about": "정보"
+  },
+  "status": {
+    "recently_verified": "최근 검증됨",
+    "check_before": "탑승 전 확인 필요",
+    "reservation_required": "예약 필수"
+  },
+  "common": {
+    "lastChecked": "마지막 확인",
+    "disclaimer": "탑승 전 현장에서 확인해 주세요.",
+    "openInKakaoMap": "카카오맵에서 열기",
+    "openInGoogleMaps": "구글 지도에서 열기"
+  }
+}

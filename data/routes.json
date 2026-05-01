@@ -17,7 +17,7 @@
     "pendingTasks": [
       "Add stops array to each fixed route before Route Detail implementation",
       "Boost sourceUrls with official Seoul Metropolitan Government or operator URLs",
-      "Re-verify A504 in Kakao Map (added 2026-04-29)",
+
       "Verify daysOfOperation for routes currently marked Unknown"
     ]
   },
@@ -44,9 +44,7 @@
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
       "kakaoMapVerified": true,
-      "sourceUrls": [
-        "https://map.kakao.com"
-      ],
+      "sourceUrls": ["https://map.kakao.com"],
       "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:37 KST",
       "disclaimer": "Information based on Kakao Map. Please confirm before riding."
     },
@@ -70,9 +68,7 @@
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
       "kakaoMapVerified": true,
-      "sourceUrls": [
-        "https://map.kakao.com"
-      ],
+      "sourceUrls": ["https://map.kakao.com"],
       "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:37 KST",
       "disclaimer": "Information based on Kakao Map. Please confirm before riding."
     },
@@ -96,9 +92,7 @@
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
       "kakaoMapVerified": true,
-      "sourceUrls": [
-        "https://map.kakao.com"
-      ],
+      "sourceUrls": ["https://map.kakao.com"],
       "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:38 KST",
       "disclaimer": "Information based on Kakao Map. Please confirm before riding."
     },
@@ -122,9 +116,7 @@
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
       "kakaoMapVerified": true,
-      "sourceUrls": [
-        "https://map.kakao.com"
-      ],
+      "sourceUrls": ["https://map.kakao.com"],
       "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:39 KST",
       "disclaimer": "Information based on Kakao Map. Please confirm before riding."
     },
@@ -148,9 +140,7 @@
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
       "kakaoMapVerified": true,
-      "sourceUrls": [
-        "https://map.kakao.com"
-      ],
+      "sourceUrls": ["https://map.kakao.com"],
       "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:40 KST",
       "disclaimer": "Information based on Kakao Map. Please confirm before riding."
     },
@@ -174,9 +164,7 @@
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
       "kakaoMapVerified": true,
-      "sourceUrls": [
-        "https://map.kakao.com"
-      ],
+      "sourceUrls": ["https://map.kakao.com"],
       "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:40 KST",
       "disclaimer": "Information based on Kakao Map. Please confirm before riding."
     },
@@ -200,9 +188,7 @@
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
       "kakaoMapVerified": true,
-      "sourceUrls": [
-        "https://map.kakao.com"
-      ],
+      "sourceUrls": ["https://map.kakao.com"],
       "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:40 KST",
       "disclaimer": "Information based on Kakao Map. Please confirm before riding."
     },
@@ -226,9 +212,7 @@
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
       "kakaoMapVerified": true,
-      "sourceUrls": [
-        "https://map.kakao.com"
-      ],
+      "sourceUrls": ["https://map.kakao.com"],
       "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:41 KST",
       "disclaimer": "Information based on Kakao Map. Please confirm before riding."
     },
@@ -252,9 +236,7 @@
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
       "kakaoMapVerified": true,
-      "sourceUrls": [
-        "https://map.kakao.com"
-      ],
+      "sourceUrls": ["https://map.kakao.com"],
       "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:42 KST",
       "disclaimer": "Information based on Kakao Map. Please confirm before riding."
     },
@@ -278,11 +260,67 @@
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
       "kakaoMapVerified": true,
-      "sourceUrls": [
-        "https://map.kakao.com"
-      ],
+      "sourceUrls": ["https://map.kakao.com"],
       "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 20:43 KST",
       "disclaimer": "Information based on Kakao Map. Please confirm before riding."
+    },
+    {
+      "id": "saebyeok-a504",
+      "displayName": "Saebyeok A504",
+      "displayNameKo": "새벽A504",
+      "startPoint": "Geumcheon-gu Office",
+      "startPointKo": "금천구청.금천경찰서",
+      "endPoint": "City Hall Station / Seoul City Hall",
+      "endPointKo": "시청역1호선.서울시청",
+      "firstBus": "03:30",
+      "lastBus": "03:30",
+      "headway": "Unknown",
+      "daysOfOperation": "Unknown",
+      "fare": "Unknown",
+      "operator": "Unknown",
+      "reservationRequired": "Unknown",
+      "appRequired": "Unknown",
+      "lastChecked": "2026-05-01",
+      "verifiedBy": "manual",
+      "verificationLevel": "kakao_seoul_verified",
+      "kakaoMapVerified": true,
+      "sourceUrls": ["https://map.kakao.com"],
+      "sourceNote": "Kakao Map (Seoul Metropolitan Government) verified at 21:52 KST",
+      "disclaimer": "Information based on Kakao Map. Please confirm before riding.",
+      "stops": [
+        { "seq": 1,  "nameKo": "금천구청.금천경찰서", "nameEn": null, "stopId": "18007", "isTurnaround": false },
+        { "seq": 2,  "nameKo": "말미고개.금천소방서", "nameEn": null, "stopId": "18005", "isTurnaround": false },
+        { "seq": 3,  "nameKo": "금천우체국", "nameEn": null, "stopId": "18003", "isTurnaround": false },
+        { "seq": 4,  "nameKo": "독산고개", "nameEn": null, "stopId": "18147", "isTurnaround": false },
+        { "seq": 5,  "nameKo": "모두의학교.금천문화예술정보학교", "nameEn": null, "stopId": "18197", "isTurnaround": false },
+        { "seq": 6,  "nameKo": "난곡입구", "nameEn": null, "stopId": "21115", "isTurnaround": false },
+        { "seq": 7,  "nameKo": "신림동별빛거리입구", "nameEn": null, "stopId": "21149", "isTurnaround": false },
+        { "seq": 8,  "nameKo": "성대시장", "nameEn": null, "stopId": "20148", "isTurnaround": false },
+        { "seq": 9,  "nameKo": "노량진역3번출구", "nameEn": null, "stopId": "20114", "isTurnaround": false },
+        { "seq": 10, "nameKo": "노들역", "nameEn": null, "stopId": "20013", "isTurnaround": false },
+        { "seq": 11, "nameKo": "신용산역", "nameEn": null, "stopId": "03003", "isTurnaround": false },
+        { "seq": 12, "nameKo": "삼각지역.전쟁기념관", "nameEn": null, "stopId": "03007", "isTurnaround": false },
+        { "seq": 13, "nameKo": "숙대입구역", "nameEn": null, "stopId": "03009", "isTurnaround": false },
+        { "seq": 14, "nameKo": "서울역버스환승센터.강우규의거터(7번승강장)", "nameEn": null, "stopId": "02007", "isTurnaround": false },
+        { "seq": 15, "nameKo": "소공동주민센터", "nameEn": null, "stopId": "02128", "isTurnaround": false },
+        { "seq": 16, "nameKo": "시청역1호선.서울시청", "nameEn": null, "stopId": "02507", "isTurnaround": true },
+        { "seq": 17, "nameKo": "광화문역6번출구.광화문빌딩", "nameEn": null, "stopId": "01129", "isTurnaround": false },
+        { "seq": 18, "nameKo": "삼성본관앞", "nameEn": null, "stopId": "02131", "isTurnaround": false },
+        { "seq": 19, "nameKo": "서울역버스환승센터(4번승강장)", "nameEn": null, "stopId": "02004", "isTurnaround": false },
+        { "seq": 20, "nameKo": "숙대입구역", "nameEn": null, "stopId": "03010", "isTurnaround": false },
+        { "seq": 21, "nameKo": "삼각지역.전쟁기념관", "nameEn": null, "stopId": "03008", "isTurnaround": false },
+        { "seq": 22, "nameKo": "신용산역", "nameEn": null, "stopId": "03004", "isTurnaround": false },
+        { "seq": 23, "nameKo": "노들역", "nameEn": null, "stopId": "20014", "isTurnaround": false },
+        { "seq": 24, "nameKo": "노량진역2번출구", "nameEn": null, "stopId": "20115", "isTurnaround": false },
+        { "seq": 25, "nameKo": "성대시장", "nameEn": null, "stopId": "20147", "isTurnaround": false },
+        { "seq": 26, "nameKo": "신림동별빛거리입구", "nameEn": null, "stopId": "21152", "isTurnaround": false },
+        { "seq": 27, "nameKo": "난곡입구", "nameEn": null, "stopId": "21111", "isTurnaround": false },
+        { "seq": 28, "nameKo": "KT구로지사", "nameEn": null, "stopId": "21114", "isTurnaround": false },
+        { "seq": 29, "nameKo": "문성초등학교", "nameEn": null, "stopId": "18002", "isTurnaround": false },
+        { "seq": 30, "nameKo": "금천우체국", "nameEn": null, "stopId": "18004", "isTurnaround": false },
+        { "seq": 31, "nameKo": "말미고개.금천소방서", "nameEn": null, "stopId": "18006", "isTurnaround": false },
+        { "seq": 32, "nameKo": "금천구청.금천경찰서", "nameEn": null, "stopId": "18008", "isTurnaround": false }
+      ]
     }
   ],
   "onDemandServices": [
@@ -309,21 +347,8 @@
     }
   ],
   "_pendingRoutes": [
-    {
-      "id": "saebyeok-a504",
-      "reason": "Opened 2026-04-29. Awaiting Kakao Map indexing."
-    },
-    {
-      "id": "sangam-a01",
-      "reason": "Not confirmed in Kakao Map."
-    },
-    {
-      "id": "sangam-a02",
-      "reason": "Not confirmed in Kakao Map."
-    },
-    {
-      "id": "yeouido-a01",
-      "reason": "2026 operation status requires re-verification."
-    }
+    { "id": "sangam-a01", "reason": "Not confirmed in Kakao Map." },
+    { "id": "sangam-a02", "reason": "Not confirmed in Kakao Map." },
+    { "id": "yeouido-a01", "reason": "2026 operation status requires re-verification." }
   ]
 }

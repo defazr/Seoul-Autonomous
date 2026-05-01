@@ -1,7 +1,18 @@
 {
   "home": {
-    "headline": "Try Seoul's autonomous future",
-    "subtitle": "Self-driving buses and robotaxis in Seoul"
+    "hero": {
+      "badge": "{{count}} ROUTES VERIFIED",
+      "title": "Experience Seoul's\nautonomous future.",
+      "description": "Verified autonomous bus and robotaxi routes across Seoul. Check before riding.",
+      "cta": "View all routes"
+    },
+    "featured": {
+      "title": "Routes to try first",
+      "seeAll": "See all"
+    },
+    "footer": {
+      "note": "Pilot service operated by the Seoul Metropolitan Government. Information is verified manually and may not reflect real-time changes."
+    }
   },
   "routes": {
     "title": "Routes",
@@ -13,7 +24,22 @@
     "operator": "Operator",
     "firstBus": "First bus",
     "lastBus": "Last bus",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "filter": {
+      "all": "All",
+      "bus": "Bus",
+      "robotaxi": "Robotaxi"
+    },
+    "count": "{{count}} services matching",
+    "section": {
+      "verified": "Verified routes",
+      "robotaxi": "Robotaxi services"
+    },
+    "empty": "No services match this filter.",
+    "robotaxi": {
+      "appRequired": "Kakao T required",
+      "checkBeforeRiding": "CHECK BEFORE RIDING"
+    }
   },
   "howToRide": {
     "title": "How to Ride",
@@ -33,6 +59,7 @@
     "lastChecked": "Last checked",
     "disclaimer": "Please confirm before riding.",
     "openInKakaoMap": "Open in Kakao Map",
-    "openInGoogleMaps": "Open in Google Maps"
+    "openInGoogleMaps": "Open in Google Maps",
+    "footer": "Pilot service operated by the Seoul Metropolitan Government. Information is verified manually and may not reflect real-time changes."
   }
 }

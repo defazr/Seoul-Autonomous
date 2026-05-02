@@ -124,6 +124,50 @@
     },
     "footer": "SEOUL AUTONOMOUS · MVP"
   },
+  "routeDetail": {
+    "notFound": {
+      "title": "Route not found",
+      "cta": "Back to routes"
+    },
+    "label": {
+      "operator": "Operator",
+      "lastChecked": "Last checked"
+    },
+    "disclaimer": "Information based on Kakao Map. Please confirm before riding.",
+    "info": {
+      "hours": "Hours",
+      "days": "Days",
+      "stops": "Stops",
+      "verified": "Verified"
+    },
+    "days": {
+      "weekday": "Mon–Fri",
+      "weekend": "Sat–Sun",
+      "daily": "Daily",
+      "unknown": "—"
+    },
+    "howToRide": {
+      "title": "How to ride",
+      "step1": "Find a listed stop",
+      "step2": "Tap your card or follow Kakao T",
+      "step3": "Ride with the safety operator if onboard",
+      "readMore": "Read full guide"
+    },
+    "stops": {
+      "sectionTitle": "Stops",
+      "showAll": "Show all {{count}} stops",
+      "hide": "Show fewer stops",
+      "count": "{{count}} stops"
+    },
+    "diagram": {
+      "outbound": "{{from}} → {{to}}",
+      "inbound": "{{from}} → {{to}}"
+    },
+    "maps": {
+      "kakao": "Open in Kakao Map"
+    },
+    "footer": "Verified by Kakao Map (Seoul Metropolitan Government) on {{date}}"
+  },
   "status": {
     "recently_verified": "RECENTLY VERIFIED",
     "check_before": "CHECK BEFORE RIDING",

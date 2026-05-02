@@ -41,7 +41,7 @@
     },
     "empty": "No services match this filter.",
     "robotaxi": {
-      "appRequired": "Kakao T required",
+      "appRequired": "Kakao T (Korean app) required",
       "checkBeforeRiding": "CHECK BEFORE RIDING"
     }
   },

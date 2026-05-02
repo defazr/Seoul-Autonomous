@@ -35,6 +35,10 @@
       "verified": "Verified routes",
       "robotaxi": "Robotaxi services"
     },
+    "search": {
+      "placeholder": "Search routes, places",
+      "empty": "No routes match"
+    },
     "empty": "No services match this filter.",
     "robotaxi": {
       "appRequired": "Kakao T required",

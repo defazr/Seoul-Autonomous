@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { colors, spacing } from '../../lib/design/tokens';
@@ -8,7 +8,7 @@ import { StatusDot } from '../../components/ui/StatusDot';
 import { SegmentedControl } from '../../components/ui/SegmentedControl';
 import { RouteCard } from '../../components/ui/RouteCard';
 import { RobotaxiCard } from '../../components/ui/RobotaxiCard';
-import { IconSensor, IconFilter } from '../../components/ui/icons';
+import { IconSensor, IconSearch } from '../../components/ui/icons';
 import routesData from '../../data/routes.json';
 
 const fixedRoutes = routesData.fixedRoutes as FixedRoute[];
@@ -16,18 +16,35 @@ const onDemandServices = routesData.onDemandServices as OnDemandService[];
 
 type Filter = 'ALL' | 'BUS' | 'TAXI';
 
+const normalize = (s: string) => s.toLowerCase().replace(/\s+/g, '');
+
+function matchQuery(route: FixedRoute, q: string): boolean {
+  if (!q.trim()) return true;
+  const nq = normalize(q);
+  const fields = [
+    route.displayName,
+    route.displayNameKo,
+    route.startPoint,
+    route.startPointKo,
+    route.endPoint,
+    route.endPointKo,
+  ];
+  return fields.some((f) => normalize(f).includes(nq));
+}
+
 export default function RoutesScreen() {
   const insets = useSafeAreaInsets();
   const { t, i18n } = useTranslation();
   const isKo = i18n.language === 'ko';
   const [filter, setFilter] = useState<Filter>('ALL');
+  const [query, setQuery] = useState('');
 
   const showBus = filter === 'ALL' || filter === 'BUS';
   const showTaxi = filter === 'ALL' || filter === 'TAXI';
 
-  const busCount = showBus ? fixedRoutes.length : 0;
-  const taxiCount = showTaxi ? onDemandServices.length : 0;
-  const total = busCount + taxiCount;
+  const filteredBus = showBus ? fixedRoutes.filter((r) => matchQuery(r, query)) : [];
+  const filteredTaxi = showTaxi ? onDemandServices : [];
+  const total = filteredBus.length + filteredTaxi.length;
 
   const filterOptions = [
     { value: 'ALL', label: t('routes.filter.all') },
@@ -47,8 +64,23 @@ export default function RoutesScreen() {
           <Text style={[styles.heading, isKo && styles.headingKo]}>
             {t('routes.title')}
           </Text>
-          <View style={styles.filterButton}>
-            <IconFilter size={18} color={colors.fg[2]} />
+        </View>
+
+        {/* Search bar */}
+        <View style={styles.searchWrap}>
+          <View style={styles.searchBar}>
+            <IconSearch size={16} color={colors.fg[3]} />
+            <TextInput
+              style={[styles.searchInput, isKo && styles.searchInputKo]}
+              placeholder={t('routes.search.placeholder')}
+              placeholderTextColor={colors.fg[3]}
+              value={query}
+              onChangeText={setQuery}
+              clearButtonMode="while-editing"
+              autoCorrect={false}
+              autoCapitalize="none"
+              returnKeyType="search"
+            />
           </View>
         </View>
 
@@ -70,18 +102,18 @@ export default function RoutesScreen() {
         </View>
 
         {/* Verified routes section */}
-        {showBus && fixedRoutes.length > 0 && (
+        {filteredBus.length > 0 && (
           <>
             <View style={styles.sectionLabel}>
               <Text style={styles.sectionLabelText}>
                 {t('routes.section.verified')}
               </Text>
               <Text style={styles.sectionCount}>
-                {String(fixedRoutes.length).padStart(2, '0')}
+                {String(filteredBus.length).padStart(2, '0')}
               </Text>
             </View>
             <View style={styles.routesList}>
-              {fixedRoutes.map((route) => (
+              {filteredBus.map((route) => (
                 <RouteCard key={route.id} route={route} />
               ))}
             </View>
@@ -89,18 +121,18 @@ export default function RoutesScreen() {
         )}
 
         {/* Robotaxi section */}
-        {showTaxi && onDemandServices.length > 0 && (
+        {filteredTaxi.length > 0 && (
           <>
             <View style={styles.sectionLabel}>
               <Text style={styles.sectionLabelText}>
                 {t('routes.section.robotaxi')}
               </Text>
               <Text style={styles.sectionCount}>
-                {String(onDemandServices.length).padStart(2, '0')}
+                {String(filteredTaxi.length).padStart(2, '0')}
               </Text>
             </View>
             <View style={styles.routesList}>
-              {onDemandServices.map((svc) => (
+              {filteredTaxi.map((svc) => (
                 <RobotaxiCard key={svc.id} service={svc} />
               ))}
             </View>
@@ -111,7 +143,7 @@ export default function RoutesScreen() {
         {total === 0 && (
           <View style={styles.empty}>
             <Text style={[styles.emptyText, isKo && styles.textKo]}>
-              {t('routes.empty')}
+              {query.trim() ? t('routes.search.empty') : t('routes.empty')}
             </Text>
           </View>
         )}
@@ -157,16 +189,32 @@ const styles = StyleSheet.create({
   headingKo: {
     fontFamily: 'Pretendard-SemiBold',
   },
-  filterButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
-    backgroundColor: colors.bg[2],
-    borderWidth: 1,
-    borderColor: colors.border[2],
+  // Search
+  searchWrap: {
+    paddingHorizontal: spacing.screenPadding,
+    marginBottom: 12,
+  },
+  searchBar: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 4,
+    backgroundColor: colors.bg[2],
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.border[1],
+    paddingHorizontal: 14,
+    gap: 10,
+    height: 44,
+  },
+  searchInput: {
+    flex: 1,
+    fontFamily: 'Geist-Regular',
+    fontSize: 15,
+    lineHeight: 20,
+    color: colors.fg[1],
+    padding: 0,
+  },
+  searchInputKo: {
+    fontFamily: 'Pretendard-Regular',
   },
   // Segment
   segmentWrap: {

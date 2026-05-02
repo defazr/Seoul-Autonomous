@@ -35,6 +35,10 @@
       "verified": "검증된 노선",
       "robotaxi": "로보택시 서비스"
     },
+    "search": {
+      "placeholder": "노선, 지역 검색",
+      "empty": "검색 결과가 없습니다"
+    },
     "empty": "조건에 맞는 노선이 없습니다.",
     "robotaxi": {
       "appRequired": "Kakao T 필요",

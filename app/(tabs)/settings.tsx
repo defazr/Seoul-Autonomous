@@ -5,8 +5,9 @@ import { colors, spacing, radius } from '../../lib/design/tokens';
 import { KrLine } from '../../components/ui/KrLine';
 import { Eyebrow } from '../../components/ui/Eyebrow';
 import { IconChevR } from '../../components/ui/icons';
+import { formatDate } from '../../lib/utils/date';
 
-const VERIFIED_DATE = 'April 29, 2026';
+const VERIFIED_DATE_ISO = '2026-04-29';
 const APP_VERSION = '1.0.0 (MVP)';
 
 function LangSwitch({ lang, onChange }: { lang: string; onChange: (v: string) => void }) {
@@ -170,7 +171,7 @@ export default function SettingsScreen() {
         <Eyebrow>{t('settings.section.about')}</Eyebrow>
         <Group>
           <Row label={t('settings.row.appVersion')} value={APP_VERSION} />
-          <Row label={t('settings.row.informationVerified')} value={VERIFIED_DATE} isLast />
+          <Row label={t('settings.row.informationVerified')} value={formatDate(VERIFIED_DATE_ISO, isKo)} isLast />
         </Group>
 
         <Text style={[styles.aboutNote, isKo && styles.textKo]}>

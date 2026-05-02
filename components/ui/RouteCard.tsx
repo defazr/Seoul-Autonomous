@@ -69,7 +69,7 @@ export function RouteCard({ route, onPress }: RouteCardProps) {
             <StatusPill level={route.verificationLevel} />
           </View>
           <KrLine style={styles.subName}>{subName}</KrLine>
-          <Text style={styles.routeLine} numberOfLines={1}>
+          <Text style={styles.routeLine}>
             {start} → {end}
           </Text>
           <View style={styles.meta}>

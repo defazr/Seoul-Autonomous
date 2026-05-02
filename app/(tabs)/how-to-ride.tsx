@@ -30,7 +30,6 @@ export default function HowToRideScreen() {
       id: 'q1',
       q: t('howToRide.faq.q1.q'),
       a: [t('howToRide.faq.q1.a1'), t('howToRide.faq.q1.a2')],
-      defaultOpen: true,
     },
     {
       id: 'q2',
@@ -41,7 +40,6 @@ export default function HowToRideScreen() {
       id: 'q3',
       q: t('howToRide.faq.q3.q'),
       a: [t('howToRide.faq.q3.a1'), t('howToRide.faq.q3.a2')],
-      defaultOpen: true,
     },
     {
       id: 'q4',
@@ -121,7 +119,6 @@ export default function HowToRideScreen() {
               key={faq.id}
               question={faq.q}
               answer={faq.a}
-              defaultOpen={faq.defaultOpen}
               isKo={isKo}
             />
           ))}

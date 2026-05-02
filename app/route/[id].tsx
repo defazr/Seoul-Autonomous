@@ -14,17 +14,10 @@ import { InfoCardItem } from '../../components/ui/InfoCardItem';
 import { StopsList } from '../../components/ui/StopsList';
 import { MapLinkButtons } from '../../components/ui/MapLinkButtons';
 import { IconChevL, IconBus, IconSensor, IconArrowR } from '../../components/ui/icons';
+import { formatDate } from '../../lib/utils/date';
 import routesData from '../../data/routes.json';
 
 const fixedRoutes = routesData.fixedRoutes as FixedRoute[];
-
-function formatDate(iso: string, isKo: boolean): string {
-  const d = new Date(iso);
-  if (isKo) {
-    return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
-  }
-  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-}
 
 function formatDays(days: string, t: (key: string) => string): string {
   if (days === 'weekday') return t('routeDetail.days.weekday');

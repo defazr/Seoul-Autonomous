@@ -48,10 +48,7 @@ export default function HomeScreen() {
             <View style={styles.logoMark}>
               <IconSensor size={20} color={colors.accent.DEFAULT} />
             </View>
-            <View>
-              <Text style={styles.headerTitle}>Seoul Autonomous</Text>
-              <Text style={styles.headerSub}>Self-driving buses & robotaxis</Text>
-            </View>
+            <Text style={styles.headerTitle}>Seoul Autonomous</Text>
           </View>
           <LangToggle />
         </View>
@@ -141,12 +138,6 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: colors.fg[1],
     letterSpacing: -0.01 * 15,
-  },
-  headerSub: {
-    fontFamily: 'Geist-Regular',
-    fontSize: 11,
-    lineHeight: 14,
-    color: colors.fg[4],
   },
   // Hero
   hero: {

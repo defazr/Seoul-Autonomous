@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { colors, spacing, radius } from '../../lib/design/tokens';
@@ -133,6 +134,7 @@ const rowStyles = StyleSheet.create({
 });
 
 export default function SettingsScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const { t, i18n } = useTranslation();
   const isKo = i18n.language === 'ko';
@@ -184,12 +186,12 @@ export default function SettingsScreen() {
           <Row
             label={t('settings.row.privacyPolicy')}
             action={<IconChevR size={16} color={colors.fg[4]} />}
-            onPress={() => {}}
+            onPress={() => router.push('/legal/privacy')}
           />
           <Row
             label={t('settings.row.termsOfUse')}
             action={<IconChevR size={16} color={colors.fg[4]} />}
-            onPress={() => {}}
+            onPress={() => router.push('/legal/terms')}
             isLast
           />
         </Group>

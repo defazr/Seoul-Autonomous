@@ -9,7 +9,7 @@ import { IconChevR } from '../../components/ui/icons';
 import { formatDate } from '../../lib/utils/date';
 
 const VERIFIED_DATE_ISO = '2026-04-29';
-const APP_VERSION = '1.0.0 (MVP)';
+const APP_VERSION = '1.0.0';
 
 function LangSwitch({ lang, onChange }: { lang: string; onChange: (v: string) => void }) {
   return (

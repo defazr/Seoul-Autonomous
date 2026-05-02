@@ -33,7 +33,7 @@ export function Pill({ children, variant = 'default' }: PillProps) {
   const v = VARIANTS[variant];
   return (
     <View style={[styles.pill, { borderColor: v.borderColor, backgroundColor: v.backgroundColor }]}>
-      <Text style={[styles.text, { color: v.color }]}>{children}</Text>
+      {children}
     </View>
   );
 }

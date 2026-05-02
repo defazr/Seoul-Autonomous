@@ -34,6 +34,13 @@
       "expo-router",
       "expo-localization",
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "a19cf82e-53f8-442f-9ced-c4fc8e0b2ba5"
+      }
+    },
+    "owner": "thisiz43"
   }
 }

@@ -15,9 +15,11 @@ export function CTASection() {
             {t('viewAllRoutes')}
           </Button>
         </Link>
-        <Button variant="ghost" size="md">
-          {t('howToRide')} →
-        </Button>
+        <Link href={`/${locale}/how-to-ride`}>
+          <Button variant="ghost" size="md">
+            {t('howToRide')} →
+          </Button>
+        </Link>
       </div>
     </section>
   );

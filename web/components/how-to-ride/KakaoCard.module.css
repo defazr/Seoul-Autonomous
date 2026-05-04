@@ -1,0 +1,91 @@
+.card {
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-1);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.iconWrap {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent-faint);
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.headerText {
+  flex: 1;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--color-fg-1);
+  letter-spacing: -0.16px;
+}
+
+.titleSub {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-fg-3);
+  margin-top: 2px;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.stepRow {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.stepNum {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background-color: var(--color-bg-3);
+  border: 1px solid var(--color-border-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stepNumText {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--color-fg-2);
+}
+
+.stepText {
+  flex: 1;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--color-fg-2);
+  padding-top: 1px;
+}
+
+.note {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-fg-4);
+  margin: 0;
+}

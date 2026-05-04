@@ -1,0 +1,25 @@
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.checkWrap {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background-color: var(--color-accent-faint);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.text {
+  flex: 1;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-fg-2);
+}

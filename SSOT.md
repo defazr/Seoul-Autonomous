@@ -10,7 +10,7 @@
 
 ### 2. 기술 스택 (v1)
 - 앱: Expo + TypeScript
-- 웹: 별도 운영 (autonomous.fazr.co.kr), 기술 미확정
+- 웹: Next.js 16.2.4, autonomous.fazr.co.kr (별도 운영)
 - 데이터: 정적 routes.json (앱/웹 공유)
 - 다국어: 영어 기본, 한국어 보조
 
@@ -40,11 +40,11 @@ Home / Routes / Route Detail / How to Ride / Settings
 8. 실시간 표현 X
 
 ### 8. 1차 노선
-- Fixed routes 10개 (카카오맵 서울시 제공 검증)
+- Fixed routes 11개 (카카오맵 서울시 제공 검증)
 - On-demand 1개 (Gangnam Robotaxi)
 
 ### 9. 보류 노선
-A504, 상암A01, 상암A02, 여의도A01
+상암A01, 상암A02, 여의도A01
 
 ### 10. 표현 규칙
 - 권장: RECENTLY VERIFIED, CHECK BEFORE RIDING, Last checked, Please confirm before riding

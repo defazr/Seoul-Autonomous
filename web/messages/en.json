@@ -1,0 +1,78 @@
+{
+  "home": {
+    "hero": {
+      "badge": "{count} ROUTES VERIFIED",
+      "title": "Experience Seoul's autonomous future.",
+      "description": "Verified autonomous bus and robotaxi routes across Seoul. Check before riding.",
+      "cta": "View all routes"
+    },
+    "featured": {
+      "title": "Routes to try first",
+      "seeAll": "See all"
+    },
+    "footer": {
+      "note": "Pilot service operated by the Seoul Metropolitan Government. Information is verified manually and may not reflect real-time changes."
+    }
+  },
+  "nav": {
+    "howToRide": "How to ride",
+    "viewAllRoutes": "View all routes"
+  },
+  "routes": {
+    "title": "Routes",
+    "count": "{count} services matching",
+    "search": {
+      "placeholder": "Search routes, places",
+      "empty": "No routes match"
+    },
+    "filter": {
+      "all": "All",
+      "bus": "Bus",
+      "robotaxi": "Robotaxi"
+    },
+    "section": {
+      "verified": "Verified routes",
+      "robotaxi": "Robotaxi services"
+    },
+    "empty": "No services match this filter.",
+    "robotaxi": {
+      "appRequired": "Kakao T (Korean app) required",
+      "checkBeforeRiding": "CHECK BEFORE RIDING"
+    }
+  },
+  "common": {
+    "footer": "Pilot service operated by the Seoul Metropolitan Government. Information is verified manually and may not reflect real-time changes."
+  },
+  "routeDetail": {
+    "back": "Back",
+    "openInKakaoMap": "Open in Kakao Map",
+    "stopsCount": "{count} stops",
+    "expandStops": "Show all {count} stops",
+    "collapseStops": "Show key stops only",
+    "stopsSection": "Stops",
+    "info": {
+      "hours": "Hours",
+      "days": "Days",
+      "stops": "Stops",
+      "verified": "Verified"
+    },
+    "days": {
+      "weekday": "Weekdays",
+      "weekend": "Weekends",
+      "daily": "Daily",
+      "unknown": "\u2014"
+    },
+    "diagram": {
+      "outbound": "{from} \u2192 {to}",
+      "inbound": "{from} \u2192 {to}"
+    },
+    "disclaimer": "Information based on Kakao Map. Please confirm before riding.",
+    "footer": "Last verified {date}. Information is verified manually and may not reflect real-time changes."
+  },
+  "metadata": {
+    "routesTitle": "Routes — Seoul Autonomous",
+    "routesDescription": "Browse all verified autonomous bus and robotaxi routes in Seoul.",
+    "routeDetailTitle": "{name} — Seoul Autonomous",
+    "routeDetailDescription": "Autonomous bus route {name}. Check stops, hours, and map before riding."
+  }
+}

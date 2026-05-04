@@ -1,0 +1,94 @@
+.card {
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-1);
+  border-radius: var(--radius-lg);
+  padding: var(--space-card);
+}
+
+.row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.modeGlyph {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background-color: var(--color-bg-3);
+  border: 1px solid var(--color-border-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.typeLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--color-accent);
+  letter-spacing: 0.66px;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 22px;
+  color: var(--color-fg-1);
+  letter-spacing: -0.17px;
+}
+
+.subName {
+  font-family: var(--font-kr);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-fg-3);
+}
+
+.area {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-fg-3);
+  margin-top: 8px;
+}
+
+.appTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-3);
+  border: 1px solid var(--color-border-2);
+}
+
+.appDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+}
+
+.appText {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 14px;
+  color: var(--color-fg-2);
+  letter-spacing: 0.44px;
+}

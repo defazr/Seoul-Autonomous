@@ -1,0 +1,40 @@
+.wrapper {
+  margin-bottom: 12px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-bg-2);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-1);
+  padding: 0 14px;
+  gap: 10px;
+  height: 44px;
+  transition: border-color 0.15s;
+}
+
+.bar:focus-within {
+  border-color: var(--color-border-3);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--color-fg-3);
+}
+
+.input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--color-fg-1);
+  padding: 0;
+}
+
+.input::placeholder {
+  color: var(--color-fg-3);
+}

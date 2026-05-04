@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  padding: 2px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-1);
+}
+
+.button {
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.88px;
+  color: var(--color-fg-4);
+  text-decoration: none;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.active {
+  background-color: var(--color-bg-4);
+  color: var(--color-fg-1);
+}

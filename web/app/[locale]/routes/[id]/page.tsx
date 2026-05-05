@@ -262,6 +262,13 @@ export default async function RouteDetailPage({
         </div>
       )}
 
+      {/* All Routes CTA */}
+      <div className={styles.section}>
+        <Link href="/routes" className={styles.allRoutesCta}>
+          {t('nav.viewAllRoutes')}
+        </Link>
+      </div>
+
       <SiteFooter />
     </div>
   );

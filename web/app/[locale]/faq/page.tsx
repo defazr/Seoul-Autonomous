@@ -90,7 +90,7 @@ export default async function FAQPage({
         <Link href="/" className={styles.backBtn}>
           <ChevronLeft />
         </Link>
-        <span className={styles.topTitle}>{t('faq.title')}</span>
+        <Link href="/" className={styles.topTitle}>{t('faq.title')}</Link>
         <LangToggle />
       </div>
 

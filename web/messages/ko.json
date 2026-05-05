@@ -182,12 +182,14 @@
     }
   },
   "siteFooter": {
+    "home": "홈",
     "faq": "자주 묻는 질문",
     "howToRide": "이용 방법",
     "dataSource": "데이터 출처",
     "about": "소개",
     "privacy": "개인정보처리방침",
-    "terms": "이용약관"
+    "terms": "이용약관",
+    "copyright": "\u00a9 2026 Seoul Autonomous. 독립 안내 사이트."
   },
   "faq": {
     "title": "자주 묻는 질문",

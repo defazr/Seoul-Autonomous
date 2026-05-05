@@ -17,12 +17,20 @@
 .link {
   font-size: 13px;
   line-height: 18px;
+  padding: 10px 0;
   color: var(--color-fg-3);
   text-decoration: none;
 }
 
 .link:hover {
   color: var(--color-accent);
+}
+
+.copyright {
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--color-fg-5);
+  margin-top: 16px;
 }
 
 .note {

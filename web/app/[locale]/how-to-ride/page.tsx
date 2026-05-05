@@ -188,7 +188,7 @@ export default async function HowToRidePage({
         <Link href="/" className={styles.backBtn}>
           <ChevronLeft />
         </Link>
-        <span className={styles.topTitle}>{t('howToRide.title')}</span>
+        <Link href="/" className={styles.topTitle}>{t('howToRide.title')}</Link>
         <LangToggle />
       </div>
 

@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
 import styles from './SiteFooter.module.css';
 
@@ -26,6 +25,7 @@ export async function SiteFooter() {
   const tc = await getTranslations({ locale, namespace: 'common' });
 
   const links = [
+    { href: `/${locale}`, label: tf('home') },
     { href: `/${locale}/faq`, label: tf('faq') },
     { href: `/${locale}/how-to-ride`, label: tf('howToRide') },
     { href: `/${locale}/data-source`, label: tf('dataSource') },
@@ -38,9 +38,9 @@ export async function SiteFooter() {
     <footer className={styles.footer}>
       <div className={styles.links}>
         {links.map((l) => (
-          <Link key={l.href} href={l.href} className={styles.link}>
+          <a key={l.href} href={l.href} className={styles.link}>
             {l.label}
-          </Link>
+          </a>
         ))}
       </div>
       <div className={styles.note}>
@@ -49,6 +49,7 @@ export async function SiteFooter() {
         </span>
         <span className={styles.noteText}>{tc('footer')}</span>
       </div>
+      <div className={styles.copyright}>{tf('copyright')}</div>
     </footer>
   );
 }

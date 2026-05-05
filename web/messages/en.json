@@ -182,12 +182,14 @@
     }
   },
   "siteFooter": {
+    "home": "Home",
     "faq": "FAQ",
     "howToRide": "How to ride",
     "dataSource": "Data source",
     "about": "About",
     "privacy": "Privacy",
-    "terms": "Terms"
+    "terms": "Terms",
+    "copyright": "\u00a9 2026 Seoul Autonomous. Independent guide."
   },
   "faq": {
     "title": "Frequently asked questions",

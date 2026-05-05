@@ -62,7 +62,7 @@ export default async function TermsPage({
         <Link href="/" className={styles.backBtn}>
           <ChevronLeft />
         </Link>
-        <span className={styles.topTitle}>{doc.title}</span>
+        <Link href="/" className={styles.topTitle}>{doc.title}</Link>
         <LangToggle />
       </div>
 

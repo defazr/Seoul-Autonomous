@@ -181,6 +181,12 @@
       "body": "Route information is verified manually. Each route page shows its last verification date. Always confirm with the operator before riding."
     }
   },
+  "faq": {
+    "title": "Frequently asked questions",
+    "intro": "Common questions about Seoul's autonomous bus and robotaxi pilot services.",
+    "howToRideLink": "How to ride",
+    "dataSourceLink": "Data source"
+  },
   "metadata": {
     "routesTitle": "Routes — Seoul Autonomous",
     "routesDescription": "Browse all verified autonomous bus and robotaxi routes in Seoul.",
@@ -195,6 +201,8 @@
     "privacyTitle": "Privacy Policy — Seoul Autonomous",
     "privacyDescription": "Privacy policy for Seoul Autonomous. We do not collect any personal data.",
     "termsTitle": "Terms of Use — Seoul Autonomous",
-    "termsDescription": "Terms of use for Seoul Autonomous, an independent guide to Seoul's autonomous transportation services."
+    "termsDescription": "Terms of use for Seoul Autonomous, an independent guide to Seoul's autonomous transportation services.",
+    "faqTitle": "FAQ — Seoul Autonomous",
+    "faqDescription": "Common questions about how to ride Seoul's autonomous bus and robotaxi pilot services."
   }
 }

@@ -133,12 +133,64 @@
       "t4": "Service may change during pilot operations"
     }
   },
+  "dataSource": {
+    "title": "Data source",
+    "intro": "How we collect, verify, and present route information for Seoul's autonomous services.",
+    "sources": {
+      "sectionTitle": "Where data comes from",
+      "item1": "Kakao Map route information provided by the Seoul Metropolitan Government",
+      "item2": "Manual observation and verification"
+    },
+    "verification": {
+      "sectionTitle": "How we verify",
+      "item1": "Route information is checked manually against Kakao Map and Seoul Metropolitan Government sources",
+      "item2": "Information that cannot be confirmed is shown as Unknown or \"\u2014\"",
+      "item3": "We do not provide real-time arrival information",
+      "item4": "Always confirm with Kakao Map or official sources before riding",
+      "item5": "Each route shows its last verification date"
+    },
+    "accuracy": {
+      "sectionTitle": "Accuracy policy",
+      "item1": "Verified and unverified information is clearly separated",
+      "item2": "Missing data is marked as Unknown or \"\u2014\" \u2014 not guessed",
+      "item3": "Real-time status is not represented",
+      "item4": "Pre-ride confirmation notice is shown for variable information"
+    },
+    "lastChecked": {
+      "sectionTitle": "Last checked",
+      "body": "Each route lists its last verification date. Information may change between checks. Always confirm before riding."
+    },
+    "aboutLink": "About this site"
+  },
+  "about": {
+    "title": "About Seoul Autonomous",
+    "intro": "An independent guide to Seoul's autonomous bus and robotaxi pilot services for international visitors.",
+    "purpose": {
+      "sectionTitle": "What this site is",
+      "body1": "Seoul Autonomous is an independent guide that organizes information about Seoul's autonomous bus and robotaxi pilot services for international visitors.",
+      "body2": "This is not a real-time transit app. It is a curated reference for pilot service routes.",
+      "note": "Route information is curated and last verified on the date shown. Always confirm operating status with the operator before riding."
+    },
+    "dataPolicy": {
+      "sectionTitle": "Data and accuracy",
+      "body": "All route information is manually verified against official sources. See the data source page for details.",
+      "linkLabel": "Read data source policy"
+    },
+    "verification": {
+      "sectionTitle": "Information verification",
+      "body": "Route information is verified manually. Each route page shows its last verification date. Always confirm with the operator before riding."
+    }
+  },
   "metadata": {
     "routesTitle": "Routes — Seoul Autonomous",
     "routesDescription": "Browse all verified autonomous bus and robotaxi routes in Seoul.",
     "routeDetailTitle": "{name} — Seoul Autonomous",
     "routeDetailDescription": "Autonomous bus route {name}. Check stops, hours, and map before riding.",
     "howToRideTitle": "How to ride — Seoul Autonomous",
-    "howToRideDescription": "How to ride autonomous buses and robotaxis in Seoul. Step-by-step guide for tourists."
+    "howToRideDescription": "How to ride autonomous buses and robotaxis in Seoul. Step-by-step guide for tourists.",
+    "dataSourceTitle": "Data source — Seoul Autonomous",
+    "dataSourceDescription": "How Seoul Autonomous verifies and presents autonomous bus and robotaxi route information.",
+    "aboutTitle": "About — Seoul Autonomous",
+    "aboutDescription": "Seoul Autonomous is an independent guide to Seoul's autonomous bus and robotaxi pilot services for international visitors."
   }
 }

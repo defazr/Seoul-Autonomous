@@ -5,6 +5,7 @@ import { LangToggle } from '../../../components/ui/LangToggle';
 import { LegalDocument } from '../../../components/legal/LegalDocument';
 import termsEn from '../../../data/legal/terms.en';
 import termsKo from '../../../data/legal/terms.ko';
+import { SiteFooter } from '../../../components/common/SiteFooter';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -62,10 +63,7 @@ export default async function TermsPage({
 
       <LegalDocument document={doc} locale={locale} />
 
-      <div className={styles.footerNote}>
-        <span className={styles.footerIcon}><InfoIcon /></span>
-        <span className={styles.footerText}>{t('common.footer')}</span>
-      </div>
+      <SiteFooter />
     </div>
   );
 }

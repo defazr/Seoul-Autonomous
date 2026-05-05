@@ -6,6 +6,7 @@ import { FAQList } from '../../../components/faq/FAQList';
 import { faqEn } from '../../../data/faq/faq.en';
 import { faqKo } from '../../../data/faq/faq.ko';
 import type { FAQDocument } from '../../../lib/types/faq';
+import { SiteFooter } from '../../../components/common/SiteFooter';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -110,10 +111,7 @@ export default async function FAQPage({
       </div>
 
       {/* Footer */}
-      <div className={styles.footerNote}>
-        <span className={styles.footerIcon}><InfoIcon /></span>
-        <span className={styles.footerText}>{t('common.footer')}</span>
-      </div>
+      <SiteFooter />
     </div>
   );
 }

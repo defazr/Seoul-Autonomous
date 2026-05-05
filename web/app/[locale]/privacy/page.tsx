@@ -5,6 +5,7 @@ import { LangToggle } from '../../../components/ui/LangToggle';
 import { LegalDocument } from '../../../components/legal/LegalDocument';
 import privacyEn from '../../../data/legal/privacy.en';
 import privacyKo from '../../../data/legal/privacy.ko';
+import { SiteFooter } from '../../../components/common/SiteFooter';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -62,10 +63,7 @@ export default async function PrivacyPage({
 
       <LegalDocument document={doc} locale={locale} />
 
-      <div className={styles.footerNote}>
-        <span className={styles.footerIcon}><InfoIcon /></span>
-        <span className={styles.footerText}>{t('common.footer')}</span>
-      </div>
+      <SiteFooter />
     </div>
   );
 }

@@ -181,6 +181,14 @@
       "body": "Route information is verified manually. Each route page shows its last verification date. Always confirm with the operator before riding."
     }
   },
+  "siteFooter": {
+    "faq": "FAQ",
+    "howToRide": "How to ride",
+    "dataSource": "Data source",
+    "about": "About",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  },
   "faq": {
     "title": "Frequently asked questions",
     "intro": "Common questions about Seoul's autonomous bus and robotaxi pilot services.",

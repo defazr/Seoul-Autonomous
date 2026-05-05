@@ -9,6 +9,7 @@ import { InfoCard } from '../../../../components/ui/InfoCard';
 import { Pill, StatusDot } from '../../../../components/ui/Pill';
 import { LangToggle } from '../../../../components/ui/LangToggle';
 import { Link } from '../../../../i18n/navigation';
+import { SiteFooter } from '../../../../components/common/SiteFooter';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -256,17 +257,7 @@ export default async function RouteDetailPage({
         </div>
       )}
 
-      {/* Footer */}
-      <div className={styles.footerNote}>
-        <span className={styles.footerIcon}>
-          <InfoIcon />
-        </span>
-        <span className={styles.footerText}>
-          {t('routeDetail.footer', {
-            date: formatDate(route.lastChecked, isKo),
-          })}
-        </span>
-      </div>
+      <SiteFooter />
     </div>
   );
 }

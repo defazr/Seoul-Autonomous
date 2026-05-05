@@ -3,6 +3,7 @@ import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
 import { LangToggle } from '../../../components/ui/LangToggle';
 import { BulletRow } from '../../../components/how-to-ride/BulletRow';
+import { SiteFooter } from '../../../components/common/SiteFooter';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -183,12 +184,7 @@ export default async function DataSourcePage({
       </Link>
 
       {/* Footer */}
-      <div className={styles.footerNote}>
-        <span className={styles.footerIcon}>
-          <InfoIcon />
-        </span>
-        <span className={styles.footerText}>{t('common.footer')}</span>
-      </div>
+      <SiteFooter />
     </div>
   );
 }

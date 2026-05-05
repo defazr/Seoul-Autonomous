@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
 import { LangToggle } from '../../../components/ui/LangToggle';
+import { SiteFooter } from '../../../components/common/SiteFooter';
 import { HeroCard } from '../../../components/how-to-ride/HeroCard';
 import { FAQItem } from '../../../components/how-to-ride/FAQItem';
 import { StepCard } from '../../../components/how-to-ride/StepCard';
@@ -254,13 +255,7 @@ export default async function HowToRidePage({
         </>
       )}
 
-      {/* Footer */}
-      <div className={styles.footerNote}>
-        <span className={styles.footerIcon}>
-          <InfoIcon />
-        </span>
-        <span className={styles.footerText}>{t('common.footer')}</span>
-      </div>
+      <SiteFooter />
     </div>
   );
 }

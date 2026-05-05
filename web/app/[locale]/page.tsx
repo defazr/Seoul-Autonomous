@@ -1,7 +1,7 @@
 import { Hero } from '../../components/home/Hero';
 import { FeaturedRoutes } from '../../components/home/FeaturedRoutes';
 import { CTASection } from '../../components/home/CTASection';
-import { Footer } from '../../components/home/Footer';
+import { SiteFooter } from '../../components/common/SiteFooter';
 import styles from './page.module.css';
 
 export default function HomePage() {
@@ -10,7 +10,7 @@ export default function HomePage() {
       <Hero />
       <FeaturedRoutes />
       <CTASection />
-      <Footer />
+      <SiteFooter />
     </div>
   );
 }

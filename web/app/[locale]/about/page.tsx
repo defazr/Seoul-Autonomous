@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
 import { LangToggle } from '../../../components/ui/LangToggle';
+import { SiteFooter } from '../../../components/common/SiteFooter';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -121,12 +122,7 @@ export default async function AboutPage({
       </div>
 
       {/* Footer */}
-      <div className={styles.footerNote}>
-        <span className={styles.footerIcon}>
-          <InfoIcon />
-        </span>
-        <span className={styles.footerText}>{t('common.footer')}</span>
-      </div>
+      <SiteFooter />
     </div>
   );
 }

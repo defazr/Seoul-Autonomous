@@ -5,16 +5,6 @@ import { LangToggle } from '../ui/LangToggle';
 import { getVerifiedRoutes } from '../../lib/routes';
 import styles from './Hero.module.css';
 
-function SensorIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="var(--color-accent)" strokeWidth={1.8}>
-      <circle cx={12} cy={12} r={9} />
-      <circle cx={12} cy={12} r={5} />
-      <circle cx={12} cy={12} r={1.5} fill="var(--color-accent)" />
-    </svg>
-  );
-}
-
 function ArrowRight() {
   return (
     <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -29,15 +19,9 @@ export function Hero() {
 
   return (
     <>
-      <header className={styles.header}>
-        <div className={styles.headerLeft}>
-          <div className={styles.logoMark}>
-            <SensorIcon />
-          </div>
-          <span className={styles.headerTitle}>Seoul Autonomous</span>
-        </div>
+      <div className={styles.langRow}>
         <LangToggle />
-      </header>
+      </div>
 
       <section className={styles.hero}>
         <div className={styles.badge}>

@@ -1,38 +1,12 @@
-.header {
+.langRow {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px var(--space-screen) 0;
-  margin-bottom: 28px;
-}
-
-.headerLeft {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logoMark {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background-color: var(--color-accent-faint);
-  border: 1px solid rgba(0, 212, 255, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.headerTitle {
-  font-weight: 600;
-  font-size: 15px;
-  line-height: 18px;
-  color: var(--color-fg-1);
-  letter-spacing: -0.15px;
+  justify-content: flex-end;
+  padding: 12px var(--space-screen) 0;
 }
 
 .hero {
   padding: 0 var(--space-screen);
+  padding-top: 24px;
   margin-bottom: var(--space-section-gap);
 }
 
@@ -82,12 +56,13 @@
 }
 
 @media (min-width: 768px) {
-  .hero {
-    padding: 0 var(--space-7);
+  .langRow {
+    padding: 12px var(--space-7) 0;
   }
 
-  .header {
-    padding: 12px var(--space-7) 0;
+  .hero {
+    padding: 0 var(--space-7);
+    padding-top: 32px;
   }
 
   .title {
@@ -96,11 +71,12 @@
 }
 
 @media (min-width: 1280px) {
-  .hero {
-    padding: 0 var(--space-9);
+  .langRow {
+    padding: 16px var(--space-9) 0;
   }
 
-  .header {
-    padding: 16px var(--space-9) 0;
+  .hero {
+    padding: 0 var(--space-9);
+    padding-top: 40px;
   }
 }

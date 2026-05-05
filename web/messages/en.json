@@ -191,6 +191,10 @@
     "dataSourceTitle": "Data source — Seoul Autonomous",
     "dataSourceDescription": "How Seoul Autonomous verifies and presents autonomous bus and robotaxi route information.",
     "aboutTitle": "About — Seoul Autonomous",
-    "aboutDescription": "Seoul Autonomous is an independent guide to Seoul's autonomous bus and robotaxi pilot services for international visitors."
+    "aboutDescription": "Seoul Autonomous is an independent guide to Seoul's autonomous bus and robotaxi pilot services for international visitors.",
+    "privacyTitle": "Privacy Policy — Seoul Autonomous",
+    "privacyDescription": "Privacy policy for Seoul Autonomous. We do not collect any personal data.",
+    "termsTitle": "Terms of Use — Seoul Autonomous",
+    "termsDescription": "Terms of use for Seoul Autonomous, an independent guide to Seoul's autonomous transportation services."
   }
 }

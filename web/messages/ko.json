@@ -1,4 +1,15 @@
 {
+  "globalHeader": {
+    "routes": "노선 목록",
+    "howToRide": "이용 방법",
+    "faq": "자주 묻는 질문",
+    "about": "소개",
+    "dataSource": "데이터 출처",
+    "privacy": "개인정보처리방침",
+    "terms": "이용약관",
+    "menuOpen": "메뉴 열기",
+    "menuClose": "메뉴 닫기"
+  },
   "home": {
     "hero": {
       "badge": "{count}개 노선 검증됨",

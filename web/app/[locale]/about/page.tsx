@@ -3,6 +3,7 @@ import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
 import { LangToggle } from '../../../components/ui/LangToggle';
 import { SiteFooter } from '../../../components/common/SiteFooter';
+import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -84,6 +85,10 @@ export default async function AboutPage({
 
   return (
     <div className={styles.container}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: t('about.title'), path: '/about' }], locale)) }}
+      />
       {/* TopBar */}
       <div className={styles.topBar}>
         <Link href="/" className={styles.backBtn}>

@@ -6,6 +6,7 @@ import { LegalDocument } from '../../../components/legal/LegalDocument';
 import privacyEn from '../../../data/legal/privacy.en';
 import privacyKo from '../../../data/legal/privacy.ko';
 import { SiteFooter } from '../../../components/common/SiteFooter';
+import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -53,6 +54,10 @@ export default async function PrivacyPage({
 
   return (
     <div className={styles.container}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: doc.title, path: '/privacy' }], locale)) }}
+      />
       <div className={styles.topBar}>
         <Link href="/" className={styles.backBtn}>
           <ChevronLeft />

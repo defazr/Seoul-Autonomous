@@ -10,6 +10,7 @@ import { Pill, StatusDot } from '../../../../components/ui/Pill';
 import { LangToggle } from '../../../../components/ui/LangToggle';
 import { Link } from '../../../../i18n/navigation';
 import { SiteFooter } from '../../../../components/common/SiteFooter';
+import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -153,6 +154,10 @@ export default async function RouteDetailPage({
 
   return (
     <div className={styles.container}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: 'Routes', path: '/routes' }, { name, path: '/routes/' + route.id }], locale)) }}
+      />
       {/* TopBar */}
       <div className={styles.topBar}>
         <Link href="/routes" className={styles.backBtn}>

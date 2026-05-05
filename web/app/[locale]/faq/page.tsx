@@ -7,6 +7,7 @@ import { faqEn } from '../../../data/faq/faq.en';
 import { faqKo } from '../../../data/faq/faq.ko';
 import type { FAQDocument } from '../../../lib/types/faq';
 import { SiteFooter } from '../../../components/common/SiteFooter';
+import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -78,6 +79,10 @@ export default async function FAQPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: t('faq.title'), path: '/faq' }], locale)) }}
       />
 
       {/* TopBar */}

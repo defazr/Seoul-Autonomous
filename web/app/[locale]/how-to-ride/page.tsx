@@ -3,6 +3,7 @@ import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
 import { LangToggle } from '../../../components/ui/LangToggle';
 import { SiteFooter } from '../../../components/common/SiteFooter';
+import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import { HeroCard } from '../../../components/how-to-ride/HeroCard';
 import { FAQItem } from '../../../components/how-to-ride/FAQItem';
 import { StepCard } from '../../../components/how-to-ride/StepCard';
@@ -178,6 +179,10 @@ export default async function HowToRidePage({
 
   return (
     <div className={styles.container}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: t('howToRide.title'), path: '/how-to-ride' }], locale)) }}
+      />
       {/* TopBar */}
       <div className={styles.topBar}>
         <Link href="/" className={styles.backBtn}>

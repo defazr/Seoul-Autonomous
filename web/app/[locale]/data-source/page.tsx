@@ -4,6 +4,7 @@ import { Link } from '../../../i18n/navigation';
 import { LangToggle } from '../../../components/ui/LangToggle';
 import { BulletRow } from '../../../components/how-to-ride/BulletRow';
 import { SiteFooter } from '../../../components/common/SiteFooter';
+import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -105,6 +106,10 @@ export default async function DataSourcePage({
 
   return (
     <div className={styles.container}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: t('dataSource.title'), path: '/data-source' }], locale)) }}
+      />
       {/* TopBar */}
       <div className={styles.topBar}>
         <Link href="/" className={styles.backBtn}>

@@ -183,6 +183,7 @@
   },
   "siteFooter": {
     "home": "Home",
+    "routes": "Routes",
     "faq": "FAQ",
     "howToRide": "How to ride",
     "dataSource": "Data source",

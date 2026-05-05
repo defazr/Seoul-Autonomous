@@ -183,6 +183,7 @@
   },
   "siteFooter": {
     "home": "홈",
+    "routes": "노선 목록",
     "faq": "자주 묻는 질문",
     "howToRide": "이용 방법",
     "dataSource": "데이터 출처",

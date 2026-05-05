@@ -24,12 +24,16 @@ export async function SiteFooter() {
   const tf = await getTranslations({ locale, namespace: 'siteFooter' });
   const tc = await getTranslations({ locale, namespace: 'common' });
 
-  const links = [
+  const navLinks = [
     { href: `/${locale}`, label: tf('home') },
+    { href: `/${locale}/routes`, label: tf('routes') },
     { href: `/${locale}/faq`, label: tf('faq') },
     { href: `/${locale}/how-to-ride`, label: tf('howToRide') },
     { href: `/${locale}/data-source`, label: tf('dataSource') },
     { href: `/${locale}/about`, label: tf('about') },
+  ];
+
+  const legalLinks = [
     { href: `/${locale}/privacy`, label: tf('privacy') },
     { href: `/${locale}/terms`, label: tf('terms') },
   ];
@@ -37,8 +41,15 @@ export async function SiteFooter() {
   return (
     <footer className={styles.footer}>
       <div className={styles.links}>
-        {links.map((l) => (
+        {navLinks.map((l) => (
           <a key={l.href} href={l.href} className={styles.link}>
+            {l.label}
+          </a>
+        ))}
+      </div>
+      <div className={styles.legalLinks}>
+        {legalLinks.map((l) => (
+          <a key={l.href} href={l.href} className={styles.legalLink}>
             {l.label}
           </a>
         ))}

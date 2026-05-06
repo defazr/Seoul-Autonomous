@@ -58,7 +58,7 @@ function SensorIcon() {
 
 export function RoutesList({ routes, services, locale }: RoutesListProps) {
   const t = useTranslations('routes');
-  const tCommon = useTranslations('common');
+
   const [filter, setFilter] = useState<Filter>('ALL');
   const [query, setQuery] = useState('');
 
@@ -148,10 +148,6 @@ export function RoutesList({ routes, services, locale }: RoutesListProps) {
         </div>
       )}
 
-      <div className={styles.footer}>
-        <SensorIcon />
-        <p className={styles.footerText}>{tCommon('footer')}</p>
-      </div>
     </div>
   );
 }

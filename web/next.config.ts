@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  devIndicators: false,
 };
 
 export default withNextIntl(nextConfig);

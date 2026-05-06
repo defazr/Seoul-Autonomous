@@ -115,7 +115,6 @@ export default async function DataSourcePage({
         <Link href="/" className={styles.backBtn}>
           <ChevronLeft />
         </Link>
-        <Link href="/" className={styles.topTitle}>{t('dataSource.title')}</Link>
 
       </div>
 

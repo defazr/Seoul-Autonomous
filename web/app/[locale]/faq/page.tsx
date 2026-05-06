@@ -90,7 +90,6 @@ export default async function FAQPage({
         <Link href="/" className={styles.backBtn}>
           <ChevronLeft />
         </Link>
-        <Link href="/" className={styles.topTitle}>{t('faq.title')}</Link>
 
       </div>
 

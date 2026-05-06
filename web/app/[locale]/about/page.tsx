@@ -94,7 +94,6 @@ export default async function AboutPage({
         <Link href="/" className={styles.backBtn}>
           <ChevronLeft />
         </Link>
-        <Link href="/" className={styles.topTitle}>{t('about.title')}</Link>
 
       </div>
 

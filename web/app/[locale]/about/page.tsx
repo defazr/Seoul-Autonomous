@@ -101,28 +101,28 @@ export default async function AboutPage({
       <h1 className={styles.heading}>{t('about.title')}</h1>
       <p className={styles.intro}>{t('about.intro')}</p>
 
-      {/* Section 1: Purpose */}
-      <div className={styles.section}>
+      {/* Section 1: Purpose — full width card */}
+      <div className={styles.card}>
         <h2 className={styles.h2}>{t('about.purpose.sectionTitle')}</h2>
         <p className={styles.bodyText}>{t('about.purpose.body1')}</p>
         <p className={styles.bodyText}>{t('about.purpose.body2')}</p>
         <p className={styles.noteText}>{t('about.purpose.note')}</p>
       </div>
 
-      {/* Section 2: Data Policy */}
-      <div className={styles.section}>
-        <h2 className={styles.h2}>{t('about.dataPolicy.sectionTitle')}</h2>
-        <p className={styles.bodyText}>{t('about.dataPolicy.body')}</p>
-        <Link href="/data-source" className={styles.pageLink}>
-          {t('about.dataPolicy.linkLabel')}
-          <ArrowRight />
-        </Link>
-      </div>
-
-      {/* Section 3: Verification */}
-      <div className={styles.section}>
-        <h2 className={styles.h2}>{t('about.verification.sectionTitle')}</h2>
-        <p className={styles.bodyText}>{t('about.verification.body')}</p>
+      {/* Section 2 + 3: 2-column cards */}
+      <div className={styles.cardGrid}>
+        <div className={styles.card}>
+          <h2 className={styles.h2}>{t('about.dataPolicy.sectionTitle')}</h2>
+          <p className={styles.bodyText}>{t('about.dataPolicy.body')}</p>
+          <Link href="/data-source" className={styles.pageLink}>
+            {t('about.dataPolicy.linkLabel')}
+            <ArrowRight />
+          </Link>
+        </div>
+        <div className={styles.card}>
+          <h2 className={styles.h2}>{t('about.verification.sectionTitle')}</h2>
+          <p className={styles.bodyText}>{t('about.verification.body')}</p>
+        </div>
       </div>
 
       {/* Footer */}

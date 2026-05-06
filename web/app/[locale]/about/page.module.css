@@ -54,9 +54,29 @@
   margin: 0 0 32px;
 }
 
-/* Section */
-.section {
+/* Card */
+.card {
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-1);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.cardGrid {
+  display: grid;
+  gap: 16px;
   margin-bottom: 32px;
+}
+
+@media (min-width: 768px) {
+  .cardGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .card {
+    padding: 32px;
+  }
 }
 
 .h2 {

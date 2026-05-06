@@ -1,5 +1,4 @@
 .section {
-  padding: 0 var(--space-screen);
   margin-bottom: var(--space-section-gap);
 }
 
@@ -7,16 +6,4 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-}
-
-@media (min-width: 768px) {
-  .section {
-    padding: 0 var(--space-7);
-  }
-}
-
-@media (min-width: 1280px) {
-  .section {
-    padding: 0 var(--space-9);
-  }
 }

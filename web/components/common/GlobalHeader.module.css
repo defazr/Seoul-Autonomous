@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1200px;
+  max-width: 1120px;
   margin: 0 auto;
   padding: 12px 20px;
 }
@@ -61,6 +61,13 @@
 .navLink:hover {
   color: var(--color-fg-1);
   background-color: var(--color-bg-3);
+}
+
+/* Actions (LangToggle + hamburger) */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* Responsive */

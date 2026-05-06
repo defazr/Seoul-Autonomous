@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
-import { LangToggle } from '../../../components/ui/LangToggle';
 import { SiteFooter } from '../../../components/common/SiteFooter';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
@@ -190,7 +189,7 @@ export default async function HowToRidePage({
           <ChevronLeft />
         </Link>
         <Link href="/" className={styles.topTitle}>{t('howToRide.title')}</Link>
-        <LangToggle />
+
       </div>
 
       {/* H1 */}

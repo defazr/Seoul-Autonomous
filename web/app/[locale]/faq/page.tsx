@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
-import { LangToggle } from '../../../components/ui/LangToggle';
 import { FAQList } from '../../../components/faq/FAQList';
 import { faqEn } from '../../../data/faq/faq.en';
 import { faqKo } from '../../../data/faq/faq.ko';
@@ -92,7 +91,7 @@ export default async function FAQPage({
           <ChevronLeft />
         </Link>
         <Link href="/" className={styles.topTitle}>{t('faq.title')}</Link>
-        <LangToggle />
+
       </div>
 
       {/* Header */}

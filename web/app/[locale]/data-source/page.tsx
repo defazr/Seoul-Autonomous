@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
-import { LangToggle } from '../../../components/ui/LangToggle';
 import { BulletRow } from '../../../components/how-to-ride/BulletRow';
 import { SiteFooter } from '../../../components/common/SiteFooter';
 import { PageContainer } from '../../../components/layout/PageContainer';
@@ -117,7 +116,7 @@ export default async function DataSourcePage({
           <ChevronLeft />
         </Link>
         <Link href="/" className={styles.topTitle}>{t('dataSource.title')}</Link>
-        <LangToggle />
+
       </div>
 
       {/* Header */}

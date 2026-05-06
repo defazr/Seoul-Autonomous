@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
-import { LangToggle } from '../../../components/ui/LangToggle';
 import { LegalDocument } from '../../../components/legal/LegalDocument';
 import termsEn from '../../../data/legal/terms.en';
 import termsKo from '../../../data/legal/terms.ko';
@@ -64,7 +63,7 @@ export default async function TermsPage({
           <ChevronLeft />
         </Link>
         <Link href="/" className={styles.topTitle}>{doc.title}</Link>
-        <LangToggle />
+
       </div>
 
       <LegalDocument document={doc} locale={locale} />

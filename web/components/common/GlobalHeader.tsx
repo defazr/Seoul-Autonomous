@@ -1,4 +1,5 @@
 import { getLocale, getTranslations } from 'next-intl/server';
+import { LangToggle } from '../ui/LangToggle';
 import { MobileDrawer } from './MobileDrawer';
 import styles from './GlobalHeader.module.css';
 
@@ -50,11 +51,14 @@ export async function GlobalHeader() {
           ))}
         </nav>
 
-        <MobileDrawer
-          links={drawerLinks}
-          openLabel={t('menuOpen')}
-          closeLabel={t('menuClose')}
-        />
+        <div className={styles.actions}>
+          <LangToggle />
+          <MobileDrawer
+            links={drawerLinks}
+            openLabel={t('menuOpen')}
+            closeLabel={t('menuClose')}
+          />
+        </div>
       </div>
     </header>
   );

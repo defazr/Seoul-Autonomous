@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
-import { LangToggle } from '../../../components/ui/LangToggle';
 import { LegalDocument } from '../../../components/legal/LegalDocument';
 import privacyEn from '../../../data/legal/privacy.en';
 import privacyKo from '../../../data/legal/privacy.ko';
@@ -64,7 +63,7 @@ export default async function PrivacyPage({
           <ChevronLeft />
         </Link>
         <Link href="/" className={styles.topTitle}>{doc.title}</Link>
-        <LangToggle />
+
       </div>
 
       <LegalDocument document={doc} locale={locale} />

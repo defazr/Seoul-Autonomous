@@ -7,7 +7,6 @@ import { StopsList } from '../../../../components/route-detail/StopsList';
 import { MapLinkButton } from '../../../../components/route-detail/MapLinkButton';
 import { InfoCard } from '../../../../components/ui/InfoCard';
 import { Pill, StatusDot } from '../../../../components/ui/Pill';
-import { LangToggle } from '../../../../components/ui/LangToggle';
 import { Link } from '../../../../i18n/navigation';
 import { SiteFooter } from '../../../../components/common/SiteFooter';
 import { PageContainer } from '../../../../components/layout/PageContainer';
@@ -178,7 +177,6 @@ export default async function RouteDetailPage({
             <StatusDot color="var(--color-accent)" size={5} />
             <span>VERIFIED</span>
           </Pill>
-          <LangToggle />
         </div>
       </div>
 

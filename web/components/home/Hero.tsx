@@ -1,7 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { StatusDot } from '../ui/Pill';
 import { Button } from '../ui/Button';
-import { LangToggle } from '../ui/LangToggle';
 import { getVerifiedRoutes } from '../../lib/routes';
 import styles from './Hero.module.css';
 
@@ -19,10 +18,6 @@ export function Hero() {
 
   return (
     <>
-      <div className={styles.langRow}>
-        <LangToggle />
-      </div>
-
       <section className={styles.hero}>
         <div className={styles.badge}>
           <StatusDot color="var(--color-accent)" size={6} />

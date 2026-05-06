@@ -4,6 +4,7 @@ import { Link } from '../../../i18n/navigation';
 import { LangToggle } from '../../../components/ui/LangToggle';
 import { BulletRow } from '../../../components/how-to-ride/BulletRow';
 import { SiteFooter } from '../../../components/common/SiteFooter';
+import { PageContainer } from '../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import styles from './page.module.css';
 
@@ -105,7 +106,7 @@ export default async function DataSourcePage({
   ];
 
   return (
-    <div className={styles.container}>
+    <PageContainer width="longform">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: t('dataSource.title'), path: '/data-source' }], locale)) }}
@@ -190,6 +191,6 @@ export default async function DataSourcePage({
 
       {/* Footer */}
       <SiteFooter />
-    </div>
+    </PageContainer>
   );
 }

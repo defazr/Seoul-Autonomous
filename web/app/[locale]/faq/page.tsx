@@ -7,6 +7,7 @@ import { faqEn } from '../../../data/faq/faq.en';
 import { faqKo } from '../../../data/faq/faq.ko';
 import type { FAQDocument } from '../../../lib/types/faq';
 import { SiteFooter } from '../../../components/common/SiteFooter';
+import { PageContainer } from '../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import styles from './page.module.css';
 
@@ -75,7 +76,7 @@ export default async function FAQPage({
   };
 
   return (
-    <div className={styles.container}>
+    <PageContainer width="longform">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -117,6 +118,6 @@ export default async function FAQPage({
 
       {/* Footer */}
       <SiteFooter />
-    </div>
+    </PageContainer>
   );
 }

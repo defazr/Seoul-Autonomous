@@ -1,11 +1,10 @@
 .langRow {
   display: flex;
   justify-content: flex-end;
-  padding: 12px var(--space-screen) 0;
+  padding: 12px 0 0;
 }
 
 .hero {
-  padding: 0 var(--space-screen);
   padding-top: 24px;
   margin-bottom: var(--space-section-gap);
 }
@@ -56,12 +55,7 @@
 }
 
 @media (min-width: 768px) {
-  .langRow {
-    padding: 12px var(--space-7) 0;
-  }
-
   .hero {
-    padding: 0 var(--space-7);
     padding-top: 32px;
   }
 
@@ -71,12 +65,7 @@
 }
 
 @media (min-width: 1280px) {
-  .langRow {
-    padding: 16px var(--space-9) 0;
-  }
-
   .hero {
-    padding: 0 var(--space-9);
     padding-top: 40px;
   }
 }

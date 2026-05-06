@@ -3,6 +3,7 @@ import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
 import { LangToggle } from '../../../components/ui/LangToggle';
 import { SiteFooter } from '../../../components/common/SiteFooter';
+import { PageContainer } from '../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import { HeroCard } from '../../../components/how-to-ride/HeroCard';
 import { FAQItem } from '../../../components/how-to-ride/FAQItem';
@@ -178,7 +179,7 @@ export default async function HowToRidePage({
   );
 
   return (
-    <div className={styles.container}>
+    <PageContainer width="default">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: t('howToRide.title'), path: '/how-to-ride' }], locale)) }}
@@ -261,6 +262,6 @@ export default async function HowToRidePage({
       )}
 
       <SiteFooter />
-    </div>
+    </PageContainer>
   );
 }

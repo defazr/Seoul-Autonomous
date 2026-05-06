@@ -10,6 +10,7 @@ import { Pill, StatusDot } from '../../../../components/ui/Pill';
 import { LangToggle } from '../../../../components/ui/LangToggle';
 import { Link } from '../../../../i18n/navigation';
 import { SiteFooter } from '../../../../components/common/SiteFooter';
+import { PageContainer } from '../../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
 import styles from './page.module.css';
 
@@ -153,7 +154,7 @@ export default async function RouteDetailPage({
   const turnName = turnStop ? turnStop.nameKo : '';
 
   return (
-    <div className={styles.container}>
+    <PageContainer width="default">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: 'Routes', path: '/routes' }, { name, path: '/routes/' + route.id }], locale)) }}
@@ -272,6 +273,6 @@ export default async function RouteDetailPage({
       </div>
 
       <SiteFooter />
-    </div>
+    </PageContainer>
   );
 }

@@ -6,6 +6,7 @@ import { LegalDocument } from '../../../components/legal/LegalDocument';
 import privacyEn from '../../../data/legal/privacy.en';
 import privacyKo from '../../../data/legal/privacy.ko';
 import { SiteFooter } from '../../../components/common/SiteFooter';
+import { PageContainer } from '../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import styles from './page.module.css';
 
@@ -53,7 +54,7 @@ export default async function PrivacyPage({
   const doc = locale === 'ko' ? privacyKo : privacyEn;
 
   return (
-    <div className={styles.container}>
+    <PageContainer width="longform">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: doc.title, path: '/privacy' }], locale)) }}
@@ -69,6 +70,6 @@ export default async function PrivacyPage({
       <LegalDocument document={doc} locale={locale} />
 
       <SiteFooter />
-    </div>
+    </PageContainer>
   );
 }

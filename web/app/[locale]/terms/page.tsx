@@ -6,6 +6,7 @@ import { LegalDocument } from '../../../components/legal/LegalDocument';
 import termsEn from '../../../data/legal/terms.en';
 import termsKo from '../../../data/legal/terms.ko';
 import { SiteFooter } from '../../../components/common/SiteFooter';
+import { PageContainer } from '../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import styles from './page.module.css';
 
@@ -53,7 +54,7 @@ export default async function TermsPage({
   const doc = locale === 'ko' ? termsKo : termsEn;
 
   return (
-    <div className={styles.container}>
+    <PageContainer width="longform">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: doc.title, path: '/terms' }], locale)) }}
@@ -69,6 +70,6 @@ export default async function TermsPage({
       <LegalDocument document={doc} locale={locale} />
 
       <SiteFooter />
-    </div>
+    </PageContainer>
   );
 }

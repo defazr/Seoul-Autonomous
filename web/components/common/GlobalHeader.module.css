@@ -73,16 +73,10 @@
 /* Responsive */
 @media (min-width: 768px) {
   .inner {
-    padding: 12px 32px;
+    padding: 12px 24px;
   }
 
   .desktopNav {
     display: flex;
-  }
-}
-
-@media (min-width: 1280px) {
-  .inner {
-    padding: 12px 48px;
   }
 }

@@ -89,6 +89,13 @@
   background-color: var(--color-bg-3);
 }
 
+/* Separator */
+.drawerSeparator {
+  border: none;
+  border-top: 1px solid var(--color-border-1);
+  margin: 8px 12px;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from { opacity: 0; }

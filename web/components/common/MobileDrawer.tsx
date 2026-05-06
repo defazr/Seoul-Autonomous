@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './MobileDrawer.module.css';
 
 type DrawerLink = {
   href: string;
   label: string;
+  separator?: boolean;
 };
 
 type MobileDrawerProps = {
@@ -74,14 +75,16 @@ export function MobileDrawer({ links, openLabel, closeLabel }: MobileDrawerProps
 
             <div className={styles.drawerLinks}>
               {links.map((link) => (
+                <React.Fragment key={link.href}>
+                  {link.separator && <hr className={styles.drawerSeparator} />}
                 <a
-                  key={link.href}
                   href={link.href}
                   className={styles.drawerLink}
                   onClick={close}
                 >
                   {link.label}
                 </a>
+                </React.Fragment>
               ))}
             </div>
           </nav>

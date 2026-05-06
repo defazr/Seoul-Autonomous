@@ -29,7 +29,7 @@ export async function GlobalHeader() {
     { href: `/${locale}/faq`, label: t('faq') },
     { href: `/${locale}/about`, label: t('about') },
     { href: `/${locale}/data-source`, label: t('dataSource') },
-    { href: `/${locale}/privacy`, label: t('privacy') },
+    { href: `/${locale}/privacy`, label: t('privacy'), separator: true },
     { href: `/${locale}/terms`, label: t('terms') },
   ];
 

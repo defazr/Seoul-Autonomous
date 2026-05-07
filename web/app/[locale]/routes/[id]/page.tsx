@@ -225,7 +225,8 @@ export default async function RouteDetailPage({
               />
             </div>
 
-            <Link href="/routes" className={styles.allRoutesCta}>
+            <Link href="/routes" className={styles.allRoutesLink}>
+              <ChevronLeft />
               {t('nav.viewAllRoutes')}
             </Link>
           </div>

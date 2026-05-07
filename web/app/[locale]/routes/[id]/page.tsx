@@ -178,55 +178,58 @@ export default async function RouteDetailPage({
         </div>
       </div>
 
-      {/* Meta rows */}
-      <div className={styles.section}>
-        <div className={styles.metaList}>
-          {[
-            { label: t('routeDetail.info.hours'), value: formatHours(route.firstBus, route.lastBus) },
-            { label: t('routeDetail.info.days'), value: formatDays(route.daysOfOperation, t) },
-            { label: t('routeDetail.info.stops'), value: t('routeDetail.stopsCount', { count: stops.length }) },
-            { label: t('routeDetail.info.verified'), value: formatDate(route.lastChecked, isKo) },
-          ].map((item, i, arr) => (
-            <div key={i} className={`${styles.metaRow}${i < arr.length - 1 ? ` ${styles.metaRowBorder}` : ''}`}>
-              <span className={styles.metaLabel}>{item.label}</span>
-              <span className={item.value === '\u2014' ? styles.metaValueMuted : styles.metaValue}>
-                {item.value === 'Unknown' ? '\u2014' : item.value}
-              </span>
+      {/* 2-column layout */}
+      <div className={styles.twoColumn}>
+        {/* Left: Stops */}
+        <div className={styles.mainCol}>
+          {stops.length > 0 && (
+            <div className={styles.stopsCard}>
+              <div className={styles.sectionTitle}>
+                {t('routeDetail.stopsSection')} ({stops.length})
+              </div>
+              <StopsList
+                  stops={stops}
+                  locale={locale}
+                  expandLabel={t('routeDetail.expandStops', {
+                    count: stops.length,
+                  })}
+                  collapseLabel={t('routeDetail.collapseStops')}
+                />
             </div>
-          ))}
+          )}
         </div>
-      </div>
 
-      {/* Map Link */}
-      <div className={styles.section}>
-        <MapLinkButton
-          displayNameKo={route.displayNameKo}
-          label={t('routeDetail.openInKakaoMap')}
-        />
-      </div>
+        {/* Right: Sidebar */}
+        <aside className={styles.sidebar}>
+          <div className={styles.sidebarSticky}>
+            <div className={styles.sidebarCard}>
+              <div className={styles.metaList}>
+                {[
+                  { label: t('routeDetail.info.hours'), value: formatHours(route.firstBus, route.lastBus) },
+                  { label: t('routeDetail.info.days'), value: formatDays(route.daysOfOperation, t) },
+                  { label: t('routeDetail.info.stops'), value: t('routeDetail.stopsCount', { count: stops.length }) },
+                  { label: t('routeDetail.info.verified'), value: formatDate(route.lastChecked, isKo) },
+                ].map((item, i, arr) => (
+                  <div key={i} className={`${styles.metaRow}${i < arr.length - 1 ? ` ${styles.metaRowBorder}` : ''}`}>
+                    <span className={styles.metaLabel}>{item.label}</span>
+                    <span className={item.value === '\u2014' ? styles.metaValueMuted : styles.metaValue}>
+                      {item.value === 'Unknown' ? '\u2014' : item.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
 
-      {/* Stops List */}
-      {stops.length > 0 && (
-        <div className={styles.section}>
-          <div className={styles.sectionTitle}>
-            {t('routeDetail.stopsSection')} ({stops.length})
+              <MapLinkButton
+                displayNameKo={route.displayNameKo}
+                label={t('routeDetail.openInKakaoMap')}
+              />
+            </div>
+
+            <Link href="/routes" className={styles.allRoutesCta}>
+              {t('nav.viewAllRoutes')}
+            </Link>
           </div>
-          <StopsList
-            stops={stops}
-            locale={locale}
-            expandLabel={t('routeDetail.expandStops', {
-              count: stops.length,
-            })}
-            collapseLabel={t('routeDetail.collapseStops')}
-          />
-        </div>
-      )}
-
-      {/* All Routes CTA */}
-      <div className={styles.section}>
-        <Link href="/routes" className={styles.allRoutesCta}>
-          {t('nav.viewAllRoutes')}
-        </Link>
+        </aside>
       </div>
 
       <SiteFooter />

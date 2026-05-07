@@ -1,60 +1,59 @@
 # Session Handoff
 
 > 새 대화에서 이어갈 때 이 문서를 참고합니다.
-> 마지막 업데이트: 2026-05-06 (Round 1.5 완료, Round 2 대기)
+> 마지막 업데이트: 2026-05-07 (Round 2 PR 2.3 완료)
 
 ## 현재 위치
 
-**Round 1 + 1.5 레이아웃 정합성 완료. Round 2 (Privacy/Terms 시각 보강 + Route Detail 재설계) 대기.**
+**Round 2 진행 중. PR 2.1~2.3 완료, PR 2.4 (풀폭 CTA 정리) 미착수.**
 
 ## 마지막 커밋
 
-`2748d97` — GlobalHeader padding 정렬 (PageContainer와 동일 20/24px)
+PR 2.3 카드 정렬 + 모바일 gap 수정 (미커밋 — 캡처 검증 후 커밋 예정)
 
-## 다음 작업
+## 마스터 핸드오프
 
-**docs/ROUND2_HANDOFF.md** 문서대로 진행:
-
-1. **묶음 B 먼저** — Privacy/Terms 섹션 divider + 번호 cyan (CSS만, 20~30분)
-2. **묶음 A** — Route Detail 2-column 재설계 (캡처 → 디자인 합의 → 구현)
+**docs/HANDOFF.md** — 모든 AI(Claude Code / GPT / 디자인 클로드)가 공유하는 마스터 문서. 9개 섹션으로 전체 프로젝트 컨텍스트 100% 복원 가능.
 
 ## 새 세션 시작 시
 
-1. [ ] 이 문서 읽기
-2. [ ] `docs/ROUND2_HANDOFF.md` 읽기
-3. [ ] `docs/GPT-HANDOFF-2026-05-06.md` 읽기 (전체 맥락 필요 시)
-4. [ ] `git log --oneline -5`로 마지막 커밋 확인 (`2748d97` 이후)
-5. [ ] 포그린 지시 대기 또는 Round 2 묶음 B 진행
+1. [ ] `docs/HANDOFF.md` 읽기 (마스터)
+2. [ ] `SSOT.md` + `CLAUDE.md` 읽기 (헌법 + 규칙)
+3. [ ] `git log --oneline -5`로 마지막 커밋 확인
+4. [ ] 포그린 지시 대기 또는 PR 2.4 진행
 
-## 핵심 아키텍처 (Round 1에서 확립)
+## 핵심 아키텍처
 
 - **PageContainer**: default 1120px / longform 720px
-- **GlobalHeader**: layout.tsx 단일 삽입, LangToggle 포함, static, padding = PageContainer와 동일
-- **SiteFooter**: nav 6 + legal 2 분리
+- **GlobalHeader**: components/common/GlobalHeader.tsx, static, padding = PageContainer와 동일
+- **SiteFooter**: components/common/SiteFooter.tsx, nav 6 + legal 2 분리
 - **CSS Modules 전용** (Tailwind X)
 - **다크 톤 + zinc + cyan accent**
+- **dev 서버 불안정 시**: `npm run build && npx next start -p 4099`
 
-## 페이지 폭
+## Route Detail 현재 구조 (Round 2)
 
-| default (1120px) | longform (720px) |
-|-----------------|-----------------|
-| Home, Routes, Route Detail, How to Ride | FAQ, About, Data Source, Privacy, Terms |
+- 데스크톱 ≥1024px: 2-column (좌 stopsCard + 우 sidebarCard sticky)
+- 모바일: 1-column, gap 24px
+- Meta: inline rows (HOURS/DAYS/STOPS/VERIFIED)
+- StopsList: 세로 timeline 단일 (가로 RouteDiagram 제거됨)
 
-720px은 의도. 올리지 말 것.
+## 보류/로드맵
 
-## 보류 항목
-
-- Privacy/Terms sticky TOC (과함, 보류)
-- FAQ 카테고리 그루핑 (i18n 키 추가 필요, 별도 라운드)
-- GlobalHeader sticky + blur
-- Vultr 배포
+| Round | 내용 | 우선순위 |
+|-------|------|---------|
+| 2.4 | 풀폭 CTA 정리 | 다음 |
+| 3 | Privacy/Terms sticky TOC | 낮음 |
+| 4 | Home hero right-side | 중간 |
+| 5 | i18n label cleanup | 낮음 |
+| 6+ | Routes 필터, 404 등 | 미정 |
 
 ## 참조 문서 우선순위
 
-1. `docs/ROUND2_HANDOFF.md` — Round 2 상세 지시서
-2. `docs/GPT-HANDOFF-2026-05-06.md` — 전체 핸드오프
-3. `docs/DESIGN_AUDIT_ROUND_1.md` — Round 1 지시서
-4. `SSOT.md` / `CLAUDE.md` — 헌법/규칙
+1. `docs/HANDOFF.md` — 마스터 핸드오프
+2. `SSOT.md` / `CLAUDE.md` — 헌법/규칙
+3. `docs/ROUND2_HANDOFF.md` — Round 2 지시서
+4. `docs/DECISIONS.md` — 의사결정 로그
 
 ## 협업 패턴
 
@@ -63,4 +62,4 @@
 - GPT = 검토/태클 (지시서 정리, 범위 관리)
 - 포그린 = 최종 결정
 
-**사이클**: 구현 → push → 캡처 → 디자인 진단 → 후속 수정
+**사이클**: 구현 → build → 캡처 → 디자인 진단 → 후속 수정

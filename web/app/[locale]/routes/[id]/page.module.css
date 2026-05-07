@@ -168,6 +168,67 @@
   color: var(--color-fg-3);
 }
 
+/* 2-column layout */
+.twoColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mainCol {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar {
+  width: 100%;
+}
+
+.sidebarSticky {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stopsCard {
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-1);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.sidebarCard {
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-1);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 1024px) {
+  .twoColumn {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .mainCol {
+    flex: 1;
+  }
+
+  .sidebar {
+    width: 340px;
+    flex-shrink: 0;
+  }
+
+  .sidebarSticky {
+    position: sticky;
+    top: 24px;
+  }
+}
+
 /* Footer */
 .footerNote {
   display: flex;

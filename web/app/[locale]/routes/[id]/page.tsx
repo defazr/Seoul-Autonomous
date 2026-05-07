@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { getVerifiedRoutes, getRouteById } from '../../../../lib/routes';
 import { routing } from '../../../../i18n/routing';
-import { RouteDiagram } from '../../../../components/route-detail/RouteDiagram';
 import { StopsList } from '../../../../components/route-detail/StopsList';
 import { MapLinkButton } from '../../../../components/route-detail/MapLinkButton';
 import { Pill, StatusDot } from '../../../../components/ui/Pill';
@@ -138,18 +137,6 @@ export default async function RouteDetailPage({
   const name = isKo ? route.displayNameKo : route.displayName;
   const subName = isKo ? route.displayName : route.displayNameKo;
   const stops = route.stops || [];
-  const turnIdx = stops.findIndex((s) => s.isTurnaround);
-  const turnStop = turnIdx >= 0 ? stops[turnIdx] : null;
-  const startStop = stops[0];
-  const endStop = stops[stops.length - 1];
-
-  const startName = isKo
-    ? startStop?.nameKo || route.startPointKo
-    : route.startPoint;
-  const endName = isKo
-    ? endStop?.nameKo || route.endPointKo
-    : route.endPoint;
-  const turnName = turnStop ? turnStop.nameKo : '';
 
   return (
     <PageContainer width="default">
@@ -190,26 +177,6 @@ export default async function RouteDetailPage({
           {t('routeDetail.disclaimer')}
         </div>
       </div>
-
-      {/* Route Diagram */}
-      {stops.length > 0 && turnStop && (
-        <div className={styles.section}>
-          <RouteDiagram
-            stops={stops}
-            startName={startName}
-            endName={endName}
-            turnaroundName={turnName}
-            outboundLabel={t('routeDetail.diagram.outbound', {
-              from: startName,
-              to: turnName,
-            })}
-            inboundLabel={t('routeDetail.diagram.inbound', {
-              from: turnName,
-              to: endName,
-            })}
-          />
-        </div>
-      )}
 
       {/* Meta rows */}
       <div className={styles.section}>

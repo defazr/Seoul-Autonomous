@@ -128,11 +128,44 @@
   margin-bottom: 12px;
 }
 
-/* Info grid */
-.infoGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+/* Meta list */
+.metaList {
+  display: flex;
+  flex-direction: column;
+}
+
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 0;
+}
+
+.metaRowBorder {
+  border-bottom: 1px solid rgba(31, 31, 31, 0.4);
+}
+
+.metaLabel {
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--color-fg-3);
+  letter-spacing: 0.88px;
+  text-transform: uppercase;
+}
+
+.metaValue {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--color-fg-1);
+}
+
+.metaValueMuted {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--color-fg-3);
 }
 
 /* Footer */

@@ -5,7 +5,6 @@ import { routing } from '../../../../i18n/routing';
 import { RouteDiagram } from '../../../../components/route-detail/RouteDiagram';
 import { StopsList } from '../../../../components/route-detail/StopsList';
 import { MapLinkButton } from '../../../../components/route-detail/MapLinkButton';
-import { InfoCard } from '../../../../components/ui/InfoCard';
 import { Pill, StatusDot } from '../../../../components/ui/Pill';
 import { Link } from '../../../../i18n/navigation';
 import { SiteFooter } from '../../../../components/common/SiteFooter';
@@ -212,29 +211,22 @@ export default async function RouteDetailPage({
         </div>
       )}
 
-      {/* Info Cards 2x2 */}
+      {/* Meta rows */}
       <div className={styles.section}>
-        <div className={styles.sectionTitle}>
-          {t('routeDetail.info.verified')}
-        </div>
-        <div className={styles.infoGrid}>
-          <InfoCard
-            label={t('routeDetail.info.hours')}
-            value={formatHours(route.firstBus, route.lastBus)}
-          />
-          <InfoCard
-            label={t('routeDetail.info.days')}
-            value={formatDays(route.daysOfOperation, t)}
-          />
-          <InfoCard
-            label={t('routeDetail.info.stops')}
-            value={t('routeDetail.stopsCount', { count: stops.length })}
-            accent
-          />
-          <InfoCard
-            label={t('routeDetail.info.verified')}
-            value={formatDate(route.lastChecked, isKo)}
-          />
+        <div className={styles.metaList}>
+          {[
+            { label: t('routeDetail.info.hours'), value: formatHours(route.firstBus, route.lastBus) },
+            { label: t('routeDetail.info.days'), value: formatDays(route.daysOfOperation, t) },
+            { label: t('routeDetail.info.stops'), value: t('routeDetail.stopsCount', { count: stops.length }) },
+            { label: t('routeDetail.info.verified'), value: formatDate(route.lastChecked, isKo) },
+          ].map((item, i, arr) => (
+            <div key={i} className={`${styles.metaRow}${i < arr.length - 1 ? ` ${styles.metaRowBorder}` : ''}`}>
+              <span className={styles.metaLabel}>{item.label}</span>
+              <span className={item.value === '\u2014' ? styles.metaValueMuted : styles.metaValue}>
+                {item.value === 'Unknown' ? '\u2014' : item.value}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 

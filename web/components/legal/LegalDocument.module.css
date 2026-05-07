@@ -21,6 +21,16 @@
   margin-top: 32px;
 }
 
+.sectionDivider {
+  border-top: 1px solid var(--color-border-1);
+  padding-top: 40px;
+  margin-top: 56px;
+}
+
+.sectionNumber {
+  color: var(--color-accent);
+}
+
 .h2 {
   font-weight: 600;
   font-size: 20px;

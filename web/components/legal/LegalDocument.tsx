@@ -55,10 +55,21 @@ function SubsectionBlock({ sub }: { sub: LegalSubsection }) {
   );
 }
 
-function SectionBlock({ section }: { section: LegalSection }) {
+function SectionBlock({ section, index }: { section: LegalSection; index: number }) {
+  const numberMatch = section.title.match(/^(\d+\.)\s(.+)$/);
+
   return (
-    <div className={styles.sectionBlock}>
-      <h2 className={styles.h2}>{section.title}</h2>
+    <div className={`${styles.sectionBlock}${index > 0 ? ` ${styles.sectionDivider}` : ''}`}>
+      <h2 className={styles.h2}>
+        {numberMatch ? (
+          <>
+            <span className={styles.sectionNumber}>{numberMatch[1]}</span>{' '}
+            {numberMatch[2]}
+          </>
+        ) : (
+          section.title
+        )}
+      </h2>
       {section.paragraphs?.map((p, i) => (
         <div key={i} className={styles.paragraph}>
           {renderBoldText(p)}
@@ -93,7 +104,7 @@ export function LegalDocument({ document: doc, locale }: Props) {
       </p>
 
       {doc.sections.map((section, i) => (
-        <SectionBlock key={i} section={section} />
+        <SectionBlock key={i} section={section} index={i} />
       ))}
 
       <div className={styles.contactBlock}>

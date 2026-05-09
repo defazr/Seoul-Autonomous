@@ -78,7 +78,31 @@
       "inbound": "{from} \u2192 {to}"
     },
     "disclaimer": "Information based on Kakao Map. Please confirm before riding.",
-    "footer": "Last verified {date}. Information is verified manually and may not reflect real-time changes."
+    "footer": "Last verified {date}. Information is verified manually and may not reflect real-time changes.",
+    "aeo": {
+      "sectionTitle": "Common questions about this route",
+      "q1": "Where do I board this route?",
+      "a1": "Board at {firstStop}. Last stop: {lastStop}.",
+      "q2": "When does this route operate?",
+      "a2": "Service runs from {firstBus} to {lastBus}.",
+      "q3": "What days does it run, and how often?",
+      "a3days": "Operating days: {days}.",
+      "a3headway": "Headway: {headway}.",
+      "a3unknown": "Headway has not been confirmed. Check Kakao Map before riding.",
+      "q4": "How much does it cost? Is a reservation required?",
+      "a4fare": "Fare: {fare}.",
+      "a4fareUnknown": "Fare information has not been confirmed yet.",
+      "a4reservation": "Reservation: {reservation}.",
+      "a4reservationUnknown": "Reservation requirements have not been confirmed.",
+      "a4check": "Please check Kakao Map or official sources before riding.",
+      "q5": "Is real-time arrival info available?",
+      "a5": "This site does not provide real-time arrival information. Check Kakao Map for the latest status.",
+      "q6": "What should I check before riding?",
+      "a6": "Confirm the schedule, stop locations, and service status through Kakao Map or official operator sources before boarding.",
+      "a6link": "See our full guide: How to ride →",
+      "q7": "When was this information last verified?",
+      "a7": "Last verified on {date}, based on Kakao Map data provided by the Seoul Metropolitan Government."
+    }
   },
   "howToRide": {
     "webTitle": "How to ride",

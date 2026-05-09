@@ -295,3 +295,57 @@
     letter-spacing: -0.48px;
   }
 }
+
+/* AEO FAQ section */
+.aeoSection {
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: 1px solid var(--color-border-1);
+}
+
+.aeoTitle {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--color-fg-1);
+  margin: 0 0 24px;
+}
+
+.aeoList {
+  margin: 0;
+  padding: 0;
+}
+
+.aeoItem {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(31, 31, 31, 0.4);
+}
+
+.aeoItem:last-child {
+  border-bottom: none;
+}
+
+.aeoQ {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--color-fg-1);
+  margin-bottom: 8px;
+}
+
+.aeoA {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-fg-2);
+  margin: 0;
+}
+
+.aeoLink {
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.aeoLink:hover {
+  border-bottom-color: var(--color-accent);
+}

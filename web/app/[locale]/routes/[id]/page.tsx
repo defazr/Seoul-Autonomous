@@ -233,6 +233,72 @@ export default async function RouteDetailPage({
         </aside>
       </div>
 
+      {/* AEO FAQ section */}
+      <div className={styles.aeoSection}>
+        <h2 className={styles.aeoTitle}>{t('routeDetail.aeo.sectionTitle')}</h2>
+        <dl className={styles.aeoList}>
+          <div className={styles.aeoItem}>
+            <dt className={styles.aeoQ}>{t('routeDetail.aeo.q1')}</dt>
+            <dd className={styles.aeoA}>
+              {t('routeDetail.aeo.a1', {
+                firstStop: isKo ? (stops[0]?.nameKo || route.startPointKo) : route.startPoint,
+                lastStop: isKo ? (stops[stops.length - 1]?.nameKo || route.endPointKo) : route.endPoint,
+              })}
+            </dd>
+          </div>
+          <div className={styles.aeoItem}>
+            <dt className={styles.aeoQ}>{t('routeDetail.aeo.q2')}</dt>
+            <dd className={styles.aeoA}>
+              {t('routeDetail.aeo.a2', { firstBus: route.firstBus, lastBus: route.lastBus })}
+            </dd>
+          </div>
+          <div className={styles.aeoItem}>
+            <dt className={styles.aeoQ}>{t('routeDetail.aeo.q3')}</dt>
+            <dd className={styles.aeoA}>
+              {t('routeDetail.aeo.a3days', { days: formatDays(route.daysOfOperation, t) })}
+              {' '}
+              {route.headway !== 'Unknown'
+                ? t('routeDetail.aeo.a3headway', { headway: route.headway })
+                : t('routeDetail.aeo.a3unknown')}
+            </dd>
+          </div>
+          <div className={styles.aeoItem}>
+            <dt className={styles.aeoQ}>{t('routeDetail.aeo.q4')}</dt>
+            <dd className={styles.aeoA}>
+              {route.fare !== 'Unknown'
+                ? t('routeDetail.aeo.a4fare', { fare: route.fare })
+                : t('routeDetail.aeo.a4fareUnknown')}
+              {' '}
+              {route.reservationRequired !== 'Unknown'
+                ? t('routeDetail.aeo.a4reservation', { reservation: route.reservationRequired })
+                : t('routeDetail.aeo.a4reservationUnknown')}
+              {' '}
+              {(route.fare === 'Unknown' || route.reservationRequired === 'Unknown') && t('routeDetail.aeo.a4check')}
+            </dd>
+          </div>
+          <div className={styles.aeoItem}>
+            <dt className={styles.aeoQ}>{t('routeDetail.aeo.q5')}</dt>
+            <dd className={styles.aeoA}>{t('routeDetail.aeo.a5')}</dd>
+          </div>
+          <div className={styles.aeoItem}>
+            <dt className={styles.aeoQ}>{t('routeDetail.aeo.q6')}</dt>
+            <dd className={styles.aeoA}>
+              {t('routeDetail.aeo.a6')}
+              {' '}
+              <Link href="/how-to-ride" className={styles.aeoLink}>
+                {t('routeDetail.aeo.a6link')}
+              </Link>
+            </dd>
+          </div>
+          <div className={styles.aeoItem}>
+            <dt className={styles.aeoQ}>{t('routeDetail.aeo.q7')}</dt>
+            <dd className={styles.aeoA}>
+              {t('routeDetail.aeo.a7', { date: formatDate(route.lastChecked, isKo) })}
+            </dd>
+          </div>
+        </dl>
+      </div>
+
       <SiteFooter />
     </PageContainer>
   );

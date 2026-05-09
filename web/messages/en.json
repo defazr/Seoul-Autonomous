@@ -47,8 +47,9 @@
       "robotaxi": "Robotaxi services"
     },
     "groups": {
-      "earlyMorning": "Early morning routes →",
-      "lateNight": "Late-night routes →"
+      "earlyMorningTitle": "Early morning routes",
+      "lateNightTitle": "Late-night routes",
+      "meta": "{count} routes \u00b7 {range}"
     },
     "empty": "No services match this filter.",
     "robotaxi": {

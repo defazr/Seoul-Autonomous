@@ -106,12 +106,16 @@ export default async function UpdateDetailPage({
       <h1 className={styles.heading}>{title}</h1>
 
       <div className={styles.dates}>
-        <span className={styles.dateLabel}>{formatDate(entry.date, isKo)}</span>
         <span className={styles.dateMeta}>
-          {t('eventDate')}: {formatDate(entry.eventDate, isKo)}
+          {isKo ? '게시' : 'Posted'} {formatDate(entry.date, isKo)}
         </span>
+        <span className={styles.dateSep}>·</span>
         <span className={styles.dateMeta}>
-          {t('sourceDate')}: {formatDate(entry.sourcePublishedAt, isKo)}
+          {t('eventDate')} {formatDate(entry.eventDate, isKo)}
+        </span>
+        <span className={styles.dateSep}>·</span>
+        <span className={styles.dateMeta}>
+          {t('sourceDate')} {formatDate(entry.sourcePublishedAt, isKo)}
         </span>
       </div>
 

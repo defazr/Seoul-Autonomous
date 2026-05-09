@@ -47,8 +47,9 @@
       "robotaxi": "로보택시 서비스"
     },
     "groups": {
-      "earlyMorning": "새벽 노선 →",
-      "lateNight": "심야 노선 →"
+      "earlyMorningTitle": "새벽 노선",
+      "lateNightTitle": "심야 노선",
+      "meta": "{count}개 노선 · {range}"
     },
     "empty": "조건에 맞는 노선이 없습니다.",
     "robotaxi": {

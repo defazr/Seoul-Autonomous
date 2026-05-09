@@ -7,8 +7,26 @@ import { RouteCard } from '../ui/RouteCard';
 import { RobotaxiCard } from '../ui/RobotaxiCard';
 import { SegmentedControl } from '../ui/SegmentedControl';
 import { StatusDot } from '../ui/Pill';
+import { RouteGroupCard } from '../ui/RouteGroupCard';
 import { SearchBar } from './SearchBar';
 import styles from './RoutesList.module.css';
+
+function MoonIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="var(--color-fg-2)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+    </svg>
+  );
+}
+
+function MoonStarIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="var(--color-fg-2)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+      <path d="M17 4l1 2 2 1-2 1-1 2-1-2-2-1 2-1z" />
+    </svg>
+  );
+}
 
 type RoutesListProps = {
   routes: FixedRoute[];
@@ -81,6 +99,25 @@ export function RoutesList({ routes, services, locale }: RoutesListProps) {
     checkBeforeRiding: t('robotaxi.checkBeforeRiding'),
   };
 
+  // Group card data
+  const earlyRoutes = routes.filter((r) => {
+    const hour = parseInt(r.firstBus.split(':')[0], 10);
+    return hour < 5;
+  });
+  const lateRoutes = routes.filter((r) => {
+    const fh = parseInt(r.firstBus.split(':')[0], 10);
+    const lh = parseInt(r.lastBus.split(':')[0], 10);
+    return fh >= 22 || lh >= 22;
+  });
+  const lateCount = lateRoutes.length + services.length;
+
+  function getTimeRange(rts: FixedRoute[]): string {
+    if (rts.length === 0) return '';
+    const times = rts.flatMap((r) => [r.firstBus, r.lastBus]);
+    const sorted = [...new Set(times)].sort();
+    return sorted.length === 1 ? sorted[0] : `${sorted[0]}\u2013${sorted[sorted.length - 1]}`;
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -99,21 +136,33 @@ export function RoutesList({ routes, services, locale }: RoutesListProps) {
         onChange={(v) => setFilter(v as Filter)}
       />
 
-      <div className={styles.groupLinks}>
-        <a href={`/${locale}/routes/early-morning`} className={styles.groupLink}>
-          {t('groups.earlyMorning')}
-        </a>
-        <a href={`/${locale}/routes/late-night`} className={styles.groupLink}>
-          {t('groups.lateNight')}
-        </a>
-      </div>
-
       <div className={styles.countRibbon}>
         <StatusDot color="var(--color-accent)" size={6} />
         <span className={styles.countText}>
           {t('count', { count: total })}
         </span>
       </div>
+
+      {(earlyRoutes.length > 0 || lateCount > 0) && (
+        <div className={styles.groupGrid}>
+          {earlyRoutes.length > 0 && (
+            <RouteGroupCard
+              href={`/${locale}/routes/early-morning`}
+              icon={<MoonIcon />}
+              title={t('groups.earlyMorningTitle')}
+              meta={t('groups.meta', { count: earlyRoutes.length, range: getTimeRange(earlyRoutes) })}
+            />
+          )}
+          {lateCount > 0 && (
+            <RouteGroupCard
+              href={`/${locale}/routes/late-night`}
+              icon={<MoonStarIcon />}
+              title={t('groups.lateNightTitle')}
+              meta={t('groups.meta', { count: lateCount, range: getTimeRange(lateRoutes) })}
+            />
+          )}
+        </div>
+      )}
 
       {filteredBus.length > 0 && (
         <>

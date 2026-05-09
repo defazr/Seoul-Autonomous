@@ -206,7 +206,7 @@ export default async function RouteDetailPage({
               <div className={styles.metaList}>
                 {[
                   { label: t('routeDetail.info.hours'), value: formatHours(route.firstBus, route.lastBus) },
-                  { label: t('routeDetail.info.days'), value: formatDays(route.daysOfOperation, t) },
+                  ...(route.daysOfOperation !== 'Unknown' ? [{ label: t('routeDetail.info.days'), value: formatDays(route.daysOfOperation, t) }] : []),
                   { label: t('routeDetail.info.stops'), value: t('routeDetail.stopsCount', { count: stops.length }) },
                   { label: t('routeDetail.info.verified'), value: formatDate(route.lastChecked, isKo) },
                 ].map((item, i, arr) => (
@@ -252,16 +252,18 @@ export default async function RouteDetailPage({
               {t('routeDetail.aeo.a2', { firstBus: route.firstBus, lastBus: route.lastBus })}
             </dd>
           </div>
+          {(route.daysOfOperation !== 'Unknown' || route.headway !== 'Unknown') && (
           <div className={styles.aeoItem}>
             <dt className={styles.aeoQ}>{t('routeDetail.aeo.q3')}</dt>
             <dd className={styles.aeoA}>
-              {t('routeDetail.aeo.a3days', { days: formatDays(route.daysOfOperation, t) })}
-              {' '}
+              {route.daysOfOperation !== 'Unknown' && t('routeDetail.aeo.a3days', { days: formatDays(route.daysOfOperation, t) })}
+              {route.daysOfOperation !== 'Unknown' && route.headway !== 'Unknown' && ' '}
               {route.headway !== 'Unknown'
                 ? t('routeDetail.aeo.a3headway', { headway: route.headway })
-                : t('routeDetail.aeo.a3unknown')}
+                : null}
             </dd>
           </div>
+          )}
           <div className={styles.aeoItem}>
             <dt className={styles.aeoQ}>{t('routeDetail.aeo.q4')}</dt>
             <dd className={styles.aeoA}>

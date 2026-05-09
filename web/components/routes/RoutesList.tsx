@@ -172,7 +172,7 @@ export function RoutesList({ routes, services, locale }: RoutesListProps) {
               {String(filteredBus.length).padStart(2, '0')}
             </span>
           </div>
-          <div className={styles.list}>
+          <div className={`${styles.list}${filteredBus.length === 1 ? ` ${styles.listSingle}` : ''}`}>
             {filteredBus.map((route) => (
               <RouteCard key={route.id} route={route} locale={locale} verifiedLabel={ts('verified')} />
             ))}
@@ -188,7 +188,7 @@ export function RoutesList({ routes, services, locale }: RoutesListProps) {
               {String(filteredTaxi.length).padStart(2, '0')}
             </span>
           </div>
-          <div className={styles.list}>
+          <div className={`${styles.list}${filteredTaxi.length === 1 ? ` ${styles.listSingle}` : ''}`}>
             {filteredTaxi.map((svc) => (
               <RobotaxiCard
                 key={svc.id}

@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { StatusDot } from '../ui/Pill';
 import { Button } from '../ui/Button';
-import { getVerifiedRoutes } from '../../lib/routes';
+import { getVerifiedRoutes, getLatestVerifiedDate } from '../../lib/routes';
 import styles from './Hero.module.css';
 
 function ArrowRight() {
@@ -12,13 +12,23 @@ function ArrowRight() {
   );
 }
 
+function formatHeroDate(dateStr: string): string {
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
 export function Hero() {
   const t = useTranslations('home.hero');
   const verifiedCount = getVerifiedRoutes().length;
+  const latestDate = getLatestVerifiedDate();
 
   return (
-    <>
-      <section className={styles.hero}>
+    <section className={styles.heroGrid}>
+      <div className={styles.heroLeft}>
         <div className={styles.badge}>
           <StatusDot color="var(--color-accent)" size={6} />
           <span className={styles.badgeText}>
@@ -34,7 +44,22 @@ export function Hero() {
             {t('cta')}
           </Button>
         </div>
-      </section>
-    </>
+      </div>
+
+      <div className={styles.heroRight}>
+        <figure className={styles.heroFigure}>
+          <img
+            src="/images/hero-bus-night.webp"
+            alt=""
+            width={480}
+            height={340}
+            loading="eager"
+          />
+          <figcaption className={styles.heroCaption}>
+            {`VERIFIED ${formatHeroDate(latestDate)} · INDEPENDENT GUIDE`}
+          </figcaption>
+        </figure>
+      </div>
+    </section>
   );
 }

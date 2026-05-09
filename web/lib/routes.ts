@@ -32,3 +32,12 @@ export function getRouteById(id: string): FixedRoute | undefined {
 export function getOnDemandServices(): OnDemandService[] {
   return onDemandServices;
 }
+
+export function getLatestVerifiedDate(): string {
+  const routes = getVerifiedRoutes();
+  if (routes.length === 0) return '';
+  return routes.reduce((latest, r) =>
+    r.lastChecked > latest ? r.lastChecked : latest,
+    routes[0].lastChecked,
+  );
+}

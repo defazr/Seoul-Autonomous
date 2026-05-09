@@ -226,5 +226,9 @@
     "termsDescription": "Seoul Autonomous 이용약관. 서울 자율주행 교통 정보 독립 안내 사이트.",
     "faqTitle": "자주 묻는 질문 — Seoul Autonomous",
     "faqDescription": "서울 자율주행 버스·로보택시 시범 서비스 이용 방법에 대한 자주 묻는 질문."
+  },
+  "status": {
+    "verified": "검증됨",
+    "checkBeforeRiding": "탑승 전 확인"
   }
 }

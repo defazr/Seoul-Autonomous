@@ -5,6 +5,7 @@ import styles from './FeaturedRoutes.module.css';
 
 export function FeaturedRoutes() {
   const t = useTranslations('home.featured');
+  const ts = useTranslations('status');
   const locale = useLocale();
   const routes = getFeaturedRoutes();
 
@@ -16,7 +17,7 @@ export function FeaturedRoutes() {
       </div>
       <div className={styles.list}>
         {routes.map((route) => (
-          <RouteCard key={route.id} route={route} locale={locale} />
+          <RouteCard key={route.id} route={route} locale={locale} verifiedLabel={ts('verified')} />
         ))}
       </div>
     </section>

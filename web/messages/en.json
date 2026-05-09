@@ -226,5 +226,9 @@
     "termsDescription": "Terms of use for Seoul Autonomous, an independent guide to Seoul's autonomous transportation services.",
     "faqTitle": "FAQ — Seoul Autonomous",
     "faqDescription": "Common questions about how to ride Seoul's autonomous bus and robotaxi pilot services."
+  },
+  "status": {
+    "verified": "VERIFIED",
+    "checkBeforeRiding": "CHECK BEFORE RIDING"
   }
 }

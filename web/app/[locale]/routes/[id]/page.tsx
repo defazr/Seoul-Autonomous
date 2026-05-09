@@ -161,7 +161,7 @@ export default async function RouteDetailPage({
         <div className={styles.statusGroup}>
           <Pill variant="accent">
             <StatusDot color="var(--color-accent)" size={5} />
-            <span>VERIFIED</span>
+            <span>{t('status.verified')}</span>
           </Pill>
         </div>
       </div>

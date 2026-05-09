@@ -58,6 +58,7 @@ function SensorIcon() {
 
 export function RoutesList({ routes, services, locale }: RoutesListProps) {
   const t = useTranslations('routes');
+  const ts = useTranslations('status');
 
   const [filter, setFilter] = useState<Filter>('ALL');
   const [query, setQuery] = useState('');
@@ -115,7 +116,7 @@ export function RoutesList({ routes, services, locale }: RoutesListProps) {
           </div>
           <div className={styles.list}>
             {filteredBus.map((route) => (
-              <RouteCard key={route.id} route={route} locale={locale} />
+              <RouteCard key={route.id} route={route} locale={locale} verifiedLabel={ts('verified')} />
             ))}
           </div>
         </>

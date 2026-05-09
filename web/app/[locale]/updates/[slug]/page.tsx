@@ -162,7 +162,7 @@ export default async function UpdateDetailPage({
           <ul className={styles.infoList}>
             {(isKo ? s.reportedInfo.ko : s.reportedInfo.en).map((item, i) => (
               <li key={i} className={styles.reportedItem}>
-                {item} — <span className={styles.unconfirmed}>{isKo ? '확인 필요' : 'not yet confirmed'}</span>
+                {item}
               </li>
             ))}
           </ul>

@@ -47,6 +47,7 @@
   line-height: 14px;
   color: var(--color-fg-5);
   margin-top: 16px;
+  text-align: center;
 }
 
 .note {

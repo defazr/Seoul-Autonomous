@@ -27,8 +27,9 @@ export async function SiteFooter() {
   const navLinks = [
     { href: `/${locale}`, label: tf('home') },
     { href: `/${locale}/routes`, label: tf('routes') },
-    { href: `/${locale}/faq`, label: tf('faq') },
+    { href: `/${locale}/updates`, label: tf('updates') },
     { href: `/${locale}/how-to-ride`, label: tf('howToRide') },
+    { href: `/${locale}/faq`, label: tf('faq') },
     { href: `/${locale}/data-source`, label: tf('dataSource') },
     { href: `/${locale}/about`, label: tf('about') },
   ];

@@ -99,6 +99,15 @@ export function RoutesList({ routes, services, locale }: RoutesListProps) {
         onChange={(v) => setFilter(v as Filter)}
       />
 
+      <div className={styles.groupLinks}>
+        <a href={`/${locale}/routes/early-morning`} className={styles.groupLink}>
+          {t('groups.earlyMorning')}
+        </a>
+        <a href={`/${locale}/routes/late-night`} className={styles.groupLink}>
+          {t('groups.lateNight')}
+        </a>
+      </div>
+
       <div className={styles.countRibbon}>
         <StatusDot color="var(--color-accent)" size={6} />
         <span className={styles.countText}>

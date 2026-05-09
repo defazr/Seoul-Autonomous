@@ -5,6 +5,7 @@
     "faq": "FAQ",
     "about": "About",
     "dataSource": "Data source",
+    "updates": "Updates",
     "privacy": "Privacy",
     "terms": "Terms",
     "menuOpen": "Open menu",
@@ -44,6 +45,10 @@
     "section": {
       "verified": "Verified routes",
       "robotaxi": "Robotaxi services"
+    },
+    "groups": {
+      "earlyMorning": "Early morning routes →",
+      "lateNight": "Late-night routes →"
     },
     "empty": "No services match this filter.",
     "robotaxi": {
@@ -221,6 +226,7 @@
     "routes": "Routes",
     "faq": "FAQ",
     "howToRide": "How to ride",
+    "updates": "Updates",
     "dataSource": "Data source",
     "about": "About",
     "privacy": "Privacy",

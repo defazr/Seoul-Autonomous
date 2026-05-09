@@ -19,16 +19,19 @@ export async function GlobalHeader() {
 
   const desktopLinks = [
     { href: `/${locale}/routes`, label: t('routes'), key: 'routes' },
+    { href: `/${locale}/updates`, label: t('updates'), key: 'updates' },
     { href: `/${locale}/how-to-ride`, label: t('howToRide'), key: 'how-to-ride' },
     { href: `/${locale}/faq`, label: t('faq'), key: 'faq' },
   ];
 
   const drawerLinks = [
+    { href: `/${locale}`, label: 'Home' },
     { href: `/${locale}/routes`, label: t('routes') },
+    { href: `/${locale}/updates`, label: t('updates') },
     { href: `/${locale}/how-to-ride`, label: t('howToRide') },
     { href: `/${locale}/faq`, label: t('faq') },
-    { href: `/${locale}/about`, label: t('about') },
     { href: `/${locale}/data-source`, label: t('dataSource') },
+    { href: `/${locale}/about`, label: t('about') },
     { href: `/${locale}/privacy`, label: t('privacy'), separator: true },
     { href: `/${locale}/terms`, label: t('terms') },
   ];

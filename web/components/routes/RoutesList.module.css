@@ -14,6 +14,24 @@
   letter-spacing: -0.96px;
 }
 
+.groupLinks {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.groupLink {
+  font-size: 13px;
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+  padding-bottom: 1px;
+}
+
+.groupLink:hover {
+  border-bottom-color: var(--color-accent);
+}
+
 .countRibbon {
   display: flex;
   align-items: center;

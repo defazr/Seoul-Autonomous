@@ -5,6 +5,7 @@
     "faq": "자주 묻는 질문",
     "about": "소개",
     "dataSource": "데이터 출처",
+    "updates": "업데이트",
     "privacy": "개인정보처리방침",
     "terms": "이용약관",
     "menuOpen": "메뉴 열기",
@@ -44,6 +45,10 @@
     "section": {
       "verified": "검증된 노선",
       "robotaxi": "로보택시 서비스"
+    },
+    "groups": {
+      "earlyMorning": "새벽 노선 →",
+      "lateNight": "심야 노선 →"
     },
     "empty": "조건에 맞는 노선이 없습니다.",
     "robotaxi": {
@@ -221,6 +226,7 @@
     "routes": "노선 목록",
     "faq": "자주 묻는 질문",
     "howToRide": "이용 방법",
+    "updates": "업데이트",
     "dataSource": "데이터 출처",
     "about": "소개",
     "privacy": "개인정보처리방침",

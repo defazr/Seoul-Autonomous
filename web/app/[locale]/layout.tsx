@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '../../i18n/routing';
 import { SITE_URL, SITE_NAME } from '../../lib/seo/config';
 import { GlobalHeader } from '../../components/common/GlobalHeader';
+import { BackToTopButton } from '../../components/common/BackToTopButton';
 import type { Metadata } from 'next';
 
 export function generateStaticParams() {
@@ -54,6 +55,7 @@ export default async function LocaleLayout({
     <NextIntlClientProvider locale={locale} messages={messages}>
       <GlobalHeader />
       {children}
+      <BackToTopButton />
     </NextIntlClientProvider>
   );
 }

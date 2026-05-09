@@ -57,7 +57,8 @@
     }
   },
   "common": {
-    "footer": "Pilot service operated by the Seoul Metropolitan Government. Information is verified manually and may not reflect real-time changes."
+    "footer": "Pilot service operated by the Seoul Metropolitan Government. Information is verified manually and may not reflect real-time changes.",
+    "backToTop": "Back to top"
   },
   "routeDetail": {
     "back": "Back",

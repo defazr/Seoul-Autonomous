@@ -251,6 +251,18 @@
     "faqTitle": "FAQ — Seoul Autonomous",
     "faqDescription": "Common questions about how to ride Seoul's autonomous bus and robotaxi pilot services."
   },
+  "routeGroups": {
+    "earlyMorning": {
+      "title": "Early morning autonomous routes in Seoul",
+      "description": "Autonomous bus routes operating before 5:00 AM in Seoul. Verified schedules and stops.",
+      "intro": "These autonomous bus routes operate in the early morning hours before 5:00 AM. Check Kakao Map for the latest schedule before riding."
+    },
+    "lateNight": {
+      "title": "Late-night autonomous routes in Seoul",
+      "description": "Autonomous bus and robotaxi services operating after 10:00 PM in Seoul. Verified schedules and stops.",
+      "intro": "These autonomous services operate late at night after 10:00 PM. Check Kakao Map for the latest schedule before riding."
+    }
+  },
   "status": {
     "verified": "VERIFIED",
     "checkBeforeRiding": "CHECK BEFORE RIDING"

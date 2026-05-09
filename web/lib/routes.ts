@@ -33,6 +33,21 @@ export function getOnDemandServices(): OnDemandService[] {
   return onDemandServices;
 }
 
+export function getEarlyMorningRoutes(): FixedRoute[] {
+  return getVerifiedRoutes().filter((r) => {
+    const hour = parseInt(r.firstBus.split(':')[0], 10);
+    return hour < 5;
+  });
+}
+
+export function getLateNightRoutes(): FixedRoute[] {
+  return getVerifiedRoutes().filter((r) => {
+    const firstHour = parseInt(r.firstBus.split(':')[0], 10);
+    const lastHour = parseInt(r.lastBus.split(':')[0], 10);
+    return firstHour >= 22 || lastHour >= 22;
+  });
+}
+
 export function getLatestVerifiedDate(): string {
   const routes = getVerifiedRoutes();
   if (routes.length === 0) return '';

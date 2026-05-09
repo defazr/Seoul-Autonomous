@@ -251,6 +251,20 @@
     "faqTitle": "FAQ — Seoul Autonomous",
     "faqDescription": "Common questions about how to ride Seoul's autonomous bus and robotaxi pilot services."
   },
+  "updates": {
+    "pageTitle": "Updates",
+    "pageDescription": "Latest changes and verification updates for Seoul autonomous bus and robotaxi routes.",
+    "breadcrumb": "Updates",
+    "relatedRoutes": "Related routes",
+    "whatChanged": "What changed",
+    "confirmedInfo": "Confirmed information",
+    "reportedInfo": "Reported (not yet confirmed)",
+    "checkBefore": "Check before riding",
+    "viewRoute": "View route details →",
+    "backToUpdates": "← All updates",
+    "eventDate": "Event date",
+    "sourceDate": "Source published"
+  },
   "routeGroups": {
     "earlyMorning": {
       "title": "Early morning autonomous routes in Seoul",

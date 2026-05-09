@@ -1,0 +1,144 @@
+.topBar {
+  padding-top: 16px;
+  margin-bottom: 16px;
+}
+
+.backLink {
+  font-size: 13px;
+  color: var(--color-fg-3);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.backLink:hover {
+  color: var(--color-accent);
+}
+
+.heading {
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 34px;
+  color: var(--color-fg-1);
+  letter-spacing: -0.84px;
+  margin: 0 0 12px;
+}
+
+.dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-bottom: 16px;
+}
+
+.dateLabel {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-fg-3);
+  letter-spacing: 0.44px;
+}
+
+.dateMeta {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-fg-4);
+}
+
+.relatedRoutes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.relatedLabel {
+  font-size: 12px;
+  color: var(--color-fg-4);
+  text-transform: uppercase;
+  letter-spacing: 0.44px;
+}
+
+.routeChip {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background-color: var(--color-accent-faint);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  font-size: 12px;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.routeChip:hover {
+  background-color: rgba(0, 212, 255, 0.15);
+}
+
+.routeChipInactive {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-1);
+  font-size: 12px;
+  color: var(--color-fg-3);
+}
+
+.body {
+  border-top: 1px solid var(--color-border-1);
+  padding-top: 32px;
+}
+
+.section {
+  margin-bottom: 28px;
+}
+
+.h2 {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--color-fg-1);
+  margin: 0 0 10px;
+}
+
+.paragraph {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--color-fg-2);
+  margin: 0;
+}
+
+.infoList {
+  margin: 0;
+  padding: 0 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.infoItem {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-fg-2);
+}
+
+.reportedItem {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-fg-3);
+}
+
+.unconfirmed {
+  font-size: 12px;
+  color: var(--color-warning);
+}
+
+.viewRoute {
+  display: inline-block;
+  font-size: 14px;
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+  margin-top: 8px;
+}
+
+.viewRoute:hover {
+  border-bottom-color: var(--color-accent);
+}

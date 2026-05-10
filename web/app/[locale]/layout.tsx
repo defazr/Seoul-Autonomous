@@ -1,7 +1,7 @@
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '../../i18n/routing';
-import { SITE_URL, SITE_NAME } from '../../lib/seo/config';
+import { SITE_URL } from '../../lib/seo/config';
 import { GlobalHeader } from '../../components/common/GlobalHeader';
 import { BackToTopButton } from '../../components/common/BackToTopButton';
 import type { Metadata } from 'next';
@@ -19,20 +19,6 @@ export async function generateMetadata({
 
   return {
     metadataBase: new URL(SITE_URL),
-    openGraph: {
-      siteName: SITE_NAME,
-      type: 'website',
-      locale: locale === 'ko' ? 'ko_KR' : 'en_US',
-    },
-    twitter: {
-      card: 'summary',
-    },
-    alternates: {
-      languages: {
-        en: `${SITE_URL}/en`,
-        ko: `${SITE_URL}/ko`,
-      },
-    },
   };
 }
 

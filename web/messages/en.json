@@ -242,6 +242,8 @@
     "dataSourceLink": "Data source"
   },
   "metadata": {
+    "homeTitle": "Seoul Autonomous",
+    "homeDescription": "Guide to autonomous transportation routes in Seoul for foreign tourists",
     "routesTitle": "Routes — Seoul Autonomous",
     "routesDescription": "Browse all verified autonomous bus and robotaxi routes in Seoul.",
     "routeDetailTitle": "{name} — Seoul Autonomous",

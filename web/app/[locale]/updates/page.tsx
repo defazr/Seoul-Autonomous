@@ -5,6 +5,7 @@ import { getAllUpdates } from '../../../data/updates';
 import { SiteFooter } from '../../../components/common/SiteFooter';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
+import { buildPageMetadata } from '../../../lib/seo/metadata';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -18,10 +19,12 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'updates' });
-  return {
+  return buildPageMetadata({
+    locale,
+    path: '/updates',
     title: t('pageTitle'),
     description: t('pageDescription'),
-  };
+  });
 }
 
 function formatDate(dateStr: string, isKo: boolean): string {

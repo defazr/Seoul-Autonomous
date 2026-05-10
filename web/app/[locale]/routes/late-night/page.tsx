@@ -6,6 +6,7 @@ import { RobotaxiCard } from '../../../../components/ui/RobotaxiCard';
 import { SiteFooter } from '../../../../components/common/SiteFooter';
 import { PageContainer } from '../../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
 import { Link } from '../../../../i18n/navigation';
 import styles from './page.module.css';
 
@@ -20,10 +21,12 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'routeGroups.lateNight' });
-  return {
+  return buildPageMetadata({
+    locale,
+    path: '/routes/late-night',
     title: t('title'),
     description: t('description'),
-  };
+  });
 }
 
 export default async function LateNightPage({

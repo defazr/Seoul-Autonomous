@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { getVerifiedRoutes, getOnDemandServices } from '../../../lib/routes';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
+import { buildPageMetadata } from '../../../lib/seo/metadata';
 import { RoutesList } from '../../../components/routes/RoutesList';
 import { SiteFooter } from '../../../components/common/SiteFooter';
 import { PageContainer } from '../../../components/layout/PageContainer';
@@ -8,10 +9,12 @@ import { PageContainer } from '../../../components/layout/PageContainer';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
-  return {
+  return buildPageMetadata({
+    locale,
+    path: '/routes',
     title: t('routesTitle'),
     description: t('routesDescription'),
-  };
+  });
 }
 
 export default async function RoutesPage({ params }: { params: Promise<{ locale: string }> }) {

@@ -7,6 +7,7 @@ import { getRouteById } from '../../../../lib/routes';
 import { SiteFooter } from '../../../../components/common/SiteFooter';
 import { PageContainer } from '../../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -28,10 +29,12 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const entry = getUpdateBySlug(slug);
   if (!entry) return {};
-  return {
+  return buildPageMetadata({
+    locale,
+    path: `/updates/${slug}`,
     title: locale === 'ko' ? entry.titleKo : entry.titleEn,
     description: locale === 'ko' ? entry.summaryKo : entry.summaryEn,
-  };
+  });
 }
 
 function formatDate(dateStr: string, isKo: boolean): string {

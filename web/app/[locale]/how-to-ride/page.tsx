@@ -4,6 +4,7 @@ import { Link } from '../../../i18n/navigation';
 import { SiteFooter } from '../../../components/common/SiteFooter';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
+import { buildPageMetadata } from '../../../lib/seo/metadata';
 import { HeroCard } from '../../../components/how-to-ride/HeroCard';
 import { FAQItem } from '../../../components/how-to-ride/FAQItem';
 import { StepCard } from '../../../components/how-to-ride/StepCard';
@@ -23,10 +24,12 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
-  return {
+  return buildPageMetadata({
+    locale,
+    path: '/how-to-ride',
     title: t('howToRideTitle'),
     description: t('howToRideDescription'),
-  };
+  });
 }
 
 function ChevronLeft() {

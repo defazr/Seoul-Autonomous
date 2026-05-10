@@ -8,6 +8,7 @@ import type { FAQDocument } from '../../../lib/types/faq';
 import { SiteFooter } from '../../../components/common/SiteFooter';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
+import { buildPageMetadata } from '../../../lib/seo/metadata';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -21,10 +22,12 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
-  return {
+  return buildPageMetadata({
+    locale,
+    path: '/faq',
     title: t('faqTitle'),
     description: t('faqDescription'),
-  };
+  });
 }
 
 function ChevronLeft() {

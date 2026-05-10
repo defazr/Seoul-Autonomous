@@ -9,6 +9,7 @@ import { Link } from '../../../../i18n/navigation';
 import { SiteFooter } from '../../../../components/common/SiteFooter';
 import { PageContainer } from '../../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -34,10 +35,12 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: 'metadata' });
   const name = locale === 'ko' ? route.displayNameKo : route.displayName;
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: `/routes/${id}`,
     title: t('routeDetailTitle', { name }),
     description: t('routeDetailDescription', { name }),
-  };
+  });
 }
 
 function formatDays(days: string, t: (key: string) => string): string {

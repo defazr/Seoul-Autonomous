@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   description: 'Guide to autonomous transportation routes in Seoul for foreign tourists',
   verification: {
     google: 'XVe25p6uT1qMSLHgXPUlsGdXvp3vOZYbzJWVdebe2IE',
+    other: {
+      'naver-site-verification': 'e76930efabe656cabb6d52a1245c8cf96b150e53',
+    },
   },
 };
 

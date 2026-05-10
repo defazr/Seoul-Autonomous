@@ -1,0 +1,7 @@
+User-Agent: *
+Allow: /
+Disallow: /design-preview
+
+Sitemap: https://seoulautonomous.com/sitemap.xml
+
+#DaumWebMasterTool:051e36391cd6ec53ad23440a51f2b96bca7103d0863e65384aa32ae8716cd2e0:Qc8LDKHH1AV7wtQw2Sv8Rw==

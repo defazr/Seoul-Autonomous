@@ -1,4 +1,5 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import Link from 'next/link';
 import { StatusDot } from '../ui/Pill';
 import { Button } from '../ui/Button';
 import { getVerifiedRoutes, getLatestVerifiedDate } from '../../lib/routes';
@@ -23,6 +24,7 @@ function formatHeroDate(dateStr: string): string {
 
 export function Hero() {
   const t = useTranslations('home.hero');
+  const locale = useLocale();
   const verifiedCount = getVerifiedRoutes().length;
   const latestDate = getLatestVerifiedDate();
 
@@ -40,9 +42,11 @@ export function Hero() {
         <p className={styles.description}>{t('description')}</p>
 
         <div className={styles.ctaRow}>
-          <Button variant="primary" size="md" icon={<ArrowRight />}>
-            {t('cta')}
-          </Button>
+          <Link href={`/${locale}/routes`}>
+            <Button variant="primary" size="md" icon={<ArrowRight />}>
+              {t('cta')}
+            </Button>
+          </Link>
         </div>
       </div>
 

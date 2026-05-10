@@ -1,4 +1,5 @@
 import { useTranslations, useLocale } from 'next-intl';
+import Link from 'next/link';
 import { RouteCard } from '../ui/RouteCard';
 import { getFeaturedRoutes } from '../../lib/routes';
 import styles from './FeaturedRoutes.module.css';
@@ -13,7 +14,7 @@ export function FeaturedRoutes() {
     <section className={styles.section}>
       <div className={styles.header}>
         <h2 className={styles.title}>{t('title')}</h2>
-        <span className={styles.seeAll}>{t('seeAll')}</span>
+        <Link href={`/${locale}/routes`} className={styles.seeAll}>{t('seeAll')}</Link>
       </div>
       <div className={styles.list}>
         {routes.map((route) => (

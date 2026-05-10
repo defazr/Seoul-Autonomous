@@ -5,6 +5,9 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Seoul Autonomous',
   description: 'Guide to autonomous transportation routes in Seoul for foreign tourists',
+  verification: {
+    google: 'XVe25p6uT1qMSLHgXPUlsGdXvp3vOZYbzJWVdebe2IE',
+  },
 };
 
 export default function RootLayout({

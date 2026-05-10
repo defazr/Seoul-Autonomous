@@ -174,7 +174,7 @@ export function RoutesList({ routes, services, locale }: RoutesListProps) {
           </div>
           <div className={`${styles.list}${filteredBus.length === 1 ? ` ${styles.listSingle}` : ''}`}>
             {filteredBus.map((route) => (
-              <RouteCard key={route.id} route={route} locale={locale} verifiedLabel={ts('verified')} />
+              <RouteCard key={route.id} route={route} locale={locale} />
             ))}
           </div>
         </>

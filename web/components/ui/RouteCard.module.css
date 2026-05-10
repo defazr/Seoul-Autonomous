@@ -37,22 +37,13 @@
   min-width: 0;
 }
 
-.topRow {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  margin-bottom: 2px;
-}
-
 .name {
   font-weight: 600;
   font-size: 17px;
   line-height: 22px;
   color: var(--color-fg-1);
   letter-spacing: -0.17px;
-  flex: 1;
-  min-width: 0;
-  overflow-wrap: break-word;
+  margin-bottom: 2px;
 }
 
 .subName {

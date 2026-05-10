@@ -68,7 +68,6 @@ export default async function EarlyMorningPage({
             key={route.id}
             route={route}
             locale={locale}
-            verifiedLabel={ts('verified')}
           />
         ))}
       </div>

@@ -1,12 +1,10 @@
 import Link from 'next/link';
 import type { FixedRoute } from '../../lib/types/route';
-import { Pill, StatusDot } from './Pill';
 import styles from './RouteCard.module.css';
 
 type RouteCardProps = {
   route: FixedRoute;
   locale?: string;
-  verifiedLabel?: string;
 };
 
 function BusIcon() {
@@ -28,24 +26,7 @@ function ChevronRight() {
   );
 }
 
-function StatusPill({ level, verifiedLabel }: { level: string; verifiedLabel: string }) {
-  if (level === 'official_confirmed') {
-    return (
-      <Pill variant="success">
-        <StatusDot color="var(--color-success)" size={5} />
-        <span>OFFICIAL</span>
-      </Pill>
-    );
-  }
-  return (
-    <Pill variant="accent">
-      <StatusDot color="var(--color-accent)" size={5} />
-      <span>{verifiedLabel}</span>
-    </Pill>
-  );
-}
-
-export function RouteCard({ route, locale = 'en', verifiedLabel = 'VERIFIED' }: RouteCardProps) {
+export function RouteCard({ route, locale = 'en' }: RouteCardProps) {
   const isKo = locale === 'ko';
 
   const name = isKo ? route.displayNameKo : route.displayName;
@@ -60,10 +41,7 @@ export function RouteCard({ route, locale = 'en', verifiedLabel = 'VERIFIED' }: 
           <BusIcon />
         </div>
         <div className={styles.content}>
-          <div className={styles.topRow}>
-            <span className={styles.name}>{name}</span>
-            <StatusPill level={route.verificationLevel} verifiedLabel={verifiedLabel} />
-          </div>
+          <div className={styles.name}>{name}</div>
           <div className={styles.subName}>{subName}</div>
           <div className={styles.routeLine}>
             {start} → {end}

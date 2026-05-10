@@ -76,7 +76,6 @@ export default async function LateNightPage({
             key={route.id}
             route={route}
             locale={locale}
-            verifiedLabel={ts('verified')}
           />
         ))}
         {onDemandServices.map((svc) => (

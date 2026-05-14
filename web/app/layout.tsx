@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { geistSans, geistMono, pretendard } from '../lib/fonts';
 import './globals.css';
 
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${pretendard.variable}`}>
       <body>{children}</body>
+      <GoogleAnalytics gaId="G-ND7JGQ62QX" />
     </html>
   );
 }

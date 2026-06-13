@@ -48,7 +48,7 @@
 .obA21note { font-size: 11.5px; color: #4a7b86; }
 
 /* ── Stage ── */
-.obStage { position: relative; background: #fff; border-radius: 16px; padding: 6px; box-shadow: 0 6px 26px rgba(0,0,0,.10); overflow: hidden; }
+.obStage { position: relative; background: #f7f4ec; border-radius: 16px; padding: 6px; box-shadow: 0 6px 26px rgba(0,0,0,.10); overflow: hidden; }
 .obSvg { display: block; width: 100%; height: auto; }
 
 /* ── Blink animation ── */
@@ -57,15 +57,17 @@
 @media (prefers-reduced-motion: reduce) { .blink { animation: none; } }
 
 /* ── Station Card (PC: overlay, mobile: inline) ── */
-.obCard { position: absolute; left: 18px; bottom: 18px; background: #fff; border: 1px solid #e2e5ea; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 30px rgba(0,0,0,.18); min-width: 220px; max-width: 300px; z-index: 10; color: #222; }
-.obCardX { position: absolute; top: 10px; right: 12px; border: 0; background: none; font-size: 20px; line-height: 1; color: #9aa1ab; cursor: pointer; }
-.obCardSt { font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 10px; }
-.obCardJbtns { display: flex; gap: 7px; margin-bottom: 12px; }
-.obCardLab { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: #8b929c; text-transform: uppercase; margin-bottom: 8px; }
-.obCardRoutes { display: flex; flex-wrap: wrap; gap: 6px; }
-.obCardNone { font-size: 12px; color: #9aa1ab; }
-.obCardWarn { display: grid; grid-template-columns: 21px 1fr; gap: 8px; align-items: start; margin: 12px 0 0; padding-top: 11px; border-top: 1px solid #edeff2; font-size: 17px; line-height: 1.5; color: #8a7d4e; text-wrap: pretty; }
-.obCardWarn svg { margin-top: 2px; color: #b3a25f; }
+.obCard { position: absolute; left: 18px; bottom: 18px; background: #fff; border: 1px solid #e2e5ea; border-radius: 12px; padding: 14px 16px; box-shadow: 0 8px 30px rgba(0,0,0,.18); min-width: 200px; max-width: 280px; z-index: 10; color: #222; }
+.obCardX { position: absolute; top: 8px; right: 10px; border: 0; background: none; font-size: 18px; line-height: 1; color: #9aa1ab; cursor: pointer; }
+.obCardSt { font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; }
+.obCardJbtns { display: flex; gap: 6px; margin-bottom: 10px; }
+.obCardLab { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; color: #8b929c; text-transform: uppercase; margin-bottom: 6px; }
+.obCardRoutes { display: flex; flex-wrap: wrap; gap: 5px; }
+.obCardNone { font-size: 11px; color: #9aa1ab; }
+.obCardWarnToggle { display: flex; align-items: center; gap: 6px; width: 100%; margin: 10px 0 0; padding-top: 8px; border: 0; border-top: 1px solid #edeff2; background: none; font: inherit; font-size: 12.5px; font-weight: 500; color: #8a7d4e; cursor: pointer; text-align: left; }
+.obCardWarnToggle svg { color: #b3a25f; flex-shrink: 0; }
+.obChevron { margin-left: auto; font-size: 10px; color: #aaa; }
+.obCardWarnText { font-size: 12.5px; line-height: 1.5; color: #8a7d4e; margin: 6px 0 0; padding-left: 20px; }
 
 /* ── Transfer Bar ── */
 .obXfer { position: absolute; right: 18px; bottom: 18px; background: rgba(17,17,17,.92); color: #fff; border-radius: 14px; padding: 14px 18px; box-shadow: 0 8px 30px rgba(0,0,0,.3); display: flex; flex-direction: column; gap: 9px; max-width: 360px; z-index: 10; }
@@ -81,23 +83,28 @@
 .obJourney .obBtn { border-color: #3a3a3a; background: #fff; color: #222; }
 .obJacts { display: flex; flex-wrap: wrap; gap: 7px; }
 .obJroute { font-size: 15px; font-weight: 700; color: #fff; }
-.obJourney b { color: #FFB257; }
+.obJtransfer { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 7px; }
+.obJarr { color: #FFB257; font-weight: 700; font-size: 14px; }
+.obJvia { font-weight: 700; color: #fff; font-size: 14px; }
 
 /* ── Copyright ── */
 .obCopyright { pointer-events: none; }
 
+/* ── Mobile reset button (zoom state only) ── */
+.obResetBtn { position: absolute; top: 10px; right: 10px; z-index: 15; font: inherit; font-size: 12px; font-weight: 600; padding: 8px 14px; border: 1px solid #d4d8dd; border-radius: 9px; background: rgba(255,255,255,.92); color: #374151; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+
 /* ── Mobile (<768px) ── */
 @media (max-width: 768px) {
-  /* 4. SVG fit — 가로 스크롤 폐기, 전체 노선도 축소 표시 */
-  .obStage { overflow: hidden; }
-  .obSvg { min-width: unset; width: 100%; }
+  /* 4. SVG fit — 전체 노선도 축소 표시, 세로 넉넉하게 */
+  .obStage { overflow: hidden; min-height: 40vh; display: flex; flex-direction: column; }
+  .obSvg { min-width: unset; width: 100%; flex: 1; }
 
   /* 5. 검색창 세로 스택, 버튼은 가로 */
   .obHead { flex-direction: column; align-items: stretch; }
   .obAct { flex-direction: column; gap: 8px; align-items: flex-start; }
   .obSearchRow { flex-direction: column; gap: 8px; width: 100%; }
   .obSearch { width: 100%; }
-  .obSearch input { width: 100%; }
+  .obSearch input { width: 100%; font-size: 16px; /* iOS auto-zoom 방지 — <16px input 포커스 시 페이지 강제 확대 */ }
   .obArrow { display: none; }
   .obBtnRow { flex-direction: row; gap: 8px; }
 

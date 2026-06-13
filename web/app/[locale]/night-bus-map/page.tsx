@@ -4,6 +4,7 @@ import { SiteFooter } from '../../../components/common/SiteFooter';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import { SITE_URL, SITE_NAME } from '../../../lib/seo/config';
 import { NightBusMap } from './NightBusMap';
+import { ROUTE_COLORS } from './night-bus-data';
 import type { Metadata } from 'next';
 import styles from './page.module.css';
 
@@ -105,63 +106,63 @@ const clickableHubs = [
 /* ── Route descriptions ── */
 const routeDescriptions: { id: string; label: string; color: string; tag?: string; desc: string }[] = [
   {
-    id: 'A21', label: '심야A21', color: '#22d3ee', tag: '자율주행',
+    id: 'A21', label: '심야A21', color: ROUTE_COLORS.A21, tag: '자율주행',
     desc: '심야A21은 동대문, 종로, 광화문, 신촌, 홍대입구, 합정 축을 따라 운행되는 자율주행 심야 노선입니다. 도심에서 홍대·합정 방면으로 심야에 이동할 때 참고할 수 있으며, 이 노선도에서 자율주행 검증 노선으로 별도 강조합니다.',
   },
   {
-    id: 'N13', label: 'N13', color: '#8b5cf6',
+    id: 'N13', label: 'N13', color: ROUTE_COLORS.N13,
     desc: 'N13은 노원, 청량리, 신설동, 동대문에서 강남, 잠실, 복정까지 이어지는 심야버스입니다. 서울 동북권에서 강남·동남권으로 심야에 종단 이동할 때 참고할 수 있습니다.',
   },
   {
-    id: 'N15', label: 'N15', color: '#f59e0b',
+    id: 'N15', label: 'N15', color: ROUTE_COLORS.N15,
     desc: 'N15는 도봉산에서 신설동, 동대문, 종로, 서울역을 거쳐 사당까지 이어지는 남북 종단 노선입니다. 야간근무 퇴근이나 새벽 출근 시 서울 북부에서 남부 방면으로 이동할 때 유용합니다.',
   },
   {
-    id: 'N16', label: 'N16', color: '#60a5fa',
+    id: 'N16', label: 'N16', color: ROUTE_COLORS.N16,
     desc: 'N16은 도봉산에서 동대문, 서울역을 거쳐 영등포, 온수까지 운행합니다. 서울 북부에서 서남부로의 심야 이동을 연결하는 노선입니다.',
   },
   {
-    id: 'N26', label: 'N26', color: '#34d399',
+    id: 'N26', label: 'N26', color: ROUTE_COLORS.N26,
     desc: 'N26은 개화에서 합정, 홍대입구, 신촌, 광화문, 종로, 동대문, 청량리까지 이어지는 동서축 심야버스입니다. 서울 서부에서 도심과 동북권으로 이동할 때 참고할 수 있으며, 홍대 심야버스를 찾는 분들에게 주요 노선입니다.',
   },
   {
-    id: 'N30', label: 'N30', color: '#fb7185',
+    id: 'N30', label: 'N30', color: ROUTE_COLORS.N30,
     desc: 'N30은 강동에서 신설동, 동대문, 종로, 서울역까지 운행합니다. 서울 동부에서 도심으로 심야에 이동할 때 참고할 수 있는 노선입니다.',
   },
   {
-    id: 'N31', label: 'N31', color: '#a78bfa',
+    id: 'N31', label: 'N31', color: ROUTE_COLORS.N31,
     desc: 'N31은 강동, 잠실, 강남에서 종로, 동대문을 거쳐 노원까지 이어지는 심야버스입니다. 강남 심야버스를 찾는 분들이 동남권에서 북부로 이동할 때 참고할 수 있습니다.',
   },
   {
-    id: 'N37', label: 'N37', color: '#f97316',
+    id: 'N37', label: 'N37', color: ROUTE_COLORS.N37,
     desc: 'N37은 복정에서 강남, 광화문을 거쳐 구파발까지 운행합니다. 동남권에서 서북부까지 서울을 대각선으로 횡단하는 심야 노선입니다.',
   },
   {
-    id: 'N51', label: 'N51', color: '#2dd4bf',
+    id: 'N51', label: 'N51', color: ROUTE_COLORS.N51,
     desc: 'N51은 금천에서 영등포, 합정, 홍대입구, 신촌, 서울역, 광화문, 동대문, 청량리, 노원까지 이어지는 장거리 심야버스입니다. 서남권에서 도심을 거쳐 동북권까지 연결하며, 서울역 심야버스를 찾는 분들에게도 유용합니다.',
   },
   {
-    id: 'N61', label: 'N61', color: '#84cc16',
+    id: 'N61', label: 'N61', color: ROUTE_COLORS.N61,
     desc: 'N61은 금천, 사당, 강남, 잠실에서 건대입구, 군자, 면목, 노원까지 운행합니다. 강남권에서 동북부 외곽까지 이어지는 심야 노선으로, 대리기사 이동 경로와도 겹치는 구간이 많습니다.',
   },
   {
-    id: 'N62', label: 'N62', color: '#e879f9',
+    id: 'N62', label: 'N62', color: ROUTE_COLORS.N62,
     desc: 'N62는 영등포, 합정, 홍대입구, 신촌, 서울역, 종로, 동대문에서 왕십리, 성수, 건대입구, 군자, 면목까지 이어지는 동서축 심야버스입니다. 서부에서 동부로 도심을 관통하는 심야 귀가 노선입니다.',
   },
   {
-    id: 'N64', label: 'N64', color: '#facc15',
+    id: 'N64', label: 'N64', color: ROUTE_COLORS.N64,
     desc: 'N64는 개화에서 영등포, 사당, 강남까지 운행하는 비교적 짧은 심야 노선입니다. 서부에서 남부 강남 방면으로 이동할 때 참고할 수 있습니다.',
   },
   {
-    id: 'N72', label: 'N72', color: '#38bdf8',
+    id: 'N72', label: 'N72', color: ROUTE_COLORS.N72,
     desc: 'N72는 구파발에서 합정, 홍대입구, 신촌, 서울역, 동대문, 신설동, 청량리까지 운행합니다. 서북권에서 도심을 거쳐 동북권으로 이동하는 심야 노선입니다.',
   },
   {
-    id: 'N73', label: 'N73', color: '#c084fc',
+    id: 'N73', label: 'N73', color: ROUTE_COLORS.N73,
     desc: 'N73은 복정, 잠실에서 건대입구, 성수, 왕십리, 서울역, 홍대입구를 거쳐 구파발까지 이어집니다. 동남권에서 서북부로 이동할 때 참고할 수 있는 심야버스입니다.',
   },
   {
-    id: 'N75', label: 'N75', color: '#f472b6',
+    id: 'N75', label: 'N75', color: ROUTE_COLORS.N75,
     desc: 'N75는 구파발에서 신촌, 서울역, 강남, 사당, 금천까지 운행합니다. 서북에서 서남까지 서울 서쪽을 종단하는 심야 노선으로, 동대문 심야버스와 함께 도심 이동의 보조 축 역할을 합니다.',
   },
 ];

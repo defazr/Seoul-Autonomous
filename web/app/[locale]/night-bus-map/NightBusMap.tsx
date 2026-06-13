@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useRef, useCallback } from 'react';
+import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import {
   ROUTE_COLORS, ROUTE_LABEL, NODES, ROUTE_POLY, ROUTE_MEMBER,
   ROUTE_ORDER, RIVER,
@@ -10,6 +10,48 @@ import styles from './night-bus-map.module.css';
 /* ── Constants ── */
 const VBX = -70, VBY = -65, VBW = 2560, VBH = 1600;
 const CENTER = { x: 1210, y: 720 };
+const DEFAULT_VB = { x: VBX, y: VBY, w: VBW, h: VBH };
+/* 모바일 전용 — 노선망 bbox + 패딩 70. 바깥 빈 여백 제거, 끝역 모두 포함 */
+const MOBILE_VB = { x: 110, y: 17, w: 2200, h: 1436 };
+const MIN_ZOOM = 1, MAX_ZOOM = 4;
+const REDUCED_MOTION = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+/* ── Mobile viewBox hook ── */
+function useIsMobile() {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return mobile;
+}
+
+type VB = { x: number; y: number; w: number; h: number };
+
+function clampVB(vb: VB, base: VB = DEFAULT_VB): VB {
+  const w = Math.max(base.w / MAX_ZOOM, Math.min(base.w, vb.w));
+  const h = w * (base.h / base.w);
+  const x = Math.max(base.x, Math.min(base.x + base.w - w, vb.x));
+  const y = Math.max(base.y, Math.min(base.y + base.h - h, vb.y));
+  return { x, y, w, h };
+}
+
+function animateVB(from: VB, to: VB, set: (vb: VB) => void, duration = 200) {
+  if (REDUCED_MOTION || duration === 0) { set(to); return; }
+  const start = performance.now();
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+  function step(now: number) {
+    const t = Math.min(1, (now - start) / duration);
+    const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    set(clampVB({ x: lerp(from.x, to.x, ease), y: lerp(from.y, to.y, ease), w: lerp(from.w, to.w, ease), h: lerp(from.h, to.h, ease) }));
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* routeBBox·journeyBBox 삭제 — auto-zoom 제거로 데드코드 */
 
 /* ── 초성 검색 ── */
 const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
@@ -85,11 +127,20 @@ function routeSegD(id: string, n1: string, n2: string) {
 function SearchBox({ onPick, placeholder, selected }: { onPick: (n: string) => void; placeholder: string; selected: string | null }) {
   const [q, setQ] = useState('');
   const [open, setOpen] = useState(false);
-  const prevSelected = useRef(selected);
-  if (prevSelected.current !== selected) { prevSelected.current = selected; }
+  const [editing, setEditing] = useState(false);
 
-  const displayQ = selected ? selected.replace(/역$/, '') : q;
-  const query = (selected ? '' : q).trim();
+  // Sync selected → q only when selected changes externally
+  const prevSelected = useRef(selected);
+  useEffect(() => {
+    if (prevSelected.current !== selected) {
+      prevSelected.current = selected;
+      if (selected && !editing) setQ(selected.replace(/역$/, ''));
+      else if (!selected) setQ('');
+    }
+  }, [selected, editing]);
+
+  const displayVal = editing ? q : (selected ? selected.replace(/역$/, '') : q);
+  const query = q.trim();
   let res = (open && query) ? Object.keys(NODES).filter(n => stationMatch(n, query)) : [];
   res.sort((a, b) => (stationMatch(a.slice(0, query.length), query) ? 0 : 1) - (stationMatch(b.slice(0, query.length), query) ? 0 : 1) || a.localeCompare(b, 'ko'));
   res = res.slice(0, 8);
@@ -98,12 +149,12 @@ function SearchBox({ onPick, placeholder, selected }: { onPick: (n: string) => v
     <div className={styles.obSearch}>
       <input
         type="text"
-        value={selected ? selected.replace(/역$/, '') : q}
+        value={displayVal}
         placeholder={placeholder}
         aria-label={placeholder}
-        onChange={(e) => { setQ(e.target.value); setOpen(true); }}
-        onFocus={(e) => { setOpen(true); e.target.select(); if (selected) setQ(''); }}
-        onBlur={() => setTimeout(() => setOpen(false), 150)}
+        onChange={(e) => { setQ(e.target.value); setEditing(true); setOpen(true); }}
+        onFocus={(e) => { setEditing(true); setOpen(true); e.target.select(); }}
+        onBlur={() => { setTimeout(() => { setOpen(false); setEditing(false); }, 150); }}
       />
       {open && query && res.length > 0 && (
         <ul className={styles.obSr}>
@@ -195,6 +246,7 @@ function StationCard({ station, sel, toggle, setStation, setFrom, setTo, jFrom, 
   jFrom: string | null; jTo: string | null;
 }) {
   const routes = stationRoutes(station);
+  const [warnOpen, setWarnOpen] = useState(false);
   return (
     <div className={styles.obCard}>
       <button className={styles.obCardX} onClick={() => setStation(null)}>×</button>
@@ -211,12 +263,18 @@ function StationCard({ station, sel, toggle, setStation, setFrom, setTo, jFrom, 
             onClick={() => toggle(id)}>{ROUTE_LABEL[id]}</button>
         )) : <span className={styles.obCardNone}>현재 표시된 노선 없음</span>}
       </div>
-      <p className={styles.obCardWarn}>
-        <svg viewBox="0 0 24 24" width={21} height={21} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <button className={styles.obCardWarnToggle} onClick={() => setWarnOpen(o => !o)}>
+        <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx={12} cy={10} r={3} />
         </svg>
-        지도의 역 위치는 권역 표시입니다. 실제 정류장은 길 건너편이나 떨어진 곳일 수 있으니, 탑승 전 카카오맵에서 정확한 위치와 방향을 확인하세요.
-      </p>
+        역 위치는 권역 표시
+        <span className={styles.obChevron}>{warnOpen ? '▲' : '▼'}</span>
+      </button>
+      {warnOpen && (
+        <p className={styles.obCardWarnText}>
+          실제 정류장은 길 건너편이나 떨어진 곳일 수 있어요. 탑승 전 카카오맵에서 정확한 위치와 방향을 확인하세요.
+        </p>
+      )}
     </div>
   );
 }
@@ -251,8 +309,8 @@ function JourneyBar({ jFrom, jTo, journey, clearJourney }: {
   let body;
   if (!jFrom) body = <span className={styles.obXferV}>출발역을 검색하거나 지도에서 클릭해 지정하세요</span>;
   else if (!jTo) body = <span className={styles.obXferV}>도착역을 검색하거나 지도에서 클릭해 지정하세요</span>;
-  else if (journey?.type === 'direct') body = <span className={styles.obXferV}>{chip(journey.routes![0])} 직통{journey.alt?.length ? <>{' (또는 '}{journey.alt.map(chip)}{')'}</> : null}</span>;
-  else if (journey?.type === 'transfer') body = <span className={styles.obXferV}>{chip(journey.routes![0])} → <b>{st(journey.via!)}</b>에서 환승 → {chip(journey.routes![1])}</span>;
+  else if (journey?.type === 'direct') body = <span className={styles.obXferV}>{chip(journey.routes![0])} <span>직통</span>{journey.alt?.length ? <>{' (또는 '}{journey.alt.map(chip)}{')'}</> : null}</span>;
+  else if (journey?.type === 'transfer') body = <span className={styles.obJtransfer}>{chip(journey.routes![0])}<span className={styles.obJarr}>→</span><span className={styles.obJvia}>{st(journey.via!)}에서 환승</span><span className={styles.obJarr}>→</span>{chip(journey.routes![1])}</span>;
   else body = <span className={styles.obXferV}>환승 1회로는 연결 불가 — 아래 지도앱 길찾기를 이용하세요</span>;
   const both = jFrom && jTo;
   return (
@@ -269,7 +327,7 @@ function JourneyBar({ jFrom, jTo, journey, clearJourney }: {
 }
 
 /* ── SVG Map ── */
-function SvgMap({ svgRef, order, rOpacity, rWidth, isAll, activeNodes, transfer, sel, toggle, station, setStation, jFrom, jTo, segs }: {
+function SvgMap({ svgRef, order, rOpacity, rWidth, isAll, activeNodes, transfer, sel, toggle, station, setStation, jFrom, jTo, segs, vb }: {
   svgRef: React.RefObject<SVGSVGElement | null>; order: string[];
   rOpacity: (id: string) => number; rWidth: (id: string) => number;
   isAll: boolean; activeNodes: Set<string> | null; transfer: Set<string>;
@@ -277,6 +335,7 @@ function SvgMap({ svgRef, order, rOpacity, rWidth, isAll, activeNodes, transfer,
   station: string | null; setStation: (n: string) => void;
   jFrom: string | null; jTo: string | null;
   segs: Record<string, string> | null;
+  vb: VB;
 }) {
   const [hover, setHover] = useState<string | null>(null);
 
@@ -324,6 +383,8 @@ function SvgMap({ svgRef, order, rOpacity, rWidth, isAll, activeNodes, transfer,
     );
     circleEls.push(
       <g key={name} opacity={op} style={{ cursor: 'pointer' }} onClick={() => setStation(name)} onMouseEnter={() => setHover(name)} onMouseLeave={() => setHover(h => h === name ? null : h)}>
+        {/* 터치 타깃 확대 — SVG 축소 시에도 탭 가능하도록 */}
+        <circle cx={x} cy={y} r={Math.max(r + 14, 22)} fill="transparent" />
         {blink && <circle className={styles.blink} cx={x} cy={y} r={r + 5} fill="none" stroke="#FF9500" strokeWidth={4} />}
         {!blink && name === station && <circle className={styles.blink} cx={x} cy={y} r={r + 5} fill="none" stroke="#2b6fd6" strokeWidth={4} />}
         <circle cx={x} cy={y} r={r} fill="#fff" stroke={blink ? '#E07B00' : (isXfer ? '#333' : '#888')} strokeWidth={isXfer ? 3 : 2.2} />
@@ -339,7 +400,7 @@ function SvgMap({ svgRef, order, rOpacity, rWidth, isAll, activeNodes, transfer,
   });
 
   return (
-    <svg ref={svgRef} className={styles.obSvg} viewBox={`${VBX} ${VBY} ${VBW} ${VBH}`} xmlns="http://www.w3.org/2000/svg" role="img" aria-label="서울 올빼미버스 노선도">
+    <svg ref={svgRef} className={styles.obSvg} viewBox={`${vb.x} ${vb.y} ${vb.w} ${vb.h}`} xmlns="http://www.w3.org/2000/svg" role="img" aria-label="서울 올빼미버스 노선도">
       <desc>ⓒ 2026 SeoulAutonomous.com · 서울 올빼미버스 노선도 도식 · 제작자가 직접 작도한 창작물 · All Rights Reserved · 무단 복제·재배포 금지 · 출처: SeoulAutonomous.com</desc>
       <rect x={VBX} y={VBY} width={VBW} height={VBH} fill="#f7f4ec" />
       {RIVER.d && (
@@ -439,6 +500,119 @@ export function NightBusMap() {
   const rWidth = (id: string) => (id === 'A21' ? 7 : 6) + (dispSel.has(id) ? 2 : 0);
   const order = (() => { const ns = [...ROUTE_ORDER].filter(id => !dispSel.has(id)); const s = [...ROUTE_ORDER].filter(id => dispSel.has(id)); return [...ns, ...s]; })();
 
+  /* ── Mobile viewBox state ── */
+  const isMobile = useIsMobile();
+  const baseVB = isMobile ? MOBILE_VB : DEFAULT_VB;
+  const [vb, setVb] = useState<VB>(baseVB);
+  // Sync baseVB when isMobile changes (SSR→client hydration)
+  const prevMobile = useRef(isMobile);
+  useEffect(() => { if (prevMobile.current !== isMobile) { prevMobile.current = isMobile; setVb(isMobile ? MOBILE_VB : DEFAULT_VB); } }, [isMobile]);
+  const isZoomed = vb.w < baseVB.w * 0.95;
+  const stageRef = useRef<HTMLDivElement>(null);
+  const baseVBRef = useRef(baseVB);
+  baseVBRef.current = baseVB;
+  const touchState = useRef<{ dist: number; cx: number; cy: number; vb: VB; panning: boolean; sx: number; sy: number; moved: boolean } | null>(null);
+
+  const resetVB = useCallback(() => animateVB(vb, baseVB, setVb), [vb, baseVB]);
+
+  // Touch handlers — native addEventListener with { passive: false } for real device support
+  const vbRef = useRef(vb);
+  vbRef.current = vb;
+  const isZoomedRef = useRef(isZoomed);
+  isZoomedRef.current = isZoomed;
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const el = stageRef.current;
+    if (!el) return;
+
+    const DRAG_THRESHOLD = 8; // px — 이 이내면 탭, 초과면 드래그
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault(); // 핀치줌은 항상 preventDefault
+        const [a, b] = [e.touches[0], e.touches[1]];
+        touchState.current = {
+          dist: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY),
+          cx: (a.clientX + b.clientX) / 2, cy: (a.clientY + b.clientY) / 2,
+          vb: { ...vbRef.current }, panning: false, sx: 0, sy: 0, moved: false,
+        };
+      } else if (e.touches.length === 1 && isZoomedRef.current) {
+        // 탭인지 드래그인지 아직 모름 — preventDefault 하지 않음 (click 살림)
+        touchState.current = {
+          dist: 0, cx: 0, cy: 0, vb: { ...vbRef.current },
+          panning: true, sx: e.touches[0].clientX, sy: e.touches[0].clientY, moved: false,
+        };
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!touchState.current) return;
+      const ts = touchState.current;
+      if (e.touches.length === 2 && ts.dist > 0) {
+        e.preventDefault();
+        const [a, b] = [e.touches[0], e.touches[1]];
+        const newDist = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+        const scale = ts.dist / newDist;
+        const bvb = baseVBRef.current;
+        const w = Math.max(bvb.w / MAX_ZOOM, Math.min(bvb.w, ts.vb.w * scale));
+        const h = w * (bvb.h / bvb.w);
+        const rect = el.getBoundingClientRect();
+        const pcx = (ts.cx - rect.left) / rect.width;
+        const pcy = (ts.cy - rect.top) / rect.height;
+        setVb(clampVB({ x: ts.vb.x + (ts.vb.w - w) * pcx, y: ts.vb.y + (ts.vb.h - h) * pcy, w, h }, bvb));
+        ts.moved = true;
+      } else if (e.touches.length === 1 && ts.panning && isZoomedRef.current) {
+        const dx = ts.sx - e.touches[0].clientX;
+        const dy = ts.sy - e.touches[0].clientY;
+        const dist = Math.hypot(dx, dy);
+        if (dist > DRAG_THRESHOLD) {
+          // 드래그 확정 — 이제부터 preventDefault
+          e.preventDefault();
+          ts.moved = true;
+          const rect = el.getBoundingClientRect();
+          const curVb = vbRef.current;
+          const svgDx = dx * (curVb.w / rect.width);
+          const svgDy = dy * (curVb.h / rect.height);
+          setVb(clampVB({ ...ts.vb, x: ts.vb.x + svgDx, y: ts.vb.y + svgDy }, baseVBRef.current));
+        }
+        // dist <= DRAG_THRESHOLD면 아직 탭일 수 있으므로 preventDefault 안 함
+      }
+    };
+
+    const handleTouchEnd = () => { touchState.current = null; };
+
+    el.addEventListener('touchstart', handleTouchStart, { passive: false });
+    el.addEventListener('touchmove', handleTouchMove, { passive: false });
+    el.addEventListener('touchend', handleTouchEnd);
+    return () => {
+      el.removeEventListener('touchstart', handleTouchStart);
+      el.removeEventListener('touchmove', handleTouchMove);
+      el.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [isMobile]);
+
+  // Double-tap zoom toggle
+  const lastTap = useRef(0);
+  const onDoubleClick = useCallback((e: React.MouseEvent) => {
+    if (!isMobile) return;
+    const now = Date.now();
+    if (now - lastTap.current < 300) {
+      e.preventDefault();
+      if (isZoomed) { animateVB(vb, baseVB, setVb); }
+      else {
+        const rect = stageRef.current?.getBoundingClientRect();
+        if (rect) {
+          const px = (e.clientX - rect.left) / rect.width;
+          const py = (e.clientY - rect.top) / rect.height;
+          const w = baseVB.w / 2, h = baseVB.h / 2;
+          animateVB(vb, clampVB({ x: vb.x + (vb.w - w) * px, y: vb.y + (vb.h - h) * py, w, h }, baseVB), setVb);
+        }
+      }
+    }
+    lastTap.current = now;
+  }, [isMobile, isZoomed, vb]);
+
   function exportPNG() {
     const src = svgRef.current; if (!src) return;
     const c = src.cloneNode(true) as SVGSVGElement;
@@ -485,10 +659,20 @@ export function NightBusMap() {
     <div className={styles.ob}>
       <Header isAll={isAll && !jFrom && !jTo} clearSel={clearSel} exportPNG={exportPNG} onPickFrom={(n) => setJFrom(n)} onPickTo={(n) => setJTo(n)} jFrom={jFrom} jTo={jTo} />
       <Legend sel={dispSel} toggle={toggle} />
-      <div className={styles.obStage}>
-        <SvgMap svgRef={svgRef} order={order} rOpacity={rOpacity} rWidth={rWidth} isAll={isAll} activeNodes={activeNodes} transfer={transfer} sel={dispSel} toggle={toggle} station={station} setStation={pickStation} jFrom={jFrom} jTo={jTo} segs={journeySegs} />
+      <div
+        ref={stageRef}
+        className={styles.obStage}
+        onClick={onDoubleClick}
+        style={isMobile && isZoomed ? { touchAction: 'none' } : { touchAction: 'pan-y' }}
+      >
+        <SvgMap svgRef={svgRef} order={order} rOpacity={rOpacity} rWidth={rWidth} isAll={isAll} activeNodes={activeNodes} transfer={transfer} sel={dispSel} toggle={toggle} station={station} setStation={pickStation} jFrom={jFrom} jTo={jTo} segs={journeySegs} vb={vb} />
         {station && <StationCard station={station} sel={dispSel} toggle={toggle} setStation={setStation} setFrom={setFrom} setTo={setTo} jFrom={jFrom} jTo={jTo} />}
         {!jFrom && !jTo && sel.size >= 2 && <TransferBar sel={sel} transfer={transfer} />}
+        {isMobile && isZoomed && (
+          <button className={styles.obResetBtn} onClick={(e) => { e.stopPropagation(); resetVB(); }} aria-label="전체 노선 보기">
+            전체 노선 보기
+          </button>
+        )}
       </div>
       {(jFrom || jTo) && <JourneyBar jFrom={jFrom} jTo={jTo} journey={journey} clearJourney={clearJourney} />}
     </div>

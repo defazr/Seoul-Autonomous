@@ -304,6 +304,18 @@ export default async function RouteDetailPage({
         </dl>
       </div>
 
+      {/* A21 → 심야버스 전체 노선도 CTA (ko만) */}
+      {route.id === 'simya-a21' && locale === 'ko' && (
+        <div className={styles.nightBusCta}>
+          <p className={styles.nightBusCtaText}>
+            A21과 올빼미버스 환승 지점을 함께 보려면 서울 심야버스 전체 노선도를 확인하세요.
+          </p>
+          <Link href="/night-bus-map" className={styles.nightBusCtaLink}>
+            서울 심야버스 전체 노선도 보기 →
+          </Link>
+        </div>
+      )}
+
       <SiteFooter />
     </PageContainer>
   );

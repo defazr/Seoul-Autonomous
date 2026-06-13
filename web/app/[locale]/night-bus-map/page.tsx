@@ -17,7 +17,7 @@ export function generateStaticParams() {
 const PAGE_TITLE = '서울 심야버스 노선도 | N버스·올빼미버스 환승 지도';
 const PAGE_DESC = '서울 심야버스 노선과 노선도를 한눈에. N버스·올빼미버스 주요 환승 허브와 야간 이동 경로를 정리한 서울 밤버스 시각 가이드입니다.';
 const PAGE_URL = `${SITE_URL}/ko/night-bus-map`;
-const OG_IMAGE_URL = `${SITE_URL}/og/seoul-autonomous-og.png`;
+const OG_IMAGE_URL = `${SITE_URL}/og/night-bus-map-og.jpg`;
 
 export async function generateMetadata({
   params,
@@ -234,7 +234,7 @@ export default async function NightBusMapPage({
         </p>
         <p className={styles.bodyText}>
           노선도에서 큰 원으로 표시된 허브는 여러 심야버스 노선이 교차하는 주요 권역입니다.
-          이 허브를 클릭하면 카카오맵에서 해당 위치를 확인할 수 있습니다.
+          노선도 안에서 역이나 허브를 선택하면 해당 지점을 지나는 노선을 확인할 수 있습니다.
           심야버스 시간표와 요금 등 상세 정보는 카카오맵이나 서울시 공식 안내에서 확인하세요.
         </p>
       </div>
@@ -244,8 +244,8 @@ export default async function NightBusMapPage({
         <h2 className={styles.h2}>서울 N버스와 올빼미버스 환승 허브</h2>
         <p className={styles.bodyText}>
           아래 13개 허브는 서울 심야버스 노선이 집중적으로 교차하는 주요 권역입니다.
-          각 허브를 선택하면 카카오맵에서 해당 역 주변을 검색할 수 있습니다.
-          환승 허브는 동일 정류장 환승을 보장하지 않으며, 실제 정류장 위치는 카카오맵에서 확인하세요.
+          노선도 안에서 역이나 허브를 선택하면 해당 지점을 지나는 노선을 확인할 수 있습니다.
+          실제 정류장 위치와 운행 방향은 아래 카카오맵 링크 또는 공식 지도 서비스에서 다시 확인하세요.
         </p>
         <div className={styles.hubList}>
           {clickableHubs.map((hub) => (
@@ -286,8 +286,8 @@ export default async function NightBusMapPage({
       <div className={styles.section}>
         <h2 className={styles.h2}>카카오맵에서 위치 확인하는 방법</h2>
         <p className={styles.bodyText}>
-          이 노선도의 각 허브를 클릭하면 카카오맵 검색 결과로 이동합니다.
-          카카오맵에서 심야버스 정류장 위치, 도착 예정 시간, 실제 운행 여부를 직접 확인할 수 있습니다.
+          이 노선도의 역과 허브 위치는 권역 표시이며, 실제 정류장과 다를 수 있습니다.
+          정확한 정류장 위치와 운행 방향은 카카오맵이나 네이버지도에서 확인하세요.
         </p>
         <p className={styles.bodyText}>
           카카오맵 앱이나 웹에서 역 이름과 함께 &ldquo;심야버스&rdquo; 또는 &ldquo;N버스&rdquo;를 검색하면

@@ -16,6 +16,7 @@ export const pretendard = localFont({
     { path: '../public/fonts/Pretendard-Regular.otf', weight: '400', style: 'normal' },
     { path: '../public/fonts/Pretendard-Medium.otf', weight: '500', style: 'normal' },
     { path: '../public/fonts/Pretendard-SemiBold.otf', weight: '600', style: 'normal' },
+    { path: '../public/fonts/Pretendard-Bold.ttf', weight: '700', style: 'normal' },
   ],
   variable: '--font-pretendard',
   display: 'swap',

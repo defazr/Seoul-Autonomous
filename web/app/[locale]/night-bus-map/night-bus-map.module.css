@@ -1,0 +1,117 @@
+/* 올빼미버스 인터랙티브 노선도 — 프로토타입 CSS 이식 + 다크사이트 색 수정 */
+
+.ob { max-width: 1320px; margin: 0 auto 40px; overflow: hidden; }
+
+/* ── Header ── */
+.obHead { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; justify-content: space-between; margin-bottom: 14px; }
+.obHeadDesc { font-size: 12.5px; color: var(--color-fg-3, #a1a1a1); margin: 0; max-width: 760px; }
+.obAct { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.obSearchRow { display: flex; gap: 8px; align-items: center; }
+.obBtnRow { display: flex; gap: 8px; align-items: center; }
+
+/* ── Search — 모든 텍스트·배경색 명시 (다크 상속 차단) ── */
+.obSearch { position: relative; }
+.obSearch input { font: inherit; font-size: 13px; padding: 9px 12px; border: 1px solid #d4d8dd; border-radius: 9px; width: 146px; background: #fff; color: #222; }
+.obArrow { color: var(--color-fg-3, #9aa1ab); font-weight: 700; }
+.obSearch input::placeholder { color: #9aa1ab; }
+.obSearch input:focus { outline: 2px solid #9cc1ff; border-color: #9cc1ff; }
+.obSr { position: absolute; top: calc(100% + 5px); left: 0; min-width: 100%; background: #fff; border: 1px solid #d4d8dd; border-radius: 10px; box-shadow: 0 10px 28px rgba(0,0,0,.16); list-style: none; margin: 0; padding: 4px; z-index: 40; max-height: 264px; overflow: auto; }
+.obSr li { padding: 8px 11px; border-radius: 7px; cursor: pointer; font-size: 13.5px; font-weight: 600; white-space: nowrap; color: #222; background: #fff; }
+.obSr li:hover { background: #eef4ff; }
+.obSr .none { color: #9aa1ab; cursor: default; font-weight: 500; }
+.obSr .none:hover { background: none; }
+
+/* ── Buttons ── */
+.obBtn { font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; border: 1px solid #d4d8dd; background: #fff; color: #374151; border-radius: 9px; padding: 9px 14px; transition: background 0.15s; text-decoration: none; display: inline-flex; align-items: center; }
+.obBtn:hover { background: #f3f4f6; }
+.obBtn.on { background: #e6f0ff; border-color: #9cc1ff; color: #1d4ed8; }
+.obBtn.primary { background: #2b6fd6; border-color: #2b6fd6; color: #fff; }
+.obBtn.primary:hover { background: #2461c2; }
+.obBtn.sm { font-size: 12px; padding: 5px 10px; }
+.obBtn.ghost { background: transparent; color: #c8cdd4; border-color: #4a4a4a; }
+.obBtn.ghost:hover { background: rgba(255,255,255,.08); }
+
+/* ── Legend ── */
+.obLegend { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 14px; background: #d4ebf1; border-radius: 14px; padding: 12px 16px; }
+.obLegHead { display: grid; grid-template-columns: auto auto; column-gap: 9px; align-items: center; }
+.obLegHead > svg { grid-row: 1 / 3; }
+.obLegHead > span { font-size: 18px; font-weight: 700; color: #2a2a2a; line-height: 1.15; }
+.obLegSite { font-size: 11.5px !important; font-weight: 600 !important; color: #37707e !important; letter-spacing: 0.02em; }
+.obChips { display: flex; flex-wrap: wrap; gap: 7px; }
+.obChip { font: inherit; font-size: 13.5px; font-weight: 700; color: #fff; cursor: pointer; border: 0; border-radius: 8px; padding: 7px 13px; transition: transform 0.1s, box-shadow 0.15s, opacity 0.15s; }
+.obChip:hover { transform: translateY(-1px); }
+.obChip.on { box-shadow: 0 0 0 3px #fff, 0 0 0 5px currentColor; }
+.obChip.dim { opacity: 0.4; }
+.obChip.sm { font-size: 12px; padding: 5px 10px; }
+.obA21row { display: flex; align-items: center; gap: 9px; border-left: 1px solid #a9d3de; padding-left: 14px; }
+.obChip.a21 { color: #04303a; }
+.obA21note { font-size: 11.5px; color: #4a7b86; }
+
+/* ── Stage ── */
+.obStage { position: relative; background: #fff; border-radius: 16px; padding: 6px; box-shadow: 0 6px 26px rgba(0,0,0,.10); overflow: hidden; }
+.obSvg { display: block; width: 100%; height: auto; }
+
+/* ── Blink animation ── */
+@keyframes obBlink { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.15; transform: scale(1.5); } 100% { opacity: 1; transform: scale(1); } }
+.blink { transform-box: fill-box; transform-origin: center; animation: obBlink 1.1s cubic-bezier(.4,0,.2,1) infinite; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .blink { animation: none; } }
+
+/* ── Station Card (PC: overlay, mobile: inline) ── */
+.obCard { position: absolute; left: 18px; bottom: 18px; background: #fff; border: 1px solid #e2e5ea; border-radius: 14px; padding: 16px 18px; box-shadow: 0 8px 30px rgba(0,0,0,.18); min-width: 220px; max-width: 300px; z-index: 10; color: #222; }
+.obCardX { position: absolute; top: 10px; right: 12px; border: 0; background: none; font-size: 20px; line-height: 1; color: #9aa1ab; cursor: pointer; }
+.obCardSt { font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 10px; }
+.obCardJbtns { display: flex; gap: 7px; margin-bottom: 12px; }
+.obCardLab { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: #8b929c; text-transform: uppercase; margin-bottom: 8px; }
+.obCardRoutes { display: flex; flex-wrap: wrap; gap: 6px; }
+.obCardNone { font-size: 12px; color: #9aa1ab; }
+.obCardWarn { display: grid; grid-template-columns: 21px 1fr; gap: 8px; align-items: start; margin: 12px 0 0; padding-top: 11px; border-top: 1px solid #edeff2; font-size: 17px; line-height: 1.5; color: #8a7d4e; text-wrap: pretty; }
+.obCardWarn svg { margin-top: 2px; color: #b3a25f; }
+
+/* ── Transfer Bar ── */
+.obXfer { position: absolute; right: 18px; bottom: 18px; background: rgba(17,17,17,.92); color: #fff; border-radius: 14px; padding: 14px 18px; box-shadow: 0 8px 30px rgba(0,0,0,.3); display: flex; flex-direction: column; gap: 9px; max-width: 360px; z-index: 10; }
+.obXferK { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: #9aa1ab; text-transform: uppercase; margin-right: 10px; }
+.obXferPill { display: inline-block; font-size: 12px; font-weight: 700; color: #04303a; border-radius: 999px; padding: 3px 9px; margin-right: 5px; }
+.obXferPillLink { display: inline-block; font-size: 12px; font-weight: 700; color: #04303a; border-radius: 999px; padding: 3px 9px; margin-right: 5px; text-decoration: none; cursor: pointer; transition: filter 0.15s, transform 0.08s; }
+.obXferPillLink:hover { filter: brightness(1.12); text-decoration: underline; }
+.obXferPillLink:active { transform: scale(0.96); }
+.obXferV { font-size: 14px; font-weight: 600; color: #FFB257; }
+
+/* ── Journey Bar ── */
+.obJourney { position: static !important; right: auto !important; bottom: auto !important; max-width: none !important; margin-top: 12px; flex-direction: row !important; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 22px; }
+.obJourney .obBtn { border-color: #3a3a3a; background: #fff; color: #222; }
+.obJacts { display: flex; flex-wrap: wrap; gap: 7px; }
+.obJroute { font-size: 15px; font-weight: 700; color: #fff; }
+.obJourney b { color: #FFB257; }
+
+/* ── Copyright ── */
+.obCopyright { pointer-events: none; }
+
+/* ── Mobile (<768px) ── */
+@media (max-width: 768px) {
+  /* 4. SVG fit — 가로 스크롤 폐기, 전체 노선도 축소 표시 */
+  .obStage { overflow: hidden; }
+  .obSvg { min-width: unset; width: 100%; }
+
+  /* 5. 검색창 세로 스택, 버튼은 가로 */
+  .obHead { flex-direction: column; align-items: stretch; }
+  .obAct { flex-direction: column; gap: 8px; align-items: flex-start; }
+  .obSearchRow { flex-direction: column; gap: 8px; width: 100%; }
+  .obSearch { width: 100%; }
+  .obSearch input { width: 100%; }
+  .obArrow { display: none; }
+  .obBtnRow { flex-direction: row; gap: 8px; }
+
+  /* 6. 역 카드: 오버레이 → SVG 바로 아래 인라인 */
+  .obCard { position: static; left: auto; bottom: auto; max-width: 100%; min-width: unset; margin-top: 8px; box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+
+  /* Transfer bar: 인라인 */
+  .obXfer { position: static; right: auto; bottom: auto; max-width: 100%; margin-top: 8px; }
+
+  /* 범례: 가로 wrap (세로 쌓임 방지) */
+  .obLegend { flex-wrap: wrap; gap: 8px 12px; padding: 10px 12px; }
+  .obLegHead { margin-bottom: 4px; }
+  .obLegHead > span { font-size: 15px; }
+  .obChips { gap: 5px; }
+  .obChip { font-size: 12px; padding: 5px 10px; }
+  .obA21row { border-left: none; padding-left: 0; width: 100%; margin-top: 2px; }
+}

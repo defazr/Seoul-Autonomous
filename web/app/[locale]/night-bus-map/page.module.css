@@ -1,0 +1,232 @@
+/* ── TopBar ── */
+.topBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 0 20px;
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-2);
+  cursor: pointer;
+  color: var(--color-fg-1);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.backBtn:hover {
+  background-color: var(--color-bg-3);
+}
+
+/* ── Hero ── */
+.heading {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 36px;
+  color: var(--color-fg-1);
+  letter-spacing: -0.96px;
+  margin: 0 0 8px;
+}
+
+.subtitle {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--color-fg-3);
+  margin: 0 0 8px;
+}
+
+.intro {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--color-fg-3);
+  margin: 0 0 24px;
+}
+
+.datestamp {
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--color-fg-4);
+  margin: 0 0 24px;
+}
+
+/* ── Notice box ── */
+.noticeBox {
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-2);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 32px;
+}
+
+.noticeTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-warning);
+  margin-bottom: 10px;
+}
+
+.noticeText {
+  font-size: 13px;
+  line-height: 21px;
+  color: var(--color-fg-3);
+}
+
+.noticeText p {
+  margin: 0 0 4px;
+}
+
+.noticeText p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Content sections ── */
+.section {
+  margin-bottom: 40px;
+}
+
+.h2 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+  color: var(--color-fg-1);
+  letter-spacing: -0.4px;
+  margin: 0 0 16px;
+}
+
+.bodyText {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-fg-3);
+  margin: 0 0 8px;
+}
+
+.bodyText:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Hub list (HTML links for bots + accessibility) ── */
+.hubList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.hubLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--color-accent);
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-1);
+  transition: background-color 0.15s;
+}
+
+.hubLink:hover {
+  background-color: var(--color-bg-3);
+}
+
+/* ── Route cards (노선별 본문) ── */
+.routeCard {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--color-border-1);
+}
+
+.routeCard:last-child {
+  border-bottom: none;
+}
+
+.routeHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.routeColorDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.routeName {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--color-fg-1);
+}
+
+.routeTag {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background-color: rgba(34, 211, 238, 0.15);
+  color: #22d3ee;
+}
+
+.routeDesc {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-fg-3);
+  margin: 0;
+}
+
+/* ── Checklist section ── */
+.checkList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.checkList li {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-fg-3);
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.checkList li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background-color: var(--color-fg-4);
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .heading {
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: -0.48px;
+  }
+
+  .h2 {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .hubList {
+    grid-template-columns: 1fr;
+  }
+}

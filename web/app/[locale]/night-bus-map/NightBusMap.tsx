@@ -1,0 +1,496 @@
+'use client';
+
+import { useState, useMemo, useRef, useCallback } from 'react';
+import {
+  ROUTE_COLORS, ROUTE_LABEL, NODES, ROUTE_POLY, ROUTE_MEMBER,
+  ROUTE_ORDER, RIVER,
+} from './night-bus-data';
+import styles from './night-bus-map.module.css';
+
+/* ── Constants ── */
+const VBX = -70, VBY = -65, VBW = 2560, VBH = 1600;
+const CENTER = { x: 1210, y: 720 };
+
+/* ── 초성 검색 ── */
+const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+function choOf(ch: string) { const c = ch.charCodeAt(0); return (c >= 0xAC00 && c <= 0xD7A3) ? CHO[Math.floor((c - 0xAC00) / 588)] : null; }
+function stationMatch(name: string, q: string) {
+  const n = name.toLowerCase(), qq = q.toLowerCase();
+  for (let s = 0; s + qq.length <= n.length; s++) {
+    let ok = true;
+    for (let i = 0; i < qq.length; i++) {
+      const qc = qq[i], nc = n[s + i];
+      if (CHO.indexOf(qc) >= 0) { if (choOf(nc) !== qc) { ok = false; break; } }
+      else if (qc !== nc) { ok = false; break; }
+    }
+    if (ok) return true;
+  }
+  return false;
+}
+
+/* ── 라벨 위치 수동 지정 (값 변경 금지) ── */
+const LABEL_OVERRIDE: Record<string, string> = { '용마산역': 'up', '신용산역': 'right', '삼각지역': 'downleft', '홍대입구역': 'down', '신촌역': 'down', '가락시장역': 'upleft' };
+
+/* ── 종점 (전체 보기에서도 라벨 표시) ── */
+const TERMINI = (() => {
+  const s = new Set<string>();
+  for (const id in ROUTE_POLY) {
+    const pts = ROUTE_POLY[id];
+    [pts[0], pts[pts.length - 1]].forEach(e => {
+      let best: string | null = null, bd = 1e9;
+      for (const n in NODES) { const d = Math.hypot(NODES[n][0] - e[0], NODES[n][1] - e[1]); if (d < bd) { bd = d; best = n; } }
+      if (bd <= 14 && best) s.add(best);
+    });
+  }
+  return s;
+})();
+
+/* ── 노선 경유역 조회 ── */
+function stationRoutes(name: string) { return ROUTE_ORDER.filter(id => ROUTE_MEMBER[id]?.includes(name)); }
+
+/* ── 폴리라인 그대로 그리기 (보정 없음) ── */
+function routeD(id: string) {
+  const pts = ROUTE_POLY[id] || [];
+  if (pts.length < 2) return '';
+  return 'M ' + pts.map(p => `${p[0]} ${p[1]}`).join(' L ');
+}
+
+/* ── 구간만 잘라 그리기 ── */
+function routeSegD(id: string, n1: string, n2: string) {
+  const pts = ROUTE_POLY[id] || []; if (pts.length < 2) return '';
+  const acc = [0];
+  for (let i = 1; i < pts.length; i++) acc.push(acc[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const proj = (name: string) => {
+    const [px, py] = NODES[name]; let bd = 1e9, bl = 0;
+    for (let k = 0; k < pts.length - 1; k++) {
+      const [x1, y1] = pts[k], [x2, y2] = pts[k + 1], dx = x2 - x1, dy = y2 - y1, l2 = dx * dx + dy * dy;
+      let t = l2 ? ((px - x1) * dx + (py - y1) * dy) / l2 : 0; t = Math.max(0, Math.min(1, t));
+      const d = Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
+      if (d < bd) { bd = d; bl = acc[k] + t * Math.sqrt(l2); }
+    }
+    return bl;
+  };
+  let lo = proj(n1), hi = proj(n2); if (lo > hi) { const t = lo; lo = hi; hi = t; }
+  const at = (L: number): [number, number] => {
+    for (let k = 0; k < pts.length - 1; k++) if (L <= acc[k + 1]) { const seg = (acc[k + 1] - acc[k]) || 1, t = (L - acc[k]) / seg; return [pts[k][0] + t * (pts[k + 1][0] - pts[k][0]), pts[k][1] + t * (pts[k + 1][1] - pts[k][1])]; }
+    return pts[pts.length - 1];
+  };
+  const out: [number, number][] = [at(lo)];
+  for (let i = 0; i < pts.length; i++) if (acc[i] > lo && acc[i] < hi) out.push(pts[i]);
+  out.push(at(hi));
+  return 'M ' + out.map(p => `${Math.round(p[0] * 10) / 10} ${Math.round(p[1] * 10) / 10}`).join(' L ');
+}
+
+/* ── SearchBox ── */
+function SearchBox({ onPick, placeholder, selected }: { onPick: (n: string) => void; placeholder: string; selected: string | null }) {
+  const [q, setQ] = useState('');
+  const [open, setOpen] = useState(false);
+  const prevSelected = useRef(selected);
+  if (prevSelected.current !== selected) { prevSelected.current = selected; }
+
+  const displayQ = selected ? selected.replace(/역$/, '') : q;
+  const query = (selected ? '' : q).trim();
+  let res = (open && query) ? Object.keys(NODES).filter(n => stationMatch(n, query)) : [];
+  res.sort((a, b) => (stationMatch(a.slice(0, query.length), query) ? 0 : 1) - (stationMatch(b.slice(0, query.length), query) ? 0 : 1) || a.localeCompare(b, 'ko'));
+  res = res.slice(0, 8);
+
+  return (
+    <div className={styles.obSearch}>
+      <input
+        type="text"
+        value={selected ? selected.replace(/역$/, '') : q}
+        placeholder={placeholder}
+        aria-label={placeholder}
+        onChange={(e) => { setQ(e.target.value); setOpen(true); }}
+        onFocus={(e) => { setOpen(true); e.target.select(); if (selected) setQ(''); }}
+        onBlur={() => setTimeout(() => setOpen(false), 150)}
+      />
+      {open && query && res.length > 0 && (
+        <ul className={styles.obSr}>
+          {res.map(n => <li key={n} onMouseDown={() => { onPick(n); setQ(n.replace(/역$/, '')); setOpen(false); }}>{n}</li>)}
+        </ul>
+      )}
+      {open && query && res.length === 0 && (
+        <ul className={styles.obSr}><li className={styles.none}>지도에 없는 역입니다</li></ul>
+      )}
+    </div>
+  );
+}
+
+/* ── Header ── */
+function Header({ isAll, clearSel, exportPNG, onPickFrom, onPickTo, jFrom, jTo }: {
+  isAll: boolean; clearSel: () => void; exportPNG: () => void;
+  onPickFrom: (n: string) => void; onPickTo: (n: string) => void; jFrom: string | null; jTo: string | null;
+}) {
+  return (
+    <div className={styles.obHead}>
+      <p className={styles.obHeadDesc}>노선 클릭=강조 · 역 클릭=경유 노선 · 2개 이상 선택=공유 환승역 깜빡 · 선은 직접 작도</p>
+      <div className={styles.obAct}>
+        <div className={styles.obSearchRow}>
+          <SearchBox onPick={onPickFrom} placeholder="출발역 (초성 가능)" selected={jFrom} />
+          <span className={styles.obArrow}>→</span>
+          <SearchBox onPick={onPickTo} placeholder="도착역 (초성 가능)" selected={jTo} />
+        </div>
+        <div className={styles.obBtnRow}>
+          {!isAll && <button className={styles.obBtn} onClick={clearSel}>전체 보기</button>}
+          <button className={`${styles.obBtn} ${styles.primary}`} onClick={exportPNG}>PNG 저장</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Legend ── */
+function Legend({ sel, toggle }: { sel: Set<string>; toggle: (id: string) => void }) {
+  const others = ROUTE_ORDER.filter(id => id !== 'A21');
+  return (
+    <div className={styles.obLegend}>
+      <div className={styles.obLegHead}>
+        <svg viewBox="0 0 40 40" width={32} height={32} aria-hidden="true">
+          <rect x={8} y={9} width={24} height={19} rx={5} fill="#2b6fd6" />
+          <rect x={11} y={13} width={8} height={7} rx={1.5} fill="#cfe4ff" />
+          <rect x={21} y={13} width={8} height={7} rx={1.5} fill="#cfe4ff" />
+          <circle cx={14} cy={30} r={3} fill="#111" />
+          <circle cx={26} cy={30} r={3} fill="#111" />
+        </svg>
+        <span>올빼미버스</span>
+        <span className={styles.obLegSite}>SeoulAutonomous.com</span>
+      </div>
+      <div className={styles.obChips}>
+        {others.map(id => {
+          const on = sel.has(id), dim = sel.size > 0 && !on;
+          return (
+            <button
+              key={id}
+              className={`${styles.obChip}${on ? ` ${styles.on}` : ''}${dim ? ` ${styles.dim}` : ''}`}
+              style={{ background: ROUTE_COLORS[id], color: id === 'N72' ? '#fff' : undefined }}
+              onClick={() => toggle(id)}
+            >{ROUTE_LABEL[id]}</button>
+          );
+        })}
+      </div>
+      {ROUTE_ORDER.includes('A21') && (
+        <div className={styles.obA21row}>
+          {(() => {
+            const id = 'A21', on = sel.has(id), dim = sel.size > 0 && !on;
+            return (
+              <button
+                className={`${styles.obChip} ${styles.a21}${on ? ` ${styles.on}` : ''}${dim ? ` ${styles.dim}` : ''}`}
+                style={{ background: ROUTE_COLORS.A21 }}
+                onClick={() => toggle(id)}
+              >심야A21</button>
+            );
+          })()}
+          <span className={styles.obA21note}>자율주행 심야 (별도)</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── StationCard ── */
+function StationCard({ station, sel, toggle, setStation, setFrom, setTo, jFrom, jTo }: {
+  station: string; sel: Set<string>; toggle: (id: string) => void;
+  setStation: (n: string | null) => void; setFrom: (n: string) => void; setTo: (n: string) => void;
+  jFrom: string | null; jTo: string | null;
+}) {
+  const routes = stationRoutes(station);
+  return (
+    <div className={styles.obCard}>
+      <button className={styles.obCardX} onClick={() => setStation(null)}>×</button>
+      <div className={styles.obCardSt}>{station.replace(/역$/, '')}</div>
+      <div className={styles.obCardJbtns}>
+        <button className={`${styles.obBtn} ${styles.sm}${jFrom === station ? ` ${styles.on}` : ''}`} onClick={() => setFrom(station)}>여기서 출발</button>
+        <button className={`${styles.obBtn} ${styles.sm}${jTo === station ? ` ${styles.on}` : ''}`} onClick={() => setTo(station)}>여기로 도착</button>
+      </div>
+      <div className={styles.obCardLab}>이 역을 지나는 노선</div>
+      <div className={styles.obCardRoutes}>
+        {routes.length ? routes.map(id => (
+          <button key={id} className={`${styles.obChip} ${styles.sm}${sel.has(id) ? ` ${styles.on}` : ''}`}
+            style={{ background: ROUTE_COLORS[id], color: id === 'N72' ? '#fff' : undefined }}
+            onClick={() => toggle(id)}>{ROUTE_LABEL[id]}</button>
+        )) : <span className={styles.obCardNone}>현재 표시된 노선 없음</span>}
+      </div>
+      <p className={styles.obCardWarn}>
+        <svg viewBox="0 0 24 24" width={21} height={21} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx={12} cy={10} r={3} />
+        </svg>
+        지도의 역 위치는 권역 표시입니다. 실제 정류장은 길 건너편이나 떨어진 곳일 수 있으니, 탑승 전 카카오맵에서 정확한 위치와 방향을 확인하세요.
+      </p>
+    </div>
+  );
+}
+
+/* ── TransferBar ── */
+function TransferBar({ sel, transfer }: { sel: Set<string>; transfer: Set<string> }) {
+  const ids = [...sel].sort((a, b) => ROUTE_ORDER.indexOf(a as typeof ROUTE_ORDER[number]) - ROUTE_ORDER.indexOf(b as typeof ROUTE_ORDER[number]));
+  const shared = [...transfer].map(n => n.replace(/역$/, ''));
+  return (
+    <div className={styles.obXfer}>
+      <div><span className={styles.obXferK}>선택 노선</span>
+        {ids.map(id => <span key={id} className={styles.obXferPill} style={{ background: ROUTE_COLORS[id], color: id === 'N72' ? '#fff' : undefined }}>{ROUTE_LABEL[id]}</span>)}
+      </div>
+      <div><span className={styles.obXferK}>공유 환승역</span>
+        <span className={styles.obXferV}>{shared.length ? shared.join(' · ') : '없음 — 이 노선들끼리는 직접 환승 불가'}</span>
+      </div>
+    </div>
+  );
+}
+
+/* ── JourneyBar ── */
+function JourneyBar({ jFrom, jTo, journey, clearJourney }: {
+  jFrom: string | null; jTo: string | null;
+  journey: { type: string; routes?: string[]; via?: string; alt?: string[] } | null;
+  clearJourney: () => void;
+}) {
+  const chip = (id: string) => {
+    const href = `https://map.naver.com/p/search/${encodeURIComponent('서울 심야버스 ' + ROUTE_LABEL[id])}`;
+    return <a key={id} className={styles.obXferPillLink} href={href} target="_blank" rel="noopener noreferrer" title={`네이버지도에서 ${ROUTE_LABEL[id]} 노선 보기`} style={{ background: ROUTE_COLORS[id], color: id === 'N72' ? '#fff' : undefined }}>{ROUTE_LABEL[id]}</a>;
+  };
+  const st = (n: string) => n.replace(/역$/, '');
+  let body;
+  if (!jFrom) body = <span className={styles.obXferV}>출발역을 검색하거나 지도에서 클릭해 지정하세요</span>;
+  else if (!jTo) body = <span className={styles.obXferV}>도착역을 검색하거나 지도에서 클릭해 지정하세요</span>;
+  else if (journey?.type === 'direct') body = <span className={styles.obXferV}>{chip(journey.routes![0])} 직통{journey.alt?.length ? <>{' (또는 '}{journey.alt.map(chip)}{')'}</> : null}</span>;
+  else if (journey?.type === 'transfer') body = <span className={styles.obXferV}>{chip(journey.routes![0])} → <b>{st(journey.via!)}</b>에서 환승 → {chip(journey.routes![1])}</span>;
+  else body = <span className={styles.obXferV}>환승 1회로는 연결 불가 — 아래 지도앱 길찾기를 이용하세요</span>;
+  const both = jFrom && jTo;
+  return (
+    <div className={`${styles.obXfer} ${styles.obJourney}`}>
+      <div><span className={styles.obXferK}>경로</span><span className={styles.obJroute}>{jFrom ? st(jFrom) : '?'} → {jTo ? st(jTo) : '?'}</span></div>
+      <div>{body}</div>
+      <div className={styles.obJacts}>
+        {both && <a className={`${styles.obBtn} ${styles.sm}`} href="https://map.kakao.com/?nil_profile=title&nil_src=local" target="_blank" rel="noopener noreferrer">카카오맵 길찾기</a>}
+        {both && <a className={`${styles.obBtn} ${styles.sm}`} href="https://map.naver.com/p/directions/-/-/-/transit?c=15.00,0,0,0,dh" target="_blank" rel="noopener noreferrer">네이버지도 길찾기</a>}
+        <button className={`${styles.obBtn} ${styles.sm} ${styles.ghost}`} onClick={clearJourney}>초기화</button>
+      </div>
+    </div>
+  );
+}
+
+/* ── SVG Map ── */
+function SvgMap({ svgRef, order, rOpacity, rWidth, isAll, activeNodes, transfer, sel, toggle, station, setStation, jFrom, jTo, segs }: {
+  svgRef: React.RefObject<SVGSVGElement | null>; order: string[];
+  rOpacity: (id: string) => number; rWidth: (id: string) => number;
+  isAll: boolean; activeNodes: Set<string> | null; transfer: Set<string>;
+  sel: Set<string>; toggle: (id: string) => void;
+  station: string | null; setStation: (n: string) => void;
+  jFrom: string | null; jTo: string | null;
+  segs: Record<string, string> | null;
+}) {
+  const [hover, setHover] = useState<string | null>(null);
+
+  const lines = order.map(id => {
+    const seld = sel.has(id), d = routeD(id);
+    const seg = segs && segs[id];
+    const els: React.ReactElement[] = [];
+    if (seg) {
+      els.push(<path key={id + '_faint'} d={d} fill="none" stroke={ROUTE_COLORS[id]} strokeWidth={id === 'A21' ? 7 : 6} strokeOpacity={0.18} strokeLinecap="round" strokeLinejoin="round" onClick={() => toggle(id)} style={{ cursor: 'pointer' }} />);
+      els.push(<path key={id + '_c'} d={seg} fill="none" stroke="#fff" strokeWidth={rWidth(id) + 7} strokeLinecap="round" strokeLinejoin="round" style={{ pointerEvents: 'none' }} />);
+      els.push(<path key={id} d={seg} fill="none" stroke={ROUTE_COLORS[id]} strokeWidth={rWidth(id)} strokeLinecap="round" strokeLinejoin="round" style={{ pointerEvents: 'none' }} />);
+      return els;
+    }
+    if (seld) els.push(<path key={id + '_c'} d={d} fill="none" stroke="#fff" strokeWidth={rWidth(id) + 7} strokeLinecap="round" strokeLinejoin="round" style={{ pointerEvents: 'none' }} />);
+    els.push(<path key={id} d={d} fill="none" stroke={ROUTE_COLORS[id]} strokeWidth={rWidth(id)} strokeOpacity={rOpacity(id)} strokeLinecap="round" strokeLinejoin="round" onClick={() => toggle(id)} style={{ cursor: 'pointer' }} />);
+    return els;
+  });
+
+  const labelEls: React.ReactElement[] = [], circleEls: React.ReactElement[] = [];
+  Object.keys(NODES).forEach(name => {
+    const [x, y] = NODES[name];
+    const routes = stationRoutes(name);
+    const isXfer = routes.length >= 2;
+    const active = isAll || (activeNodes?.has(name) ?? false);
+    const op = (active || name === hover) ? 1 : 0.12;
+    const blink = transfer.has(name);
+    const r = isXfer ? 11 : 7;
+    const showLabel = isAll ? (isXfer || TERMINI.has(name) || name === hover || name === station || name === jFrom || name === jTo) : (active || name === hover);
+    let dir = LABEL_OVERRIDE[name];
+    if (!dir) {
+      const dx = x - CENTER.x, dy = y - CENTER.y;
+      dir = Math.abs(dx) >= Math.abs(dy) ? (dx >= 0 ? 'right' : 'left') : (dy >= 0 ? 'down' : 'up');
+    }
+    let lx = x, ly = y, anc: 'start' | 'middle' | 'end' = 'middle', ddy = '0';
+    const gap = r + 8;
+    if (dir === 'right') { lx = x + gap; anc = 'start'; ddy = '0.34em'; }
+    else if (dir === 'left') { lx = x - gap; anc = 'end'; ddy = '0.34em'; }
+    else if (dir === 'down') { ly = y + gap; ddy = '0.9em'; }
+    else if (dir === 'downleft') { lx = x - gap * 0.7; ly = y + gap * 0.7; anc = 'end'; ddy = '0.7em'; }
+    else if (dir === 'upleft') { lx = x - gap * 0.7; ly = y - gap * 0.7; anc = 'end'; ddy = '-0.05em'; }
+    else { ly = y - gap; ddy = '-0.1em'; }
+    const nm = name.replace(/역$/, '');
+    if (showLabel) labelEls.push(
+      <text key={name} x={lx} y={ly} dy={ddy} textAnchor={anc} opacity={op} fontSize={isXfer ? 26 : 22} fontWeight={isXfer ? 700 : 600} fill={blink ? '#B35F00' : '#1a1a1a'} stroke="#f3f1ea" strokeWidth={4.5} paintOrder="stroke" style={{ strokeLinejoin: 'round', cursor: 'pointer' }} onClick={() => setStation(name)}>{nm}</text>
+    );
+    circleEls.push(
+      <g key={name} opacity={op} style={{ cursor: 'pointer' }} onClick={() => setStation(name)} onMouseEnter={() => setHover(name)} onMouseLeave={() => setHover(h => h === name ? null : h)}>
+        {blink && <circle className={styles.blink} cx={x} cy={y} r={r + 5} fill="none" stroke="#FF9500" strokeWidth={4} />}
+        {!blink && name === station && <circle className={styles.blink} cx={x} cy={y} r={r + 5} fill="none" stroke="#2b6fd6" strokeWidth={4} />}
+        <circle cx={x} cy={y} r={r} fill="#fff" stroke={blink ? '#E07B00' : (isXfer ? '#333' : '#888')} strokeWidth={isXfer ? 3 : 2.2} />
+        {(name === jFrom || name === jTo) && (
+          <g style={{ pointerEvents: 'none' }}>
+            <circle cx={x} cy={y} r={r + 7} fill="none" stroke="#111" strokeWidth={3.5} />
+            <rect x={x - 28} y={y - r - 42} width={56} height={29} rx={7} fill="#111" />
+            <text x={x} y={y - r - 21} textAnchor="middle" fontSize={17} fontWeight={700} fill="#fff">{name === jFrom ? '출발' : '도착'}</text>
+          </g>
+        )}
+      </g>
+    );
+  });
+
+  return (
+    <svg ref={svgRef} className={styles.obSvg} viewBox={`${VBX} ${VBY} ${VBW} ${VBH}`} xmlns="http://www.w3.org/2000/svg" role="img" aria-label="서울 올빼미버스 노선도">
+      <desc>ⓒ 2026 SeoulAutonomous.com · 서울 올빼미버스 노선도 도식 · 제작자가 직접 작도한 창작물 · All Rights Reserved · 무단 복제·재배포 금지 · 출처: SeoulAutonomous.com</desc>
+      <rect x={VBX} y={VBY} width={VBW} height={VBH} fill="#f7f4ec" />
+      {RIVER.d && (
+        <g style={{ pointerEvents: 'none' }}>
+          <path d={RIVER.d} fill="none" stroke={RIVER.color} strokeWidth={48.5} strokeLinecap="round" strokeLinejoin="round" />
+          <text x={RIVER.label[0]} y={RIVER.label[1]} fontSize={19} fontWeight={700} fill="#332C2B">한강</text>
+        </g>
+      )}
+      <g>{lines}</g>
+      <g>{labelEls}</g>
+      <g>{circleEls}</g>
+      <text className={styles.obCopyright} x={2470} y={1516} textAnchor="end" fontSize={30} fontWeight={600} fill="#615a4d" style={{ pointerEvents: 'none' }}>ⓒ 2026 SeoulAutonomous.com · All Rights Reserved · 무단 복제·재배포 금지</text>
+    </svg>
+  );
+}
+
+/* ── Main Component ── */
+export function NightBusMap() {
+  const [sel, setSel] = useState<Set<string>>(() => new Set());
+  const [station, setStation] = useState<string | null>(null);
+  const [jFrom, setJFrom] = useState<string | null>(null);
+  const [jTo, setJTo] = useState<string | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  const journey = useMemo(() => {
+    if (!jFrom || !jTo || jFrom === jTo) return null;
+    const rOf = (n: string) => ROUTE_ORDER.filter(id => ROUTE_MEMBER[id]?.includes(n));
+    const direct = rOf(jFrom).filter(id => ROUTE_MEMBER[id]?.includes(jTo));
+    if (direct.length) {
+      let best = direct[0], bh = 1e9;
+      direct.forEach(id => { const a = ROUTE_MEMBER[id]; const h = Math.abs(a.indexOf(jFrom) - a.indexOf(jTo)); if (h < bh) { bh = h; best = id; } });
+      return { type: 'direct', routes: [best], alt: direct.filter(d => d !== best) };
+    }
+    let best: { type: string; routes: string[]; via: string; h: number } | null = null;
+    rOf(jFrom).forEach(a => rOf(jTo).forEach(b => {
+      if (a === b) return;
+      ROUTE_MEMBER[a]?.forEach(s => {
+        if (s === jFrom || s === jTo || !ROUTE_MEMBER[b]?.includes(s)) return;
+        const h = Math.abs(ROUTE_MEMBER[a].indexOf(jFrom) - ROUTE_MEMBER[a].indexOf(s)) + Math.abs(ROUTE_MEMBER[b].indexOf(s) - ROUTE_MEMBER[b].indexOf(jTo));
+        if (!best || h < best.h) best = { type: 'transfer', routes: [a, b], via: s, h };
+      });
+    }));
+    return best || { type: 'none' };
+  }, [jFrom, jTo]);
+
+  const jActive = !!(journey && (journey as { routes?: string[] }).routes);
+  const dispSel = jActive ? new Set((journey as { routes: string[] }).routes) : sel;
+  const isAll = dispSel.size === 0;
+
+  const journeySegs = useMemo(() => {
+    if (!jActive || !journey) return null;
+    const j = journey as { type: string; routes: string[]; via?: string };
+    if (j.type === 'direct') return { [j.routes[0]]: routeSegD(j.routes[0], jFrom!, jTo!) };
+    return { [j.routes[0]]: routeSegD(j.routes[0], jFrom!, j.via!), [j.routes[1]]: routeSegD(j.routes[1], j.via!, jTo!) };
+  }, [jActive, journey, jFrom, jTo]);
+
+  const toggle = useCallback((id: string) => {
+    if (jFrom || jTo) { setJFrom(null); setJTo(null); setSel(new Set([id])); return; }
+    setSel(p => { const n = new Set(p); n.has(id) ? n.delete(id) : n.add(id); return n; });
+  }, [jFrom, jTo]);
+  const clearSel = useCallback(() => { setSel(new Set()); setStation(null); setJFrom(null); setJTo(null); }, []);
+  const clearJourney = useCallback(() => { setJFrom(null); setJTo(null); }, []);
+  const setFrom = useCallback((n: string) => { setJFrom(n); setStation(null); }, []);
+  const setTo = useCallback((n: string) => { setJTo(n); setStation(null); }, []);
+  const pickStation = useCallback((n: string) => {
+    setStation(n);
+    if (!jFrom) setJFrom(n);
+    else if (!jTo && n !== jFrom) setJTo(n);
+  }, [jFrom, jTo]);
+
+  const activeNodes = useMemo(() => {
+    if (isAll) return null;
+    const s = new Set<string>();
+    if (jActive && journey) {
+      const j = journey as { type: string; routes: string[]; via?: string };
+      const between = (id: string, a: string, b: string) => {
+        const arr = ROUTE_MEMBER[id] || []; let i = arr.indexOf(a), jj = arr.indexOf(b);
+        if (i < 0 || jj < 0) return [] as string[];
+        if (i > jj) { const t = i; i = jj; jj = t; } return arr.slice(i, jj + 1);
+      };
+      if (j.type === 'direct') between(j.routes[0], jFrom!, jTo!).forEach(n => s.add(n));
+      else { between(j.routes[0], jFrom!, j.via!).forEach(n => s.add(n)); between(j.routes[1], j.via!, jTo!).forEach(n => s.add(n)); }
+    } else dispSel.forEach(id => ROUTE_MEMBER[id]?.forEach(n => s.add(n)));
+    if (jFrom) s.add(jFrom); if (jTo) s.add(jTo);
+    return s;
+  }, [jActive, sel, journey, jFrom, jTo, isAll, dispSel]);
+
+  const transfer = useMemo(() => {
+    if (jActive && journey) { const j = journey as { via?: string }; return j.via ? new Set([j.via]) : new Set<string>(); }
+    if (sel.size < 2) return new Set<string>();
+    const c: Record<string, number> = {};
+    sel.forEach(id => (ROUTE_MEMBER[id] || []).forEach(n => c[n] = (c[n] || 0) + 1));
+    return new Set(Object.keys(c).filter(n => c[n] >= 2));
+  }, [sel, jActive, journey]);
+
+  const rOpacity = (id: string) => isAll ? 1 : (dispSel.has(id) ? 1 : 0.1);
+  const rWidth = (id: string) => (id === 'A21' ? 7 : 6) + (dispSel.has(id) ? 2 : 0);
+  const order = (() => { const ns = [...ROUTE_ORDER].filter(id => !dispSel.has(id)); const s = [...ROUTE_ORDER].filter(id => dispSel.has(id)); return [...ns, ...s]; })();
+
+  function exportPNG() {
+    const src = svgRef.current; if (!src) return;
+    const c = src.cloneNode(true) as SVGSVGElement;
+    c.querySelectorAll(`.${styles.blink}`).forEach(e => e.removeAttribute('class'));
+    // Also remove by animation attribute for safety
+    c.querySelectorAll('[class*="blink"]').forEach(e => e.removeAttribute('class'));
+    const cp = c.querySelector(`.${styles.obCopyright}`) || c.querySelector('text[x="2470"]');
+    if (cp) {
+      cp.textContent = 'ⓒ 2026 SeoulAutonomous.com · All Rights Reserved · 무단 복제·재배포 금지 · 공식 대체 자료 아님';
+      const warn = cp.cloneNode(false) as SVGTextElement;
+      warn.removeAttribute('class');
+      warn.setAttribute('y', '1474');
+      warn.setAttribute('font-size', '27');
+      warn.setAttribute('font-weight', '500');
+      warn.textContent = '역 위치는 권역 표시 — 실제 정류장 위치·방향은 지도앱에서 확인';
+      cp.parentNode?.insertBefore(warn, cp);
+    }
+    const sc = 1.5, W = Math.round(VBW * sc), H = Math.round(VBH * sc);
+    c.setAttribute('width', String(W)); c.setAttribute('height', String(H));
+    c.setAttribute('viewBox', `${VBX} ${VBY} ${VBW} ${VBH}`);
+    const xml = new XMLSerializer().serializeToString(c);
+    const url = URL.createObjectURL(new Blob([xml], { type: 'image/svg+xml;charset=utf-8' }));
+    const img = new Image();
+    img.onload = () => {
+      const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+      const x = cv.getContext('2d')!;
+      x.fillStyle = '#f7f4ec'; x.fillRect(0, 0, W, H);
+      x.drawImage(img, 0, 0, W, H);
+      URL.revokeObjectURL(url);
+      cv.toBlob(b => {
+        if (!b) return;
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        const ids = [...dispSel];
+        a.download = ids.length ? `owlbus-${ids.join('-').toLowerCase()}.png` : 'owlbus-all.png';
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 900);
+      }, 'image/png');
+    };
+    img.src = url;
+  }
+
+  return (
+    <div className={styles.ob}>
+      <Header isAll={isAll && !jFrom && !jTo} clearSel={clearSel} exportPNG={exportPNG} onPickFrom={(n) => setJFrom(n)} onPickTo={(n) => setJTo(n)} jFrom={jFrom} jTo={jTo} />
+      <Legend sel={dispSel} toggle={toggle} />
+      <div className={styles.obStage}>
+        <SvgMap svgRef={svgRef} order={order} rOpacity={rOpacity} rWidth={rWidth} isAll={isAll} activeNodes={activeNodes} transfer={transfer} sel={dispSel} toggle={toggle} station={station} setStation={pickStation} jFrom={jFrom} jTo={jTo} segs={journeySegs} />
+        {station && <StationCard station={station} sel={dispSel} toggle={toggle} setStation={setStation} setFrom={setFrom} setTo={setTo} jFrom={jFrom} jTo={jTo} />}
+        {!jFrom && !jTo && sel.size >= 2 && <TransferBar sel={sel} transfer={transfer} />}
+      </div>
+      {(jFrom || jTo) && <JourneyBar jFrom={jFrom} jTo={jTo} journey={journey} clearJourney={clearJourney} />}
+    </div>
+  );
+}

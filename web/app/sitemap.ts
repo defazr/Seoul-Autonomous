@@ -77,5 +77,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
+  // ko-only pages (no en alternate)
+  entries.push({
+    url: `${SITE_URL}/ko/night-bus-map`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  });
+
   return entries;
 }

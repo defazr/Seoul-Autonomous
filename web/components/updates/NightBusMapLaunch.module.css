@@ -1,0 +1,12 @@
+.section { margin-bottom: 36px; }
+.h2 { font-weight: 600; font-size: 20px; line-height: 28px; color: var(--color-fg-1); margin: 0 0 14px; }
+.h3 { font-weight: 600; font-size: 16px; line-height: 22px; color: var(--color-fg-1); margin: 24px 0 8px; }
+.p { font-size: 15px; line-height: 26px; color: var(--color-fg-2); margin: 0 0 14px; }
+.ul { font-size: 15px; line-height: 26px; color: var(--color-fg-2); margin: 0 0 14px; padding: 0 0 0 20px; display: flex; flex-direction: column; gap: 6px; }
+.img { width: 100%; height: auto; border-radius: 12px; margin: 12px 0 20px; }
+.cta { margin: 8px 0 0; }
+.ctaLink { font-size: 15px; font-weight: 600; color: var(--color-accent); text-decoration: none; border-bottom: 1px solid rgba(0,212,255,.3); }
+.ctaLink:hover { border-bottom-color: var(--color-accent); }
+.faq { margin-bottom: 20px; }
+.faqQ { font-weight: 600; font-size: 15px; line-height: 22px; color: var(--color-fg-1); margin: 0 0 6px; }
+.faqA { font-size: 14px; line-height: 24px; color: var(--color-fg-3); margin: 0; }

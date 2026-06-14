@@ -8,6 +8,7 @@ export type UpdateEntry = {
   summaryEn: string;
   summaryKo: string;
   relatedRouteIds: string[];
+  customRender?: string;
   sections: {
     whatChanged: { en: string; ko: string };
     confirmedInfo: { en: string[]; ko: string[] };

@@ -61,19 +61,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
 
   for (const update of getAllUpdates()) {
-    for (const locale of locales) {
+    if (update.customRender) {
+      // ko 전용 글 — en alternate 없음
       entries.push({
-        url: `${SITE_URL}/${locale}/updates/${update.slug}`,
+        url: `${SITE_URL}/ko/updates/${update.slug}`,
         lastModified: update.date,
         changeFrequency: 'monthly' as const,
         priority: 0.6,
-        alternates: {
-          languages: {
-            en: `${SITE_URL}/en/updates/${update.slug}`,
-            ko: `${SITE_URL}/ko/updates/${update.slug}`,
-          },
-        },
       });
+    } else {
+      for (const locale of locales) {
+        entries.push({
+          url: `${SITE_URL}/${locale}/updates/${update.slug}`,
+          lastModified: update.date,
+          changeFrequency: 'monthly' as const,
+          priority: 0.6,
+          alternates: {
+            languages: {
+              en: `${SITE_URL}/en/updates/${update.slug}`,
+              ko: `${SITE_URL}/ko/updates/${update.slug}`,
+            },
+          },
+        });
+      }
     }
   }
 

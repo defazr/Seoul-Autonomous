@@ -47,7 +47,8 @@ export default async function UpdatesPage({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'updates' });
   const isKo = locale === 'ko';
-  const updates = getAllUpdates();
+  const allUpdates = getAllUpdates();
+  const updates = allUpdates.filter(e => !e.customRender || locale === 'ko');
 
   return (
     <PageContainer width="longform">

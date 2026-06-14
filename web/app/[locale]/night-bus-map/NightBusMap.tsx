@@ -7,6 +7,12 @@ import {
 } from './night-bus-data';
 import styles from './night-bus-map.module.css';
 
+/* ── 역명 표시 (서울역만 예외 — 도시명 혼동 방지) ── */
+function shortName(name: string) {
+  if (name === '서울역') return '서울역';
+  return name.replace(/역$/, '');
+}
+
 /* ── 칩 글자색 자동 결정 (배경 밝기 기준) ── */
 function chipTextColor(hex: string) {
   const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
@@ -19,6 +25,8 @@ const CENTER = { x: 1210, y: 720 };
 const DEFAULT_VB = { x: VBX, y: VBY, w: VBW, h: VBH };
 /* 모바일 전용 — 노선망 bbox + 패딩 70. 바깥 빈 여백 제거, 끝역 모두 포함 */
 const MOBILE_VB = { x: 110, y: 17, w: 2200, h: 1436 };
+/* 전체화면 전용 — 전체 콘텐츠(저작권 포함) + 패딩, 중앙 정렬 */
+const FS_VB = { x: VBX - 20, y: VBY - 20, w: VBW + 40, h: VBH + 60 };
 const MIN_ZOOM = 1, MAX_ZOOM = 4;
 const REDUCED_MOTION = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
@@ -255,12 +263,12 @@ function SearchBox({ onPick, placeholder, selected }: { onPick: (n: string) => v
   useEffect(() => {
     if (prevSelected.current !== selected) {
       prevSelected.current = selected;
-      if (selected && !editing) setQ(selected.replace(/역$/, ''));
+      if (selected && !editing) setQ(shortName(selected));
       else if (!selected) setQ('');
     }
   }, [selected, editing]);
 
-  const displayVal = editing ? q : (selected ? selected.replace(/역$/, '') : q);
+  const displayVal = editing ? q : (selected ? shortName(selected) : q);
   const query = q.trim();
   let res = (open && query) ? Object.keys(NODES).filter(n => stationMatch(n, query)) : [];
   res.sort((a, b) => (stationMatch(a.slice(0, query.length), query) ? 0 : 1) - (stationMatch(b.slice(0, query.length), query) ? 0 : 1) || a.localeCompare(b, 'ko'));
@@ -279,7 +287,7 @@ function SearchBox({ onPick, placeholder, selected }: { onPick: (n: string) => v
       />
       {open && query && res.length > 0 && (
         <ul className={styles.obSr}>
-          {res.map(n => <li key={n} onMouseDown={() => { onPick(n); setQ(n.replace(/역$/, '')); setOpen(false); }}>{n}</li>)}
+          {res.map(n => <li key={n} onMouseDown={() => { onPick(n); setQ(shortName(n)); setOpen(false); }}>{n}</li>)}
         </ul>
       )}
       {open && query && res.length === 0 && (
@@ -373,7 +381,7 @@ function StationCard({ station, sel, toggle, setStation, setFrom, setTo, jFrom, 
   return (
     <div className={styles.obCard}>
       <button className={styles.obCardX} onClick={() => setStation(null)}>×</button>
-      <div className={styles.obCardSt}>{station.replace(/역$/, '')}</div>
+      <div className={styles.obCardSt}>{shortName(station)}</div>
       <div className={styles.obCardJbtns}>
         <button className={`${styles.obBtn} ${styles.sm}${jFrom === station ? ` ${styles.on}` : ''}`} onClick={() => setFrom(station)}>여기서 출발</button>
         <button className={`${styles.obBtn} ${styles.sm}${jTo === station ? ` ${styles.on}` : ''}`} onClick={() => setTo(station)}>여기로 도착</button>
@@ -405,7 +413,7 @@ function StationCard({ station, sel, toggle, setStation, setFrom, setTo, jFrom, 
 /* ── TransferBar ── */
 function TransferBar({ sel, transfer }: { sel: Set<string>; transfer: Set<string> }) {
   const ids = [...sel].sort((a, b) => ROUTE_ORDER.indexOf(a as typeof ROUTE_ORDER[number]) - ROUTE_ORDER.indexOf(b as typeof ROUTE_ORDER[number]));
-  const shared = [...transfer].map(n => n.replace(/역$/, ''));
+  const shared = [...transfer].map(n => shortName(n));
   return (
     <div className={styles.obXfer}>
       <div><span className={styles.obXferK}>선택 노선</span>
@@ -427,7 +435,7 @@ function JourneyBar({ jFrom, jTo, journey, clearAll, focusedDirect, setFocusedDi
   hiddenLegs: Set<string>; toggleLeg: (id: string) => void;
   hideReset?: boolean;
 }) {
-  const st = (n: string) => n.replace(/역$/, '');
+  const st = (n: string) => shortName(n);
   const sameStation = !!(jFrom && jTo && jFrom === jTo);
   const both = jFrom && jTo && !sameStation;
 
@@ -461,7 +469,16 @@ function JourneyBar({ jFrom, jTo, journey, clearAll, focusedDirect, setFocusedDi
     );
   }
   else if (journey?.type === 'transfer') body = <span className={styles.obJtransfer}>{toggleChip(journey.routes![0])}<span className={styles.obJarr}>→</span><span className={styles.obJvia}>{st(journey.via!)}에서 환승</span><span className={styles.obJarr}>→</span>{toggleChip(journey.routes![1])}</span>;
-  else body = <span className={styles.obXferV}>환승 1회로는 연결 불가 — 아래 지도앱 길찾기를 이용하세요</span>;
+  else if (journey?.type === 'transfer2') {
+    const jj = journey as unknown as { routes: string[]; via1: string; via2: string };
+    body = (
+      <div>
+        <span className={styles.obXferK}>2회 환승 경로</span>
+        <span className={styles.obJtransfer}>{toggleChip(jj.routes[0])}<span className={styles.obJarr}>→</span><span className={styles.obJvia}>{st(jj.via1)}에서 환승</span><span className={styles.obJarr}>→</span>{toggleChip(jj.routes[1])}<span className={styles.obJarr}>→</span><span className={styles.obJvia}>{st(jj.via2)}에서 환승</span><span className={styles.obJarr}>→</span>{toggleChip(jj.routes[2])}</span>
+      </div>
+    );
+  }
+  else body = <span className={styles.obXferV}>연결 가능한 경로가 없습니다 — 아래 지도앱 길찾기를 이용하세요</span>;
   return (
     <div className={`${styles.obXfer} ${styles.obJourney}`}>
       <div><span className={styles.obXferK}>경로</span><span className={styles.obJroute}>{jFrom ? st(jFrom) : <span className={styles.obPlaceholder}>출발역</span>} → {jTo ? st(jTo) : <span className={styles.obPlaceholder}>도착역</span>}</span></div>
@@ -527,7 +544,7 @@ function SvgMap({ svgRef, order, rOpacity, rWidth, isAll, activeNodes, transfer,
     else if (dir === 'downleft') { lx = x - gap * 0.7; ly = y + gap * 0.7; anc = 'end'; ddy = '0.7em'; }
     else if (dir === 'upleft') { lx = x - gap * 0.7; ly = y - gap * 0.7; anc = 'end'; ddy = '-0.05em'; }
     else { ly = y - gap; ddy = '-0.1em'; }
-    const nm = name.replace(/역$/, '');
+    const nm = shortName(name);
     if (showLabel) labelEls.push(
       <text key={name} x={lx} y={ly} dy={ddy} textAnchor={anc} opacity={op} fontSize={isXfer ? 26 : 22} fontWeight={isXfer ? 700 : 600} fill={blink ? '#B35F00' : '#1a1a1a'} stroke="#f3f1ea" strokeWidth={4.5} paintOrder="stroke" style={{ strokeLinejoin: 'round', cursor: 'pointer' }} onClick={() => setStation(name)}>{nm}</text>
     );
@@ -610,7 +627,29 @@ export function NightBusMap() {
         if (!best || h < best.h) best = { type: 'transfer', routes: [a, b], via: s, h };
       });
     }));
-    return best || { type: 'none' };
+    if (best) return best;
+    // 환승 2회 폴백: rA → X환승 → rC → Y환승 → rB
+    let best2: { type: string; routes: string[]; via1: string; via2: string; h: number } | null = null;
+    const allRoutes = Object.keys(ROUTE_MEMBER);
+    rOf(jFrom).forEach(ra => rOf(jTo).forEach(rb => {
+      if (ra === rb) return;
+      allRoutes.forEach(rc => {
+        if (rc === ra || rc === rb) return;
+        const mA = ROUTE_MEMBER[ra], mC = ROUTE_MEMBER[rc], mB = ROUTE_MEMBER[rb];
+        for (const x of mA) {
+          if (x === jFrom || !mC.includes(x)) continue;
+          for (const y of mC) {
+            if (y === jTo || y === x || !mB.includes(y)) continue;
+            const h = Math.abs(mA.indexOf(jFrom) - mA.indexOf(x))
+                    + Math.abs(mC.indexOf(x) - mC.indexOf(y))
+                    + Math.abs(mB.indexOf(y) - mB.indexOf(jTo));
+            if (!best2 || h < best2.h) best2 = { type: 'transfer2', routes: [ra, rc, rb], via1: x, via2: y, h };
+          }
+        }
+      });
+    }));
+    if (best2) return best2;
+    return { type: 'none' };
   }, [jFrom, jTo]);
 
   const sameStationGlobal = !!(jFrom && jTo && jFrom === jTo);
@@ -628,7 +667,7 @@ export function NightBusMap() {
       const show = focusedDirect && allDirectRoutes.includes(focusedDirect) ? focusedDirect : j.routes[0];
       return new Set([show]);
     }
-    // 환승: hiddenLegs에 없는 것만
+    // 환승(1회/2회): hiddenLegs에 없는 것만
     return new Set(j.routes.filter(id => !hiddenLegs.has(id)));
   })();
   // 🔴 근본 수정: 경로 활성 중엔 빈 집합이어도 전체 노선으로 안 빠짐
@@ -642,10 +681,16 @@ export function NightBusMap() {
       // 직통: focusedDirect가 있으면 그 노선 segment, 없으면 best
       const show = focusedDirect && allDirectRoutes.includes(focusedDirect) ? focusedDirect : j.routes[0];
       segs[show] = routeSegD(show, jFrom!, jTo!);
-    } else {
-      // 환승: hiddenLegs에 없는 leg만
+    } else if (j.type === 'transfer') {
+      // 환승 1회: hiddenLegs에 없는 leg만
       if (!hiddenLegs.has(j.routes[0])) segs[j.routes[0]] = routeSegD(j.routes[0], jFrom!, j.via!);
       if (!hiddenLegs.has(j.routes[1])) segs[j.routes[1]] = routeSegD(j.routes[1], j.via!, jTo!);
+    } else if (j.type === 'transfer2') {
+      // 환승 2회: leg 3개
+      const jj = journey as unknown as { via1: string; via2: string; routes: string[] };
+      if (!hiddenLegs.has(jj.routes[0])) segs[jj.routes[0]] = routeSegD(jj.routes[0], jFrom!, jj.via1);
+      if (!hiddenLegs.has(jj.routes[1])) segs[jj.routes[1]] = routeSegD(jj.routes[1], jj.via1, jj.via2);
+      if (!hiddenLegs.has(jj.routes[2])) segs[jj.routes[2]] = routeSegD(jj.routes[2], jj.via2, jTo!);
     }
     return Object.keys(segs).length ? segs : null;
   }, [jActive, journey, jFrom, jTo, focusedDirect, hiddenLegs, allDirectRoutes]);
@@ -674,14 +719,18 @@ export function NightBusMap() {
         if (i > jj) { const t = i; i = jj; jj = t; } return arr.slice(i, jj + 1);
       };
       if (j.type === 'direct') between(j.routes[0], jFrom!, jTo!).forEach(n => s.add(n));
-      else { between(j.routes[0], jFrom!, j.via!).forEach(n => s.add(n)); between(j.routes[1], j.via!, jTo!).forEach(n => s.add(n)); }
+      else if (j.type === 'transfer') { between(j.routes[0], jFrom!, j.via!).forEach(n => s.add(n)); between(j.routes[1], j.via!, jTo!).forEach(n => s.add(n)); }
+      else if (j.type === 'transfer2') { const jj = journey as unknown as { via1: string; via2: string; routes: string[] }; between(jj.routes[0], jFrom!, jj.via1).forEach(n => s.add(n)); between(jj.routes[1], jj.via1, jj.via2).forEach(n => s.add(n)); between(jj.routes[2], jj.via2, jTo!).forEach(n => s.add(n)); }
     } else dispSel.forEach(id => ROUTE_MEMBER[id]?.forEach(n => s.add(n)));
     if (jFrom) s.add(jFrom); if (jTo) s.add(jTo);
     return s;
   }, [jActive, sel, journey, jFrom, jTo, isAll, dispSel]);
 
   const transfer = useMemo(() => {
-    if (jActive && journey) { const j = journey as { via?: string }; return j.via ? new Set([j.via]) : new Set<string>(); }
+    if (jActive && journey) {
+      if (journey.type === 'transfer2') { const jj = journey as unknown as { via1: string; via2: string }; return new Set([jj.via1, jj.via2]); }
+      const j = journey as { via?: string }; return j.via ? new Set([j.via]) : new Set<string>();
+    }
     if (sel.size < 2) return new Set<string>();
     const c: Record<string, number> = {};
     sel.forEach(id => (ROUTE_MEMBER[id] || []).forEach(n => c[n] = (c[n] || 0) + 1));
@@ -705,7 +754,7 @@ export function NightBusMap() {
   const onDoubleClick = useDoubleTap(isMobile, isZoomed, stageRef, vb, setVb, baseVB);
 
   /* ── Fullscreen viewBox state (별도) ── */
-  const fsBaseVB = isMobile ? MOBILE_VB : DEFAULT_VB;
+  const fsBaseVB = FS_VB;
   const [fsVb, setFsVb] = useState<VB>(fsBaseVB);
   const { isZoomed: fsIsZoomed, resetVB: fsResetVB } = useTouchZoom(fsStageRef, fsVb, setFsVb, fsBaseVB, isMobile && isFullscreen);
   const onFsDoubleClick = useDoubleTap(isMobile, fsIsZoomed, fsStageRef, fsVb, setFsVb, fsBaseVB);
@@ -716,7 +765,7 @@ export function NightBusMap() {
   const openFullscreen = useCallback(() => {
     savedOverflow.current = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    setFsVb(isMobile ? MOBILE_VB : DEFAULT_VB);
+    setFsVb(FS_VB);
     setFsShowHint(true);
     setIsFullscreen(true);
   }, [isMobile]);

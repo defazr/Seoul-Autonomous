@@ -7,6 +7,12 @@ import {
 } from './night-bus-data';
 import styles from './night-bus-map.module.css';
 
+/* ── 칩 글자색 자동 결정 (배경 밝기 기준) ── */
+function chipTextColor(hex: string) {
+  const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 < 0.6 ? '#fff' : '#191919';
+}
+
 /* ── Constants ── */
 const VBX = -70, VBY = -65, VBW = 2560, VBH = 1600;
 const CENTER = { x: 1210, y: 720 };
@@ -123,6 +129,121 @@ function routeSegD(id: string, n1: string, n2: string) {
   return 'M ' + out.map(p => `${Math.round(p[0] * 10) / 10} ${Math.round(p[1] * 10) / 10}`).join(' L ');
 }
 
+/* ── Touch zoom/pan hook (재사용: 인라인 + 오버레이) ── */
+function useTouchZoom(
+  stageRef: React.RefObject<HTMLElement | null>,
+  vb: VB, setVb: (vb: VB) => void,
+  baseVB: VB, isMobile: boolean,
+) {
+  const vbRef = useRef(vb);
+  vbRef.current = vb;
+  const isZoomed = vb.w < baseVB.w * 0.95;
+  const isZoomedRef = useRef(isZoomed);
+  isZoomedRef.current = isZoomed;
+  const baseVBRef = useRef(baseVB);
+  baseVBRef.current = baseVB;
+  const touchState = useRef<{ dist: number; cx: number; cy: number; vb: VB; panning: boolean; sx: number; sy: number; moved: boolean } | null>(null);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const el = stageRef.current;
+    if (!el) return;
+
+    const DRAG_THRESHOLD = 8;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const [a, b] = [e.touches[0], e.touches[1]];
+        touchState.current = {
+          dist: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY),
+          cx: (a.clientX + b.clientX) / 2, cy: (a.clientY + b.clientY) / 2,
+          vb: { ...vbRef.current }, panning: false, sx: 0, sy: 0, moved: false,
+        };
+      } else if (e.touches.length === 1 && isZoomedRef.current) {
+        touchState.current = {
+          dist: 0, cx: 0, cy: 0, vb: { ...vbRef.current },
+          panning: true, sx: e.touches[0].clientX, sy: e.touches[0].clientY, moved: false,
+        };
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!touchState.current) return;
+      const ts = touchState.current;
+      if (e.touches.length === 2 && ts.dist > 0) {
+        e.preventDefault();
+        const [a, b] = [e.touches[0], e.touches[1]];
+        const newDist = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+        const scale = ts.dist / newDist;
+        const bvb = baseVBRef.current;
+        const w = Math.max(bvb.w / MAX_ZOOM, Math.min(bvb.w, ts.vb.w * scale));
+        const h = w * (bvb.h / bvb.w);
+        const rect = el.getBoundingClientRect();
+        const pcx = (ts.cx - rect.left) / rect.width;
+        const pcy = (ts.cy - rect.top) / rect.height;
+        setVb(clampVB({ x: ts.vb.x + (ts.vb.w - w) * pcx, y: ts.vb.y + (ts.vb.h - h) * pcy, w, h }, bvb));
+        ts.moved = true;
+      } else if (e.touches.length === 1 && ts.panning && isZoomedRef.current) {
+        const dx = ts.sx - e.touches[0].clientX;
+        const dy = ts.sy - e.touches[0].clientY;
+        const dist = Math.hypot(dx, dy);
+        if (dist > DRAG_THRESHOLD) {
+          e.preventDefault();
+          ts.moved = true;
+          const rect = el.getBoundingClientRect();
+          const curVb = vbRef.current;
+          const svgDx = dx * (curVb.w / rect.width);
+          const svgDy = dy * (curVb.h / rect.height);
+          setVb(clampVB({ ...ts.vb, x: ts.vb.x + svgDx, y: ts.vb.y + svgDy }, baseVBRef.current));
+        }
+      }
+    };
+
+    const handleTouchEnd = () => { touchState.current = null; };
+
+    el.addEventListener('touchstart', handleTouchStart, { passive: false });
+    el.addEventListener('touchmove', handleTouchMove, { passive: false });
+    el.addEventListener('touchend', handleTouchEnd);
+    return () => {
+      el.removeEventListener('touchstart', handleTouchStart);
+      el.removeEventListener('touchmove', handleTouchMove);
+      el.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [isMobile]);
+
+  const resetVB = useCallback(() => animateVB(vbRef.current, baseVBRef.current, setVb), [setVb]);
+
+  return { isZoomed, resetVB };
+}
+
+/* ── Double-tap hook (모바일만) ── */
+function useDoubleTap(
+  isMobile: boolean, isZoomed: boolean,
+  stageRef: React.RefObject<HTMLElement | null>,
+  vb: VB, setVb: (vb: VB) => void, baseVB: VB,
+) {
+  const lastTap = useRef(0);
+  return useCallback((e: React.MouseEvent) => {
+    if (!isMobile) return;
+    const now = Date.now();
+    if (now - lastTap.current < 300) {
+      e.preventDefault();
+      if (isZoomed) { animateVB(vb, baseVB, setVb); }
+      else {
+        const rect = stageRef.current?.getBoundingClientRect();
+        if (rect) {
+          const px = (e.clientX - rect.left) / rect.width;
+          const py = (e.clientY - rect.top) / rect.height;
+          const w = baseVB.w / 2, h = baseVB.h / 2;
+          animateVB(vb, clampVB({ x: vb.x + (vb.w - w) * px, y: vb.y + (vb.h - h) * py, w, h }, baseVB), setVb);
+        }
+      }
+    }
+    lastTap.current = now;
+  }, [isMobile, isZoomed, vb, baseVB, setVb, stageRef]);
+}
+
 /* ── SearchBox ── */
 function SearchBox({ onPick, placeholder, selected }: { onPick: (n: string) => void; placeholder: string; selected: string | null }) {
   const [q, setQ] = useState('');
@@ -169,9 +290,10 @@ function SearchBox({ onPick, placeholder, selected }: { onPick: (n: string) => v
 }
 
 /* ── Header ── */
-function Header({ isAll, clearSel, exportPNG, onPickFrom, onPickTo, jFrom, jTo }: {
+function Header({ isAll, clearSel, exportPNG, onPickFrom, onPickTo, jFrom, jTo, onFullscreen }: {
   isAll: boolean; clearSel: () => void; exportPNG: () => void;
   onPickFrom: (n: string) => void; onPickTo: (n: string) => void; jFrom: string | null; jTo: string | null;
+  onFullscreen: () => void;
 }) {
   return (
     <div className={styles.obHead}>
@@ -184,6 +306,7 @@ function Header({ isAll, clearSel, exportPNG, onPickFrom, onPickTo, jFrom, jTo }
         </div>
         <div className={styles.obBtnRow}>
           {!isAll && <button className={styles.obBtn} onClick={clearSel}>전체 보기</button>}
+          <button className={styles.obBtn} onClick={onFullscreen} aria-label="지도 크게 보기">크게 보기</button>
           <button className={`${styles.obBtn} ${styles.primary}`} onClick={exportPNG}>PNG 저장</button>
         </div>
       </div>
@@ -214,7 +337,7 @@ function Legend({ sel, toggle }: { sel: Set<string>; toggle: (id: string) => voi
             <button
               key={id}
               className={`${styles.obChip}${on ? ` ${styles.on}` : ''}${dim ? ` ${styles.dim}` : ''}`}
-              style={{ background: ROUTE_COLORS[id], color: id === 'N72' ? '#fff' : undefined }}
+              style={{ background: ROUTE_COLORS[id], color: chipTextColor(ROUTE_COLORS[id]) }}
               onClick={() => toggle(id)}
             >{ROUTE_LABEL[id]}</button>
           );
@@ -259,7 +382,7 @@ function StationCard({ station, sel, toggle, setStation, setFrom, setTo, jFrom, 
       <div className={styles.obCardRoutes}>
         {routes.length ? routes.map(id => (
           <button key={id} className={`${styles.obChip} ${styles.sm}${sel.has(id) ? ` ${styles.on}` : ''}`}
-            style={{ background: ROUTE_COLORS[id], color: id === 'N72' ? '#fff' : undefined }}
+            style={{ background: ROUTE_COLORS[id], color: chipTextColor(ROUTE_COLORS[id]) }}
             onClick={() => toggle(id)}>{ROUTE_LABEL[id]}</button>
         )) : <span className={styles.obCardNone}>현재 표시된 노선 없음</span>}
       </div>
@@ -286,7 +409,7 @@ function TransferBar({ sel, transfer }: { sel: Set<string>; transfer: Set<string
   return (
     <div className={styles.obXfer}>
       <div><span className={styles.obXferK}>선택 노선</span>
-        {ids.map(id => <span key={id} className={styles.obXferPill} style={{ background: ROUTE_COLORS[id], color: id === 'N72' ? '#fff' : undefined }}>{ROUTE_LABEL[id]}</span>)}
+        {ids.map(id => <span key={id} className={styles.obXferPill} style={{ background: ROUTE_COLORS[id], color: chipTextColor(ROUTE_COLORS[id]) }}>{ROUTE_LABEL[id]}</span>)}
       </div>
       <div><span className={styles.obXferK}>공유 환승역</span>
         <span className={styles.obXferV}>{shared.length ? shared.join(' · ') : '없음 — 이 노선들끼리는 직접 환승 불가'}</span>
@@ -296,39 +419,65 @@ function TransferBar({ sel, transfer }: { sel: Set<string>; transfer: Set<string
 }
 
 /* ── JourneyBar ── */
-function JourneyBar({ jFrom, jTo, journey, clearJourney }: {
+function JourneyBar({ jFrom, jTo, journey, clearAll, focusedDirect, setFocusedDirect, hiddenLegs, toggleLeg, hideReset }: {
   jFrom: string | null; jTo: string | null;
   journey: { type: string; routes?: string[]; via?: string; alt?: string[] } | null;
-  clearJourney: () => void;
+  clearAll: () => void;
+  focusedDirect: string | null; setFocusedDirect: (id: string | null) => void;
+  hiddenLegs: Set<string>; toggleLeg: (id: string) => void;
+  hideReset?: boolean;
 }) {
-  const chip = (id: string) => {
-    const href = `https://map.naver.com/p/search/${encodeURIComponent('서울 심야버스 ' + ROUTE_LABEL[id])}`;
-    return <a key={id} className={styles.obXferPillLink} href={href} target="_blank" rel="noopener noreferrer" title={`네이버지도에서 ${ROUTE_LABEL[id]} 노선 보기`} style={{ background: ROUTE_COLORS[id], color: id === 'N72' ? '#fff' : undefined }}>{ROUTE_LABEL[id]}</a>;
-  };
   const st = (n: string) => n.replace(/역$/, '');
+  const sameStation = !!(jFrom && jTo && jFrom === jTo);
+  const both = jFrom && jTo && !sameStation;
+
+  // 직통 1개: 라벨 (클릭 안 됨)
+  const labelChip = (id: string) => (
+    <span key={id} className={styles.obJourneyChip} style={{ background: ROUTE_COLORS[id], color: chipTextColor(ROUTE_COLORS[id]), cursor: 'default' }}>{ROUTE_LABEL[id]}</span>
+  );
+  // 직통 복수: 셀렉트 (한 번에 하나)
+  const selectChip = (id: string) => {
+    const active = focusedDirect === id;
+    return <button key={id} className={`${styles.obJourneyChip}${active ? ` ${styles.obJourneyChipActive}` : ''}`} onClick={() => setFocusedDirect(active ? null : id)} style={{ background: ROUTE_COLORS[id], color: chipTextColor(ROUTE_COLORS[id]) }}>{ROUTE_LABEL[id]}</button>;
+  };
+  // 환승: 숨김/표시 토글
+  const toggleChip = (id: string) => {
+    const hidden = hiddenLegs.has(id);
+    return <button key={id} className={`${styles.obJourneyChip}${hidden ? ` ${styles.obJourneyChipHidden}` : ''}`} onClick={() => toggleLeg(id)} style={{ background: ROUTE_COLORS[id], color: chipTextColor(ROUTE_COLORS[id]) }}>{ROUTE_LABEL[id]}</button>;
+  };
+
   let body;
   if (!jFrom) body = <span className={styles.obXferV}>출발역을 검색하거나 지도에서 클릭해 지정하세요</span>;
   else if (!jTo) body = <span className={styles.obXferV}>도착역을 검색하거나 지도에서 클릭해 지정하세요</span>;
-  else if (journey?.type === 'direct') body = <span className={styles.obXferV}>{chip(journey.routes![0])} <span>직통</span>{journey.alt?.length ? <>{' (또는 '}{journey.alt.map(chip)}{')'}</> : null}</span>;
-  else if (journey?.type === 'transfer') body = <span className={styles.obJtransfer}>{chip(journey.routes![0])}<span className={styles.obJarr}>→</span><span className={styles.obJvia}>{st(journey.via!)}에서 환승</span><span className={styles.obJarr}>→</span>{chip(journey.routes![1])}</span>;
+  else if (sameStation) body = <span className={styles.obXferV}>출발역과 도착역이 같습니다. 다른 역을 선택하세요</span>;
+  else if (journey?.type === 'direct') {
+    const allRoutes = [journey.routes![0], ...(journey.alt || [])];
+    const isSingle = allRoutes.length === 1;
+    body = (
+      <div>
+        <span className={styles.obXferK}>직통 노선</span>
+        <span className={styles.obDirectChips}>{allRoutes.map(id => isSingle ? labelChip(id) : selectChip(id))}</span>
+      </div>
+    );
+  }
+  else if (journey?.type === 'transfer') body = <span className={styles.obJtransfer}>{toggleChip(journey.routes![0])}<span className={styles.obJarr}>→</span><span className={styles.obJvia}>{st(journey.via!)}에서 환승</span><span className={styles.obJarr}>→</span>{toggleChip(journey.routes![1])}</span>;
   else body = <span className={styles.obXferV}>환승 1회로는 연결 불가 — 아래 지도앱 길찾기를 이용하세요</span>;
-  const both = jFrom && jTo;
   return (
     <div className={`${styles.obXfer} ${styles.obJourney}`}>
-      <div><span className={styles.obXferK}>경로</span><span className={styles.obJroute}>{jFrom ? st(jFrom) : '?'} → {jTo ? st(jTo) : '?'}</span></div>
+      <div><span className={styles.obXferK}>경로</span><span className={styles.obJroute}>{jFrom ? st(jFrom) : <span className={styles.obPlaceholder}>출발역</span>} → {jTo ? st(jTo) : <span className={styles.obPlaceholder}>도착역</span>}</span></div>
       <div>{body}</div>
       <div className={styles.obJacts}>
-        {both && <a className={`${styles.obBtn} ${styles.sm}`} href="https://map.kakao.com/?nil_profile=title&nil_src=local" target="_blank" rel="noopener noreferrer">카카오맵 길찾기</a>}
-        {both && <a className={`${styles.obBtn} ${styles.sm}`} href="https://map.naver.com/p/directions/-/-/-/transit?c=15.00,0,0,0,dh" target="_blank" rel="noopener noreferrer">네이버지도 길찾기</a>}
-        <button className={`${styles.obBtn} ${styles.sm} ${styles.ghost}`} onClick={clearJourney}>초기화</button>
+        {both && <a className={`${styles.obBtn} ${styles.sm} ${styles.kakao}`} href="https://map.kakao.com/?nil_profile=title&nil_src=local" target="_blank" rel="noopener noreferrer">카카오맵 길찾기</a>}
+        {both && <a className={`${styles.obBtn} ${styles.sm} ${styles.naver}`} href="https://map.naver.com/p/directions/-/-/-/transit?c=15.00,0,0,0,dh" target="_blank" rel="noopener noreferrer">네이버지도 길찾기</a>}
+        {!hideReset && <button className={`${styles.obBtn} ${styles.sm} ${styles.ghost}`} onClick={clearAll}>초기화</button>}
       </div>
     </div>
   );
 }
 
 /* ── SVG Map ── */
-function SvgMap({ svgRef, order, rOpacity, rWidth, isAll, activeNodes, transfer, sel, toggle, station, setStation, jFrom, jTo, segs, vb }: {
-  svgRef: React.RefObject<SVGSVGElement | null>; order: string[];
+function SvgMap({ svgRef, order, rOpacity, rWidth, isAll, activeNodes, transfer, sel, toggle, station, setStation, jFrom, jTo, segs, vb, className }: {
+  svgRef?: React.RefObject<SVGSVGElement | null>; order: string[];
   rOpacity: (id: string) => number; rWidth: (id: string) => number;
   isAll: boolean; activeNodes: Set<string> | null; transfer: Set<string>;
   sel: Set<string>; toggle: (id: string) => void;
@@ -336,6 +485,7 @@ function SvgMap({ svgRef, order, rOpacity, rWidth, isAll, activeNodes, transfer,
   jFrom: string | null; jTo: string | null;
   segs: Record<string, string> | null;
   vb: VB;
+  className?: string;
 }) {
   const [hover, setHover] = useState<string | null>(null);
 
@@ -400,7 +550,7 @@ function SvgMap({ svgRef, order, rOpacity, rWidth, isAll, activeNodes, transfer,
   });
 
   return (
-    <svg ref={svgRef} className={styles.obSvg} viewBox={`${vb.x} ${vb.y} ${vb.w} ${vb.h}`} xmlns="http://www.w3.org/2000/svg" role="img" aria-label="서울 올빼미버스 노선도">
+    <svg ref={svgRef} className={className || styles.obSvg} viewBox={`${vb.x} ${vb.y} ${vb.w} ${vb.h}`} xmlns="http://www.w3.org/2000/svg" role="img" aria-label="서울 올빼미버스 노선도">
       <desc>ⓒ 2026 SeoulAutonomous.com · 서울 올빼미버스 노선도 도식 · 제작자가 직접 작도한 창작물 · All Rights Reserved · 무단 복제·재배포 금지 · 출처: SeoulAutonomous.com</desc>
       <rect x={VBX} y={VBY} width={VBW} height={VBH} fill="#f7f4ec" />
       {RIVER.d && (
@@ -425,6 +575,23 @@ export function NightBusMap() {
   const [jTo, setJTo] = useState<string | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
+  /* ── 경로 바 칩 상태 ── */
+  // 직통 복수: 어느 노선을 보여줄지 (null=best/기본)
+  const [focusedDirect, setFocusedDirect] = useState<string | null>(null);
+  // 환승: 숨긴 leg들
+  const [hiddenLegs, setHiddenLegs] = useState<Set<string>>(() => new Set());
+  const toggleLeg = useCallback((id: string) => {
+    setHiddenLegs(p => { const n = new Set(p); n.has(id) ? n.delete(id) : n.add(id); return n; });
+  }, []);
+  // 경로가 바뀌면 전부 리셋
+  useEffect(() => { setFocusedDirect(null); setHiddenLegs(new Set()); }, [jFrom, jTo]);
+
+  /* ── Fullscreen state ── */
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [fsShowHint, setFsShowHint] = useState(false);
+  const fsCloseRef = useRef<HTMLButtonElement>(null);
+  const fsStageRef = useRef<HTMLDivElement>(null);
+
   const journey = useMemo(() => {
     if (!jFrom || !jTo || jFrom === jTo) return null;
     const rOf = (n: string) => ROUTE_ORDER.filter(id => ROUTE_MEMBER[id]?.includes(n));
@@ -446,23 +613,48 @@ export function NightBusMap() {
     return best || { type: 'none' };
   }, [jFrom, jTo]);
 
+  const sameStationGlobal = !!(jFrom && jTo && jFrom === jTo);
   const jActive = !!(journey && (journey as { routes?: string[] }).routes);
-  const dispSel = jActive ? new Set((journey as { routes: string[] }).routes) : sel;
-  const isAll = dispSel.size === 0;
+  const allDirectRoutes: string[] = jActive && journey?.type === 'direct' ? [journey.routes![0], ...(journey.alt || [])] : [];
+  const isDirectMulti = allDirectRoutes.length > 1;
+
+  // dispSel: 케이스별 보여줄 노선 집합
+  const dispSel = (() => {
+    if (sameStationGlobal) return new Set<string>();
+    if (!jActive) return sel;
+    const j = journey as { type: string; routes: string[] };
+    if (j.type === 'direct') {
+      // 직통: focusedDirect가 있으면 그것만, 없으면 best(routes[0])
+      const show = focusedDirect && allDirectRoutes.includes(focusedDirect) ? focusedDirect : j.routes[0];
+      return new Set([show]);
+    }
+    // 환승: hiddenLegs에 없는 것만
+    return new Set(j.routes.filter(id => !hiddenLegs.has(id)));
+  })();
+  // 🔴 근본 수정: 경로 활성 중엔 빈 집합이어도 전체 노선으로 안 빠짐
+  const isAll = dispSel.size === 0 && !jActive && !sameStationGlobal;
 
   const journeySegs = useMemo(() => {
     if (!jActive || !journey) return null;
     const j = journey as { type: string; routes: string[]; via?: string };
-    if (j.type === 'direct') return { [j.routes[0]]: routeSegD(j.routes[0], jFrom!, jTo!) };
-    return { [j.routes[0]]: routeSegD(j.routes[0], jFrom!, j.via!), [j.routes[1]]: routeSegD(j.routes[1], j.via!, jTo!) };
-  }, [jActive, journey, jFrom, jTo]);
+    const segs: Record<string, string> = {};
+    if (j.type === 'direct') {
+      // 직통: focusedDirect가 있으면 그 노선 segment, 없으면 best
+      const show = focusedDirect && allDirectRoutes.includes(focusedDirect) ? focusedDirect : j.routes[0];
+      segs[show] = routeSegD(show, jFrom!, jTo!);
+    } else {
+      // 환승: hiddenLegs에 없는 leg만
+      if (!hiddenLegs.has(j.routes[0])) segs[j.routes[0]] = routeSegD(j.routes[0], jFrom!, j.via!);
+      if (!hiddenLegs.has(j.routes[1])) segs[j.routes[1]] = routeSegD(j.routes[1], j.via!, jTo!);
+    }
+    return Object.keys(segs).length ? segs : null;
+  }, [jActive, journey, jFrom, jTo, focusedDirect, hiddenLegs, allDirectRoutes]);
 
   const toggle = useCallback((id: string) => {
     if (jFrom || jTo) { setJFrom(null); setJTo(null); setSel(new Set([id])); return; }
     setSel(p => { const n = new Set(p); n.has(id) ? n.delete(id) : n.add(id); return n; });
   }, [jFrom, jTo]);
-  const clearSel = useCallback(() => { setSel(new Set()); setStation(null); setJFrom(null); setJTo(null); }, []);
-  const clearJourney = useCallback(() => { setJFrom(null); setJTo(null); }, []);
+  const clearSel = useCallback(() => { setSel(new Set()); setStation(null); setJFrom(null); setJTo(null); setFocusedDirect(null); setHiddenLegs(new Set()); }, []);
   const setFrom = useCallback((n: string) => { setJFrom(n); setStation(null); }, []);
   const setTo = useCallback((n: string) => { setJTo(n); setStation(null); }, []);
   const pickStation = useCallback((n: string) => {
@@ -500,118 +692,65 @@ export function NightBusMap() {
   const rWidth = (id: string) => (id === 'A21' ? 7 : 6) + (dispSel.has(id) ? 2 : 0);
   const order = (() => { const ns = [...ROUTE_ORDER].filter(id => !dispSel.has(id)); const s = [...ROUTE_ORDER].filter(id => dispSel.has(id)); return [...ns, ...s]; })();
 
-  /* ── Mobile viewBox state ── */
+  /* ── Inline viewBox state ── */
   const isMobile = useIsMobile();
   const baseVB = isMobile ? MOBILE_VB : DEFAULT_VB;
   const [vb, setVb] = useState<VB>(baseVB);
-  // Sync baseVB when isMobile changes (SSR→client hydration)
   const prevMobile = useRef(isMobile);
   useEffect(() => { if (prevMobile.current !== isMobile) { prevMobile.current = isMobile; setVb(isMobile ? MOBILE_VB : DEFAULT_VB); } }, [isMobile]);
-  const isZoomed = vb.w < baseVB.w * 0.95;
   const stageRef = useRef<HTMLDivElement>(null);
-  const baseVBRef = useRef(baseVB);
-  baseVBRef.current = baseVB;
-  const touchState = useRef<{ dist: number; cx: number; cy: number; vb: VB; panning: boolean; sx: number; sy: number; moved: boolean } | null>(null);
 
-  const resetVB = useCallback(() => animateVB(vb, baseVB, setVb), [vb, baseVB]);
+  /* ── Inline touch zoom/pan ── */
+  const { isZoomed, resetVB } = useTouchZoom(stageRef, vb, setVb, baseVB, isMobile);
+  const onDoubleClick = useDoubleTap(isMobile, isZoomed, stageRef, vb, setVb, baseVB);
 
-  // Touch handlers — native addEventListener with { passive: false } for real device support
-  const vbRef = useRef(vb);
-  vbRef.current = vb;
-  const isZoomedRef = useRef(isZoomed);
-  isZoomedRef.current = isZoomed;
+  /* ── Fullscreen viewBox state (별도) ── */
+  const fsBaseVB = isMobile ? MOBILE_VB : DEFAULT_VB;
+  const [fsVb, setFsVb] = useState<VB>(fsBaseVB);
+  const { isZoomed: fsIsZoomed, resetVB: fsResetVB } = useTouchZoom(fsStageRef, fsVb, setFsVb, fsBaseVB, isMobile && isFullscreen);
+  const onFsDoubleClick = useDoubleTap(isMobile, fsIsZoomed, fsStageRef, fsVb, setFsVb, fsBaseVB);
 
-  useEffect(() => {
-    if (!isMobile) return;
-    const el = stageRef.current;
-    if (!el) return;
+  /* ── Fullscreen open/close ── */
+  const savedOverflow = useRef('');
 
-    const DRAG_THRESHOLD = 8; // px — 이 이내면 탭, 초과면 드래그
-
-    const handleTouchStart = (e: TouchEvent) => {
-      if (e.touches.length === 2) {
-        e.preventDefault(); // 핀치줌은 항상 preventDefault
-        const [a, b] = [e.touches[0], e.touches[1]];
-        touchState.current = {
-          dist: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY),
-          cx: (a.clientX + b.clientX) / 2, cy: (a.clientY + b.clientY) / 2,
-          vb: { ...vbRef.current }, panning: false, sx: 0, sy: 0, moved: false,
-        };
-      } else if (e.touches.length === 1 && isZoomedRef.current) {
-        // 탭인지 드래그인지 아직 모름 — preventDefault 하지 않음 (click 살림)
-        touchState.current = {
-          dist: 0, cx: 0, cy: 0, vb: { ...vbRef.current },
-          panning: true, sx: e.touches[0].clientX, sy: e.touches[0].clientY, moved: false,
-        };
-      }
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (!touchState.current) return;
-      const ts = touchState.current;
-      if (e.touches.length === 2 && ts.dist > 0) {
-        e.preventDefault();
-        const [a, b] = [e.touches[0], e.touches[1]];
-        const newDist = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
-        const scale = ts.dist / newDist;
-        const bvb = baseVBRef.current;
-        const w = Math.max(bvb.w / MAX_ZOOM, Math.min(bvb.w, ts.vb.w * scale));
-        const h = w * (bvb.h / bvb.w);
-        const rect = el.getBoundingClientRect();
-        const pcx = (ts.cx - rect.left) / rect.width;
-        const pcy = (ts.cy - rect.top) / rect.height;
-        setVb(clampVB({ x: ts.vb.x + (ts.vb.w - w) * pcx, y: ts.vb.y + (ts.vb.h - h) * pcy, w, h }, bvb));
-        ts.moved = true;
-      } else if (e.touches.length === 1 && ts.panning && isZoomedRef.current) {
-        const dx = ts.sx - e.touches[0].clientX;
-        const dy = ts.sy - e.touches[0].clientY;
-        const dist = Math.hypot(dx, dy);
-        if (dist > DRAG_THRESHOLD) {
-          // 드래그 확정 — 이제부터 preventDefault
-          e.preventDefault();
-          ts.moved = true;
-          const rect = el.getBoundingClientRect();
-          const curVb = vbRef.current;
-          const svgDx = dx * (curVb.w / rect.width);
-          const svgDy = dy * (curVb.h / rect.height);
-          setVb(clampVB({ ...ts.vb, x: ts.vb.x + svgDx, y: ts.vb.y + svgDy }, baseVBRef.current));
-        }
-        // dist <= DRAG_THRESHOLD면 아직 탭일 수 있으므로 preventDefault 안 함
-      }
-    };
-
-    const handleTouchEnd = () => { touchState.current = null; };
-
-    el.addEventListener('touchstart', handleTouchStart, { passive: false });
-    el.addEventListener('touchmove', handleTouchMove, { passive: false });
-    el.addEventListener('touchend', handleTouchEnd);
-    return () => {
-      el.removeEventListener('touchstart', handleTouchStart);
-      el.removeEventListener('touchmove', handleTouchMove);
-      el.removeEventListener('touchend', handleTouchEnd);
-    };
+  const openFullscreen = useCallback(() => {
+    savedOverflow.current = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    setFsVb(isMobile ? MOBILE_VB : DEFAULT_VB);
+    setFsShowHint(true);
+    setIsFullscreen(true);
   }, [isMobile]);
 
-  // Double-tap zoom toggle
-  const lastTap = useRef(0);
-  const onDoubleClick = useCallback((e: React.MouseEvent) => {
-    if (!isMobile) return;
-    const now = Date.now();
-    if (now - lastTap.current < 300) {
-      e.preventDefault();
-      if (isZoomed) { animateVB(vb, baseVB, setVb); }
-      else {
-        const rect = stageRef.current?.getBoundingClientRect();
-        if (rect) {
-          const px = (e.clientX - rect.left) / rect.width;
-          const py = (e.clientY - rect.top) / rect.height;
-          const w = baseVB.w / 2, h = baseVB.h / 2;
-          animateVB(vb, clampVB({ x: vb.x + (vb.w - w) * px, y: vb.y + (vb.h - h) * py, w, h }, baseVB), setVb);
-        }
-      }
+  const closeFullscreen = useCallback(() => {
+    document.body.style.overflow = savedOverflow.current;
+    setIsFullscreen(false);
+  }, []);
+
+  // Focus ✕ when overlay opens
+  useEffect(() => {
+    if (isFullscreen) {
+      requestAnimationFrame(() => fsCloseRef.current?.focus());
     }
-    lastTap.current = now;
-  }, [isMobile, isZoomed, vb]);
+  }, [isFullscreen]);
+
+  // Esc to close
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { e.preventDefault(); closeFullscreen(); }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [isFullscreen, closeFullscreen]);
+
+  // Cleanup on unmount — restore overflow
+  useEffect(() => {
+    return () => {
+      if (savedOverflow.current !== undefined) {
+        document.body.style.overflow = savedOverflow.current;
+      }
+    };
+  }, []);
 
   function exportPNG() {
     const src = svgRef.current; if (!src) return;
@@ -655,26 +794,67 @@ export function NightBusMap() {
     img.src = url;
   }
 
+  /* ── Shared SvgMap props ── */
+  const svgMapProps = {
+    order, rOpacity, rWidth, isAll, activeNodes, transfer,
+    sel: dispSel, toggle, station, setStation: pickStation,
+    jFrom, jTo, segs: journeySegs,
+  };
+
   return (
     <div className={styles.ob}>
-      <Header isAll={isAll && !jFrom && !jTo} clearSel={clearSel} exportPNG={exportPNG} onPickFrom={(n) => setJFrom(n)} onPickTo={(n) => setJTo(n)} jFrom={jFrom} jTo={jTo} />
+      <Header isAll={isAll && !jFrom && !jTo} clearSel={clearSel} exportPNG={exportPNG} onPickFrom={(n) => setJFrom(n)} onPickTo={(n) => setJTo(n)} jFrom={jFrom} jTo={jTo} onFullscreen={openFullscreen} />
       <Legend sel={dispSel} toggle={toggle} />
+
+      {/* ── Inline map (항상 렌더 — 절대 언마운트 안 함) ── */}
       <div
         ref={stageRef}
         className={styles.obStage}
         onClick={onDoubleClick}
         style={isMobile && isZoomed ? { touchAction: 'none' } : { touchAction: 'pan-y' }}
       >
-        <SvgMap svgRef={svgRef} order={order} rOpacity={rOpacity} rWidth={rWidth} isAll={isAll} activeNodes={activeNodes} transfer={transfer} sel={dispSel} toggle={toggle} station={station} setStation={pickStation} jFrom={jFrom} jTo={jTo} segs={journeySegs} vb={vb} />
+        <SvgMap svgRef={svgRef} {...svgMapProps} vb={vb} />
         {station && <StationCard station={station} sel={dispSel} toggle={toggle} setStation={setStation} setFrom={setFrom} setTo={setTo} jFrom={jFrom} jTo={jTo} />}
         {!jFrom && !jTo && sel.size >= 2 && <TransferBar sel={sel} transfer={transfer} />}
         {isMobile && isZoomed && (
-          <button className={styles.obResetBtn} onClick={(e) => { e.stopPropagation(); resetVB(); }} aria-label="전체 노선 보기">
-            전체 노선 보기
+          <button className={styles.obResetBtn} onClick={(e) => { e.stopPropagation(); resetVB(); }} aria-label="전체 보기">
+            전체 보기
           </button>
         )}
       </div>
-      {(jFrom || jTo) && <JourneyBar jFrom={jFrom} jTo={jTo} journey={journey} clearJourney={clearJourney} />}
+      {(jFrom || jTo) && <JourneyBar jFrom={jFrom} jTo={jTo} journey={journey} clearAll={clearSel} focusedDirect={focusedDirect} setFocusedDirect={setFocusedDirect} hiddenLegs={hiddenLegs} toggleLeg={toggleLeg} />}
+
+      {/* ── Fullscreen overlay (인라인 위에 조건부로 얹음) ── */}
+      {isFullscreen && (
+        <div className={styles.obOverlay} role="dialog" aria-label="전체화면 노선도">
+          <button ref={fsCloseRef} className={styles.obFsClose} onClick={closeFullscreen} aria-label="전체화면 닫기">✕</button>
+          <div className={styles.obFsControls}>
+            <button className={`${styles.obFsCtrlBtn} ${styles.obFsCtrlPrimary}`} onClick={exportPNG}>PNG 저장</button>
+            <button className={styles.obFsCtrlBtn} onClick={() => { clearSel(); fsResetVB(); }}>초기화</button>
+          </div>
+          <div
+            ref={fsStageRef}
+            className={styles.obFsStage}
+            style={{ touchAction: isMobile && fsIsZoomed ? 'none' : 'pan-y' }}
+            onClick={onFsDoubleClick}
+          >
+            <SvgMap {...svgMapProps} vb={fsVb} className={styles.obOverlaySvg} />
+          </div>
+          <div className={styles.obFsDock}>
+            {station && <StationCard station={station} sel={dispSel} toggle={toggle} setStation={setStation} setFrom={setFrom} setTo={setTo} jFrom={jFrom} jTo={jTo} />}
+            {!jFrom && !jTo && sel.size >= 2 && <TransferBar sel={sel} transfer={transfer} />}
+            {(jFrom || jTo) && <JourneyBar jFrom={jFrom} jTo={jTo} journey={journey} clearAll={clearSel} focusedDirect={focusedDirect} setFocusedDirect={setFocusedDirect} hiddenLegs={hiddenLegs} toggleLeg={toggleLeg} hideReset />}
+          </div>
+          {isMobile && fsIsZoomed && (
+            <button className={styles.obResetBtn} style={{ zIndex: 10001 }} onClick={(e) => { e.stopPropagation(); fsResetVB(); }} aria-label="전체 보기">
+              전체 보기
+            </button>
+          )}
+          {fsShowHint && isMobile && (
+            <div className={styles.obFsHint} onAnimationEnd={() => setFsShowHint(false)}>핀치하여 확대</div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,48 +1,55 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-06-14 (Round 19/19-mobile/19.5 배포 완료)
+> 마지막 업데이트: 2026-06-14 Session 2 (Round 19.6~16B 전부 배포 + 색인 요청 완료)
 
 ## 현재 위치
 
-**올빼미버스 인터랙티브 노선도 배포 완료. 19.6(html lang) + 19.7(전체화면) 미착수. 색인 요청 보류.**
+**올빼미버스 인터랙티브 노선도 완성·배포·색인 요청 완료. 네이버 검색 노출 확인. 핵심 작업 없음 — 모니터링 단계.**
 
 ## 마지막 커밋 (main, 배포됨)
 
-`bb4bf8c` — Round 19.5: 내부 링크 + 노선도 og:image + 본문 정합성 수정
+`c65eb96` — Round 16B: HTTP Link 헤더 hreflang 정리 (alternateLinks false)
 
 ## 커밋 이력
 
 ```
+c65eb96  Round 16B — HTTP Link 헤더 hreflang 정리 (배포됨)
+fbe3fe2  Round 21 — 서울 심야버스 노선도 발표 글 (배포됨)
+44c1d23  Round 20 — 환승 2회 경로 + 서울역 라벨 + 전체화면 뷰 맞춤 (배포됨)
+d96ca8f  Round 19.7 — 전체화면 보기 + 경로 바 칩 동작 + UI 개선 (배포됨)
+3637662  Round 19.6 — locale별 html lang 정리 (배포됨)
+da10647  docs: session handoff (Round 19 배포 완료)
 bb4bf8c  Round 19.5 — 내부 링크 + og + 본문 정합성 (배포됨)
-4978cd3  Round 19-mobile — 모바일 최적화 (배포됨)
-e414bc8  Round 19 — 인터랙티브 노선도 이식 (배포됨)
-1565bea  Round 17 — GA4 (이전 배포)
 ```
 
 ## 배포 상태
 
 - seoulautonomous.com 라이브 (Docker + Caddy)
 - /ko/night-bus-map 200 ✅
-- /en/night-bus-map 404 ✅
-- 전용 OG: /og/night-bus-map-og.jpg 200 ✅
-- 내부 링크: A21 상세 CTA + /ko/routes 배너 ✅
+- /en/night-bus-map 404 ✅ (ko 전용)
+- /ko/updates/night-bus-map-launch 200 ✅
+- /en/updates/night-bus-map-launch 404 ✅ (ko 전용)
+- HTTP Link 헤더 hreflang 제거됨 ✅
+- 색인 요청 완료 (네이버·구글·다음)
+- 네이버 검색 노출 확인됨
 
-## 다음 세션 즉시 할 것
+## 다음 세션 할 것
 
-1. **19.6 구현안 보고** (html lang — 코드 변경 없이 방법만)
-2. 포그린 구조안 승인 → 작업 → 배포
-3. 19.7 전체화면 보기
-4. 색인 요청 (19.6 끝난 후)
+1. GSC 404 드롭 현황 확인 (2~4주 후)
+2. 네이버·구글 검색 순위 모니터링
+3. 스니펫 최적화 (필요 시 — 네이버가 고지문을 스니펫으로 뽑음)
+4. P2 항목 우선순위 재정리
 
 ## 핵심 경고
 
-- **19.6에서 GA4 + verification 메타 유실 금지** — 색인·소유확인 사고
-- **색인 요청은 19.6 후** — 현재 lang="en"으로 잡히므로
+- **alternateLinks: false 유지** — 다시 true로 돌리면 GSC 404 원인 부활
+- **Caddy 절대 건드리지 말 것**
+- **night-bus-data.ts 읽기 전용**
 
 ## 새 세션 시작 시
 
 1. [ ] 이 문서 읽기
-2. [ ] `docs/handoff/HANDOFF-20260614.md` 읽기
+2. [ ] `docs/handoff/HANDOFF-20260614-session2.md` 읽기
 3. [ ] MEMORY.md 확인
 4. [ ] 라이브 확인: https://seoulautonomous.com/ko/night-bus-map
 

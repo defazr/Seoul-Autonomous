@@ -26,6 +26,18 @@ function renderBoldText(text: string) {
   );
 }
 
+function OrderedList({ items }: { items: string[] }) {
+  return (
+    <ol className={styles.orderedList}>
+      {items.map((item, i) => (
+        <li key={i} className={`${styles.body} ${styles.orderedItem}`}>
+          {item}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 function BulletList({ items }: { items: string[] }) {
   return (
     <div className={styles.bulletList}>
@@ -75,9 +87,17 @@ function SectionBlock({ section, index }: { section: LegalSection; index: number
           {renderBoldText(p)}
         </div>
       ))}
+      {section.orderedList && section.orderedList.length > 0 && (
+        <OrderedList items={section.orderedList} />
+      )}
       {section.bulletPoints && section.bulletPoints.length > 0 && (
         <BulletList items={section.bulletPoints} />
       )}
+      {section.paragraphsAfter?.map((p, i) => (
+        <div key={i} className={styles.paragraph}>
+          {renderBoldText(p)}
+        </div>
+      ))}
       {section.subsections?.map((sub, i) => (
         <SubsectionBlock key={i} sub={sub} />
       ))}
@@ -108,7 +128,11 @@ export function LegalDocument({ document: doc, locale }: Props) {
       ))}
 
       <div className={styles.contactBlock}>
-        <p className={styles.contactName}>{doc.contact.developer}</p>
+        <p className={styles.contactName}>
+          {doc.contact.developerLabel
+            ? `${doc.contact.developerLabel}: ${doc.contact.developer}`
+            : doc.contact.developer}
+        </p>
         <p className={styles.contactLine}>
           {isKo ? `이메일: ${doc.contact.email}` : `Email: ${doc.contact.email}`}
         </p>

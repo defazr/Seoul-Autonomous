@@ -7,11 +7,14 @@ export type LegalSubsection = {
 export type LegalSection = {
   title: string;
   paragraphs?: string[];
+  orderedList?: string[];
   bulletPoints?: string[];
+  paragraphsAfter?: string[];
   subsections?: LegalSubsection[];
 };
 
 export type LegalContact = {
+  developerLabel?: string;
   developer: string;
   email: string;
   location: string;

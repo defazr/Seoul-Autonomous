@@ -1,57 +1,74 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-06-14 Session 2 (Round 19.6~16B 전부 배포 + 색인 요청 완료)
+> 마지막 업데이트: 2026-06-30 (Round 22-Privacy 정정 배포 완료)
 
 ## 현재 위치
 
-**올빼미버스 인터랙티브 노선도 완성·배포·색인 요청 완료. 네이버 검색 노출 확인. 핵심 작업 없음 — 모니터링 단계.**
+**Round 22-Privacy(/ko/privacy + /en/privacy 정정) 단독 배포 완료. 라이브 §9 회귀검증 전 항목 PASS. 다음은 Round 22(지도/업데이트) 지시서 대기.**
 
 ## 마지막 커밋 (main, 배포됨)
 
-`c65eb96` — Round 16B: HTTP Link 헤더 hreflang 정리 (alternateLinks false)
+`0a27b2c` — Round 22-Privacy — /ko/privacy + /en/privacy 정정 (GA4 운영 반영)
 
 ## 커밋 이력
 
 ```
+0a27b2c  Round 22-Privacy — /ko/privacy + /en/privacy 정정 (GA4 운영 반영) (배포됨)
+54d9e3d  docs: Round 22-Privacy 지시서 + audit 완료 + 2차 핸드오프
+43c35c8  docs: Round 22A 오디트 보고서 문서화
+ba37ce7  docs: Round 22A 오디트 완료 + 최종 계획서 확정
 c65eb96  Round 16B — HTTP Link 헤더 hreflang 정리 (배포됨)
 fbe3fe2  Round 21 — 서울 심야버스 노선도 발표 글 (배포됨)
-44c1d23  Round 20 — 환승 2회 경로 + 서울역 라벨 + 전체화면 뷰 맞춤 (배포됨)
-d96ca8f  Round 19.7 — 전체화면 보기 + 경로 바 칩 동작 + UI 개선 (배포됨)
-3637662  Round 19.6 — locale별 html lang 정리 (배포됨)
-da10647  docs: session handoff (Round 19 배포 완료)
-bb4bf8c  Round 19.5 — 내부 링크 + og + 본문 정합성 (배포됨)
 ```
 
 ## 배포 상태
 
 - seoulautonomous.com 라이브 (Docker + Caddy)
-- /ko/night-bus-map 200 ✅
-- /en/night-bus-map 404 ✅ (ko 전용)
-- /ko/updates/night-bus-map-launch 200 ✅
-- /en/updates/night-bus-map-launch 404 ✅ (ko 전용)
-- HTTP Link 헤더 hreflang 제거됨 ✅
-- 색인 요청 완료 (네이버·구글·다음)
-- 네이버 검색 노출 확인됨
+- /ko/privacy 200 ✅ — title `개인정보처리방침 Seoul Autonomous`, 14개 섹션, GA4 운영 반영
+- /en/privacy 200 ✅ — title `Privacy Policy Seoul Autonomous`
+- 측정ID·GTM·AdSense·Consent 본문 미기재 / §10 정보주체 권리 문단 포함
+- 운영자 `Seoul Autonomous` / 문의 `seoulautonomous@protonmail.com`
+- /ko/night-bus-map 200 ✅, /en/night-bus-map 404 ✅ (ko 전용)
+- HTTP Link 헤더 hreflang 미발생 ✅ (alternateLinks false 유지)
+- sitemap privacy 등록 유지, noindex 없음
+- 기존 사이트 무손상 (newsforgreens.com 200, fazr.co.kr 200)
 
 ## 다음 세션 할 것
 
-1. GSC 404 드롭 현황 확인 (2~4주 후)
-2. 네이버·구글 검색 순위 모니터링
-3. 스니펫 최적화 (필요 시 — 네이버가 고지문을 스니펫으로 뽑음)
-4. P2 항목 우선순위 재정리
+1. **Round 22 본작업(지도/업데이트) — GPT 지시서 대기**
+   - 지도 페이지 title/meta/DOM, 업데이트 글, 내부 링크, JSON-LD(WebPage+BreadcrumbList), DOM 순서 변경
+   - 참조: `docs/worklogs/ROUND-22-FINAL-PLAN.md`
+2. 이후 Round 23(GA4 이벤트) → Round 24(AdSense)
+3. GSC 404 드롭 현황 + 네이버·구글 순위 모니터링
+
+## 협업 구조 (확정)
+
+- **GPT**: 지시서 작성·최종 판단
+- **Claude Code**: 구현자 관점 충돌·최소 대안 제시 (무조건 동의 X, 실제 코드 기준 검토)
+- **Claude UI**: 핸드오프 공유·문서 정리
+- 최종 선택은 포그린이 잠금 문서·전체 범위 기준 결정
+- 승인 지점 3곳 단독 유지: 커밋 / 푸시 / 배포 (각각 명시적 승인)
 
 ## 핵심 경고
 
-- **alternateLinks: false 유지** — 다시 true로 돌리면 GSC 404 원인 부활
-- **Caddy 절대 건드리지 말 것**
-- **night-bus-data.ts 읽기 전용**
+- **alternateLinks: false 유지** — true로 돌리면 GSC 404 부활
+- **Caddy 절대 건드리지 말 것** (validate → reload만, restart 금지)
+- **night-bus-data.ts 읽기 전용 / 노선 기하 보정 금지**
+- **묶음 배포 금지** — 라운드 단독 배포 후 검증 완료 후에만 다음 라운드
+- 보류(정직성): 운영자 실명·법적주체, 국외이전 정식 고지 → 별도 법률 점검 라운드. "법적 완전 충족" 표현 금지
 
 ## 새 세션 시작 시
 
-1. [ ] 이 문서 읽기
-2. [ ] `docs/handoff/HANDOFF-20260614-session2.md` 읽기
+1. [ ] 이 문서(`docs/SESSION-HANDOFF.md`) 읽기
+2. [ ] 최신 날짜별 핸드오프 `docs/handoff/HANDOFF-20260630.md` 읽기
 3. [ ] MEMORY.md 확인
-4. [ ] 라이브 확인: https://seoulautonomous.com/ko/night-bus-map
+4. [ ] 라이브 확인: https://seoulautonomous.com/ko/privacy , /ko/night-bus-map
+
+## 핸드오프 운영 규칙
+
+- `docs/handoff/HANDOFF-YYYYMMDD.md` — 날짜별 이력 누적 (삭제·통합 금지, 보관)
+- `docs/SESSION-HANDOFF.md` — 항상 최신 상태로 갱신, 다음 세션 시작점
+- 미추적 파일(`docs/handoff/HANDOFF-20260608.md`, `round19-final-이식지시서.md`, `route/`) 건드리지 않음
 
 ## 서버 정보
 

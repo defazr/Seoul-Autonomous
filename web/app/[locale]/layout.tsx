@@ -54,6 +54,11 @@ export default async function LocaleLayout({
           <BackToTopButton />
         </NextIntlClientProvider>
       </body>
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7976139023602789"
+        crossOrigin="anonymous"
+      />
       <GoogleAnalytics gaId="G-ND7JGQ62QX" />
     </html>
   );

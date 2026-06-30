@@ -101,7 +101,23 @@ const document: LegalDocument = {
       ],
     },
     {
-      title: '10. Your Choices',
+      title: '10. Advertising',
+      paragraphs: [
+        'Seoul Autonomous may display advertising through Google AdSense to support the operation of the website. When ads are displayed, the following processing may occur:',
+      ],
+      bulletPoints: [
+        'Third-party advertising providers, including Google, may serve ads.',
+        'As part of serving ads, third parties may set cookies on a browser or device or read existing cookies.',
+        'Web beacons, IP addresses, or similar technologies may be used to serve ads and measure their performance.',
+        'Personalized or non-personalized ads may be displayed based on information such as previous visits.',
+      ],
+      paragraphsAfter: [
+        'Users can manage ad personalization through Google Ads Settings.',
+        'Users in certain regions, including the European Economic Area, the United Kingdom, and Switzerland, may be shown a regional consent message depending on applicable requirements and service settings.',
+      ],
+    },
+    {
+      title: '11. Your Choices',
       paragraphs: ['Users may limit Google Analytics cookies or measurement by:'],
       bulletPoints: [
         'Blocking or deleting cookies through browser settings',
@@ -115,7 +131,7 @@ const document: LegalDocument = {
       ],
     },
     {
-      title: '11. Links to External Services',
+      title: '12. Links to External Services',
       paragraphs: [
         'Seoul Autonomous may include links to external services such as Naver Map, Kakao Map, or other websites.',
         "Selecting an external link takes the user to the third party's website or application. Any subsequent processing of information is governed by that third party's privacy policy and terms.",
@@ -123,21 +139,21 @@ const document: LegalDocument = {
       ],
     },
     {
-      title: "12. Children's Privacy",
+      title: "13. Children's Privacy",
       paragraphs: [
         'Seoul Autonomous provides general transportation information and does not require children to create accounts or directly submit personal information.',
         'The operator does not knowingly request or directly collect personal information from children under the age of 14. However, as with other visitors, Google Analytics information may be processed automatically when a child visits the website.',
       ],
     },
     {
-      title: '13. Changes to This Policy',
+      title: '14. Changes to This Policy',
       paragraphs: [
         "This Privacy Policy may be updated when the website's features, analytics tools, or information processing practices change.",
         'When the policy is updated, the "Last updated" date at the top of this page will be revised. Material changes may also be announced separately on the website where appropriate.',
       ],
     },
     {
-      title: '14. Contact',
+      title: '15. Contact',
       paragraphs: [
         'For questions about this Privacy Policy or the processing of information in connection with Seoul Autonomous, please contact:',
       ],

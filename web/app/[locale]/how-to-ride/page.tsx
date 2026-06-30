@@ -230,6 +230,12 @@ export default async function HowToRidePage({
             </div>
           </div>
 
+          <p className={styles.introText}>
+            막차가 끊긴 뒤 심야 이동이라면{' '}
+            <Link href="/night-bus-map" className={styles.inlineLink}>서울 심야버스 노선도에서 환승 경로 확인하기</Link>
+            를 함께 참고하세요.
+          </p>
+
           <h2 className={styles.h2}>{koH2.howToBoard}</h2>
           <div className={styles.section}>
             <div className={styles.stepsGrid}>

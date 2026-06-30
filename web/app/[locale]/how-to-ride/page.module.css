@@ -129,6 +129,12 @@
   margin: 0 0 24px;
 }
 
+.inlineLink {
+  color: var(--color-accent-lo);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* Responsive */
 @media (max-width: 640px) {
   .heading {

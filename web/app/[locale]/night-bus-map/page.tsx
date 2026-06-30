@@ -5,6 +5,7 @@ import { PageContainer } from '../../../components/layout/PageContainer';
 import { SITE_URL, SITE_NAME } from '../../../lib/seo/config';
 import { NightBusMap } from './NightBusMap';
 import { ROUTE_COLORS } from './night-bus-data';
+import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import type { Metadata } from 'next';
 import styles from './page.module.css';
 
@@ -14,8 +15,9 @@ export function generateStaticParams() {
 }
 
 /* ── Metadata: ko only, no en alternates ── */
-const PAGE_TITLE = '서울 심야버스 노선도 | N버스·올빼미버스 환승 지도';
-const PAGE_DESC = '서울 심야버스 노선과 노선도를 한눈에. N버스·올빼미버스 주요 환승 허브와 야간 이동 경로를 정리한 서울 밤버스 시각 가이드입니다.';
+const PAGE_TITLE = '서울 심야버스 노선과 N버스 환승 노선도';
+const PAGE_H1 = '서울 심야버스 노선과 환승 노선도';
+const PAGE_DESC = '서울 심야버스 노선과 N버스 환승 경로를 한눈에 확인하세요. 올빼미버스 14개 노선과 심야A21의 주요 경유지와 환승역을 보고 출발역과 도착역을 선택해 직통 또는 환승 경로를 찾을 수 있습니다.';
 const PAGE_URL = `${SITE_URL}/ko/night-bus-map`;
 const OG_IMAGE_URL = `${SITE_URL}/og/night-bus-map-og.jpg`;
 
@@ -182,6 +184,40 @@ export default async function NightBusMapPage({
 
   return (
     <PageContainer width="default">
+      {/* JSON-LD: WebPage */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: PAGE_H1,
+            description: PAGE_DESC,
+            url: PAGE_URL,
+            inLanguage: 'ko',
+            isPartOf: {
+              '@type': 'WebSite',
+              name: SITE_NAME,
+              url: SITE_URL,
+            },
+          }),
+        }}
+      />
+      {/* JSON-LD: BreadcrumbList */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd(
+              [
+                { name: '홈', path: '' },
+                { name: PAGE_H1, path: '/night-bus-map' },
+              ],
+              'ko',
+            ),
+          ),
+        }}
+      />
       {/* TopBar */}
       <div className={styles.topBar}>
         <Link href="/" className={styles.backBtn}>
@@ -190,16 +226,17 @@ export default async function NightBusMapPage({
       </div>
 
       {/* Hero */}
-      <h1 className={styles.heading}>서울 심야버스 노선도</h1>
+      <h1 className={styles.heading}>{PAGE_H1}</h1>
       <p className={styles.subtitle}>
-        대리기사·야간근무자·심야 귀가자를 위한 서울 밤버스 이동 지도
+        대리기사, 야간근무자, 막차 이후 귀가자를 위한 서울 심야버스 지도
       </p>
 
       {/* 도입 문단 — 네이버봇 최우선 구간 */}
       <p className={styles.intro}>
-        서울 심야버스 노선을 한눈에 볼 수 있도록 정리한 노선도입니다.
-        올빼미버스(N버스) 14개와 자율주행 심야A21까지, 서울 야간버스의 주요 환승 허브를
-        시각 가이드로 제공합니다.
+        서울 심야버스 노선과 환승 경로를 한눈에 확인할 수 있는 노선도입니다.
+        올빼미버스 N버스 14개 노선과 자율주행 심야버스 A21의 주요 경유지와 환승역을 보여줍니다.
+        출발역과 도착역을 선택하면 직통 또는 환승 경로를 찾을 수 있습니다.
+        대리운전이 끝난 뒤 귀가하거나 야간근무를 마치고 퇴근할 때 막차 이후 이동 경로를 찾는 데 활용할 수 있습니다.
       </p>
 
       {/* 기준일 */}
@@ -207,20 +244,10 @@ export default async function NightBusMapPage({
         기준일: <time dateTime="2026-06-08">2026-06-08</time> 카카오맵 노선 검색 기준
       </p>
 
-      {/* 고지 박스 */}
-      <div className={styles.noticeBox}>
-        <div className={styles.noticeTitle}>
-          <AlertIcon />
-          안내
-        </div>
-        <div className={styles.noticeText}>
-          <p>이 노선도는 실제 지리와 정류장 순서를 정밀 재현한 지도가 아니라, 야간 이동 구조를 이해하기 위한 추상 노선도입니다.</p>
-          <p>서울시 심야버스 전체 정보를 공식처럼 대체하지 않습니다.</p>
-          <p>환승 허브는 동일 정류장 환승을 보장하지 않으며, 노선 축이 모이는 주요 권역을 뜻합니다.</p>
-          <p>탑승 전 실제 정류장·운행 시간·방향은 카카오맵·네이버지도·서울시 안내에서 확인하세요.</p>
-          <p>자율주행 검증 노선은 심야A21만 해당합니다.</p>
-        </div>
-      </div>
+      {/* 짧은 기능 안내 */}
+      <p className={styles.featureNote}>
+        노선을 선택하면 해당 경로가 강조됩니다. 출발역과 도착역을 입력하면 직통 또는 환승 경로를 확인할 수 있습니다.
+      </p>
 
       {/* SVG 노선도 */}
       <NightBusMap />
@@ -229,14 +256,22 @@ export default async function NightBusMapPage({
       <div className={styles.section}>
         <h2 className={styles.h2}>서울 심야버스 노선도 한눈에 보기</h2>
         <p className={styles.bodyText}>
-          위 노선도는 서울 심야버스 노선 15개의 주요 경유 허브와 이동 방향을 추상화한 시각 자료입니다.
-          올빼미버스(N버스) 14개 노선과 자율주행 심야A21이 어떤 권역을 연결하는지 한눈에 파악할 수 있습니다.
+          위 노선도는 올빼미버스 N버스 14개 노선과 자율주행 심야버스 A21의 주요 경유지와 환승 허브를 한눈에 볼 수 있도록 정리한 도식입니다.
+          노선을 선택해 경로를 강조하고 출발역과 도착역을 입력하면 직통 또는 환승 경로를 확인할 수 있습니다.
         </p>
-        <p className={styles.bodyText}>
-          노선도에서 큰 원으로 표시된 허브는 여러 심야버스 노선이 교차하는 주요 권역입니다.
-          노선도 안에서 역이나 허브를 선택하면 해당 지점을 지나는 노선을 확인할 수 있습니다.
-          심야버스 시간표와 요금 등 상세 정보는 카카오맵이나 서울시 공식 안내에서 확인하세요.
-        </p>
+      </div>
+
+      {/* 고지 박스 (축약) — H2 본문 직후 */}
+      <div className={styles.noticeBox}>
+        <div className={styles.noticeTitle}>
+          <AlertIcon />
+          안내
+        </div>
+        <div className={styles.noticeText}>
+          <p>이 노선도는 서울 심야버스의 주요 경유지와 환승 구조를 빠르게 파악하기 위한 도식입니다.</p>
+          <p>환승 지점은 권역 기준으로 표시되어 실제 정류장 사이에 이동이 필요할 수 있습니다.</p>
+          <p>탑승 전에는 정류장 위치와 운행 방향과 도착 시간을 네이버지도 카카오맵 또는 서울시 안내에서 확인하세요.</p>
+        </div>
       </div>
 
       {/* H2: 환승 허브 */}

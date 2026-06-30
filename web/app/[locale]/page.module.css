@@ -1,3 +1,33 @@
 .container {
   padding-top: env(safe-area-inset-top, 0px);
 }
+
+/* ── 심야버스 노선도 CTA (ko 전용) ── */
+.mapPromo {
+  margin: 8px 0 24px;
+}
+
+.mapPromoLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border: 1px solid var(--color-border-1);
+  border-radius: 12px;
+  color: var(--color-fg-1);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 22px;
+  transition: border-color 0.15s ease;
+}
+
+.mapPromoLink:hover {
+  border-color: var(--color-accent-lo);
+}
+
+.mapPromoArrow {
+  color: var(--color-accent-lo);
+  flex-shrink: 0;
+}

@@ -305,7 +305,6 @@ function Header({ isAll, clearSel, exportPNG, onPickFrom, onPickTo, jFrom, jTo, 
 }) {
   return (
     <div className={styles.obHead}>
-      <p className={styles.obHeadDesc}>노선 클릭=강조 · 역 클릭=경유 노선 · 2개 이상 선택=공유 환승역 깜빡 · 선은 직접 작도</p>
       <div className={styles.obAct}>
         <div className={styles.obSearchRow}>
           <SearchBox onPick={onPickFrom} placeholder="출발역 (초성 가능)" selected={jFrom} />

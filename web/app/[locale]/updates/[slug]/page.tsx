@@ -109,8 +109,9 @@ export default async function UpdateDetailPage({
               '@context': 'https://schema.org',
               '@type': 'Article',
               headline: title,
+              description: entry.summaryKo,
               datePublished: entry.date,
-              dateModified: entry.date,
+              dateModified: entry.dateModified ?? entry.date,
               author: { '@type': 'Organization', name: 'Seoul Autonomous' },
               image: 'https://seoulautonomous.com/images/updates/updates-night-bus-map-01-full.jpg',
             }),
@@ -138,7 +139,7 @@ export default async function UpdateDetailPage({
         <div className={styles.topBar}>
           <Link href="/updates" className={styles.backLink}>{t('backToUpdates')}</Link>
         </div>
-        <h1 className={styles.heading}>{title}</h1>
+        <h1 className={styles.heading}>{entry.h1Ko ?? title}</h1>
         <div className={styles.dates}>
           <span className={styles.dateMeta}>{isKo ? '게시' : 'Posted'} {formatDate(entry.date, isKo)}</span>
         </div>

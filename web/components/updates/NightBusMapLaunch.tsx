@@ -30,7 +30,7 @@ export function NightBusMapLaunch() {
         <p className={styles.p}><strong>서울 심야버스 노선도</strong>는 막차가 끊긴 뒤 올빼미버스(N버스)와 자율주행 심야버스 A21을 한눈에 확인하려는 사람에게 필요합니다. 대리운전을 마치고, 야간 근무를 끝내고, 늦게까지 있다가 집에 가야 할 때 가장 막막한 건 &ldquo;<strong>어느 버스를 타고, 어디서 갈아타야 하나</strong>&rdquo;입니다. 지하철이 끊긴 새벽, 서울에는 올빼미버스 노선과 자율주행 심야버스 A21이 운행하지만, 이 노선들을 <strong>한 장에 모아 환승까지 보여주는 지도</strong>는 찾기 어려웠습니다.</p>
         <Image className={styles.img} src={IMAGES[0].src} alt={IMAGES[0].alt} width={1440} height={900} loading="lazy" />
         <p className={styles.p}>그래서 서울 심야버스 노선 전체를 한 장에 정리한 노선도를 만들었습니다. 지하철 노선도처럼 노선을 색으로 구분하고, 노선을 누르고 출발역과 도착역을 고르면 환승 경로가 표시되는 인터랙티브 노선도입니다. 새벽에 휴대폰으로 바로 확인할 수 있도록 모바일 화면에 맞췄습니다.</p>
-        <p className={styles.cta}><Link href="/night-bus-map" className={styles.ctaLink}>서울 심야버스 노선도 바로 보기 →</Link></p>
+        <p className={styles.cta}><Link href="/night-bus-map" className={styles.ctaLink}>서울 심야버스 노선과 환승 노선도 바로 보기 →</Link></p>
       </section>
 
       <section className={styles.section}>
@@ -82,6 +82,7 @@ export function NightBusMapLaunch() {
             <p className={styles.faqA}>{item.a}</p>
           </div>
         ))}
+        <p className={styles.cta}><Link href="/night-bus-map" className={styles.ctaLink}>서울 심야버스 노선과 환승 노선도 바로 보기 →</Link></p>
       </section>
     </>
   );

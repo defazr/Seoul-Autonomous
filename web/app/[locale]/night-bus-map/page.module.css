@@ -56,6 +56,14 @@
   margin: 0 0 24px;
 }
 
+/* ── Feature note (지도 위 짧은 안내) ── */
+.featureNote {
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--color-fg-3);
+  margin: 0 0 16px;
+}
+
 /* ── Notice box ── */
 .noticeBox {
   background-color: var(--color-bg-2);

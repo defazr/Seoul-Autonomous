@@ -5,10 +5,12 @@ export type UpdateEntry = {
   sourcePublishedAt: string;
   titleEn: string;
   titleKo: string;
+  h1Ko?: string;
   summaryEn: string;
   summaryKo: string;
   relatedRouteIds: string[];
   customRender?: string;
+  dateModified?: string;
   sections: {
     whatChanged: { en: string; ko: string };
     confirmedInfo: { en: string[]; ko: string[] };

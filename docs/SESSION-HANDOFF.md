@@ -1,16 +1,17 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-07-12 4차 (Round 25-F/F.1/F.2 배포 + 25-G 최종 오디트 완료)
+> 마지막 업데이트: 2026-07-12 5차 (Round 25-G.2 404 실험 BLOCK·보류·정리)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고 시작한다.
 
 ## 현재 위치
 
-**AdSense 2026-07-10 거절("가치가 별로 없는 콘텐츠") 대응 체인 완료: 25-A audit → 25-C(사실 정정) → 25-D(22페이지 노선 안내) → 25-E(홈 허브+영문 가이드) → 25-F(한국어 실용 가이드 2개) → 25-F.1(상단 간격 9 URL) → 25-F.2(ko 푸터 노출) 전부 배포됨. Round 25-G 최종 오디트 판정: READY WITH MANUAL CHECKS — 코드·콘텐츠 블로커 0, 남은 것은 포그린의 수동 색인 요청·확인 후 AdSense 수동 재신청뿐. 재신청 아직 안 함.**
+**AdSense 2026-07-10 거절("가치가 별로 없는 콘텐츠") 대응 체인 완료: 25-A audit → 25-C(사실 정정) → 25-D(22페이지 노선 안내) → 25-E(홈 허브+영문 가이드) → 25-F(한국어 실용 가이드 2개) → 25-F.1(상단 간격 9 URL) → 25-F.2(ko 푸터 노출) 전부 배포됨. 25-G 최종 오디트: 코드·콘텐츠 블로커 0. 25-G.2(브랜드형 404) 시도했으나 standalone 프로덕션에서 커스텀 404 미동작으로 BLOCK → 비차단 기술부채로 보류(실험 코드 전부 폐기, 라이브 무변화). 남은 것은 코드 아니라 포그린 수동: 색인 요청 → 확인 → AdSense 재신청. 재신청 아직 안 함.**
 
 ## 마지막 커밋
 
-- 코드(=서버 라이브): `ef0274a` — Round 25-F.2 (F.1 `b84cc10`과 묶음 배포)
-- 로컬/origin 최신: docs 커밋이 그 위에 있을 수 있음 — `git log` 확인
+- local = origin: `c5bb5e5` (docs — Round 25-F 마감 문서. 이 위에 5차 핸드오프 docs 커밋 추가 예정)
+- server 코드 HEAD = live: `ef0274a` (Round 25-F.2, F.1과 묶음 배포) / live image `6d878d66110e`
+- **25-G.2 404 실험은 아무것도 커밋 안 함 — 좌표 무변화**
 
 ## 커밋 이력
 
@@ -52,7 +53,16 @@ c1781a1  Round 25-D: 노선 상세 22페이지 노선별 안내 섹션 (배포�
 1. GSC + 네이버 서치어드바이저에서 신규 URL 수집/색인 요청: `/ko/night-bus-fare` · `/ko/after-last-train` · `/en/night-bus-map`
 2. 색인 현황 확인 (Google은 홈·routes·faq·about·privacy·**ko/night-bus-map** 색인 확인됨 — 2026-07-12 site: 검색 실측. 네이버는 계정 확인 필요)
 3. 색인 반영 확인 후 **AdSense 수동 재신청 (포그린 직접)** — 아직 미실행
-4. 보류 항목(코드): ko/en 홈 title 동일("Seoul Autonomous"), /ko/updates title suffix, 홈 가치 섹션에 가이드 링크 추가 여부
+4. 보류 항목(코드, 전부 비차단):
+   - **기본 404 UI** — 25-G.2에서 시도했으나 `output: 'standalone'`에서 커스텀 not-found 미동작으로 BLOCK. 실험 백업 `/tmp/round25g2-404-wip.patch.tar.gz`. root layout·배포 구조 변경 없이는 미해결. 상세: `HANDOFF-20260712_5.md`
+   - ko/en 홈 title 동일("Seoul Autonomous"), /ko/updates title suffix, 홈 가치 섹션에 가이드 링크 추가 여부(IA A안)
+
+## ⚠ 이번 세션 실수·교훈 (다음 세션 반복 금지)
+
+1. **20분 무보고 디버깅** → 디버깅 5분 넘으면 중간 보고(확인 중/사실/미해결/다음 실험/예상시간), 10분 무설명 금지, BLOCK 도달 즉시 멈춤
+2. **좀비 서버 오염** → 검증 전 포트 PID·실행명령 확인 → kill → 새 빌드 PID 재확인. `lsof -ti :4099 | xargs kill -9` 후 listen 0
+3. **next start ≠ 프로덕션** → 이 프로젝트는 `output: 'standalone'`. 최종 판정은 `node .next/standalone/server.js`로 (static·public 복사 필요). `next start`는 경고 내고 경계 동작이 다름
+4. **성급한 "프레임워크 버그" 단정 금지** → 오염 신호로 결론 내지 말 것. 재현 조건만 사실로 기록
 4. 참고 데이터: 25-A audit·공식 노선 기준선(서울시 2026-03-20, 14개 노선·기종점·카드 2,500원)은 2026-07-12 세션 채팅에 있음. 공식 출처: news.seoul.go.kr/traffic/archives/27974
 
 ## 협업 절차 (2026-07-12 현재)
@@ -81,10 +91,11 @@ c1781a1  Round 25-D: 노선 상세 22페이지 노선별 안내 섹션 (배포�
 ## 새 세션 시작 시
 
 1. [ ] 이 문서(`docs/SESSION-HANDOFF.md`) 읽기
-2. [ ] 최신 날짜별 핸드오프 `docs/handoff/HANDOFF-20260712_4.md` 읽기
+2. [ ] 최신 날짜별 핸드오프 `docs/handoff/HANDOFF-20260712_5.md` 읽기 (그 전 4·3·2차도 필요시)
 3. [ ] MEMORY.md 확인
 4. [ ] 라이브 확인: https://seoulautonomous.com/ko/night-bus-fare (요금표), /ko/after-last-train, /ko 푸터(가이드 링크 2), /en (한국어 링크 없어야 정상)
 5. [ ] AdSense 재신청 여부·색인 요청 진행 상황을 포그린에게 확인 — 재신청 전이면 대기
+6. [ ] 404 재개 시: `/tmp` 백업 잔존 확인(재부팅 시 소실 가능), standalone 서빙 문제부터. 로컬 검증은 반드시 `node .next/standalone/server.js`
 
 ## 핸드오프 운영 규칙
 

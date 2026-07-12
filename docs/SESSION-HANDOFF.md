@@ -54,7 +54,7 @@ c1781a1  Round 25-D: 노선 상세 22페이지 노선별 안내 섹션 (배포�
 2. 색인 현황 확인 (Google은 홈·routes·faq·about·privacy·**ko/night-bus-map** 색인 확인됨 — 2026-07-12 site: 검색 실측. 네이버는 계정 확인 필요)
 3. 색인 반영 확인 후 **AdSense 수동 재신청 (포그린 직접)** — 아직 미실행
 4. 보류 항목(코드, 전부 비차단):
-   - **기본 404 UI** — 25-G.2에서 시도했으나 `output: 'standalone'`에서 커스텀 not-found 미동작으로 BLOCK. 실험 백업 `/tmp/round25g2-404-wip.patch.tar.gz`. root layout·배포 구조 변경 없이는 미해결. 상세: `HANDOFF-20260712_5.md`
+   - **기본 404 UI** — 25-G.2에서 시도했으나 `output: 'standalone'`에서 커스텀 not-found 미동작으로 BLOCK. **영구 백업: `/Users/dapala.corp/seoul-autonomous-backups/20260712-round25g2-404/`** (`~/seoul-autonomous-backups/20260712-round25g2-404/`, tar SHA-256 `5ac27d27…f2340`, README·SHA256SUMS 포함). `/tmp` 사본은 임시. root layout·배포 구조 변경 없이는 미해결. 상세: `HANDOFF-20260712_5.md`
    - ko/en 홈 title 동일("Seoul Autonomous"), /ko/updates title suffix, 홈 가치 섹션에 가이드 링크 추가 여부(IA A안)
 
 ## ⚠ 이번 세션 실수·교훈 (다음 세션 반복 금지)
@@ -95,7 +95,7 @@ c1781a1  Round 25-D: 노선 상세 22페이지 노선별 안내 섹션 (배포�
 3. [ ] MEMORY.md 확인
 4. [ ] 라이브 확인: https://seoulautonomous.com/ko/night-bus-fare (요금표), /ko/after-last-train, /ko 푸터(가이드 링크 2), /en (한국어 링크 없어야 정상)
 5. [ ] AdSense 재신청 여부·색인 요청 진행 상황을 포그린에게 확인 — 재신청 전이면 대기
-6. [ ] 404 재개 시: `/tmp` 백업 잔존 확인(재부팅 시 소실 가능), standalone 서빙 문제부터. 로컬 검증은 반드시 `node .next/standalone/server.js`
+6. [ ] 404 재개 시: 영구 백업 `~/seoul-autonomous-backups/20260712-round25g2-404/`(진본, README 참조) 사용. standalone 서빙 문제부터. 로컬 검증은 반드시 `node .next/standalone/server.js`
 
 ## 핸드오프 운영 규칙
 

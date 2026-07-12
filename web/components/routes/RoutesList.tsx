@@ -139,7 +139,11 @@ export function RoutesList({ routes, services, locale }: RoutesListProps) {
       <div className={styles.countRibbon}>
         <StatusDot color="var(--color-accent)" size={6} />
         <span className={styles.countText}>
-          {t('count', { count: total })}
+          {filter === 'ALL'
+            ? t('countAll', { busCount: filteredBus.length, robotaxiCount: filteredTaxi.length })
+            : filter === 'BUS'
+              ? t('countBus', { count: filteredBus.length })
+              : t('countTaxi', { count: filteredTaxi.length })}
         </span>
       </div>
 

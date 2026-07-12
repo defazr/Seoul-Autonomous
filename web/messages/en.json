@@ -13,7 +13,7 @@
   },
   "home": {
     "hero": {
-      "badge": "{count} ROUTES VERIFIED",
+      "badge": "{busCount} autonomous bus routes · {robotaxiCount} robotaxi service",
       "title": "Experience Seoul's autonomous future.",
       "description": "Verified autonomous bus and robotaxi routes across Seoul. Check before riding.",
       "cta": "View all routes"
@@ -32,7 +32,9 @@
   },
   "routes": {
     "title": "Routes",
-    "count": "{count} services matching",
+    "countAll": "{busCount} autonomous bus routes · {robotaxiCount} robotaxi service",
+    "countBus": "{count} autonomous bus routes",
+    "countTaxi": "{count} robotaxi service",
     "search": {
       "placeholder": "Search routes, places",
       "empty": "No routes match"
@@ -92,6 +94,7 @@
       "a1": "Board at {firstStop}. Last stop: {lastStop}.",
       "q2": "When does this route operate?",
       "a2": "Service runs from {firstBus} to {lastBus}.",
+      "a2Single": "The currently verified departure time is {firstBus}. Check the latest service information before travel.",
       "q3": "What days does it run, and how often?",
       "a3days": "Operating days: {days}.",
       "a3headway": "Headway: {headway}.",

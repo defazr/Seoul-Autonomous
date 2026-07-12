@@ -2,7 +2,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { StatusDot } from '../ui/Pill';
 import { Button } from '../ui/Button';
-import { getVerifiedRoutes, getLatestVerifiedDate } from '../../lib/routes';
+import { getVerifiedRoutes, getOnDemandServices, getLatestVerifiedDate } from '../../lib/routes';
 import styles from './Hero.module.css';
 
 function ArrowRight() {
@@ -25,7 +25,8 @@ function formatHeroDate(dateStr: string): string {
 export function Hero() {
   const t = useTranslations('home.hero');
   const locale = useLocale();
-  const verifiedCount = getVerifiedRoutes().length;
+  const busCount = getVerifiedRoutes().length;
+  const robotaxiCount = getOnDemandServices().length;
   const latestDate = getLatestVerifiedDate();
 
   return (
@@ -34,7 +35,7 @@ export function Hero() {
         <div className={styles.badge}>
           <StatusDot color="var(--color-accent)" size={6} />
           <span className={styles.badgeText}>
-            {t('badge', { count: verifiedCount })}
+            {t('badge', { busCount, robotaxiCount })}
           </span>
         </div>
 

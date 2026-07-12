@@ -252,7 +252,9 @@ export default async function RouteDetailPage({
           <div className={styles.aeoItem}>
             <dt className={styles.aeoQ}>{t('routeDetail.aeo.q2')}</dt>
             <dd className={styles.aeoA}>
-              {t('routeDetail.aeo.a2', { firstBus: route.firstBus, lastBus: route.lastBus })}
+              {route.firstBus === route.lastBus
+                ? t('routeDetail.aeo.a2Single', { firstBus: route.firstBus })
+                : t('routeDetail.aeo.a2', { firstBus: route.firstBus, lastBus: route.lastBus })}
             </dd>
           </div>
           {(route.daysOfOperation !== 'Unknown' || route.headway !== 'Unknown') && (

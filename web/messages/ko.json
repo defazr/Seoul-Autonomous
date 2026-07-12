@@ -13,7 +13,7 @@
   },
   "home": {
     "hero": {
-      "badge": "{count}개 노선 검증됨",
+      "badge": "자율주행 버스 {busCount}개 노선 · 로보택시 {robotaxiCount}개 서비스",
       "title": "서울의 자율주행 미래를 경험하세요.",
       "description": "서울 시내 검증된 자율주행 버스·로보택시 노선. 탑승 전 확인하세요.",
       "cta": "전체 노선 보기"
@@ -32,7 +32,9 @@
   },
   "routes": {
     "title": "노선",
-    "count": "{count}개 노선",
+    "countAll": "자율주행 버스 {busCount}개 노선 · 로보택시 {robotaxiCount}개 서비스",
+    "countBus": "자율주행 버스 {count}개 노선",
+    "countTaxi": "로보택시 {count}개 서비스",
     "search": {
       "placeholder": "노선, 지역 검색",
       "empty": "검색 결과가 없습니다"
@@ -92,6 +94,7 @@
       "a1": "{firstStop}에서 탑승하세요. 마지막 정류장은 {lastStop}입니다.",
       "q2": "이 노선은 언제 운행하나요?",
       "a2": "{firstBus}부터 {lastBus}까지 운행합니다.",
+      "a2Single": "현재 확인된 출발 시각은 {firstBus}입니다. 운행 전 최신 정보를 다시 확인하세요.",
       "q3": "운행일과 배차 간격은?",
       "a3days": "운행일: {days}.",
       "a3headway": "배차 간격: {headway}.",

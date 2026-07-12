@@ -48,7 +48,9 @@ export function RouteCard({ route, locale = 'en' }: RouteCardProps) {
           </div>
           <div className={styles.meta}>
             <span className={styles.metaText}>
-              {route.firstBus} – {route.lastBus}
+              {route.firstBus === route.lastBus
+                ? route.firstBus
+                : `${route.firstBus} – ${route.lastBus}`}
             </span>
             {route.headway !== 'Unknown' && (
               <>

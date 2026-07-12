@@ -113,6 +113,26 @@
   margin-top: 4px;
 }
 
+/* Route context section */
+.contextSection {
+  margin-bottom: 32px;
+}
+
+.contextSection h2 {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--color-fg-1);
+  margin: 0 0 12px;
+}
+
+.contextBody {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-fg-2);
+  margin: 0 0 10px;
+}
+
 /* Section spacing */
 .section {
   margin-bottom: 32px;

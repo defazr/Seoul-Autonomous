@@ -1,6 +1,9 @@
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { getVerifiedRoutes, getRouteById } from '../../../../lib/routes';
+import { routeContextKo } from '../../../../data/route-context/route-context.ko';
+import { routeContextEn } from '../../../../data/route-context/route-context.en';
+import type { VerifiedRouteId } from '../../../../lib/types/route-context';
 import { routing } from '../../../../i18n/routing';
 import { StopsList } from '../../../../components/route-detail/StopsList';
 import { MapLinkButton } from '../../../../components/route-detail/MapLinkButton';
@@ -141,6 +144,12 @@ export default async function RouteDetailPage({
   const subName = isKo ? route.displayName : route.displayNameKo;
   const stops = route.stops || [];
 
+  const contextMap = isKo ? routeContextKo : routeContextEn;
+  const context = contextMap[route.id as VerifiedRouteId];
+  if (!context) {
+    throw new Error(`Missing route context for route id: ${route.id}`);
+  }
+
   return (
     <PageContainer width="default">
       <script
@@ -180,6 +189,16 @@ export default async function RouteDetailPage({
           {t('routeDetail.disclaimer')}
         </div>
       </div>
+
+      {/* Route context */}
+      <section
+        className={styles.contextSection}
+        aria-labelledby="route-context-title"
+      >
+        <h2 id="route-context-title">{t('routeDetail.context.title')}</h2>
+        <p className={styles.contextBody}>{context.overview}</p>
+        <p className={styles.contextBody}>{context.useCase}</p>
+      </section>
 
       {/* 2-column layout */}
       <div className={styles.twoColumn}>

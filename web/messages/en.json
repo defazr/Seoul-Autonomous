@@ -87,6 +87,9 @@
       "inbound": "{from} \u2192 {to}"
     },
     "disclaimer": "Information based on Kakao Map. Please confirm before riding.",
+    "context": {
+      "title": "About this route"
+    },
     "footer": "Last verified {date}. Information is verified manually and may not reflect real-time changes.",
     "aeo": {
       "sectionTitle": "Common questions about this route",

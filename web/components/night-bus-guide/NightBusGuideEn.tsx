@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { PageContainer } from '../layout/PageContainer';
 import { SiteFooter } from '../common/SiteFooter';
+import { PageTopBar } from '../ui/PageTopBar';
 import { nightBusGuideEn } from '../../data/night-bus-guide/night-bus-guide.en';
 import styles from './NightBusGuideEn.module.css';
 
@@ -9,6 +10,7 @@ export function NightBusGuideEn() {
 
   return (
     <PageContainer width="default">
+      <PageTopBar href="/" ariaLabel="Back to home" />
       <div className={styles.hero}>
         <h1 className={styles.heading}>{g.hero.h1}</h1>
         <p className={styles.summary}>{g.hero.summary}</p>

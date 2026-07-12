@@ -1,5 +1,6 @@
 .header {
-  padding-top: 24px;
+  /* 상단 여백은 PageTopBar가 담당 (25-F.1) */
+  padding-top: 0;
   margin-bottom: 32px;
 }
 

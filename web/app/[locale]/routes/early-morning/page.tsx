@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { routing } from '../../../../i18n/routing';
 import { getEarlyMorningRoutes } from '../../../../lib/routes';
 import { RouteCard } from '../../../../components/ui/RouteCard';
+import { PageTopBar } from '../../../../components/ui/PageTopBar';
 import { SiteFooter } from '../../../../components/common/SiteFooter';
 import { PageContainer } from '../../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
@@ -57,6 +58,10 @@ export default async function EarlyMorningPage({
         }}
       />
 
+      <PageTopBar
+        href="/routes"
+        ariaLabel={locale === 'ko' ? '전체 노선으로 돌아가기' : 'Back to all routes'}
+      />
       <div className={styles.header}>
         <h1 className={styles.title}>{t('title')}</h1>
         <p className={styles.intro}>{t('intro')}</p>

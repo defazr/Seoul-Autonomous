@@ -3,6 +3,7 @@ import { getVerifiedRoutes, getOnDemandServices } from '../../../lib/routes';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import { buildPageMetadata } from '../../../lib/seo/metadata';
 import { RoutesList } from '../../../components/routes/RoutesList';
+import { PageTopBar } from '../../../components/ui/PageTopBar';
 import { SiteFooter } from '../../../components/common/SiteFooter';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import { Link } from '../../../i18n/navigation';
@@ -28,6 +29,10 @@ export default async function RoutesPage({ params }: { params: Promise<{ locale:
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: 'Routes', path: '/routes' }], locale)) }}
+      />
+      <PageTopBar
+        href="/"
+        ariaLabel={locale === 'ko' ? '홈으로 돌아가기' : 'Back to home'}
       />
       <RoutesList routes={routes} services={services} locale={locale} />
 

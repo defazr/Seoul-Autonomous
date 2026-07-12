@@ -3,6 +3,7 @@ import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
 import { getAllUpdates } from '../../../data/updates';
 import { SiteFooter } from '../../../components/common/SiteFooter';
+import { PageTopBar } from '../../../components/ui/PageTopBar';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import { buildPageMetadata } from '../../../lib/seo/metadata';
@@ -67,6 +68,10 @@ export default async function UpdatesPage({
         }}
       />
 
+      <PageTopBar
+        href="/"
+        ariaLabel={isKo ? '홈으로 돌아가기' : 'Back to home'}
+      />
       <div className={styles.header}>
         <h1 className={styles.title}>{t('pageTitle')}</h1>
       </div>

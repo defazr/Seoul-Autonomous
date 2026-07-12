@@ -4,14 +4,16 @@ import { SiteFooter } from '../../../components/common/SiteFooter';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import { SITE_URL, SITE_NAME } from '../../../lib/seo/config';
 import { NightBusMap } from './NightBusMap';
+import { NightBusGuideEn } from '../../../components/night-bus-guide/NightBusGuideEn';
+import { nightBusGuideEn } from '../../../data/night-bus-guide/night-bus-guide.en';
 import { ROUTE_COLORS } from './night-bus-data';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import type { Metadata } from 'next';
 import styles from './page.module.css';
 
-/* ── Static params: ko only ── */
+/* ── Static params: ko map + en text guide ── */
 export function generateStaticParams() {
-  return [{ locale: 'ko' }];
+  return [{ locale: 'ko' }, { locale: 'en' }];
 }
 
 /* ── Metadata: ko only, no en alternates ── */
@@ -21,12 +23,48 @@ const PAGE_DESC = '서울 심야버스 노선과 N버스 환승 경로를 한눈
 const PAGE_URL = `${SITE_URL}/ko/night-bus-map`;
 const OG_IMAGE_URL = `${SITE_URL}/og/night-bus-map-og.jpg`;
 
+/* ── EN guide metadata: self-canonical, no hreflang link to ko ── */
+const EN_PAGE_URL = `${SITE_URL}/en/night-bus-map`;
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  if (locale === 'en') {
+    const { title, description, ogImageAlt } = nightBusGuideEn.metadata;
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: EN_PAGE_URL,
+      },
+      openGraph: {
+        title,
+        description,
+        url: EN_PAGE_URL,
+        siteName: SITE_NAME,
+        type: 'website',
+        locale: 'en_US',
+        images: [
+          {
+            url: OG_IMAGE_URL,
+            secureUrl: OG_IMAGE_URL,
+            width: 1200,
+            height: 630,
+            alt: ogImageAlt,
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: [{ url: OG_IMAGE_URL, alt: ogImageAlt }],
+      },
+    };
+  }
   if (locale !== 'ko') return {};
 
   return {
@@ -177,7 +215,12 @@ export default async function NightBusMapPage({
 }) {
   const { locale } = await params;
 
-  // ko only — /en/night-bus-map → 404
+  // en — English text guide
+  if (locale === 'en') {
+    return <NightBusGuideEn />;
+  }
+
+  // other locales — 404
   if (locale !== 'ko') {
     notFound();
   }

@@ -95,5 +95,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   });
 
+  // en night-bus guide (standalone entry, no ko alternate link)
+  entries.push({
+    url: `${SITE_URL}/en/night-bus-map`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  });
+
   return entries;
 }

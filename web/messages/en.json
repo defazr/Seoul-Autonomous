@@ -22,6 +22,29 @@
       "title": "Routes to try first",
       "seeAll": "See all"
     },
+    "value": {
+      "title": "What you can find here",
+      "intro": "Verified information on Seoul's autonomous routes and late-night transit.",
+      "items": {
+        "routes": {
+          "title": "Autonomous route details",
+          "description": "Stops, service information, and route-by-route notes for Seoul's verified autonomous services."
+        },
+        "nightBus": {
+          "title": "Night bus guide",
+          "description": "An English guide to the Owl Bus network, with access to the Korean interactive route map."
+        },
+        "updates": {
+          "title": "Updates",
+          "description": "Verification notes and confirmed service changes."
+        }
+      }
+    },
+    "mapPromo": {
+      "title": "Seoul Night Bus guide",
+      "description": "See all 14 Owl Bus routes, the card fare, and how to use the Korean interactive map.",
+      "cta": "View the English guide"
+    },
     "footer": {
       "note": "Pilot service operated by the Seoul Metropolitan Government. Information is verified manually and may not reflect real-time changes."
     }

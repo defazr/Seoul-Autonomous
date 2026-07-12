@@ -1,32 +1,33 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-07-12 2차 (Round 25-D 노선 상세 22페이지 맥락 콘텐츠 배포 완료)
+> 마지막 업데이트: 2026-07-12 3차 (Round 25-E 홈 허브 + /en/night-bus-map 영문 가이드 배포 완료)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고 시작한다.
 
 ## 현재 위치
 
-**AdSense가 2026-07-10 "가치가 별로 없는 콘텐츠"로 거절됨 (ads.txt 승인·소유권 확인은 정상, 특정 URL 지목 없음). 대응 체인: Round 25-A audit(채팅) → 25-C(사실 오류·표시 결함 정정, 배포 완료) → 25-D(22개 노선 상세 페이지에 노선별 안내 섹션 추가, 배포 완료). 22페이지 유지·색인 유지·noindex 금지 방침 그대로. 재신청 안 함. 다음 작업은 Round 25-E(홈 허브 보강 + /en/night-bus-map 영문 가이드) 설계.**
+**AdSense가 2026-07-10 "가치가 별로 없는 콘텐츠"로 거절됨 (ads.txt 승인·소유권 확인은 정상, 특정 URL 지목 없음). 대응 체인: Round 25-A audit(채팅) → 25-C(사실 오류·표시 결함 정정) → 25-D(22페이지 노선별 안내 섹션) → 25-E(홈 가치 섹션 + /en/night-bus-map 영문 가이드 공개) 모두 배포 완료. 재신청 안 함. 다음 작업은 Round 25-F(한국어 실용 가이드 2개) 설계.**
 
 ## 마지막 커밋 (로컬 HEAD · origin/main · 서버 라이브 HEAD 모두 동일)
 
-`c1781a1` — Round 25-D: add route-specific context to detail pages
+`5fd776f` — Round 25-E: add English night bus guide and home hub
 
 ## 커밋 이력
 
 ```
+5fd776f  Round 25-E: 영문 심야버스 가이드 + 홈 허브 (배포됨, 2026-07-12)
+3b26a4e  docs: record Round 25-D deployment and next steps (문서 전용)
 c1781a1  Round 25-D: 노선 상세 22페이지 노선별 안내 섹션 (배포됨, 2026-07-12)
-f27a08b  docs: record Round 25-C deployment and next steps (문서 전용, 라이브 배포 없음)
+f27a08b  docs: record Round 25-C deployment and next steps (문서 전용)
 6d11a47  Round 25-C: 요금·기종점 정정 + 03:30 표시 + 개수 분리 (배포됨, 2026-07-12)
-4bfe364  docs: record Round 24-B deployment and AdSense review status
 86af374  Round 24-B: ads.txt + AdSense 연결 스크립트 (배포됨, 2026-06-30)
-be8d412  Round 24-A: privacy 광고 고지 + terms 정정 + design-preview 404 (배포됨)
 ```
 
 ## 배포 상태 (라이브)
 
-- seoulautonomous.com 라이브 (Docker + Caddy), 서버 HEAD `c1781a1`
-- 라이브 이미지 **`49782f5a17ec`** (2026-07-12 R25-D 배포) / 직전 이미지 `c59830a89ecb`(R25-C)
-- 롤백 태그: **`rollback-6d11a47`**(=`c59830a89ecb`, 직전) · `rollback-86af374`(=`fe355aa01666`) · `rollback-be8d412` · `rollback-c5b8abc` · `rollback-0a27b2c` 전부 보존. `rollback-f27a08b`는 문서 전용 커밋이라 만들지 않음
+- seoulautonomous.com 라이브 (Docker + Caddy), 서버 HEAD `5fd776f`
+- 라이브 이미지 **`a8f2cc4e6ae9`** (2026-07-12 R25-E 배포) / 직전 이미지 `49782f5a17ec`(R25-D)
+- 롤백 태그: **`rollback-c1781a1`**(=`49782f5a17ec`, 직전) · `rollback-6d11a47`(=`c59830a89ecb`) · `rollback-86af374` · `rollback-be8d412` · `rollback-c5b8abc` · `rollback-0a27b2c` 전부 보존. 문서 전용 커밋은 롤백 태그를 만들지 않음
+- **R25-E 라이브**: ① `/en/night-bus-map` 신규 공개 — 영문 텍스트 가이드 (14노선·140대·23:00–06:00·KRW 2,500·ko 지도 CTA), self-canonical·hreflang 없음·sitemap 독립 엔트리, 콘텐츠는 `web/data/night-bus-guide/` TS 모듈 ② ko/en 홈에 가치 섹션(FeaturedRoutes 다음, 3링크 카드) ③ en mapPromo → `/en/night-bus-map`, ko mapPromo 문구·기능 무변경(i18n 이동만) ④ 정적 생성 58/58
 - **R25-D 라이브**: 노선 상세 22페이지(11 노선 × ko/en)에 "노선 안내"/"About this route" H2 + 노선별 overview·useCase 산문 (disclaimer 다음, 정류장 카드 앞, SSR 초기 HTML 노출). 콘텐츠는 `web/data/route-context/`의 타입 안전 모듈(`VerifiedRouteId` 11개 exact union + `RouteContextMap`), 동적 팩트(시간·배차·요금 등)는 중복 저장하지 않고 기존 정보 카드·FAQ가 담당. **verificationNote는 포그린 화면 확인 후 전면 삭제** (신뢰도 저하 인상 + FAQ와 중복 + 존재하지 않는 데이터 카드 설명이라 부정확)
 - **R25-C 라이브 유지**: `/ko/night-bus-map` 요금 "카드 기준 2,500원(서울시 2026-03-20 기준)" · N15/N31/N61/N72/N75 "공식 기·종점" 정정 · 새벽 4노선 "03:30" 단일 표시 + 단일 출발 FAQ · 홈/routes "자율주행 버스 11개 노선 · 로보택시 1개 서비스" 분리 표기
 - R24-B 유지: /ads.txt 200(1줄), ko/en `<head>` AdSense 연결 스크립트 1회, 광고 슬롯 0
@@ -42,14 +43,12 @@ be8d412  Round 24-A: privacy 광고 고지 + terms 정정 + design-preview 404 (
 - 25-A audit 결론: 주원인은 산문형 고유 콘텐츠 부족(실질 콘텐츠 페이지 4/45) + 노선 상세 22페이지 템플릿 패턴. 기술 연결(ads.txt·스크립트·소유권)은 문제 아님
 - 미승인 상태의 외부 광고 요청 403(googleads.g.doubleclick.net)은 앱 오류 아님 — 승인 전까지 정상
 
-## 다음 세션 할 것 — Round 25-E
+## 다음 세션 할 것 — Round 25-F
 
-1. **Round 25-E** (GPT 지시서 대기, 단독 착수 금지):
-   - ko/en 홈의 가치 설명과 허브 역할 보강
-   - `/en/night-bus-map`을 영문 텍스트 가이드로 신규 구현 + 한국어 인터랙티브 지도와 연결
-   - 루트 기본 언어·기존 title/H1/URL 잠금 유지
-2. **Round 25-F**: 한국어 실용 가이드 2개 — ① 요금·결제·환승 ② 막차 이후 이동 시나리오
-3. **Round 25-G**: 최종 라이브 audit → 색인 상태 확인 → 통과 후 포그린이 AdSense 수동 재신청
+1. **Round 25-F** (GPT 지시서 대기, 단독 착수 금지): 한국어 실용 가이드 2개
+   - ① 요금·결제·환승 안내 ② 막차 이후 이동 시나리오
+   - 공식 확인된 사실만 사용 (미확인: 현금/청소년 요금, 환승 할인 규칙 — 공식 재확인 필요)
+2. **Round 25-G**: 최종 라이브 audit → 색인 상태 확인 → 통과 후 포그린이 AdSense 수동 재신청
 4. 참고 데이터: 25-A audit·공식 노선 기준선(서울시 2026-03-20, 14개 노선·기종점·카드 2,500원)은 2026-07-12 세션 채팅에 있음. 공식 출처: news.seoul.go.kr/traffic/archives/27974
 
 ## 협업 절차 (2026-07-12 현재)
@@ -65,7 +64,7 @@ be8d412  Round 24-A: privacy 광고 고지 + terms 정정 + design-preview 404 (
 ## 핵심 경고 / 운영 주의
 
 - **서버에 추적 밖 `Dockerfile`(untracked) 존재** — 수동 Docker 빌드가 의존. `git pull --ff-only`만 사용. 저장소엔 미커밋
-- **롤백**: 배포는 `:latest`를 덮음 → 배포 전 현재 이미지를 `rollback-<해시>` 태그로 박제. 현재 직전 = `rollback-6d11a47`. 라이브 배포된 적 없는 문서 전용 커밋은 롤백 태그를 만들지 않음
+- **롤백**: 배포는 `:latest`를 덮음 → 배포 전 현재 이미지를 `rollback-<해시>` 태그로 박제. 현재 직전 = `rollback-c1781a1`. 라이브 배포된 적 없는 문서 전용 커밋은 롤백 태그를 만들지 않음
 - **Caddy 절대 미변경** (validate→reload만, restart 금지)
 - **night-bus-data.ts 읽기 전용 / SVG 기하 보정 금지 / routes.json 노선 추가·삭제 금지(필드 추가는 지시서로만)**
 - **alternateLinks: false 유지** (true 복귀 시 GSC 404 부활)
@@ -78,10 +77,10 @@ be8d412  Round 24-A: privacy 광고 고지 + terms 정정 + design-preview 404 (
 ## 새 세션 시작 시
 
 1. [ ] 이 문서(`docs/SESSION-HANDOFF.md`) 읽기
-2. [ ] 최신 날짜별 핸드오프 `docs/handoff/HANDOFF-20260712_2.md` 읽기
+2. [ ] 최신 날짜별 핸드오프 `docs/handoff/HANDOFF-20260712_3.md` 읽기
 3. [ ] MEMORY.md 확인
-4. [ ] 라이브 확인: https://seoulautonomous.com/ko/routes/simya-a21 ("노선 안내" 섹션), /ko/night-bus-map (요금 2,500원), /ko (11+1 배지), /ads.txt
-5. [ ] Round 25-E GPT 지시서 유무 확인 — 없으면 대기, 단독 착수 금지
+4. [ ] 라이브 확인: https://seoulautonomous.com/en/night-bus-map (영문 가이드), /ko ("이 사이트에서 확인할 수 있는 것" 섹션), /ko/night-bus-map (요금 2,500원), /ads.txt
+5. [ ] Round 25-F GPT 지시서 유무 확인 — 없으면 대기, 단독 착수 금지
 
 ## 핸드오프 운영 규칙
 

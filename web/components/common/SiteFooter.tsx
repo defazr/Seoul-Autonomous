@@ -28,6 +28,13 @@ export async function SiteFooter() {
     { href: `/${locale}`, label: tf('home') },
     { href: `/${locale}/routes`, label: tf('routes') },
     { href: `/${locale}/updates`, label: tf('updates') },
+    // 한국어 전용 실용 가이드 (25-F.2) — en 푸터에는 렌더하지 않음
+    ...(locale === 'ko'
+      ? [
+          { href: '/ko/night-bus-fare', label: tf('nightBusFare') },
+          { href: '/ko/after-last-train', label: tf('afterLastTrain') },
+        ]
+      : []),
     { href: `/${locale}/how-to-ride`, label: tf('howToRide') },
     { href: `/${locale}/faq`, label: tf('faq') },
     { href: `/${locale}/data-source`, label: tf('dataSource') },

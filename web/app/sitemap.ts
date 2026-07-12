@@ -103,5 +103,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   });
 
+  // ko-only practical guides (no en alternate)
+  entries.push({
+    url: `${SITE_URL}/ko/night-bus-fare`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  });
+  entries.push({
+    url: `${SITE_URL}/ko/after-last-train`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  });
+
   return entries;
 }

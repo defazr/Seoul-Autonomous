@@ -1,0 +1,175 @@
+.hero {
+  margin-bottom: 28px;
+}
+
+.heading {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 38px;
+  color: var(--color-fg-1);
+  letter-spacing: -0.96px;
+  margin: 0 0 12px;
+}
+
+.summary {
+  font-size: 15px;
+  line-height: 23px;
+  color: var(--color-fg-2);
+  margin: 0 0 8px;
+}
+
+.asOf {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--color-fg-4);
+  letter-spacing: 0.33px;
+  margin: 0;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--color-fg-1);
+  margin: 0 0 12px;
+}
+
+.subTitle {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-fg-1);
+  margin: 18px 0 8px;
+}
+
+.body {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-fg-2);
+  margin: 0 0 10px;
+}
+
+.fareTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.fareTable th,
+.fareTable td {
+  border: 1px solid var(--color-border-1);
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.fareTable thead th {
+  background: var(--color-bg-2);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.36px;
+  color: var(--color-fg-3);
+}
+
+.fareTable tbody th {
+  font-weight: 600;
+  color: var(--color-fg-1);
+}
+
+.fareTable tbody td {
+  color: var(--color-fg-2);
+}
+
+.stepList {
+  margin: 0 0 12px;
+  padding-left: 22px;
+}
+
+.stepList li {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-fg-2);
+  margin-bottom: 8px;
+}
+
+.bulletList {
+  margin: 0 0 10px;
+  padding-left: 20px;
+}
+
+.bulletList li {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-fg-2);
+  margin-bottom: 6px;
+}
+
+.linkList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.linkList li {
+  margin-bottom: 8px;
+}
+
+.internalLink {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.internalLink:hover {
+  text-decoration: underline;
+}
+
+.externalLink {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-fg-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .heading {
+    font-size: 26px;
+    line-height: 32px;
+  }
+
+  .fareTable th,
+  .fareTable td {
+    padding: 9px 8px;
+  }
+}
+
+/* TopBar (기존 페이지 관례와 동일) */
+.topBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 0 20px;
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-2);
+  cursor: pointer;
+  color: var(--color-fg-1);
+  text-decoration: none;
+}

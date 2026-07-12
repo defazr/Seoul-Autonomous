@@ -386,6 +386,23 @@ export default async function NightBusMapPage({
         </ul>
       </div>
 
+      {/* H2: 관련 실용 가이드 */}
+      <div className={styles.section}>
+        <h2 className={styles.h2}>관련 실용 가이드</h2>
+        <ul className={styles.relatedGuides}>
+          <li>
+            <Link href="/night-bus-fare" className={styles.relatedGuideLink}>
+              서울 심야버스 요금·환승 안내 →
+            </Link>
+          </li>
+          <li>
+            <Link href="/after-last-train" className={styles.relatedGuideLink}>
+              막차 이후 서울 이동 방법 →
+            </Link>
+          </li>
+        </ul>
+      </div>
+
       {/* Footer */}
       <SiteFooter />
     </PageContainer>

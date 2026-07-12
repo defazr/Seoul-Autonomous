@@ -238,3 +238,26 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* 관련 실용 가이드 */
+.relatedGuides {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.relatedGuides li {
+  margin-bottom: 8px;
+}
+
+.relatedGuideLink {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.relatedGuideLink:hover {
+  text-decoration: underline;
+}

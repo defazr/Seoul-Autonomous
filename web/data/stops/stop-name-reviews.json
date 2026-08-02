@@ -1,0 +1,291 @@
+[
+  {
+    "stopId": "01023",
+    "currentNameKo": "동대문역.흥인지문",
+    "officialNameKo": "동대문역.흥인지문",
+    "officialNameEn": "Dongdaemun Station.Heunginjimun Gate",
+    "reviewType": "official_variant",
+    "decision": "adopt_en",
+    "note": "Official English label differs in formatting from the opposite-direction stop with the same Korean name. Original text preserved; no normalization in 26-C1E."
+  },
+  {
+    "stopId": "01037",
+    "currentNameKo": "동대문역.흥인지문",
+    "officialNameKo": "동대문역.흥인지문",
+    "officialNameEn": "Dongdaemun Station(Heunginjimun)",
+    "reviewType": "official_variant",
+    "decision": "adopt_en",
+    "note": "Official English label differs in formatting from the opposite-direction stop with the same Korean name. Original text preserved; no normalization in 26-C1E."
+  },
+  {
+    "stopId": "01174",
+    "currentNameKo": "청계1가.장통교",
+    "officialNameKo": "청계1가.광교",
+    "officialNameEn": "Cheonggye 1(il)-ga, Gwanggyo",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "02001",
+    "currentNameKo": "명동성당.남대문세무서",
+    "officialNameKo": "남대문세무서",
+    "officialNameEn": "Namdaemun District Tax Office",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "02004",
+    "currentNameKo": "서울역버스환승센터(4번승강장)",
+    "officialNameKo": "서울역버스환승센터",
+    "officialNameEn": "Seoul station bus transfer center",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "02007",
+    "currentNameKo": "서울역버스환승센터.강우규의거터(7번승강장)",
+    "officialNameKo": "서울역버스환승센터.강우규의거터",
+    "officialNameEn": "Seoul Station Bus Transfer Center, Site of Kang Woo-kyu",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "02128",
+    "currentNameKo": "소공동주민센터",
+    "officialNameKo": "시청앞",
+    "officialNameEn": "City hall front",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "02247",
+    "currentNameKo": "청계광장",
+    "officialNameKo": null,
+    "officialNameEn": null,
+    "reviewType": "oa12830_unmatched",
+    "decision": "pending_alternative_source",
+    "note": "Not returned by OA-12830 (dataset covers only stops with reviewed multilingual names). Official Seoul English site (english.seoul.go.kr, Cheonggye A01 shuttle articles) refers to this location as 'Cheonggye Plaza'. Not yet adopted into the SSOT: it is a place name in an article, not a bus-stop name record.",
+    "alternativeOfficialEn": "Cheonggye Plaza",
+    "alternativeSource": "english.seoul.go.kr"
+  },
+  {
+    "stopId": "02507",
+    "currentNameKo": "시청역1호선.서울시청",
+    "officialNameKo": "프레스센터",
+    "officialNameEn": "Press Center",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "03007",
+    "currentNameKo": "삼각지역.전쟁기념관",
+    "officialNameKo": "삼각지역",
+    "officialNameEn": "Samgakji station",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "03008",
+    "currentNameKo": "삼각지역.전쟁기념관",
+    "officialNameKo": "삼각지역",
+    "officialNameEn": "Samgakji station",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "06272",
+    "currentNameKo": "서울바이오허브",
+    "officialNameKo": "서울바이오허브.농촌경제연구원",
+    "officialNameEn": "Seoul Biohub, Korea Rural Economic Institute",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "06273",
+    "currentNameKo": "서울바이오허브",
+    "officialNameKo": "서울바이오허브.농촌경제연구원",
+    "officialNameEn": "Seoul Biohub, Korea Rural Economic Institute",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "06510",
+    "currentNameKo": "경희대의료원.경희여중고",
+    "officialNameKo": null,
+    "officialNameEn": null,
+    "reviewType": "oa12830_unmatched",
+    "decision": "pending_alternative_source",
+    "note": "Not returned by OA-12830 (dataset covers only stops with reviewed multilingual names). Official Seoul English source (english.seoul.go.kr, Dongdaemun/Seodaemun self-driving bus article and Seoul City channel) uses 'Kyung Hee Univ. Medical Center' as the route endpoint. Not adopted: endpoint label, not a verified stop-name record.",
+    "alternativeOfficialEn": "Kyung Hee Univ. Medical Center",
+    "alternativeSource": "english.seoul.go.kr"
+  },
+  {
+    "stopId": "09003",
+    "currentNameKo": "수유역.수유사거리",
+    "officialNameKo": "수유역",
+    "officialNameEn": "Suyu station",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "09004",
+    "currentNameKo": "수유역.강북구청",
+    "officialNameKo": "수유역.강북구청",
+    "officialNameEn": "Suyu station, Gangbuk-gu office",
+    "reviewType": "official_variant",
+    "decision": "adopt_en",
+    "note": "Official English label differs in formatting from the opposite-direction stop with the same Korean name. Original text preserved; no normalization in 26-C1E."
+  },
+  {
+    "stopId": "09009",
+    "currentNameKo": "도봉세무서.성암국제무역고",
+    "officialNameKo": "도봉세무서.성북시장",
+    "officialNameEn": "Dobong district tax office, Seongbuk market",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "09010",
+    "currentNameKo": "도봉세무서.성암국제무역고",
+    "officialNameKo": "도봉세무서.성북시장",
+    "officialNameEn": "Dobong district tax office, Seongbuk market",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "09013",
+    "currentNameKo": "수유역.강북구청",
+    "officialNameKo": "수유역.강북구청",
+    "officialNameEn": "Suyu Station & Gangbuk-gu Office",
+    "reviewType": "official_variant",
+    "decision": "adopt_en",
+    "note": "Official English label differs in formatting from the opposite-direction stop with the same Korean name. Original text preserved; no normalization in 26-C1E."
+  },
+  {
+    "stopId": "10017",
+    "currentNameKo": "우이교.한일병원입구",
+    "officialNameKo": "우이1교앞",
+    "officialNameEn": "Ui 1(il)-gyo front",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "10018",
+    "currentNameKo": "우이교.한일병원입구",
+    "officialNameKo": "우이1교앞",
+    "officialNameEn": "Ui 1(il)-gyo front",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "11240",
+    "currentNameKo": "상계역5번출구.상계벽산아파트",
+    "officialNameKo": "상계벽산아파트",
+    "officialNameEn": "Sanggye Byucksan Apt.",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "11391",
+    "currentNameKo": "상계역5번출구",
+    "officialNameKo": "상계역",
+    "officialNameEn": "Sanggye station",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "13202",
+    "currentNameKo": "홍연2교.두산아파트앞",
+    "officialNameKo": "홍연2교두산아파트앞",
+    "officialNameEn": "Hongyeon 2(i)-gyo Doosan Apt.",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "13243",
+    "currentNameKo": "DMC파크뷰자이1단지입구",
+    "officialNameKo": null,
+    "officialNameEn": null,
+    "reviewType": "oa12830_unmatched",
+    "decision": "pending_alternative_source",
+    "note": "Not returned by OA-12830 (dataset covers only stops with reviewed multilingual names). No official Seoul English bus-stop name found. Apartment-complex stop (DMC Park View Xi). Requires human-reviewed romanization or Korean fallback in 26-C2E.",
+    "alternativeOfficialEn": null,
+    "alternativeSource": null
+  },
+  {
+    "stopId": "13257",
+    "currentNameKo": "가좌역3번출구",
+    "officialNameKo": null,
+    "officialNameEn": null,
+    "reviewType": "oa12830_unmatched",
+    "decision": "pending_alternative_source",
+    "note": "Not returned by OA-12830 (dataset covers only stops with reviewed multilingual names). Official Seoul English source describes the Seodaemun route endpoint as 'Gajwa Station'. Our stop is 'Gajwa Station Exit 3'; the exit number is not confirmed in the English source. Not adopted.",
+    "alternativeOfficialEn": "Gajwa Station",
+    "alternativeSource": "english.seoul.go.kr"
+  },
+  {
+    "stopId": "13262",
+    "currentNameKo": "홍남교.백련시장입구",
+    "officialNameKo": "홍남교백련시장입구",
+    "officialNameEn": "Hongnamgyo Baengnyeon market",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  },
+  {
+    "stopId": "14628",
+    "currentNameKo": "YTN뉴스퀘어.CJE&M",
+    "officialNameKo": null,
+    "officialNameEn": null,
+    "reviewType": "oa12830_unmatched",
+    "decision": "pending_alternative_source",
+    "note": "Not returned by OA-12830 (dataset covers only stops with reviewed multilingual names). No official Seoul English bus-stop name found. The stop is named after private facilities (YTN Newsquare, CJ ENM). Requires human-reviewed romanization or Korean fallback in 26-C2E.",
+    "alternativeOfficialEn": null,
+    "alternativeSource": null
+  },
+  {
+    "stopId": "20169",
+    "currentNameKo": "숭실대중문앞",
+    "officialNameKo": "숭실대중문앞",
+    "officialNameEn": "Soongsil University Dept. of Chinese Language & Literature",
+    "reviewType": "semantic_conflict",
+    "decision": "hold",
+    "note": "Same official Korean stop name as the opposite-direction stop but a semantically different official English label. Not adopted automatically."
+  },
+  {
+    "stopId": "20170",
+    "currentNameKo": "숭실대중문앞",
+    "officialNameKo": "숭실대중문앞",
+    "officialNameEn": "Soongsil University Middle Gate",
+    "reviewType": "official_variant",
+    "decision": "adopt_en",
+    "note": "Official English label differs in formatting from the opposite-direction stop with the same Korean name. Original text preserved; no normalization in 26-C1E."
+  },
+  {
+    "stopId": "22011",
+    "currentNameKo": "지하철2호선강남역(중)",
+    "officialNameKo": "지하철2호선강남역",
+    "officialNameEn": "Line 2 Gangnam station",
+    "reviewType": "ko_name_difference",
+    "decision": "adopt_en",
+    "note": "Official Korean name differs from the current nameKo. English name adopted; nameKo left unchanged in 26-C1E."
+  }
+]

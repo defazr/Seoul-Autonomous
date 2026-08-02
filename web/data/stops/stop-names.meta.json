@@ -1,0 +1,23 @@
+{
+  "dataset": "OA-12830",
+  "datasetName": "서울시 버스 정류소 노선도 다국어 목록 정보",
+  "api": "ListBusStationMultilangInfo",
+  "provider": "Seoul Metropolitan Government",
+  "datasetUrl": "https://data.seoul.go.kr/dataList/OA-12830/A/1/datasetView.do",
+  "sourceUpdatedAt": "2025-03-14",
+  "license": "KOGL Type 1",
+  "licenseNote": "공공누리 제1유형: 출처표시 (상업적 이용 및 변경 가능)",
+  "extractionNote": "Only the stop IDs used by this site (267 unique) were extracted from the dataset; official English names are stored verbatim without normalization.",
+  "totalInDataset": 6652,
+  "requestedStopIds": 267,
+  "apiMatched": 262,
+  "apiUnmatched": 5,
+  "generationId": "c0502a2e6dd4d4c8",
+  "artifacts": {
+    "stopNamesSha256": "56c00464e989360cb32359f7c758936f18860343360e46f5621fa7e4c1818167",
+    "reviewsSha256": "ecbf92844f679cd12f6dec3a201524561747487950756b866e9db80741060dd8",
+    "stopNamesCanonicalSha256": "56c00464e989360cb32359f7c758936f18860343360e46f5621fa7e4c1818167",
+    "reviewsCanonicalSha256": "ecbf92844f679cd12f6dec3a201524561747487950756b866e9db80741060dd8"
+  },
+  "collectedAt": "2026-08-02T10:16:50.850Z"
+}

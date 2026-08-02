@@ -1,0 +1,2138 @@
+[
+  {
+    "stopId": "01002",
+    "officialId": "01-002",
+    "nameKoOfficial": "창경궁.서울대학교병원",
+    "nameEnOfficial": "Changgyeonggung, Seoul Nat'l Univ. hospital",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01003",
+    "officialId": "01-003",
+    "nameKoOfficial": "명륜3가.성대입구",
+    "nameEnOfficial": "Myeongnyun 3(sam)-ga, Sungkyunkwan Univ.",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01005",
+    "officialId": "01-005",
+    "nameKoOfficial": "혜화동로터리.여운형활동터",
+    "nameEnOfficial": "Hyehwa-dong Rotary, Site of Lyuh Woon-hyung",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01006",
+    "officialId": "01-006",
+    "nameKoOfficial": "서대문역사거리",
+    "nameEnOfficial": "Seodaemun Station- Sageori",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01007",
+    "officialId": "01-007",
+    "nameKoOfficial": "서울역사박물관.경희궁앞",
+    "nameEnOfficial": "Seoul Museum of History, Gyeonghuigung Palace",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01008",
+    "officialId": "01-008",
+    "nameKoOfficial": "서울역사박물관.경희궁앞",
+    "nameEnOfficial": "Seoul Museum of History, Gyeonghuigung Palace",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01009",
+    "officialId": "01-009",
+    "nameKoOfficial": "광화문역",
+    "nameEnOfficial": "Gwanghwamun Station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01010",
+    "officialId": "01-010",
+    "nameKoOfficial": "광화문역",
+    "nameEnOfficial": "Gwanghwamun Station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01011",
+    "officialId": "01-011",
+    "nameKoOfficial": "종로1가",
+    "nameEnOfficial": "Jongno 1-ga",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01012",
+    "officialId": "01-012",
+    "nameKoOfficial": "종로1가",
+    "nameEnOfficial": "Jongno 1-ga",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01013",
+    "officialId": "01-013",
+    "nameKoOfficial": "종로2가",
+    "nameEnOfficial": "Jongno 2-ga",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01014",
+    "officialId": "01-014",
+    "nameKoOfficial": "종로2가",
+    "nameEnOfficial": "Jongno 2-ga",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01015",
+    "officialId": "01-015",
+    "nameKoOfficial": "종로3가.탑골공원",
+    "nameEnOfficial": "Jongno 3(sam)-ga.Tapgol Park",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01016",
+    "officialId": "01-016",
+    "nameKoOfficial": "종로3가.탑골공원",
+    "nameEnOfficial": "Jongno 3(sam)-ga.Tapgol Park",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01017",
+    "officialId": "01-017",
+    "nameKoOfficial": "종로4가.종묘",
+    "nameEnOfficial": "Jongno 4-ga.Jongmyo Shrine",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01018",
+    "officialId": "01-018",
+    "nameKoOfficial": "종로4가.종묘",
+    "nameEnOfficial": "Jongno 4-ga.Jongmyo Shrine",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01019",
+    "officialId": "01-019",
+    "nameKoOfficial": "종로5가.광장시장",
+    "nameEnOfficial": "Jongno 5(o)-ga.Gwangjang Market",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01020",
+    "officialId": "01-020",
+    "nameKoOfficial": "종로5가.광장시장",
+    "nameEnOfficial": "Jongno 5(o)-ga.Gwangjang Market",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01021",
+    "officialId": "01-021",
+    "nameKoOfficial": "종로6가.동대문종합시장",
+    "nameEnOfficial": "Jongno 6-ga.Dongdaemun Market",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01022",
+    "officialId": "01-022",
+    "nameKoOfficial": "종로6가.동대문종합시장",
+    "nameEnOfficial": "Jongno 6-ga.Dongdaemun Market",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01023",
+    "officialId": "01-023",
+    "nameKoOfficial": "동대문역.흥인지문",
+    "nameEnOfficial": "Dongdaemun Station.Heunginjimun Gate",
+    "matchStatus": "official_variant",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01037",
+    "officialId": "01-037",
+    "nameKoOfficial": "동대문역.흥인지문",
+    "nameEnOfficial": "Dongdaemun Station(Heunginjimun)",
+    "matchStatus": "official_variant",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01119",
+    "officialId": "01-119",
+    "nameKoOfficial": "영추문",
+    "nameEnOfficial": "Yeongchumun",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01123",
+    "officialId": "01-123",
+    "nameKoOfficial": "서울역사박물관.강북삼성병원",
+    "nameEnOfficial": "Seoul Museum of History, Kangbuk Samsung hospital",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01129",
+    "officialId": "01-129",
+    "nameKoOfficial": "광화문역6번출구.광화문빌딩",
+    "nameEnOfficial": "Gwanghwamun Station Exit 6. Gwanghwamun Building",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01174",
+    "officialId": "01-174",
+    "nameKoOfficial": "청계1가.광교",
+    "nameEnOfficial": "Cheonggye 1(il)-ga, Gwanggyo",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01175",
+    "officialId": "01-175",
+    "nameKoOfficial": "청계2가.수표교",
+    "nameEnOfficial": "Cheonggye 2(i)-ga, Supyogyo",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01176",
+    "officialId": "01-176",
+    "nameKoOfficial": "청계4가.세운교",
+    "nameEnOfficial": "Cheonggye 4(sa)-ga, Seungyo",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01177",
+    "officialId": "01-177",
+    "nameKoOfficial": "청계5가.광장시장",
+    "nameEnOfficial": "Cheonggye 5(o)-ga, Gwangjang market",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01198",
+    "officialId": "01-198",
+    "nameKoOfficial": "원남동",
+    "nameEnOfficial": "Wonnam-dong",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01204",
+    "officialId": "01-204",
+    "nameKoOfficial": "효제동.김상옥의거터",
+    "nameEnOfficial": "Hyoje-dong. Site of Kim Sang-ok",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01205",
+    "officialId": "01-205",
+    "nameKoOfficial": "종로5가.효제초등학교",
+    "nameEnOfficial": "Jongno 5(o)-ga, Hyoje elementary school",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01219",
+    "officialId": "01-219",
+    "nameKoOfficial": "방송통신대.이화장",
+    "nameEnOfficial": "Korea National Open University, Ehwajang (House)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01220",
+    "officialId": "01-220",
+    "nameKoOfficial": "혜화역2번출구.마로니에공원",
+    "nameEnOfficial": "Hyehwa Station Exit 2 & Marronnier park",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01229",
+    "officialId": "01-229",
+    "nameKoOfficial": "혜화역.동성중고(장면총리가옥)",
+    "nameEnOfficial": "Hyehwa station, Dongseong middle & high school (Jang Myeon prime minister house)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01251",
+    "officialId": "01-251",
+    "nameKoOfficial": "청계3가.관수교",
+    "nameEnOfficial": "Cheonggye 3(sam)-ga, Gwansugyo",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01280",
+    "officialId": "01-280",
+    "nameKoOfficial": "경복궁역(효자로입구)",
+    "nameEnOfficial": "Gyeongbokgung Station (Hyoja-ro Entrance)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01291",
+    "officialId": "01-291",
+    "nameKoOfficial": "청계2가.삼일교",
+    "nameEnOfficial": "Cheonggye 2(i)-ga, Samilgyo",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01601",
+    "officialId": "01-601",
+    "nameKoOfficial": "청와대",
+    "nameEnOfficial": "Cheong Wa Dae (Office of the President)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01602",
+    "officialId": "01-602",
+    "nameKoOfficial": "춘추문",
+    "nameEnOfficial": "Chunchumun Gate",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "01603",
+    "officialId": "01-603",
+    "nameKoOfficial": "경복궁.국립민속박물관",
+    "nameEnOfficial": "Gyeongbokgung Palace. The National Folk Museum of Korea",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "02001",
+    "officialId": "02-001",
+    "nameKoOfficial": "남대문세무서",
+    "nameEnOfficial": "Namdaemun District Tax Office",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "02002",
+    "officialId": "02-002",
+    "nameKoOfficial": "국가인권위.안중근활동터",
+    "nameEnOfficial": "National Human Rights Commission, Site of Ahn Jung-geun",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "02004",
+    "officialId": "02-004",
+    "nameKoOfficial": "서울역버스환승센터",
+    "nameEnOfficial": "Seoul station bus transfer center",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "02007",
+    "officialId": "02-007",
+    "nameKoOfficial": "서울역버스환승센터.강우규의거터",
+    "nameEnOfficial": "Seoul Station Bus Transfer Center, Site of Kang Woo-kyu",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "02128",
+    "officialId": "02-128",
+    "nameKoOfficial": "시청앞",
+    "nameEnOfficial": "City hall front",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "02131",
+    "officialId": "02-131",
+    "nameKoOfficial": "삼성본관앞",
+    "nameEnOfficial": "Samsung HQ (Front)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "02224",
+    "officialId": "02-224",
+    "nameKoOfficial": "청계1가.광교",
+    "nameEnOfficial": "Cheonggye 1(il)-ga, Gwanggyo",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "02225",
+    "officialId": "02-225",
+    "nameKoOfficial": "청계2가.삼일교",
+    "nameEnOfficial": "Cheonggye 2(i)-ga, Samilgyo",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "02226",
+    "officialId": "02-226",
+    "nameKoOfficial": "청계4가.배오개다리",
+    "nameEnOfficial": "Cheonggye 4(sa)-ga, Baeogaedari",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "02240",
+    "officialId": "02-240",
+    "nameKoOfficial": "청계3가.관수교",
+    "nameEnOfficial": "Cheonggye 3(sam)-ga, Gwansugyo",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "02247",
+    "officialId": "02-247",
+    "nameKoOfficial": null,
+    "nameEnOfficial": null,
+    "matchStatus": "unmatched",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "02507",
+    "officialId": "02-507",
+    "nameKoOfficial": "프레스센터",
+    "nameEnOfficial": "Press Center",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "03003",
+    "officialId": "03-003",
+    "nameKoOfficial": "신용산역",
+    "nameEnOfficial": "Sinyongsan station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "03004",
+    "officialId": "03-004",
+    "nameKoOfficial": "신용산역",
+    "nameEnOfficial": "Sinyongsan station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "03007",
+    "officialId": "03-007",
+    "nameKoOfficial": "삼각지역",
+    "nameEnOfficial": "Samgakji station",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "03008",
+    "officialId": "03-008",
+    "nameKoOfficial": "삼각지역",
+    "nameEnOfficial": "Samgakji station",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "03009",
+    "officialId": "03-009",
+    "nameKoOfficial": "숙대입구역",
+    "nameEnOfficial": "Sookmyung Women's Univ. station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "03010",
+    "officialId": "03-010",
+    "nameKoOfficial": "숙대입구역",
+    "nameEnOfficial": "Sookmyung Women's Univ. station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "03162",
+    "officialId": "03-162",
+    "nameKoOfficial": "순천향대학병원",
+    "nameEnOfficial": "Soonchunhyang Univ. hospital",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "03165",
+    "officialId": "03-165",
+    "nameKoOfficial": "순천향대학병원.한남오거리",
+    "nameEnOfficial": "Soonchunhyang Univ hospital, Hannam Ogeori",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "04112",
+    "officialId": "04-112",
+    "nameKoOfficial": "성동구청",
+    "nameEnOfficial": "Seongdong-gu office",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "04131",
+    "officialId": "04-131",
+    "nameKoOfficial": "무학여고앞",
+    "nameEnOfficial": "Muhak girls' high school front",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "04132",
+    "officialId": "04-132",
+    "nameKoOfficial": "무학여고",
+    "nameEnOfficial": "Muhak girls' high school",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "04223",
+    "officialId": "04-223",
+    "nameKoOfficial": "뚝섬서울숲",
+    "nameEnOfficial": "Ttukseom Seoul Forest",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "04574",
+    "officialId": "04-574",
+    "nameKoOfficial": "성동구청",
+    "nameEnOfficial": "Seongdong-gu office",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06167",
+    "officialId": "06-167",
+    "nameKoOfficial": "경동시장앞",
+    "nameEnOfficial": "Kyungdong Mart front",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06169",
+    "officialId": "06-169",
+    "nameKoOfficial": "경동시장",
+    "nameEnOfficial": "Kyungdong Mart",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06173",
+    "officialId": "06-173",
+    "nameKoOfficial": "고려대역.고대앞삼거리",
+    "nameEnOfficial": "Korea Univ. station, Korea Univ. Samgeori",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06174",
+    "officialId": "06-174",
+    "nameKoOfficial": "고려대역.고대앞삼거리",
+    "nameEnOfficial": "Korea Univ. station, Korea Univ. Samgeori",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06204",
+    "officialId": "06-204",
+    "nameKoOfficial": "동대문중학교",
+    "nameEnOfficial": "Dongdaemun middle school",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06205",
+    "officialId": "06-205",
+    "nameKoOfficial": "동대문중학교",
+    "nameEnOfficial": "Dongdaemun middle school",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06212",
+    "officialId": "06-212",
+    "nameKoOfficial": "장안2동주민센터",
+    "nameEnOfficial": "Jangan 2(i)-dong community service center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06213",
+    "officialId": "06-213",
+    "nameKoOfficial": "장안2동주민센터",
+    "nameEnOfficial": "Jangan 2(i)-dong community service center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06216",
+    "officialId": "06-216",
+    "nameKoOfficial": "청량리역6번출구",
+    "nameEnOfficial": "Cheongnyangni station (Exit 6)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06217",
+    "officialId": "06-217",
+    "nameKoOfficial": "청량리역6번출구",
+    "nameEnOfficial": "Cheongnyangni station (Exit 6)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06220",
+    "officialId": "06-220",
+    "nameKoOfficial": "래미안크레시티.답십리도서관",
+    "nameEnOfficial": "Raemian Crecity Apt., Dapsimni public library",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06221",
+    "officialId": "06-221",
+    "nameKoOfficial": "동대문구답십리도서관앞",
+    "nameEnOfficial": "Dongdaemun-gu Dapsimni public library",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06241",
+    "officialId": "06-241",
+    "nameKoOfficial": "코리아병원",
+    "nameEnOfficial": "Korea medical center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06242",
+    "officialId": "06-242",
+    "nameKoOfficial": "새서울병원",
+    "nameEnOfficial": "Saeseoul hospital",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06246",
+    "officialId": "06-246",
+    "nameKoOfficial": "현대벤처빌.현대썬앤빌",
+    "nameEnOfficial": "Hyundai Ventureville, Hyundai Sun&vill",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06247",
+    "officialId": "06-247",
+    "nameKoOfficial": "현대벤처빌",
+    "nameEnOfficial": "Hyundai Ventureville",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06251",
+    "officialId": "06-251",
+    "nameKoOfficial": "장한평역2번출구",
+    "nameEnOfficial": "Janghanpyeong Station Exit 2",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06252",
+    "officialId": "06-252",
+    "nameKoOfficial": "장한평역3번출구",
+    "nameEnOfficial": "Janghanpyeong Station Exit 3",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06272",
+    "officialId": "06-272",
+    "nameKoOfficial": "서울바이오허브.농촌경제연구원",
+    "nameEnOfficial": "Seoul Biohub, Korea Rural Economic Institute",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06273",
+    "officialId": "06-273",
+    "nameKoOfficial": "서울바이오허브.농촌경제연구원",
+    "nameEnOfficial": "Seoul Biohub, Korea Rural Economic Institute",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06278",
+    "officialId": "06-278",
+    "nameKoOfficial": "세종대왕기념관",
+    "nameEnOfficial": "King Sejong the Great Memorial Hall",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06279",
+    "officialId": "06-279",
+    "nameKoOfficial": "세종대왕기념관",
+    "nameEnOfficial": "King Sejong the Great Memorial Hall",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06284",
+    "officialId": "06-284",
+    "nameKoOfficial": "현대코아",
+    "nameEnOfficial": "Hyundai Core",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06285",
+    "officialId": "06-285",
+    "nameKoOfficial": "현대코아",
+    "nameEnOfficial": "Hyundai Core",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06298",
+    "officialId": "06-298",
+    "nameKoOfficial": "전동초등학교.전농동SK아파트",
+    "nameEnOfficial": "Jeondong Elementary School, Jeonnong-dong SK Apt.",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06304",
+    "officialId": "06-304",
+    "nameKoOfficial": "전동초등학교.전농동SK아파트",
+    "nameEnOfficial": "Jeondong Elementary School, Jeonnong-dong SK Apt.",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "06510",
+    "officialId": "06-510",
+    "nameKoOfficial": null,
+    "nameEnOfficial": null,
+    "matchStatus": "unmatched",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "08001",
+    "officialId": "08-001",
+    "nameKoOfficial": "길음2동주민센터",
+    "nameEnOfficial": "Gireum 2-dong Community Service Center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "08002",
+    "officialId": "08-002",
+    "nameKoOfficial": "길음2동주민센터",
+    "nameEnOfficial": "Gireum 2-dong Community Service Center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "08003",
+    "officialId": "08-003",
+    "nameKoOfficial": "길음뉴타운",
+    "nameEnOfficial": "Gireum New Town",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "08004",
+    "officialId": "08-004",
+    "nameKoOfficial": "길음뉴타운",
+    "nameEnOfficial": "Gireum New Town",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "08005",
+    "officialId": "08-005",
+    "nameKoOfficial": "미아리고개.미아리예술극장",
+    "nameEnOfficial": "Miarigogae, Miari art theater",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "08006",
+    "officialId": "08-006",
+    "nameKoOfficial": "미아리고개.미아리예술극장",
+    "nameEnOfficial": "Miarigogae, Miari art theater",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "08007",
+    "officialId": "08-007",
+    "nameKoOfficial": "돈암사거리.성신여대입구",
+    "nameEnOfficial": "Donam Sageori, Sungshin Women's Univ.",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "08008",
+    "officialId": "08-008",
+    "nameKoOfficial": "돈암사거리.성신여대입구",
+    "nameEnOfficial": "Donam Sageori, Sungshin Women's Univ.",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "08009",
+    "officialId": "08-009",
+    "nameKoOfficial": "삼선교.한성대학교",
+    "nameEnOfficial": "Samseongyo, Hansung Univ.",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "08010",
+    "officialId": "08-010",
+    "nameKoOfficial": "삼선교.한성대학교.조소앙활동터",
+    "nameEnOfficial": "Samseongyo, Hansung Univ, Site of Jo So-ang",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "08152",
+    "officialId": "08-152",
+    "nameKoOfficial": "종암동주민센터",
+    "nameEnOfficial": "Jongam-dong community service center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "08153",
+    "officialId": "08-153",
+    "nameKoOfficial": "종암동주민센터",
+    "nameEnOfficial": "Jongam-dong community service center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "09001",
+    "officialId": "09-001",
+    "nameKoOfficial": "수유3동우체국",
+    "nameEnOfficial": "Suyu 3(sam)-dong post office",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "09002",
+    "officialId": "09-002",
+    "nameKoOfficial": "수유3동우체국",
+    "nameEnOfficial": "Suyu 3(sam)-dong post office",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "09003",
+    "officialId": "09-003",
+    "nameKoOfficial": "수유역",
+    "nameEnOfficial": "Suyu station",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "09004",
+    "officialId": "09-004",
+    "nameKoOfficial": "수유역.강북구청",
+    "nameEnOfficial": "Suyu station, Gangbuk-gu office",
+    "matchStatus": "official_variant",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "09005",
+    "officialId": "09-005",
+    "nameKoOfficial": "수유시장.성신여대미아캠퍼스앞",
+    "nameEnOfficial": "Suyu market, Sungshin Women's Univ. Mia campus",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "09006",
+    "officialId": "09-006",
+    "nameKoOfficial": "수유시장.성신여대미아캠퍼스앞",
+    "nameEnOfficial": "Suyu market, Sungshin Women's Univ. Mia campus",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "09007",
+    "officialId": "09-007",
+    "nameKoOfficial": "미아역.신일중고",
+    "nameEnOfficial": "Mia station, Shinil Junior middle & high school",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "09008",
+    "officialId": "09-008",
+    "nameKoOfficial": "미아역.신일중고",
+    "nameEnOfficial": "Mia station, Shinil Junior middle & high school",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "09009",
+    "officialId": "09-009",
+    "nameKoOfficial": "도봉세무서.성북시장",
+    "nameEnOfficial": "Dobong district tax office, Seongbuk market",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "09010",
+    "officialId": "09-010",
+    "nameKoOfficial": "도봉세무서.성북시장",
+    "nameEnOfficial": "Dobong district tax office, Seongbuk market",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "09011",
+    "officialId": "09-011",
+    "nameKoOfficial": "미아사거리역",
+    "nameEnOfficial": "Mia Sageori station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "09012",
+    "officialId": "09-012",
+    "nameKoOfficial": "미아사거리역",
+    "nameEnOfficial": "Mia Sageori station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "09013",
+    "officialId": "09-013",
+    "nameKoOfficial": "수유역.강북구청",
+    "nameEnOfficial": "Suyu Station & Gangbuk-gu Office",
+    "matchStatus": "official_variant",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10001",
+    "officialId": "10-001",
+    "nameKoOfficial": "도봉산역",
+    "nameEnOfficial": "Dobongsan station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10002",
+    "officialId": "10-002",
+    "nameKoOfficial": "도봉산역",
+    "nameEnOfficial": "Dobongsan station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10003",
+    "officialId": "10-003",
+    "nameKoOfficial": "도봉한신아파트",
+    "nameEnOfficial": "Dobong Hanshin Apt.",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10004",
+    "officialId": "10-004",
+    "nameKoOfficial": "도봉한신아파트",
+    "nameEnOfficial": "Dobong Hanshin Apt.",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10005",
+    "officialId": "10-005",
+    "nameKoOfficial": "서울북부지방법원.검찰청.도봉역성황당",
+    "nameEnOfficial": "Seoul northern district court, public prosecutors' office, Dobong station Seonghwangdang",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10006",
+    "officialId": "10-006",
+    "nameKoOfficial": "서울북부지방법원.검찰청.도봉역성황당",
+    "nameEnOfficial": "Seoul northern district court, public prosecutors' office, Dobong station Seonghwangdang",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10007",
+    "officialId": "10-007",
+    "nameKoOfficial": "신도봉사거리",
+    "nameEnOfficial": "Sindobong Sageori",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10008",
+    "officialId": "10-008",
+    "nameKoOfficial": "신도봉사거리",
+    "nameEnOfficial": "Sindobong Sageori",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10009",
+    "officialId": "10-009",
+    "nameKoOfficial": "도봉소방서.방학역남부",
+    "nameEnOfficial": "Dobong Fire Station, Banghak Station (South)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10010",
+    "officialId": "10-010",
+    "nameKoOfficial": "도봉소방서.방학역남부",
+    "nameEnOfficial": "Dobong Fire Station, Banghak Station (South)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10011",
+    "officialId": "10-011",
+    "nameKoOfficial": "도봉보건소",
+    "nameEnOfficial": "Dobong community health center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10012",
+    "officialId": "10-012",
+    "nameKoOfficial": "도봉보건소.북한산아이파크아파트",
+    "nameEnOfficial": "Dobong community health center, Bukhansan I Park Apt.",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10013",
+    "officialId": "10-013",
+    "nameKoOfficial": "도봉구민회관.도봉문화원",
+    "nameEnOfficial": "Dobong-gu Community Center, Dobong Cultural Center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10014",
+    "officialId": "10-014",
+    "nameKoOfficial": "도봉구민회관.도봉문화원",
+    "nameEnOfficial": "Dobong-gu Community Center, Dobong Cultural Center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10015",
+    "officialId": "10-015",
+    "nameKoOfficial": "쌍문역",
+    "nameEnOfficial": "Ssangmun station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10016",
+    "officialId": "10-016",
+    "nameKoOfficial": "쌍문역",
+    "nameEnOfficial": "Ssangmun station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10017",
+    "officialId": "10-017",
+    "nameKoOfficial": "우이1교앞",
+    "nameEnOfficial": "Ui 1(il)-gyo front",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10018",
+    "officialId": "10-018",
+    "nameKoOfficial": "우이1교앞",
+    "nameEnOfficial": "Ui 1(il)-gyo front",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10019",
+    "officialId": "10-019",
+    "nameKoOfficial": "신도봉시장.도봉구청.방학역북부",
+    "nameEnOfficial": "Sindobong Market, Dobong-gu Office, Banghak Station (North)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10020",
+    "officialId": "10-020",
+    "nameKoOfficial": "신도봉시장.도봉구청.방학역북부",
+    "nameEnOfficial": "Sindobong Market, Dobong-gu Office, Banghak Station (North)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10340",
+    "officialId": "10-340",
+    "nameKoOfficial": "도봉산역광역환승센터",
+    "nameEnOfficial": "Dobongsam station wide area bus transfer center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "10341",
+    "officialId": "10-341",
+    "nameKoOfficial": "도봉산역광역환승센터",
+    "nameEnOfficial": "Dobongsam station wide area bus transfer center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "11240",
+    "officialId": "11-240",
+    "nameKoOfficial": "상계벽산아파트",
+    "nameEnOfficial": "Sanggye Byucksan Apt.",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "11251",
+    "officialId": "11-251",
+    "nameKoOfficial": "노원구청",
+    "nameEnOfficial": "Nowon-gu office",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "11252",
+    "officialId": "11-252",
+    "nameKoOfficial": "노원구청",
+    "nameEnOfficial": "Nowon-gu office",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "11391",
+    "officialId": "11-391",
+    "nameKoOfficial": "상계역",
+    "nameEnOfficial": "Sanggye station",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "12011",
+    "officialId": "12-011",
+    "nameKoOfficial": "구파발역입구",
+    "nameEnOfficial": "Gupabal station entrance",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "12012",
+    "officialId": "12-012",
+    "nameKoOfficial": "구파발역입구",
+    "nameEnOfficial": "Gupabal station entrance",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "12017",
+    "officialId": "12-017",
+    "nameKoOfficial": "연신내역.연서시장",
+    "nameEnOfficial": "Yeonsinnae station, Yeonseo market",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "12018",
+    "officialId": "12-018",
+    "nameKoOfficial": "연신내역.연서시장",
+    "nameEnOfficial": "Yeonsinnae station, Yeonseo market",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "12021",
+    "officialId": "12-021",
+    "nameKoOfficial": "불광역3.6호선",
+    "nameEnOfficial": "Bulgwang station, Line 3, 6",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "12022",
+    "officialId": "12-022",
+    "nameKoOfficial": "불광역3.6호선",
+    "nameEnOfficial": "Bulgwang station, Line 3, 6",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "12027",
+    "officialId": "12-027",
+    "nameKoOfficial": "녹번역",
+    "nameEnOfficial": "Nokbeon station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "12028",
+    "officialId": "12-028",
+    "nameKoOfficial": "녹번역",
+    "nameEnOfficial": "Nokbeon station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13019",
+    "officialId": "13-019",
+    "nameKoOfficial": "동교동삼거리",
+    "nameEnOfficial": "Donggyo-dong Samgeori",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13021",
+    "officialId": "13-021",
+    "nameKoOfficial": "신촌오거리.현대백화점",
+    "nameEnOfficial": "Sinchon Ogeori, Hyundai Dept. store",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13023",
+    "officialId": "13-023",
+    "nameKoOfficial": "신촌오거리.2호선신촌역",
+    "nameEnOfficial": "Sinchon Ogeori, Line 2 Sinchon station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13025",
+    "officialId": "13-025",
+    "nameKoOfficial": "이대역",
+    "nameEnOfficial": "Ewha Womans Univ. station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13028",
+    "officialId": "13-028",
+    "nameKoOfficial": "홍제역.서대문세무서",
+    "nameEnOfficial": "Hongje Station, Seodaemun District Tax Office",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13029",
+    "officialId": "13-029",
+    "nameKoOfficial": "홍제역.서대문세무서",
+    "nameEnOfficial": "Hongje Station, Seodaemun District Tax Office",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13034",
+    "officialId": "13-034",
+    "nameKoOfficial": "독립문역.한성과학고",
+    "nameEnOfficial": "Dongnimmun station, Hansung Science high school",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13035",
+    "officialId": "13-035",
+    "nameKoOfficial": "독립문역.한성과학고",
+    "nameEnOfficial": "Dongnimmun station, Hansung Science high school",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13036",
+    "officialId": "13-036",
+    "nameKoOfficial": "영천시장",
+    "nameEnOfficial": "Yeongcheon market",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13037",
+    "officialId": "13-037",
+    "nameKoOfficial": "영천시장",
+    "nameEnOfficial": "Yeongcheon market",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13042",
+    "officialId": "13-042",
+    "nameKoOfficial": "웨딩타운",
+    "nameEnOfficial": "Wedding Town",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13044",
+    "officialId": "13-044",
+    "nameKoOfficial": "아현역",
+    "nameEnOfficial": "Ahyeon station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13045",
+    "officialId": "13-045",
+    "nameKoOfficial": "충정로역",
+    "nameEnOfficial": "Chungjeongno station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13046",
+    "officialId": "13-046",
+    "nameKoOfficial": "충정로역",
+    "nameEnOfficial": "Chungjeongno station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13047",
+    "officialId": "13-047",
+    "nameKoOfficial": "서대문역사거리",
+    "nameEnOfficial": "Seodaemun Station- Sageori",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13156",
+    "officialId": "13-156",
+    "nameKoOfficial": "서대문구청.보건소.구의회",
+    "nameEnOfficial": "Seodaemun-gu Public Health Center/Office/Council",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13182",
+    "officialId": "13-182",
+    "nameKoOfficial": "모래내삼거리",
+    "nameEnOfficial": "Moraenae Samgeori",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13201",
+    "officialId": "13-201",
+    "nameKoOfficial": "서대문문화체육회관입구",
+    "nameEnOfficial": "Seodaemun Culture & Sports Center entrance",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13202",
+    "officialId": "13-202",
+    "nameKoOfficial": "홍연2교두산아파트앞",
+    "nameEnOfficial": "Hongyeon 2(i)-gyo Doosan Apt.",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13203",
+    "officialId": "13-203",
+    "nameKoOfficial": "홍남교",
+    "nameEnOfficial": "Hongnamgyo",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13204",
+    "officialId": "13-204",
+    "nameKoOfficial": "연가교",
+    "nameEnOfficial": "Yeongagyo",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13213",
+    "officialId": "13-213",
+    "nameKoOfficial": "연희지하차도",
+    "nameEnOfficial": "Yeonhui underpass",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13243",
+    "officialId": "13-243",
+    "nameKoOfficial": null,
+    "nameEnOfficial": null,
+    "matchStatus": "unmatched",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13256",
+    "officialId": "13-256",
+    "nameKoOfficial": "연가교",
+    "nameEnOfficial": "Yeongagyo",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13257",
+    "officialId": "13-257",
+    "nameKoOfficial": null,
+    "nameEnOfficial": null,
+    "matchStatus": "unmatched",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13260",
+    "officialId": "13-260",
+    "nameKoOfficial": "서대문종합사회복지관",
+    "nameEnOfficial": "Seodaemun social welfare center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13261",
+    "officialId": "13-261",
+    "nameKoOfficial": "서대문종합사회복지관",
+    "nameEnOfficial": "Seodaemun social welfare center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "13262",
+    "officialId": "13-262",
+    "nameKoOfficial": "홍남교백련시장입구",
+    "nameEnOfficial": "Hongnamgyo Baengnyeon market",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14001",
+    "officialId": "14-001",
+    "nameKoOfficial": "마포역",
+    "nameEnOfficial": "Mapo station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14002",
+    "officialId": "14-002",
+    "nameKoOfficial": "마포역",
+    "nameEnOfficial": "Mapo station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14003",
+    "officialId": "14-003",
+    "nameKoOfficial": "공덕역",
+    "nameEnOfficial": "Gongdeok station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14004",
+    "officialId": "14-004",
+    "nameKoOfficial": "공덕역",
+    "nameEnOfficial": "Gongdeok station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14005",
+    "officialId": "14-005",
+    "nameKoOfficial": "아현동주민센터",
+    "nameEnOfficial": "Ahyeon-dong community service center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14006",
+    "officialId": "14-006",
+    "nameKoOfficial": "아현동주민센터",
+    "nameEnOfficial": "Ahyeon-dong community service center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14007",
+    "officialId": "14-007",
+    "nameKoOfficial": "마포경찰서",
+    "nameEnOfficial": "Mapo Police station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14008",
+    "officialId": "14-008",
+    "nameKoOfficial": "마포경찰서",
+    "nameEnOfficial": "Mapo Police station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14009",
+    "officialId": "14-009",
+    "nameKoOfficial": "아현초등학교",
+    "nameEnOfficial": "Ahyun elementary school",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14010",
+    "officialId": "14-010",
+    "nameKoOfficial": "아현초등학교",
+    "nameEnOfficial": "Ahyun elementary school",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14011",
+    "officialId": "14-011",
+    "nameKoOfficial": "합정역",
+    "nameEnOfficial": "Hapjeong station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14012",
+    "officialId": "14-012",
+    "nameKoOfficial": "합정역",
+    "nameEnOfficial": "Hapjeong station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14013",
+    "officialId": "14-013",
+    "nameKoOfficial": "서교동",
+    "nameEnOfficial": "Seogyo-dong",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14014",
+    "officialId": "14-014",
+    "nameKoOfficial": "서교동",
+    "nameEnOfficial": "Seogyo-dong",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14015",
+    "officialId": "14-015",
+    "nameKoOfficial": "홍대입구역",
+    "nameEnOfficial": "Hongik Univ. station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14016",
+    "officialId": "14-016",
+    "nameKoOfficial": "홍대입구역",
+    "nameEnOfficial": "Hongik Univ. station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14061",
+    "officialId": "14-061",
+    "nameKoOfficial": "동교동삼거리",
+    "nameEnOfficial": "Donggyo-dong Samgeori",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14062",
+    "officialId": "14-062",
+    "nameKoOfficial": "신촌오거리.현대백화점",
+    "nameEnOfficial": "Sinchon Ogeori, Hyundai Dept. store",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14063",
+    "officialId": "14-063",
+    "nameKoOfficial": "신촌오거리.2호선신촌역",
+    "nameEnOfficial": "Sinchon Ogeori, Line 2 Sinchon station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14064",
+    "officialId": "14-064",
+    "nameKoOfficial": "이대역",
+    "nameEnOfficial": "Ewha Womans Univ. station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14067",
+    "officialId": "14-067",
+    "nameKoOfficial": "웨딩타운",
+    "nameEnOfficial": "Wedding Town",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14068",
+    "officialId": "14-068",
+    "nameKoOfficial": "아현역",
+    "nameEnOfficial": "Ahyeon station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14104",
+    "officialId": "14-104",
+    "nameKoOfficial": "월드컵경기장남측.월드컵공원",
+    "nameEnOfficial": "South of World Cup Stadium, World Cup park",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14110",
+    "officialId": "14-110",
+    "nameKoOfficial": "서부면허시험장",
+    "nameEnOfficial": "Seobu driver's license test center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14133",
+    "officialId": "14-133",
+    "nameKoOfficial": "노을공원입구(난지미술창작스튜디오)",
+    "nameEnOfficial": "Noeul park (Nanji art creation studio)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14136",
+    "officialId": "14-136",
+    "nameKoOfficial": "난지천공원다목적구장",
+    "nameEnOfficial": "Nanjicheon park multipurpose stadium",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14140",
+    "officialId": "14-140",
+    "nameKoOfficial": "난지천공원다목적구장",
+    "nameEnOfficial": "Nanjicheon park multipurpose stadium",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14292",
+    "officialId": "14-292",
+    "nameKoOfficial": "월드컵파크3단지후문",
+    "nameEnOfficial": "World Cup Park 3(sam)danji back gate",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14359",
+    "officialId": "14-359",
+    "nameKoOfficial": "공항철도디지털미디어시티역",
+    "nameEnOfficial": "Airport Railroad Digital Media City station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "14628",
+    "officialId": "14-628",
+    "nameKoOfficial": null,
+    "nameEnOfficial": null,
+    "matchStatus": "unmatched",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "18002",
+    "officialId": "18-002",
+    "nameKoOfficial": "문성초등학교",
+    "nameEnOfficial": "Munsung elementary school",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "18003",
+    "officialId": "18-003",
+    "nameKoOfficial": "금천우체국",
+    "nameEnOfficial": "Geumcheon post office",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "18004",
+    "officialId": "18-004",
+    "nameKoOfficial": "금천우체국",
+    "nameEnOfficial": "Geumcheon post office",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "18005",
+    "officialId": "18-005",
+    "nameKoOfficial": "말미고개.금천소방서",
+    "nameEnOfficial": "Malmigogae, Geumcheon Fire Station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "18006",
+    "officialId": "18-006",
+    "nameKoOfficial": "말미고개.금천소방서",
+    "nameEnOfficial": "Malmigogae, Geumcheon Fire Station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "18007",
+    "officialId": "18-007",
+    "nameKoOfficial": "금천구청.금천경찰서",
+    "nameEnOfficial": "Geumcheon-gu office, Geumcheon police station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "18008",
+    "officialId": "18-008",
+    "nameKoOfficial": "금천구청.금천경찰서",
+    "nameEnOfficial": "Geumcheon-gu office, Geumcheon police station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "18147",
+    "officialId": "18-147",
+    "nameKoOfficial": "독산고개",
+    "nameEnOfficial": "Doksangogae",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "18197",
+    "officialId": "18-197",
+    "nameKoOfficial": "모두의학교.금천문화예술정보학교",
+    "nameEnOfficial": "Modu School, Geumcheon School of Cultural Arts & Information",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "19005",
+    "officialId": "19-005",
+    "nameKoOfficial": "영등포역",
+    "nameEnOfficial": "Yeongdeungpo station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "19006",
+    "officialId": "19-006",
+    "nameKoOfficial": "영등포역",
+    "nameEnOfficial": "Yeongdeungpo station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "19007",
+    "officialId": "19-007",
+    "nameKoOfficial": "여의도환승센터",
+    "nameEnOfficial": "Yeouido bus transfer center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "19008",
+    "officialId": "19-008",
+    "nameKoOfficial": "여의도환승센터",
+    "nameEnOfficial": "Yeouido bus transfer center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "19152",
+    "officialId": "19-152",
+    "nameKoOfficial": "여의도공원1번출입구",
+    "nameEnOfficial": "Yeouido Park Exit 1",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "19161",
+    "officialId": "19-161",
+    "nameKoOfficial": "한국경제인협회",
+    "nameEnOfficial": "Federation of Korean Industries",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20013",
+    "officialId": "20-013",
+    "nameKoOfficial": "노들역",
+    "nameEnOfficial": "Nodeul station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20014",
+    "officialId": "20-014",
+    "nameKoOfficial": "노들역",
+    "nameEnOfficial": "Nodeul station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20114",
+    "officialId": "20-114",
+    "nameKoOfficial": "노량진역3번출구",
+    "nameEnOfficial": "Noryangjin Station (Exit 3)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20115",
+    "officialId": "20-115",
+    "nameKoOfficial": "노량진역2번출구",
+    "nameEnOfficial": "Noryangjin Station (Exit 2)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20147",
+    "officialId": "20-147",
+    "nameKoOfficial": "성대시장",
+    "nameEnOfficial": "Seongdae market",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20148",
+    "officialId": "20-148",
+    "nameKoOfficial": "성대시장",
+    "nameEnOfficial": "Seongdae market",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20164",
+    "officialId": "20-164",
+    "nameKoOfficial": "숭실대입구역",
+    "nameEnOfficial": "Soongsil Univ. station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20166",
+    "officialId": "20-166",
+    "nameKoOfficial": "숭실대입구역",
+    "nameEnOfficial": "Soongsil Univ. station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20169",
+    "officialId": "20-169",
+    "nameKoOfficial": "숭실대중문앞",
+    "nameEnOfficial": null,
+    "matchStatus": "conflict_hold",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20170",
+    "officialId": "20-170",
+    "nameKoOfficial": "숭실대중문앞",
+    "nameEnOfficial": "Soongsil University Middle Gate",
+    "matchStatus": "official_variant",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20202",
+    "officialId": "20-202",
+    "nameKoOfficial": "중앙대후문",
+    "nameEnOfficial": "Chung-Ang Univ. back gate",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20203",
+    "officialId": "20-203",
+    "nameKoOfficial": "중앙대후문",
+    "nameEnOfficial": "Chung-Ang Univ. back gate",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20241",
+    "officialId": "20-241",
+    "nameKoOfficial": "상도SH빌아파트상도팰리스후문",
+    "nameEnOfficial": "Sangdo SH Ville Apt., Sangdo palace back gate",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20242",
+    "officialId": "20-242",
+    "nameKoOfficial": "상도SH빌아파트상도팰리스후문",
+    "nameEnOfficial": "Sangdo SH Ville Apt., Sangdo palace back gate",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20243",
+    "officialId": "20-243",
+    "nameKoOfficial": "상도3차삼성래미안후문",
+    "nameEnOfficial": "Sangdo 3(sam)cha Samsung Raemian back gate",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20244",
+    "officialId": "20-244",
+    "nameKoOfficial": "상도3차삼성래미안후문",
+    "nameEnOfficial": "Sangdo 3(sam)cha Samsung Raemian back gate",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "20245",
+    "officialId": "20-245",
+    "nameKoOfficial": "상도1동주민센터.상도3차래미안",
+    "nameEnOfficial": "Sangdo1(il)-dong community service center, Sangdo 3(sam)cha Raemian",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "21111",
+    "officialId": "21-111",
+    "nameKoOfficial": "난곡입구",
+    "nameEnOfficial": "Nangok",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "21114",
+    "officialId": "21-114",
+    "nameKoOfficial": "KT구로지사",
+    "nameEnOfficial": "KT (Guro bldg.)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "21115",
+    "officialId": "21-115",
+    "nameKoOfficial": "난곡입구",
+    "nameEnOfficial": "Nangok",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "21149",
+    "officialId": "21-149",
+    "nameKoOfficial": "신림동별빛거리입구",
+    "nameEnOfficial": "Sillim-dong Starlight Street",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "21152",
+    "officialId": "21-152",
+    "nameKoOfficial": "신림동별빛거리입구",
+    "nameEnOfficial": "Sillim-dong Starlight Street",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22003",
+    "officialId": "22-003",
+    "nameKoOfficial": "양재역.서초문화예술회관",
+    "nameEnOfficial": "Yangjae Station, Seocho Culture & Arts Center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22004",
+    "officialId": "22-004",
+    "nameKoOfficial": "양재역.서초문화예술회관",
+    "nameEnOfficial": "Yangjae Station, Seocho Culture & Arts Center",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22009",
+    "officialId": "22-009",
+    "nameKoOfficial": "신분당선강남역",
+    "nameEnOfficial": "Sinbundang Line Gangnam station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22010",
+    "officialId": "22-010",
+    "nameKoOfficial": "신분당선강남역",
+    "nameEnOfficial": "Sinbundang Line Gangnam station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22011",
+    "officialId": "22-011",
+    "nameKoOfficial": "지하철2호선강남역",
+    "nameEnOfficial": "Line 2 Gangnam station",
+    "matchStatus": "reviewed",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22012",
+    "officialId": "22-012",
+    "nameKoOfficial": "지하철2호선강남역",
+    "nameEnOfficial": "Line 2 Gangnam station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22013",
+    "officialId": "22-013",
+    "nameKoOfficial": "논현역",
+    "nameEnOfficial": "Nonhyeon station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22014",
+    "officialId": "22-014",
+    "nameKoOfficial": "논현역",
+    "nameEnOfficial": "Nonhyeon station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22015",
+    "officialId": "22-015",
+    "nameKoOfficial": "신사역.푸른저축은행",
+    "nameEnOfficial": "Sinsa station, Pureun Savings Bank",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22016",
+    "officialId": "22-016",
+    "nameKoOfficial": "신사역",
+    "nameEnOfficial": "Sinsa station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22017",
+    "officialId": "22-017",
+    "nameKoOfficial": "반포역",
+    "nameEnOfficial": "Banpo station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22018",
+    "officialId": "22-018",
+    "nameKoOfficial": "반포역",
+    "nameEnOfficial": "Banpo station",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22019",
+    "officialId": "22-019",
+    "nameKoOfficial": "고속터미널",
+    "nameEnOfficial": "Express bus terminal",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22020",
+    "officialId": "22-020",
+    "nameKoOfficial": "고속터미널",
+    "nameEnOfficial": "Express bus terminal",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22183",
+    "officialId": "22-183",
+    "nameKoOfficial": "논현역7번출구",
+    "nameEnOfficial": "Nonhyeon Station (Exit 7)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22185",
+    "officialId": "22-185",
+    "nameKoOfficial": "신사역4번출구",
+    "nameEnOfficial": "Sinsa station exit 4",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "22190",
+    "officialId": "22-190",
+    "nameKoOfficial": "논현역6번출구",
+    "nameEnOfficial": "Nonhyeon Station (Exit 6)",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "23105",
+    "officialId": "23-105",
+    "nameKoOfficial": "압구정역4번출구",
+    "nameEnOfficial": "Apgujeong station exit 4",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "23110",
+    "officialId": "23-110",
+    "nameKoOfficial": "신사역3번출구",
+    "nameEnOfficial": "Sinsa station exit 3",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  },
+  {
+    "stopId": "23429",
+    "officialId": "23-429",
+    "nameKoOfficial": "압구정역3번출구",
+    "nameEnOfficial": "Apgujeong station exit 3",
+    "matchStatus": "exact",
+    "source": "OA-12830"
+  }
+]

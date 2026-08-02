@@ -13,8 +13,11 @@ function ArrowRight() {
   );
 }
 
-function formatHeroDate(dateStr: string): string {
+function formatHeroDate(dateStr: string, locale: string): string {
   const d = new Date(dateStr + 'T00:00:00');
+  if (locale === 'ko') {
+    return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+  }
   return d.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
@@ -61,7 +64,7 @@ export function Hero() {
             loading="eager"
           />
           <figcaption className={styles.heroCaption}>
-            {`VERIFIED ${formatHeroDate(latestDate)} · INDEPENDENT GUIDE`}
+            {t('checked', { date: formatHeroDate(latestDate, locale) })}
           </figcaption>
         </figure>
       </div>

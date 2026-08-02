@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from 'next-intl/server';
 import { LangToggle } from '../ui/LangToggle';
 import { MobileDrawer } from './MobileDrawer';
+import { NIGHT_BUS_GUIDE_PATH } from '../../lib/nav';
 import styles from './GlobalHeader.module.css';
 
 function SensorIcon() {
@@ -16,12 +17,20 @@ function SensorIcon() {
 export async function GlobalHeader() {
   const locale = await getLocale();
   const t = await getTranslations({ locale, namespace: 'globalHeader' });
+  const tNav = await getTranslations({ locale, namespace: 'nav' });
+
+  const nightBusGuideLink = {
+    href: `/${locale}${NIGHT_BUS_GUIDE_PATH}`,
+    label: tNav('nightBusGuide'),
+    key: 'night-bus-guide',
+  };
 
   const desktopLinks = [
     { href: `/${locale}/routes`, label: t('routes'), key: 'routes' },
     { href: `/${locale}/updates`, label: t('updates'), key: 'updates' },
     { href: `/${locale}/how-to-ride`, label: t('howToRide'), key: 'how-to-ride' },
     { href: `/${locale}/faq`, label: t('faq'), key: 'faq' },
+    nightBusGuideLink,
   ];
 
   const drawerLinks = [
@@ -30,6 +39,7 @@ export async function GlobalHeader() {
     { href: `/${locale}/updates`, label: t('updates') },
     { href: `/${locale}/how-to-ride`, label: t('howToRide') },
     { href: `/${locale}/faq`, label: t('faq') },
+    { href: nightBusGuideLink.href, label: nightBusGuideLink.label },
     { href: `/${locale}/data-source`, label: t('dataSource') },
     { href: `/${locale}/about`, label: t('about') },
     { href: `/${locale}/privacy`, label: t('privacy'), separator: true },

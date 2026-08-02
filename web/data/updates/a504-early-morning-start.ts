@@ -7,28 +7,28 @@ const entry: UpdateEntry = {
   sourcePublishedAt: '2026-05-06',
   titleEn: 'Saebyeok A504 early morning service launched',
   titleKo: '새벽동행 A504 새벽 운행 시작',
-  summaryEn: 'A new early morning autonomous bus route connecting Geumcheon-gu Office to Seoul City Hall has been verified.',
-  summaryKo: '금천구청에서 서울시청을 연결하는 새벽 자율주행 버스 노선이 검증되었습니다.',
+  summaryEn: 'The route stops and listed departure time were checked. Reported fare or operating details are not presented as confirmed until verified separately through an official source.',
+  summaryKo: '노선의 정류장과 화면에 표시된 출발 시각을 확인했습니다. 요금·운영 조건과 관련해 별도로 보도되거나 안내된 내용은 공식 확인 전까지 확정 정보로 표시하지 않습니다.',
   relatedRouteIds: ['saebyeok-a504'],
   sections: {
     whatChanged: {
-      en: 'Saebyeok A504 has been added to the verified route list. This early morning autonomous bus connects Geumcheon-gu Office to Seoul City Hall, departing at 03:30.',
-      ko: '새벽동행 A504가 검증된 노선 목록에 추가되었습니다. 금천구청에서 서울시청까지 운행하는 새벽 자율주행 버스로, 03:30에 출발합니다.',
+      en: 'Saebyeok A504 has been added to the listed routes with checked stops and listed times. This early morning autonomous bus connects Geumcheon-gu Office to Seoul City Hall, departing at 03:30.',
+      ko: '새벽동행 A504가 정류장·표시 시각을 확인한 노선 목록에 추가되었습니다. 금천구청에서 서울시청까지 운행하는 새벽 자율주행 버스로, 03:30에 출발합니다.',
     },
     confirmedInfo: {
       en: [
         'Route: Saebyeok A504',
         'Departure: Geumcheon-gu Office (03:30)',
         'Destination: Seoul City Hall',
-        'Status: VERIFIED (as of May 1, 2026)',
-        'Verification: Kakao Map, Seoul Metropolitan Government data',
+        'Stops & listed departure time checked: May 1, 2026',
+        'Source: Kakao Map, Seoul Metropolitan Government data',
       ],
       ko: [
         '노선: 새벽동행 A504',
         '출발: 금천구청 (03:30)',
         '도착: 서울시청',
-        '상태: 검증됨 (2026.05.01 기준)',
-        '검증 출처: 카카오맵, 서울특별시 제공 데이터',
+        '정류장·표시 출발 시각 확인: 2026.05.01 기준',
+        '확인 출처: 카카오맵, 서울특별시 제공 데이터',
       ],
     },
     reportedInfo: {

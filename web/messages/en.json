@@ -14,9 +14,10 @@
   "home": {
     "hero": {
       "badge": "{busCount} autonomous bus routes · {robotaxiCount} robotaxi service",
-      "title": "Experience Seoul's autonomous future.",
-      "description": "Verified autonomous bus and robotaxi routes across Seoul. Check before riding.",
-      "cta": "View all routes"
+      "title": "Navigate Seoul's autonomous and late-night travel",
+      "description": "Find stops and listed times for Seoul's autonomous pilot routes, along with practical night-bus guidance for travel after the last train.",
+      "cta": "View all routes",
+      "checked": "Autonomous stops & listed times checked · As of {date} · Independent guide"
     },
     "featured": {
       "title": "Routes to try first",
@@ -24,11 +25,11 @@
     },
     "value": {
       "title": "What you can find here",
-      "intro": "Verified information on Seoul's autonomous routes and late-night transit.",
+      "intro": "Information on Seoul's autonomous routes and late-night transit, with checked and unconfirmed details presented separately.",
       "items": {
         "routes": {
           "title": "Autonomous route details",
-          "description": "Stops, service information, and route-by-route notes for Seoul's verified autonomous services."
+          "description": "Stops, listed operating times, and route-by-route notes for Seoul's autonomous services."
         },
         "nightBus": {
           "title": "Night bus guide",
@@ -36,7 +37,7 @@
         },
         "updates": {
           "title": "Updates",
-          "description": "Verification notes and confirmed service changes."
+          "description": "Route check records and service change notes."
         }
       }
     },
@@ -51,7 +52,8 @@
   },
   "nav": {
     "howToRide": "How to ride",
-    "viewAllRoutes": "View all routes"
+    "viewAllRoutes": "View all routes",
+    "nightBusGuide": "Night Bus Guide"
   },
   "routes": {
     "title": "Routes",
@@ -68,13 +70,13 @@
       "robotaxi": "Robotaxi"
     },
     "section": {
-      "verified": "Verified routes",
+      "verified": "Routes with checked stops & listed times",
       "robotaxi": "Robotaxi services"
     },
     "groups": {
       "earlyMorningTitle": "Early morning routes",
       "lateNightTitle": "Late-night routes",
-      "meta": "{count} routes \u00b7 {range}"
+      "meta": "{count} routes · {range}"
     },
     "empty": "No services match this filter.",
     "robotaxi": {
@@ -83,7 +85,7 @@
     }
   },
   "common": {
-    "footer": "Pilot service operated by the Seoul Metropolitan Government. Information is verified manually and may not reflect real-time changes.",
+    "footer": "Autonomous-route stops and listed times, along with night-bus guidance, are compiled from the stated sources and reference dates and may not reflect real-time changes.",
     "backToTop": "Back to top"
   },
   "routeDetail": {
@@ -97,17 +99,17 @@
       "hours": "Hours",
       "days": "Days",
       "stops": "Stops",
-      "verified": "Verified"
+      "verified": "Checked on"
     },
     "days": {
       "weekday": "Weekdays",
       "weekend": "Weekends",
       "daily": "Daily",
-      "unknown": "\u2014"
+      "unknown": "—"
     },
     "diagram": {
-      "outbound": "{from} \u2192 {to}",
-      "inbound": "{from} \u2192 {to}"
+      "outbound": "{from} → {to}",
+      "inbound": "{from} → {to}"
     },
     "disclaimer": "Information based on Kakao Map. Please confirm before riding.",
     "context": {
@@ -120,12 +122,13 @@
       "a1": "Board at {firstStop}. Last stop: {lastStop}.",
       "q2": "When does this route operate?",
       "a2": "Service runs from {firstBus} to {lastBus}.",
-      "a2Single": "The currently verified departure time is {firstBus}. Check the latest service information before travel.",
+      "a2Single": "The checked departure time is {firstBus}. Check the latest service information before travel.",
       "q3": "What days does it run, and how often?",
       "a3days": "Operating days: {days}.",
       "a3headway": "Headway: {headway}.",
       "a3unknown": "Headway has not been confirmed. Check Kakao Map before riding.",
-      "q4": "How much does it cost? Is a reservation required?",
+      "q4": "What information has been checked on this page?",
+      "a4scope": "The route endpoints, stop list and displayed operating times have been checked. Fare, operator, reservation and app requirements are not presented as confirmed until they are separately verified.",
       "a4fare": "Fare: {fare}.",
       "a4fareUnknown": "Fare information has not been confirmed yet.",
       "a4reservation": "Reservation: {reservation}.",
@@ -136,8 +139,8 @@
       "q6": "What should I check before riding?",
       "a6": "Confirm the schedule, stop locations, and service status through Kakao Map or official operator sources before boarding.",
       "a6link": "See our full guide: How to ride →",
-      "q7": "When was this information last verified?",
-      "a7": "Last verified on {date}, based on Kakao Map data provided by the Seoul Metropolitan Government."
+      "q7": "When was this information last checked?",
+      "a7": "Stops and listed times were checked on {date} against Kakao Map data provided by the Seoul Metropolitan Government."
     }
   },
   "howToRide": {
@@ -149,8 +152,8 @@
     },
     "hero": {
       "title": "First time? Start here.",
-      "description": "Autonomous buses and robotaxis run on listed pilot routes in Seoul. Information is curated and manually verified. Always check before riding.",
-      "bullet1": "Listed routes only — verified stops and schedules",
+      "description": "Autonomous buses and robotaxis run on listed pilot routes in Seoul. Stops and listed times are checked; always confirm before riding.",
+      "bullet1": "Listed routes only — checked stops and listed times",
       "bullet2": "No live tracking — check before riding",
       "bullet3": "A safety operator may be onboard during pilot operations"
     },
@@ -158,7 +161,7 @@
       "sectionTitle": "Common questions",
       "q1": {
         "q": "Do I need an app?",
-        "a1": "Buses: No app required. T-money or a contactless card can be used at the stop where accepted.",
+        "a1": "Buses: App and reservation requirements may vary by service. If confirmed details are not shown, check the latest official service information before riding.",
         "a2": "Robotaxis: Yes. Kakao T is used to request service."
       },
       "q2": {
@@ -172,7 +175,7 @@
       },
       "q4": {
         "q": "Are these services real-time?",
-        "a1": "No. Information is curated manually and may not reflect live status. Always check before riding."
+        "a1": "No. Information reflects checked stops and listed times and may not reflect live status. Always check before riding."
       },
       "q5": {
         "q": "What should I check before riding?",
@@ -181,7 +184,7 @@
     },
     "steps": {
       "sectionTitle": "Visual guide",
-      "s1": { "title": "Find a listed stop", "desc": "Use the Routes tab to locate verified stops near you." },
+      "s1": { "title": "Find a listed stop", "desc": "Use the Routes tab to find checked stops near you." },
       "s2": { "title": "Check the route and time", "desc": "First/last service times and operating days are listed in each route." },
       "s3": { "title": "Tap your card or follow app instructions", "desc": "Buses: Tap T-money or a contactless card where accepted. Robotaxis: Follow Kakao T instructions." },
       "s4": { "title": "Ride with the safety operator if onboard", "desc": "A safety operator may be onboard during pilot operations. Follow their guidance." }
@@ -214,42 +217,42 @@
     },
     "verification": {
       "sectionTitle": "How we verify",
-      "item1": "Route information is checked manually against Kakao Map and Seoul Metropolitan Government sources",
-      "item2": "Information that cannot be confirmed is shown as Unknown or \"\u2014\"",
+      "item1": "Autonomous-route stops and listed times are checked manually against Seoul Metropolitan Government information shown in Kakao Map",
+      "item2": "Night-bus fares and transfer guidance are based on official Seoul notices",
       "item3": "We do not provide real-time arrival information",
       "item4": "Always confirm with Kakao Map or official sources before riding",
-      "item5": "Each route shows its last verification date"
+      "item5": "Each route shows the date its information was checked"
     },
     "accuracy": {
       "sectionTitle": "Accuracy policy",
-      "item1": "Verified and unverified information is clearly separated",
-      "item2": "Missing data is marked as Unknown or \"\u2014\" \u2014 not guessed",
+      "item1": "Checked and unconfirmed information is clearly separated",
+      "item2": "Unconfirmed details are not guessed and are not presented as established facts",
       "item3": "Real-time status is not represented",
       "item4": "Pre-ride confirmation notice is shown for variable information"
     },
     "lastChecked": {
       "sectionTitle": "Last checked",
-      "body": "Each route lists its last verification date. Information may change between checks. Always confirm before riding."
+      "body": "Each route lists the date its information was checked. Information may change between checks. Always confirm before riding."
     },
     "aboutLink": "About this site"
   },
   "about": {
     "title": "About Seoul Autonomous",
-    "intro": "An independent guide to Seoul's autonomous bus and robotaxi pilot services for international visitors.",
+    "intro": "An independent guide to Seoul's autonomous pilot routes and practical night-bus travel after the last train.",
     "purpose": {
       "sectionTitle": "What this site is",
-      "body1": "Seoul Autonomous is an independent guide that organizes information about Seoul's autonomous bus and robotaxi pilot services for international visitors.",
+      "body1": "Seoul Autonomous is an independent guide to two kinds of travel in Seoul: stops and listed times for autonomous bus and robotaxi pilot services, and practical night-bus information for travel after the last train.",
       "body2": "This is not a real-time transit app. It is a curated reference for pilot service routes.",
-      "note": "Route information is curated and last verified on the date shown. Always confirm operating status with the operator before riding."
+      "note": "It separates checked information from details that have not yet been confirmed for international visitors and late-night travelers in Seoul."
     },
     "dataPolicy": {
       "sectionTitle": "Data and accuracy",
-      "body": "All route information is manually verified against official sources. See the data source page for details.",
+      "body": "Unconfirmed details are not presented as established facts. See the data source page for how information is checked.",
       "linkLabel": "Read data source policy"
     },
     "verification": {
       "sectionTitle": "Information verification",
-      "body": "Route information is verified manually. Each route page shows its last verification date. Always confirm with the operator before riding."
+      "body": "Each route page shows the date its information was checked. Always confirm operating status with the operator or official sources before riding."
     }
   },
   "siteFooter": {
@@ -262,7 +265,7 @@
     "about": "About",
     "privacy": "Privacy",
     "terms": "Terms",
-    "copyright": "\u00a9 2026 Seoul Autonomous. Independent guide."
+    "copyright": "© 2026 Seoul Autonomous. Independent guide."
   },
   "faq": {
     "title": "Frequently asked questions",
@@ -271,16 +274,16 @@
     "dataSourceLink": "Data source"
   },
   "metadata": {
-    "homeTitle": "Seoul Autonomous",
-    "homeDescription": "Guide to autonomous transportation routes in Seoul for foreign tourists",
+    "homeTitle": "Seoul Autonomous Transit & Night Travel Guide",
+    "homeDescription": "An independent guide to confirmed stops and listed times for Seoul autonomous bus and robotaxi pilots, plus practical night-bus travel information.",
     "routesTitle": "Routes — Seoul Autonomous",
-    "routesDescription": "Browse all verified autonomous bus and robotaxi routes in Seoul.",
+    "routesDescription": "Browse Seoul autonomous routes with their endpoints, stops and listed operating times.",
     "routeDetailTitle": "{name} — Seoul Autonomous",
     "routeDetailDescription": "Autonomous bus route {name}. Check stops, hours, and map before riding.",
     "howToRideTitle": "How to ride — Seoul Autonomous",
     "howToRideDescription": "How to ride autonomous buses and robotaxis in Seoul. Step-by-step guide for tourists.",
     "dataSourceTitle": "Data source — Seoul Autonomous",
-    "dataSourceDescription": "How Seoul Autonomous verifies and presents autonomous bus and robotaxi route information.",
+    "dataSourceDescription": "Learn about the sources, checked scope and reference dates used for autonomous-route and night-bus information.",
     "aboutTitle": "About — Seoul Autonomous",
     "aboutDescription": "Seoul Autonomous is an independent guide to Seoul's autonomous bus and robotaxi pilot services for international visitors.",
     "privacyTitle": "Privacy Policy Seoul Autonomous",
@@ -292,7 +295,7 @@
   },
   "updates": {
     "pageTitle": "Updates",
-    "pageDescription": "Latest changes and verification updates for Seoul autonomous bus and robotaxi routes.",
+    "pageDescription": "See data and content updates for Seoul's autonomous routes and late-night travel guides.",
     "breadcrumb": "Updates",
     "relatedRoutes": "Related routes",
     "whatChanged": "What changed",
@@ -307,17 +310,20 @@
   "routeGroups": {
     "earlyMorning": {
       "title": "Early morning autonomous routes in Seoul",
-      "description": "Autonomous bus routes operating before 5:00 AM in Seoul. Verified schedules and stops.",
+      "description": "Check endpoints, stops and listed departure times for Seoul's early-morning autonomous routes.",
       "intro": "These autonomous bus routes operate in the early morning hours before 5:00 AM. Check Kakao Map for the latest schedule before riding."
     },
     "lateNight": {
       "title": "Late-night autonomous routes in Seoul",
-      "description": "Autonomous bus and robotaxi services operating after 10:00 PM in Seoul. Verified schedules and stops.",
+      "description": "Explore Seoul's late-night autonomous bus and robotaxi services with route status and clearly scoped information.",
       "intro": "These autonomous services operate late at night after 10:00 PM. Check Kakao Map for the latest schedule before riding."
     }
   },
   "status": {
-    "verified": "VERIFIED",
+    "verified": "Stops & listed times checked",
+    "officialConfirmed": "Official source checked",
+    "officialPending": "Official confirmation pending",
+    "communityReported": "Community-reported",
     "checkBeforeRiding": "CHECK BEFORE RIDING"
   }
 }

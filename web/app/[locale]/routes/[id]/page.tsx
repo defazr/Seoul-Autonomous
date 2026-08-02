@@ -150,6 +150,14 @@ export default async function RouteDetailPage({
     throw new Error(`Missing route context for route id: ${route.id}`);
   }
 
+  const statusKeyByLevel = {
+    kakao_seoul_verified: 'verified',
+    official_confirmed: 'officialConfirmed',
+    official_pending: 'officialPending',
+    community_reported: 'communityReported',
+  } as const;
+  const statusKey = statusKeyByLevel[route.verificationLevel] ?? 'verified';
+
   return (
     <PageContainer width="default">
       <script
@@ -173,7 +181,7 @@ export default async function RouteDetailPage({
         <div className={styles.statusGroup}>
           <Pill variant="accent">
             <StatusDot color="var(--color-accent)" size={5} />
-            <span>{t('status.verified')}</span>
+            <span>{t(`status.${statusKey}`)}</span>
           </Pill>
         </div>
       </div>
@@ -183,7 +191,7 @@ export default async function RouteDetailPage({
         <h1 className={styles.heading}>{name}</h1>
         <div className={styles.subName}>{subName}</div>
         <div className={styles.checkedDate}>
-          {formatDate(route.lastChecked, isKo)}
+          {`${t('routeDetail.info.verified')} ${formatDate(route.lastChecked, isKo)}`}
         </div>
         <div className={styles.disclaimer}>
           {t('routeDetail.disclaimer')}
@@ -290,17 +298,7 @@ export default async function RouteDetailPage({
           )}
           <div className={styles.aeoItem}>
             <dt className={styles.aeoQ}>{t('routeDetail.aeo.q4')}</dt>
-            <dd className={styles.aeoA}>
-              {route.fare !== 'Unknown'
-                ? t('routeDetail.aeo.a4fare', { fare: route.fare })
-                : t('routeDetail.aeo.a4fareUnknown')}
-              {' '}
-              {route.reservationRequired !== 'Unknown'
-                ? t('routeDetail.aeo.a4reservation', { reservation: route.reservationRequired })
-                : t('routeDetail.aeo.a4reservationUnknown')}
-              {' '}
-              {(route.fare === 'Unknown' || route.reservationRequired === 'Unknown') && t('routeDetail.aeo.a4check')}
-            </dd>
+            <dd className={styles.aeoA}>{t('routeDetail.aeo.a4scope')}</dd>
           </div>
           <div className={styles.aeoItem}>
             <dt className={styles.aeoQ}>{t('routeDetail.aeo.q5')}</dt>

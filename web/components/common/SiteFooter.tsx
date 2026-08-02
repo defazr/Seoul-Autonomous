@@ -1,4 +1,5 @@
 import { getLocale, getTranslations } from 'next-intl/server';
+import { NIGHT_BUS_GUIDE_PATH } from '../../lib/nav';
 import styles from './SiteFooter.module.css';
 
 function InfoIcon() {
@@ -23,11 +24,14 @@ export async function SiteFooter() {
   const locale = await getLocale();
   const tf = await getTranslations({ locale, namespace: 'siteFooter' });
   const tc = await getTranslations({ locale, namespace: 'common' });
+  const tNav = await getTranslations({ locale, namespace: 'nav' });
 
   const navLinks = [
     { href: `/${locale}`, label: tf('home') },
     { href: `/${locale}/routes`, label: tf('routes') },
     { href: `/${locale}/updates`, label: tf('updates') },
+    // Round 26-B: 심야버스 가이드 전역 노출 (SSOT: lib/nav.ts)
+    { href: `/${locale}${NIGHT_BUS_GUIDE_PATH}`, label: tNav('nightBusGuide') },
     // 한국어 전용 실용 가이드 (25-F.2) — en 푸터에는 렌더하지 않음
     ...(locale === 'ko'
       ? [

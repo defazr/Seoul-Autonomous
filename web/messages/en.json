@@ -213,7 +213,8 @@
     "sources": {
       "sectionTitle": "Where data comes from",
       "item1": "Kakao Map route information provided by the Seoul Metropolitan Government",
-      "item2": "Manual observation and verification"
+      "item2": "Manual observation and verification",
+      "item3": "English stop names are sourced from the Seoul Metropolitan Government’s “Multilingual Bus Stop Name List” (updated March 14, 2025; KOGL Type 1). This site uses a selected subset of stop IDs and English names from that dataset."
     },
     "verification": {
       "sectionTitle": "How we verify",
@@ -234,7 +235,8 @@
       "sectionTitle": "Last checked",
       "body": "Each route lists the date its information was checked. Information may change between checks. Always confirm before riding."
     },
-    "aboutLink": "About this site"
+    "aboutLink": "About this site",
+    "stopNameFallbackNote": "Some stops are shown with their Korean names when an official English stop name is not available in the referenced dataset."
   },
   "about": {
     "title": "About Seoul Autonomous",

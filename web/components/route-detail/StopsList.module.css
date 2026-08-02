@@ -77,7 +77,52 @@
   margin-left: 30px;
 }
 
-.toggleBtn {
+/* 목록 시맨틱: 브라우저 기본 마커·여백만 제거하고 행 스타일은 유지한다 */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* 닫힘: 미리보기(order 1) → summary(order 2) / 열림: 전체 목록만 */
+.listContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.previewList {
+  order: 1;
+}
+
+.details {
+  order: 2;
+}
+
+.details[open] {
+  order: 1;
+}
+
+.details[open] + .previewList {
+  display: none;
+}
+
+.expandLabel {
+  display: inline;
+}
+
+.collapseLabel {
+  display: none;
+}
+
+.details[open] .expandLabel {
+  display: none;
+}
+
+.details[open] .collapseLabel {
+  display: inline;
+}
+
+.summary {
   height: 40px;
   background-color: var(--color-bg-2);
   border: 1px solid var(--color-border-1);
@@ -92,8 +137,18 @@
   font-weight: 500;
   font-size: 13px;
   line-height: 16px;
+  list-style: none;
 }
 
-.toggleBtn:hover {
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:hover {
   background-color: var(--color-bg-3);
+}
+
+.details[open] .summary {
+  margin-top: 0;
+  margin-bottom: 12px;
 }

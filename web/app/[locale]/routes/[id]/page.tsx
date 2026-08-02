@@ -6,6 +6,7 @@ import { routeContextEn } from '../../../../data/route-context/route-context.en'
 import type { VerifiedRouteId } from '../../../../lib/types/route-context';
 import { routing } from '../../../../i18n/routing';
 import { StopsList } from '../../../../components/route-detail/StopsList';
+import { getOfficialStopNameEn } from '../../../../lib/stops';
 import { MapLinkButton } from '../../../../components/route-detail/MapLinkButton';
 import { Pill, StatusDot } from '../../../../components/ui/Pill';
 import { Link } from '../../../../i18n/navigation';
@@ -150,6 +151,27 @@ export default async function RouteDetailPage({
     throw new Error(`Missing route context for route id: ${route.id}`);
   }
 
+  // 26-C2E: 표시명 해결은 서버에서 끝낸다 (SSOT 는 client bundle 로 나가지 않는다).
+  // 보조줄 노출 여부는 StopsList 가 렌더 문맥(미리보기/전체)에 따라 결정한다.
+  // 26-C2E.1: 영문 표시명의 유일한 출처는 공식 SSOT 다. 미스는 한국어명으로만 대체한다
+  // (routes.json 의 legacy nameEn 은 표시 경로에서 사용하지 않는다).
+  const displayStops = stops.map((stop) => {
+    if (isKo) {
+      return {
+        seq: stop.seq,
+        displayName: stop.nameKo,
+        isTurnaround: stop.isTurnaround,
+      };
+    }
+    const officialNameEn = getOfficialStopNameEn(stop.stopId);
+    return {
+      seq: stop.seq,
+      displayName: officialNameEn ?? stop.nameKo,
+      secondaryName: officialNameEn ? stop.nameKo : undefined,
+      isTurnaround: stop.isTurnaround,
+    };
+  });
+
   const statusKeyByLevel = {
     kakao_seoul_verified: 'verified',
     official_confirmed: 'officialConfirmed',
@@ -218,8 +240,7 @@ export default async function RouteDetailPage({
                 {t('routeDetail.stopsSection')} ({stops.length})
               </div>
               <StopsList
-                  stops={stops}
-                  locale={locale}
+                  stops={displayStops}
                   expandLabel={t('routeDetail.expandStops', {
                     count: stops.length,
                   })}

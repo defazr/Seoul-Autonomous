@@ -90,6 +90,7 @@ export default async function DataSourcePage({
   const sources = [
     t('dataSource.sources.item1'),
     t('dataSource.sources.item2'),
+    t('dataSource.sources.item3'),
   ];
 
   const verification = [
@@ -138,6 +139,10 @@ export default async function DataSourcePage({
             </div>
           ))}
         </div>
+        {/* 정류장 영문명 fallback 안내 (출처 목록과 분리된 표시 정책 설명) */}
+        <p className={styles.bodyText}>
+          {t('dataSource.stopNameFallbackNote')}
+        </p>
       </div>
 
       {/* Section 2: Verification */}

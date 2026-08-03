@@ -9,9 +9,11 @@
 
 **남은 것은 push 승인과 deploy 승인 두 게이트뿐이다.** 라이브는 `ef0274a` 그대로다.
 
-## 다음 세션 첫 작업 — **push 전 read-only 안전 확인**
+## 다음 세션 첫 작업 — **push 승인 판정**
 
-실제 Git 좌표와 `docs/handoff/HANDOFF-20260803.md`, `docs/worklogs/AUDIT-ROUND26-PREDEPLOY-20260803.md`를 확인한 뒤 push 전 read-only 안전 점검을 수행한다. **사용자 승인 없이 push·deploy하지 않는다.**
+실제 Git 좌표와 `docs/handoff/HANDOFF-20260803.md`, `docs/worklogs/AUDIT-ROUND26-PREDEPLOY-20260803.md`를 확인한다. push 전 read-only 안전 점검은 2026-08-03에 이미 완료했고 **push와 라이브 배포가 분리돼 있음을 확인했다**(webhook·CI·Vercel 연동 전무, Vultr 수동 Docker 배포).
+
+사용자 승인으로 `git push origin main`을 실행한 뒤, 라이브가 기존 `ef0274a`로 유지되는지 확인한다. 서버 배포는 별도 지시서와 별도 승인이 필요하며 **SSH 접속도 승인 전에는 하지 않는다.**
 
 코드는 다시 만들거나 다시 검증하지 않는다. C1O 재조사, C2O 재설계, C3 재작성 모두 금지다. 이미 끝났고 동일 HEAD에서 통합 오디트와 사용자 검수를 통과했다.
 
@@ -69,17 +71,27 @@ deploy     : 0
 
 ## 남은 로드맵
 
+현재 HEAD와 origin/main을 다시 확인한 뒤 사용자 승인으로 `git push origin main`을 실행한다. **Push는 라이브 배포를 유발하지 않는다.** Push 완료 후 라이브가 기존 버전으로 유지되는지 확인하고, 별도 서버 배포 지시서와 사용자 승인을 받은 뒤 Vultr 서버의 Docker 배포를 수행한다.
+
 ```
 docs-only 커밋
 → push 전 read-only 안전 확인
 → 사용자 push 승인
-→ push
+→ git push origin main
+→ origin/main 갱신 확인 · 라이브 ef0274a 유지 확인
+→ 서버 배포 전 read-only 선점검
 → 사용자 deploy 승인
-→ deploy
+→ Vultr SSH → rollback 태그 박제 → git pull --ff-only → docker build → 새 컨테이너 기동
+→ Caddy 헬스체크 (6개 도메인)
 → 라이브 53 URL·핵심 화면·5xx QA
+→ 이상 시 즉시 rollback
 → 최종 문서 마감
 → (별도) 색인 갱신 확인 후 AdSense 재신청 판단
 ```
+
+### push와 deploy는 실제로 분리된다
+
+2026-08-03 read-only 점검 결과, 이 저장소에는 GitHub webhook 0, GitHub Deployments 0, CI 상태 체크 0, Vercel 설정 0이다. 배포는 Vultr 158.247.252.172 서버에서 수동 Docker 실행으로만 이뤄지므로 **main push는 원격 저장소만 갱신하고 라이브에 영향이 없다.**
 
 **push·deploy는 각각 별도 승인이며 자동 실행 금지.**
 

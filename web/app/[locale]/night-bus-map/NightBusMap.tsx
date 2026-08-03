@@ -30,6 +30,20 @@ const FS_VB = { x: VBX - 20, y: VBY - 20, w: VBW + 40, h: VBH + 60 };
 const MIN_ZOOM = 1, MAX_ZOOM = 4;
 const REDUCED_MOTION = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
+/* ── 전체화면 진입 제스처 상수 (데스크톱 더블클릭 + 모바일 한 손가락 더블탭) ── */
+const DOUBLE_TAP_MS = 300;              // 두 탭 사이 최대 시간
+const DOUBLE_TAP_SLOP_PX = 40;          // 두 탭 사이 최대 좌표 거리
+const TAP_MOVE_CANCEL_PX = 8;           // 탭 중 이동 허용치 (useTouchZoom DRAG_THRESHOLD와 동일)
+const TOUCH_DBLCLICK_SUPPRESS_MS = 700; // 터치에서 파생된 합성 dblclick 무시 시간
+
+/* 인라인 지도 SVG 판별 — 공용 svgRef 대신 stage(currentTarget)에서 직접 찾는다.
+   SvgMap의 <svg>만 stage의 직계 자식이라 :scope > svg 는 항상 인라인 지도 하나를 가리킨다.
+   (StationCard 등 카드 내부 아이콘 svg는 직계가 아니므로 매칭되지 않음) */
+function isOnInlineMapSvg(currentTarget: HTMLElement, target: EventTarget | null) {
+  const svg = currentTarget.querySelector(':scope > svg');
+  return !!(svg && target instanceof Node && svg.contains(target));
+}
+
 /* ── Mobile viewBox hook ── */
 function useIsMobile() {
   const [mobile, setMobile] = useState(false);
@@ -748,9 +762,9 @@ export function NightBusMap() {
   useEffect(() => { if (prevMobile.current !== isMobile) { prevMobile.current = isMobile; setVb(isMobile ? MOBILE_VB : DEFAULT_VB); } }, [isMobile]);
   const stageRef = useRef<HTMLDivElement>(null);
 
-  /* ── Inline touch zoom/pan ── */
+  /* ── Inline touch zoom/pan ──
+     인라인 더블탭은 전체화면 진입으로 재배정(포그린 확정) — useDoubleTap은 오버레이 전용으로만 유지 */
   const { isZoomed, resetVB } = useTouchZoom(stageRef, vb, setVb, baseVB, isMobile);
-  const onDoubleClick = useDoubleTap(isMobile, isZoomed, stageRef, vb, setVb, baseVB);
 
   /* ── Fullscreen viewBox state (별도) ── */
   const fsBaseVB = FS_VB;
@@ -761,6 +775,13 @@ export function NightBusMap() {
   /* ── Fullscreen open/close ── */
   const savedOverflow = useRef('');
 
+  /* ── 전체화면 진입 제스처 상태 (전부 ref — 렌더 불필요, 동기 판정) ── */
+  const fsOpenLockRef = useRef(false);        // 동기 진입 잠금 — state 반영 전 중복 호출 차단
+  const openTimerRef = useRef<number | null>(null); // 더블탭 진입 예약 타이머
+  const lastTouchAtRef = useRef(0);           // 터치 파생 합성 dblclick 판별용
+  const tapCandidateRef = useRef<{ x: number; y: number; t: number } | null>(null); // 완료된 첫 탭
+  const activeTouchRef = useRef<{ id: number; x: number; y: number; moved: boolean; onSvg: boolean } | null>(null); // 진행 중 탭
+
   const openFullscreen = useCallback(() => {
     savedOverflow.current = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -769,9 +790,96 @@ export function NightBusMap() {
     setIsFullscreen(true);
   }, [isMobile]);
 
+  /* 진입 3경로(크게 보기 버튼·더블클릭·더블탭)가 전부 통과하는 단일 게이트.
+     defer=true(더블탭)면 합성 click/dblclick 흐름이 끝난 다음 task에서 1회만 진입 —
+     같은 터치가 오버레이의 더블탭 확대(onFsDoubleClick)까지 연쇄 실행되는 것을 막는다. */
+  const beginFullscreenEntry = useCallback((defer: boolean) => {
+    if (fsOpenLockRef.current) return;
+    fsOpenLockRef.current = true;
+    tapCandidateRef.current = null;
+    activeTouchRef.current = null;
+    if (defer) {
+      openTimerRef.current = window.setTimeout(() => {
+        openTimerRef.current = null;
+        openFullscreen();
+      }, 0);
+    } else {
+      openFullscreen();
+    }
+  }, [openFullscreen]);
+
+  const enterFullscreenNow = useCallback(() => beginFullscreenEntry(false), [beginFullscreenEntry]);
+
   const closeFullscreen = useCallback(() => {
     document.body.style.overflow = savedOverflow.current;
     setIsFullscreen(false);
+    fsOpenLockRef.current = false; // 진입 잠금 해제
+  }, []);
+
+  /* ── 데스크톱: 인라인 stage 더블클릭 → 전체화면 ── */
+  const handleStageMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    // 연속 클릭(detail>1)의 기본 텍스트 선택만 억제 — 이 이벤트 범위 한정, CSS 무변경
+    if (e.detail > 1 && e.button === 0 && isOnInlineMapSvg(e.currentTarget, e.target)) e.preventDefault();
+  }, []);
+
+  const handleStageDoubleClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return;                                                    // 왼쪽 버튼만
+    if (Date.now() - lastTouchAtRef.current < TOUCH_DBLCLICK_SUPPRESS_MS) return;  // 터치 파생 합성 dblclick 무시
+    if (!isOnInlineMapSvg(e.currentTarget, e.target)) return;                      // SVG 표면에서만
+    beginFullscreenEntry(false);
+  }, [beginFullscreenEntry]);
+
+  /* ── 모바일: 인라인 stage 한 손가락 더블탭 → 전체화면 (Pointer Event, preventDefault 없음) ── */
+  const handleStagePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== 'touch') return; // pen·mouse 제외
+    lastTouchAtRef.current = Date.now();
+    if (activeTouchRef.current) {
+      // 두 번째 손가락(핀치 등) — 진행 중 탭·첫 탭 후보 전부 취소
+      activeTouchRef.current = null;
+      tapCandidateRef.current = null;
+      return;
+    }
+    const onSvg = isOnInlineMapSvg(e.currentTarget, e.target);
+    if (!onSvg) tapCandidateRef.current = null; // SVG 밖(카드·버튼) 터치는 후보 리셋
+    activeTouchRef.current = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: false, onSvg };
+  }, []);
+
+  const handleStagePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== 'touch') return;
+    const at = activeTouchRef.current;
+    if (!at || at.id !== e.pointerId || at.moved) return;
+    if (Math.hypot(e.clientX - at.x, e.clientY - at.y) > TAP_MOVE_CANCEL_PX) {
+      at.moved = true;                // 스크롤·스와이프·팬 — 이번 탭 취소
+      tapCandidateRef.current = null; // 첫 탭 후보도 폐기
+    }
+  }, []);
+
+  const handleStagePointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== 'touch') return;
+    lastTouchAtRef.current = Date.now();
+    const at = activeTouchRef.current;
+    activeTouchRef.current = null;
+    if (!at || at.id !== e.pointerId || at.moved || !at.onSvg) {
+      tapCandidateRef.current = null;
+      return;
+    }
+    const now = Date.now();
+    const prev = tapCandidateRef.current;
+    if (
+      prev &&
+      now - prev.t <= DOUBLE_TAP_MS &&
+      Math.hypot(e.clientX - prev.x, e.clientY - prev.y) <= DOUBLE_TAP_SLOP_PX
+    ) {
+      beginFullscreenEntry(true); // 유효 더블탭 — 다음 task로 예약 진입
+    } else {
+      tapCandidateRef.current = { x: e.clientX, y: e.clientY, t: now }; // 새 첫 탭 후보로 재설정
+    }
+  }, [beginFullscreenEntry]);
+
+  const handleStagePointerCancel = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== 'touch') return;
+    activeTouchRef.current = null;
+    tapCandidateRef.current = null;
   }, []);
 
   // Focus ✕ when overlay opens
@@ -791,9 +899,11 @@ export function NightBusMap() {
     return () => window.removeEventListener('keydown', handleKey);
   }, [isFullscreen, closeFullscreen]);
 
-  // Cleanup on unmount — restore overflow
+  // Cleanup on unmount — restore overflow + 진입 타이머·잠금 정리
   useEffect(() => {
     return () => {
+      if (openTimerRef.current !== null) clearTimeout(openTimerRef.current);
+      fsOpenLockRef.current = false;
       if (savedOverflow.current !== undefined) {
         document.body.style.overflow = savedOverflow.current;
       }
@@ -851,14 +961,19 @@ export function NightBusMap() {
 
   return (
     <div className={styles.ob}>
-      <Header isAll={isAll && !jFrom && !jTo} clearSel={clearSel} exportPNG={exportPNG} onPickFrom={(n) => setJFrom(n)} onPickTo={(n) => setJTo(n)} jFrom={jFrom} jTo={jTo} onFullscreen={openFullscreen} />
+      <Header isAll={isAll && !jFrom && !jTo} clearSel={clearSel} exportPNG={exportPNG} onPickFrom={(n) => setJFrom(n)} onPickTo={(n) => setJTo(n)} jFrom={jFrom} jTo={jTo} onFullscreen={enterFullscreenNow} />
       <Legend sel={dispSel} toggle={toggle} />
 
       {/* ── Inline map (항상 렌더 — 절대 언마운트 안 함) ── */}
       <div
         ref={stageRef}
         className={styles.obStage}
-        onClick={onDoubleClick}
+        onMouseDown={handleStageMouseDown}
+        onDoubleClick={handleStageDoubleClick}
+        onPointerDown={handleStagePointerDown}
+        onPointerMove={handleStagePointerMove}
+        onPointerUp={handleStagePointerUp}
+        onPointerCancel={handleStagePointerCancel}
         style={isMobile && isZoomed ? { touchAction: 'none' } : { touchAction: 'pan-y' }}
       >
         <SvgMap svgRef={svgRef} {...svgMapProps} vb={vb} />

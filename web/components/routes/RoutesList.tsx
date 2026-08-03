@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import type { FixedRoute, OnDemandService } from '../../lib/types/route';
+import type { RouteListItem, RobotaxiListItem } from '../../lib/types/route';
 import { RouteCard } from '../ui/RouteCard';
 import { RobotaxiCard } from '../ui/RobotaxiCard';
 import { SegmentedControl } from '../ui/SegmentedControl';
@@ -29,8 +29,8 @@ function MoonStarIcon() {
 }
 
 type RoutesListProps = {
-  routes: FixedRoute[];
-  services: OnDemandService[];
+  routes: RouteListItem[];
+  services: RobotaxiListItem[];
   locale: string;
 };
 
@@ -38,7 +38,7 @@ type Filter = 'ALL' | 'BUS' | 'TAXI';
 
 const normalize = (s: string) => s.toLowerCase().replace(/\s+/g, '');
 
-function matchRouteQuery(route: FixedRoute, q: string): boolean {
+function matchRouteQuery(route: RouteListItem, q: string): boolean {
   if (!q.trim()) return true;
   const nq = normalize(q);
   const fields = [
@@ -52,7 +52,7 @@ function matchRouteQuery(route: FixedRoute, q: string): boolean {
   return fields.some((f) => normalize(f).includes(nq));
 }
 
-function matchServiceQuery(service: OnDemandService, q: string): boolean {
+function matchServiceQuery(service: RobotaxiListItem, q: string): boolean {
   if (!q.trim()) return true;
   const nq = normalize(q);
   const fields = [
@@ -97,6 +97,14 @@ export function RoutesList({ routes, services, locale }: RoutesListProps) {
   const robotaxiLabels = {
     appRequired: t('robotaxi.appRequired'),
     checkBeforeRiding: t('robotaxi.checkBeforeRiding'),
+    fareTitle: t('robotaxi.fareTitle'),
+    reservationTitle: t('robotaxi.reservationTitle'),
+    reservationRealtimeCall: t('robotaxi.reservationRealtimeCall'),
+    appTitle: t('robotaxi.appTitle'),
+    appPurposes: t('robotaxi.appPurposes'),
+    operatorTitle: t('robotaxi.operatorTitle'),
+    sourcePrefix: t('robotaxi.sourcePrefix'),
+    effectivePrefix: t('robotaxi.effectivePrefix'),
   };
 
   // Group card data
@@ -111,7 +119,7 @@ export function RoutesList({ routes, services, locale }: RoutesListProps) {
   });
   const lateCount = lateRoutes.length + services.length;
 
-  function getTimeRange(rts: FixedRoute[]): string {
+  function getTimeRange(rts: RouteListItem[]): string {
     if (rts.length === 0) return '';
     const times = rts.flatMap((r) => [r.firstBus, r.lastBus]);
     const sorted = [...new Set(times)].sort();

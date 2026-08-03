@@ -81,7 +81,15 @@
     "empty": "No services match this filter.",
     "robotaxi": {
       "appRequired": "Kakao T (Korean app) required",
-      "checkBeforeRiding": "CHECK BEFORE RIDING"
+      "checkBeforeRiding": "CHECK BEFORE RIDING",
+      "fareTitle": "Base fare by time band",
+      "reservationTitle": "How to ride",
+      "reservationRealtimeCall": "No advance reservation; request a ride in Kakao T",
+      "appTitle": "Required app",
+      "appPurposes": "requesting and payment",
+      "operatorTitle": "Operated by",
+      "sourcePrefix": "Official source",
+      "effectivePrefix": "effective"
     }
   },
   "common": {
@@ -129,11 +137,8 @@
       "a3unknown": "Headway has not been confirmed. Check Kakao Map before riding.",
       "q4": "What information has been checked on this page?",
       "a4scope": "The route endpoints, stop list and displayed operating times have been checked. Fare, operator, reservation and app requirements are not presented as confirmed until they are separately verified.",
-      "a4fare": "Fare: {fare}.",
-      "a4fareUnknown": "Fare information has not been confirmed yet.",
-      "a4reservation": "Reservation: {reservation}.",
-      "a4reservationUnknown": "Reservation requirements have not been confirmed.",
-      "a4check": "Please check Kakao Map or official sources before riding.",
+      "a4TemporaryFree": "The currently confirmed fare is temporarily free, and a transit card must be tapped when boarding and alighting. Reservation and app requirements are not shown until officially confirmed.",
+      "a4Reverification": "The fare needs to be re-verified because an earlier transition window has arrived. No amount is shown until a current official fare is confirmed.",
       "q5": "Is real-time arrival info available?",
       "a5": "This site does not provide real-time arrival information. Check Kakao Map for the latest status.",
       "q6": "What should I check before riding?",
@@ -141,6 +146,14 @@
       "a6link": "See our full guide: How to ride →",
       "q7": "When was this information last checked?",
       "a7": "Stops and listed times were checked on {date} against Kakao Map data provided by the Seoul Metropolitan Government."
+    },
+    "operational": {
+      "fare": "Fare",
+      "operator": "Built and operated by",
+      "temporaryFree": "Temporarily free",
+      "cardTagRequired": "Tap a transit card when boarding and alighting",
+      "sourcePrefix": "Official source",
+      "fareReverification": "The current fare needs to be re-verified. An earlier transition window has arrived, but a current official fare has not been confirmed."
     }
   },
   "howToRide": {

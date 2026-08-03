@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import type { FixedRoute } from '../../lib/types/route';
+import type { RouteListItem } from '../../lib/types/route';
 import styles from './RouteCard.module.css';
 
 type RouteCardProps = {
-  route: FixedRoute;
+  // 26-C2O: 표시에 필요한 9개 필드만 요구한다. FixedRoute 는 상위집합이라 그대로 통과한다.
+  route: RouteListItem;
   locale?: string;
 };
 

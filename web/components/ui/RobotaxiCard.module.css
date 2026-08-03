@@ -92,3 +92,86 @@
   color: var(--color-fg-2);
   letter-spacing: 0.44px;
 }
+
+/* 26-C2O: 공식 확인된 운영정보 */
+.opsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 14px 0 0;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--color-border-2);
+}
+
+.opsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.opsLabel {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 14px;
+  color: var(--color-fg-3);
+  letter-spacing: 0.44px;
+  text-transform: uppercase;
+}
+
+.opsValue {
+  margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-fg-1);
+  overflow-wrap: anywhere;
+}
+
+.fareBands {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fareBand {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-variant-numeric: tabular-nums;
+}
+
+.fareTime {
+  min-width: 92px;
+  color: var(--color-fg-2);
+}
+
+.fareAmount {
+  font-weight: 600;
+}
+
+.sourceNote {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin: 10px 0 0;
+  font-size: 11px;
+  line-height: 15px;
+  color: var(--color-fg-3);
+}
+
+.sourceLink {
+  color: var(--color-fg-3);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+}
+
+.sourceLink:hover {
+  color: var(--color-fg-2);
+}
+
+.sourceEffective {
+  color: var(--color-fg-3);
+}

@@ -1,14 +1,36 @@
-import type { OnDemandService } from '../../lib/types/route';
+import type { RobotaxiListItem } from '../../lib/types/route';
 import { Pill, StatusDot } from './Pill';
 import styles from './RobotaxiCard.module.css';
 
 type RobotaxiCardProps = {
-  service: OnDemandService;
+  // 26-C2O: 표시값과 공식 출처 1건만 담은 DTO. 48셀 조사 상태는 넘어오지 않는다.
+  service: RobotaxiListItem;
   locale?: string;
   labels?: {
     appRequired: string;
     checkBeforeRiding: string;
+    fareTitle: string;
+    reservationTitle: string;
+    reservationRealtimeCall: string;
+    appTitle: string;
+    appPurposes: string;
+    operatorTitle: string;
+    sourcePrefix: string;
+    effectivePrefix: string;
   };
+};
+
+const formatAmount = (amount: number, isKo: boolean) =>
+  isKo ? `${amount.toLocaleString('ko-KR')}원` : `KRW ${amount.toLocaleString('en-US')}`;
+
+const formatDate = (iso: string, isKo: boolean) => {
+  const [y, m, d] = iso.split('-');
+  if (isKo) return `${y}.${m}.${d}`;
+  const month = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ][Number(m) - 1];
+  return `${month} ${Number(d)}, ${y}`;
 };
 
 function TaxiIcon() {
@@ -58,11 +80,73 @@ export function RobotaxiCard({ service, locale = 'en', labels }: RobotaxiCardPro
           <div className={styles.name}>{name}</div>
           <div className={styles.subName}>{subName}</div>
           <div className={styles.area}>{area}</div>
-          {service.appRequired && (
+          {service.app && (
             <div className={styles.appTag}>
               <span className={styles.appDot} />
               <span className={styles.appText}>{appLabel}</span>
             </div>
+          )}
+
+          {/* 26-C2O: 공식 확인된 운영정보만 표시한다. 미확인 항목은 행 자체를 만들지 않는다. */}
+          {(service.fareBands || service.reservation || service.app || service.operatorNames.length > 0) && (
+            <dl className={styles.opsList}>
+              {service.fareBands && (
+                <div className={styles.opsRow}>
+                  <dt className={styles.opsLabel}>{labels?.fareTitle ?? 'Fare'}</dt>
+                  <dd className={styles.opsValue}>
+                    <ul className={styles.fareBands}>
+                      {service.fareBands.map((b) => (
+                        <li key={`${b.start}-${b.end}`} className={styles.fareBand}>
+                          <span className={styles.fareTime}>{`${b.start}–${b.end}`}</span>
+                          <span className={styles.fareAmount}>{formatAmount(b.amount, isKo)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              )}
+              {service.reservation && (
+                <div className={styles.opsRow}>
+                  <dt className={styles.opsLabel}>{labels?.reservationTitle ?? 'How to ride'}</dt>
+                  <dd className={styles.opsValue}>
+                    {labels?.reservationRealtimeCall ??
+                      'No advance reservation; request a ride in Kakao T'}
+                  </dd>
+                </div>
+              )}
+              {service.app && (
+                <div className={styles.opsRow}>
+                  <dt className={styles.opsLabel}>{labels?.appTitle ?? 'Required app'}</dt>
+                  <dd className={styles.opsValue}>
+                    {`${service.app.appName ?? ''}${labels?.appPurposes ? ` — ${labels.appPurposes}` : ''}`}
+                  </dd>
+                </div>
+              )}
+              {service.operatorNames.length > 0 && (
+                <div className={styles.opsRow}>
+                  <dt className={styles.opsLabel}>{labels?.operatorTitle ?? 'Operated by'}</dt>
+                  <dd className={styles.opsValue}>{service.operatorNames.join(', ')}</dd>
+                </div>
+              )}
+            </dl>
+          )}
+
+          {service.source && (
+            <p className={styles.sourceNote}>
+              <a
+                className={styles.sourceLink}
+                href={service.source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {`${labels?.sourcePrefix ?? 'Official source'}: ${service.source.publisher} · ${formatDate(service.source.publishedAt, isKo)}`}
+              </a>
+              {service.source.effectiveAt && (
+                <span className={styles.sourceEffective}>
+                  {`${formatDate(service.source.effectiveAt, isKo)} ${labels?.effectivePrefix ?? 'effective'}`}
+                </span>
+              )}
+            </p>
           )}
         </div>
       </div>

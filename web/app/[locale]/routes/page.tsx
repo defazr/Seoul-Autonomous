@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { getVerifiedRoutes, getOnDemandServices } from '../../../lib/routes';
+import type { RouteListItem, RobotaxiListItem } from '../../../lib/types/route';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import { buildPageMetadata } from '../../../lib/seo/metadata';
 import { RoutesList } from '../../../components/routes/RoutesList';
@@ -24,6 +25,50 @@ export default async function RoutesPage({ params }: { params: Promise<{ locale:
   const routes = getVerifiedRoutes();
   const services = getOnDemandServices();
 
+  // 26-C2O: client boundary 를 넘는 데이터는 표시에 필요한 필드로만 좁힌다.
+  // 운영정보·출처·조사 상태·정류장 배열은 서버에 남는다.
+  const routeItems: RouteListItem[] = routes.map((route) => ({
+    id: route.id,
+    displayName: route.displayName,
+    displayNameKo: route.displayNameKo,
+    startPoint: route.startPoint,
+    startPointKo: route.startPointKo,
+    endPoint: route.endPoint,
+    endPointKo: route.endPointKo,
+    firstBus: route.firstBus,
+    lastBus: route.lastBus,
+    headway: route.headway,
+  }));
+
+  const serviceItems: RobotaxiListItem[] = services.map((svc) => {
+    const fare = svc.fare.value;
+    const reservation = svc.reservationRequired.value;
+    const app = svc.appRequired.value;
+    const source = svc.fare.sources[0] ?? null;
+    return {
+      id: svc.id,
+      displayName: svc.displayName,
+      displayNameKo: svc.displayNameKo,
+      serviceArea: svc.serviceArea,
+      serviceAreaKo: svc.serviceAreaKo,
+      verificationLevel: svc.verificationLevel,
+      fareBands: fare && fare.kind === 'time_bands' ? fare.bands : null,
+      operatorNames: svc.operator.value?.entities.map((e) => e.name) ?? [],
+      reservation: reservation
+        ? { mode: reservation.mode, appName: reservation.appName }
+        : null,
+      app: app?.required ? { appName: app.appName, purposes: app.purposes } : null,
+      source: source
+        ? {
+            publisher: source.publisher,
+            url: source.url,
+            publishedAt: source.publishedAt,
+            effectiveAt: source.effectiveAt,
+          }
+        : null,
+    };
+  });
+
   return (
     <PageContainer width="default">
       <script
@@ -34,7 +79,7 @@ export default async function RoutesPage({ params }: { params: Promise<{ locale:
         href="/"
         ariaLabel={locale === 'ko' ? '홈으로 돌아가기' : 'Back to home'}
       />
-      <RoutesList routes={routes} services={services} locale={locale} />
+      <RoutesList routes={routeItems} services={serviceItems} locale={locale} />
 
       {/* 심야버스 노선도 배너 (ko만) */}
       {locale === 'ko' && (

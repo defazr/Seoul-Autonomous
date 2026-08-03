@@ -172,6 +172,46 @@ export default async function RouteDetailPage({
     };
   });
 
+  // 26-C2O: 공식 확인된 운영정보만 표시한다. 미확인 항목은 행 자체를 만들지 않는다.
+  const fareCell = route.fare;
+  const operatorCell = route.operator;
+  const fareValue = fareCell.value;
+  const showTemporaryFree =
+    fareCell.verificationGrade === 'official_confirmed' &&
+    fareCell.currentState === 'confirmed' &&
+    fareValue?.kind === 'temporary_free';
+  const showOperator =
+    operatorCell.verificationGrade === 'official_confirmed' &&
+    operatorCell.currentState === 'confirmed' &&
+    !!operatorCell.value;
+  const needsFareReverification = fareCell.currentState === 'reverification_required';
+
+  const formatSourceDate = (iso: string) => {
+    const [y, m, d] = iso.split('-');
+    if (isKo) return `${y}.${m}.${d}`;
+    const month = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    ][Number(m) - 1];
+    return `${month} ${Number(d)}, ${y}`;
+  };
+
+  // 공식확인 필드가 같은 출처를 공유하면 링크를 한 번만 보여준다.
+  const operationalSources = [
+    ...(showTemporaryFree ? fareCell.sources : []),
+    ...(showOperator ? operatorCell.sources : []),
+  ];
+  const uniqueSources = operationalSources.filter(
+    (s, i, arr) => arr.findIndex((x) => x.url === s.url) === i,
+  );
+
+  // FAQ q4: 가시 <dl> 만 조건부. FAQPage JSON-LD 는 만들지 않는다.
+  const operationalScopeAnswer = showTemporaryFree
+    ? t('routeDetail.aeo.a4TemporaryFree')
+    : needsFareReverification
+      ? t('routeDetail.aeo.a4Reverification')
+      : t('routeDetail.aeo.a4scope');
+
   const statusKeyByLevel = {
     kakao_seoul_verified: 'verified',
     official_confirmed: 'officialConfirmed',
@@ -270,6 +310,53 @@ export default async function RouteDetailPage({
                 ))}
               </div>
 
+              {(showTemporaryFree || showOperator) && (
+                <dl className={styles.opsList}>
+                  {showTemporaryFree && (
+                    <div className={styles.opsRow}>
+                      <dt className={styles.opsLabel}>{t('routeDetail.operational.fare')}</dt>
+                      <dd className={styles.opsValue}>
+                        {t('routeDetail.operational.temporaryFree')}
+                        {fareValue?.kind === 'temporary_free' && fareValue.cardTagRequired && (
+                          <span className={styles.opsNote}>
+                            {t('routeDetail.operational.cardTagRequired')}
+                          </span>
+                        )}
+                      </dd>
+                    </div>
+                  )}
+                  {showOperator && (
+                    <div className={styles.opsRow}>
+                      <dt className={styles.opsLabel}>{t('routeDetail.operational.operator')}</dt>
+                      <dd className={styles.opsValue}>
+                        {operatorCell.value?.entities.map((e) => e.name).join(', ')}
+                      </dd>
+                    </div>
+                  )}
+                  {uniqueSources.length > 0 && (
+                    <div className={styles.opsSource}>
+                      {uniqueSources.map((s) => (
+                        <a
+                          key={s.url}
+                          className={styles.opsSourceLink}
+                          href={s.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {`${t('routeDetail.operational.sourcePrefix')}: ${s.publisher} · ${formatSourceDate(s.publishedAt)}`}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </dl>
+              )}
+
+              {needsFareReverification && (
+                <p className={styles.opsReverification}>
+                  {t('routeDetail.operational.fareReverification')}
+                </p>
+              )}
+
               <MapLinkButton
                 displayNameKo={route.displayNameKo}
                 label={t('routeDetail.openInKakaoMap')}
@@ -319,7 +406,7 @@ export default async function RouteDetailPage({
           )}
           <div className={styles.aeoItem}>
             <dt className={styles.aeoQ}>{t('routeDetail.aeo.q4')}</dt>
-            <dd className={styles.aeoA}>{t('routeDetail.aeo.a4scope')}</dd>
+            <dd className={styles.aeoA}>{operationalScopeAnswer}</dd>
           </div>
           <div className={styles.aeoItem}>
             <dt className={styles.aeoQ}>{t('routeDetail.aeo.q5')}</dt>

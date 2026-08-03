@@ -7,8 +7,18 @@ import { RouteCard } from '../../components/ui/RouteCard';
 import { RobotaxiCard } from '../../components/ui/RobotaxiCard';
 import { InfoCard } from '../../components/ui/InfoCard';
 import { SegmentedControl } from '../../components/ui/SegmentedControl';
-import type { FixedRoute, OnDemandService } from '../../lib/types/route';
+import type { FixedRoute, RobotaxiListItem, OperationalField } from '../../lib/types/route';
 import styles from './page.module.css';
+
+// 26-C2O: preview 전용 최소 mock. 실제 공개 데이터 정본이 아니다.
+// OperationalField 불변식(비확정 셀은 value null)만 충족시킨다.
+const unverifiedCell: OperationalField<never> = {
+  value: null,
+  verificationGrade: 'unverified',
+  currentState: 'unverified',
+  reason: null,
+  sources: [],
+};
 
 const dummyRoute: FixedRoute = {
   id: 'cheonggye-a01',
@@ -22,10 +32,10 @@ const dummyRoute: FixedRoute = {
   lastBus: '18:00',
   headway: '15 min',
   daysOfOperation: 'weekday',
-  fare: 'Unknown',
-  operator: 'Unknown',
-  reservationRequired: 'Unknown',
-  appRequired: 'Unknown',
+  fare: unverifiedCell,
+  operator: unverifiedCell,
+  reservationRequired: unverifiedCell,
+  appRequired: unverifiedCell,
   lastChecked: '2026-04-29',
   verifiedBy: 'kakao_map_seoul_data',
   verificationLevel: 'kakao_seoul_verified',
@@ -50,26 +60,41 @@ const dummyRouteOfficial: FixedRoute = {
   verificationLevel: 'official_confirmed',
 };
 
-const dummyRobotaxi: OnDemandService = {
+// RobotaxiCard 는 client DTO(RobotaxiListItem)를 받는다. preview 도 같은 계약을 쓴다.
+const dummyRobotaxi: RobotaxiListItem = {
   id: 'gangnam-robotaxi',
   displayName: 'Gangnam Robotaxi',
   displayNameKo: '강남 로보택시',
   serviceArea: 'Gangnam Station area',
   serviceAreaKo: '강남역 일대',
-  appRequired: true,
-  appName: 'Kakao T',
-  operatingHours: '10:00–22:00',
-  operatingDays: 'Daily',
-  fare: 'Free (pilot)',
-  operator: 'Unknown',
-  officialServiceUrl: '',
-  lastChecked: '2026-04-29',
-  verifiedBy: 'official_announcement',
+  verificationLevel: 'official_confirmed',
+  fareBands: [
+    { start: '22:00', end: '23:00', amount: 5800 },
+    { start: '23:00', end: '02:00', amount: 6700 },
+    { start: '02:00', end: '04:00', amount: 5800 },
+    { start: '04:00', end: '05:00', amount: 4800 },
+  ],
+  operatorNames: ['에스더블유엠', '카카오모빌리티'],
+  reservation: { mode: 'realtime_call', appName: 'Kakao T' },
+  app: { appName: 'Kakao T', purposes: ['request', 'payment'] },
+  source: {
+    publisher: '서울특별시',
+    url: 'https://news.seoul.go.kr/traffic/archives/516542',
+    publishedAt: '2026-03-16',
+    effectiveAt: '2026-04-06',
+  },
+};
+
+// 미확인 상태 디자인 확인용
+const dummyRobotaxiPending: RobotaxiListItem = {
+  ...dummyRobotaxi,
+  id: 'preview-pending',
   verificationLevel: 'official_pending',
-  kakaoMapVerified: false,
-  sourceUrls: [],
-  sourceNote: '',
-  disclaimer: '',
+  fareBands: null,
+  operatorNames: [],
+  reservation: null,
+  app: null,
+  source: null,
 };
 
 export default function DesignPreview() {
@@ -178,6 +203,7 @@ export default function DesignPreview() {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>RobotaxiCard</h2>
         <RobotaxiCard service={dummyRobotaxi} />
+        <RobotaxiCard service={dummyRobotaxiPending} />
       </section>
     </main>
   );

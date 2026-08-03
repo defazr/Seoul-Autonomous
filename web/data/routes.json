@@ -35,10 +35,34 @@
       "lastBus": "03:30",
       "headway": "Unknown",
       "daysOfOperation": "weekday",
-      "fare": "Unknown",
-      "operator": "Unknown",
-      "reservationRequired": "Unknown",
-      "appRequired": "Unknown",
+      "fare": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "reverification_required",
+        "reason": "conflicting_sources",
+        "sources": []
+      },
+      "operator": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "reservationRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "appRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
       "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
@@ -672,10 +696,46 @@
       "lastBus": "03:30",
       "headway": "Unknown",
       "daysOfOperation": "Unknown",
-      "fare": "Unknown",
-      "operator": "Unknown",
-      "reservationRequired": "Unknown",
-      "appRequired": "Unknown",
+      "fare": {
+        "value": {
+          "kind": "temporary_free",
+          "cardTagRequired": true,
+          "condition": "until_service_stabilizes"
+        },
+        "verificationGrade": "official_confirmed",
+        "currentState": "confirmed",
+        "reason": null,
+        "sources": [
+          {
+            "title": "새벽동행 자율주행버스 'A741' 첫 시동…새벽 출근길 더 빨라진다",
+            "publisher": "서울특별시",
+            "url": "https://www.seoul.go.kr/news/news_report.do?nttNo=455157",
+            "publishedAt": "2026-03-29",
+            "effectiveAt": "2026-03-30"
+          }
+        ]
+      },
+      "operator": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "reservationRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "appRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
       "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
@@ -938,10 +998,64 @@
       "lastBus": "03:30",
       "headway": "Unknown",
       "daysOfOperation": "Unknown",
-      "fare": "Unknown",
-      "operator": "Unknown",
-      "reservationRequired": "Unknown",
-      "appRequired": "Unknown",
+      "fare": {
+        "value": {
+          "kind": "temporary_free",
+          "cardTagRequired": true,
+          "condition": "until_service_stabilizes"
+        },
+        "verificationGrade": "official_confirmed",
+        "currentState": "confirmed",
+        "reason": null,
+        "sources": [
+          {
+            "title": "(석간) 3만명 탄 '새벽동행 자율주행버스' 확대…16일(목)부터 'A148' 달린다",
+            "publisher": "서울특별시",
+            "url": "https://www.seoul.go.kr/news/news_report.do?nttNo=456237",
+            "publishedAt": "2026-04-15",
+            "effectiveAt": "2026-04-16"
+          }
+        ]
+      },
+      "operator": {
+        "value": {
+          "entities": [
+            {
+              "name": "㈜에스유엠",
+              "roles": [
+                "transport_operator",
+                "vehicle_operator"
+              ]
+            }
+          ]
+        },
+        "verificationGrade": "official_confirmed",
+        "currentState": "confirmed",
+        "reason": null,
+        "sources": [
+          {
+            "title": "(석간) 3만명 탄 '새벽동행 자율주행버스' 확대…16일(목)부터 'A148' 달린다",
+            "publisher": "서울특별시",
+            "url": "https://www.seoul.go.kr/news/news_report.do?nttNo=456237",
+            "publishedAt": "2026-04-15",
+            "effectiveAt": "2026-04-16"
+          }
+        ]
+      },
+      "reservationRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "appRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
       "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
@@ -1253,10 +1367,34 @@
       "lastBus": "03:40",
       "headway": "140 min",
       "daysOfOperation": "weekday",
-      "fare": "Unknown",
-      "operator": "Unknown",
-      "reservationRequired": "Unknown",
-      "appRequired": "Unknown",
+      "fare": {
+        "value": null,
+        "verificationGrade": "media_reference",
+        "currentState": "unverified",
+        "reason": "secondary_only",
+        "sources": []
+      },
+      "operator": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "historical_only",
+        "sources": []
+      },
+      "reservationRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "appRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
       "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
@@ -1561,10 +1699,34 @@
       "lastBus": "16:00",
       "headway": "30 min",
       "daysOfOperation": "Unknown",
-      "fare": "Unknown",
-      "operator": "Unknown",
-      "reservationRequired": "Unknown",
-      "appRequired": "Unknown",
+      "fare": {
+        "value": null,
+        "verificationGrade": "media_reference",
+        "currentState": "reverification_required",
+        "reason": "transition_due",
+        "sources": []
+      },
+      "operator": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "reservationRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "appRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
       "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
@@ -1673,10 +1835,34 @@
       "lastBus": "13:50",
       "headway": "25 min",
       "daysOfOperation": "weekday",
-      "fare": "Unknown",
-      "operator": "Unknown",
-      "reservationRequired": "Unknown",
-      "appRequired": "Unknown",
+      "fare": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "reverification_required",
+        "reason": "transition_due",
+        "sources": []
+      },
+      "operator": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "reservationRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "appRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
       "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
@@ -1778,10 +1964,34 @@
       "lastBus": "16:15",
       "headway": "75 min",
       "daysOfOperation": "Unknown",
-      "fare": "Unknown",
-      "operator": "Unknown",
-      "reservationRequired": "Unknown",
-      "appRequired": "Unknown",
+      "fare": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "reverification_required",
+        "reason": "transition_due",
+        "sources": []
+      },
+      "operator": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "reservationRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "appRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
       "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
@@ -1967,10 +2177,34 @@
       "lastBus": "16:35",
       "headway": "25 min",
       "daysOfOperation": "Unknown",
-      "fare": "Unknown",
-      "operator": "Unknown",
-      "reservationRequired": "Unknown",
-      "appRequired": "Unknown",
+      "fare": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "reverification_required",
+        "reason": "transition_due",
+        "sources": []
+      },
+      "operator": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "reservationRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "appRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
       "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
@@ -2093,10 +2327,34 @@
       "lastBus": "17:00",
       "headway": "60 min",
       "daysOfOperation": "Unknown",
-      "fare": "Unknown",
-      "operator": "Unknown",
-      "reservationRequired": "Unknown",
-      "appRequired": "Unknown",
+      "fare": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "historical_only",
+        "sources": []
+      },
+      "operator": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "historical_only",
+        "sources": []
+      },
+      "reservationRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "appRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "historical_only",
+        "sources": []
+      },
       "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
@@ -2177,10 +2435,34 @@
       "lastBus": "17:00",
       "headway": "15 min",
       "daysOfOperation": "weekday",
-      "fare": "Unknown",
-      "operator": "Unknown",
-      "reservationRequired": "Unknown",
-      "appRequired": "Unknown",
+      "fare": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "historical_only",
+        "sources": []
+      },
+      "operator": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "reservationRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "historical_only",
+        "sources": []
+      },
+      "appRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "historical_only",
+        "sources": []
+      },
       "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
@@ -2240,10 +2522,34 @@
       "lastBus": "03:30",
       "headway": "Unknown",
       "daysOfOperation": "Unknown",
-      "fare": "Unknown",
-      "operator": "Unknown",
-      "reservationRequired": "Unknown",
-      "appRequired": "Unknown",
+      "fare": {
+        "value": null,
+        "verificationGrade": "media_reference",
+        "currentState": "unverified",
+        "reason": "secondary_only",
+        "sources": []
+      },
+      "operator": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "reservationRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
+      "appRequired": {
+        "value": null,
+        "verificationGrade": "unverified",
+        "currentState": "unverified",
+        "reason": "no_current_source",
+        "sources": []
+      },
       "lastChecked": "2026-05-01",
       "verifiedBy": "manual",
       "verificationLevel": "kakao_seoul_verified",
@@ -2488,20 +2794,133 @@
       "displayNameKo": "강남 로보택시",
       "serviceArea": "Gangnam-gu, Seocho-gu (Late-night)",
       "serviceAreaKo": "강남구, 서초구 (심야)",
-      "appRequired": true,
+      "appRequired": {
+        "value": {
+          "required": true,
+          "appName": "Kakao T",
+          "purposes": [
+            "request",
+            "payment"
+          ]
+        },
+        "verificationGrade": "official_confirmed",
+        "currentState": "confirmed",
+        "reason": null,
+        "sources": [
+          {
+            "title": "'강남 심야 자율주행 택시' 4월부터 유료 전환 … 운행대수도 확대",
+            "publisher": "서울특별시",
+            "url": "https://news.seoul.go.kr/traffic/archives/516542",
+            "publishedAt": "2026-03-16",
+            "effectiveAt": "2026-04-06"
+          }
+        ]
+      },
       "appName": "Kakao T",
       "operatingHours": "Unknown",
       "operatingDays": "Unknown",
-      "fare": "Unknown",
-      "operator": "Unknown",
+      "fare": {
+        "value": {
+          "kind": "time_bands",
+          "currency": "KRW",
+          "distanceAndDurationIndependent": true,
+          "paymentCardRegistrationRequired": true,
+          "bands": [
+            {
+              "start": "22:00",
+              "end": "23:00",
+              "amount": 5800
+            },
+            {
+              "start": "23:00",
+              "end": "02:00",
+              "amount": 6700
+            },
+            {
+              "start": "02:00",
+              "end": "04:00",
+              "amount": 5800
+            },
+            {
+              "start": "04:00",
+              "end": "05:00",
+              "amount": 4800
+            }
+          ]
+        },
+        "verificationGrade": "official_confirmed",
+        "currentState": "confirmed",
+        "reason": null,
+        "sources": [
+          {
+            "title": "'강남 심야 자율주행 택시' 4월부터 유료 전환 … 운행대수도 확대",
+            "publisher": "서울특별시",
+            "url": "https://news.seoul.go.kr/traffic/archives/516542",
+            "publishedAt": "2026-03-16",
+            "effectiveAt": "2026-04-06"
+          }
+        ]
+      },
+      "operator": {
+        "value": {
+          "entities": [
+            {
+              "name": "에스더블유엠",
+              "roles": [
+                "transport_operator"
+              ]
+            },
+            {
+              "name": "카카오모빌리티",
+              "roles": [
+                "transport_operator",
+                "platform_provider"
+              ]
+            }
+          ]
+        },
+        "verificationGrade": "official_confirmed",
+        "currentState": "confirmed",
+        "reason": null,
+        "sources": [
+          {
+            "title": "'강남 심야 자율주행 택시' 4월부터 유료 전환 … 운행대수도 확대",
+            "publisher": "서울특별시",
+            "url": "https://news.seoul.go.kr/traffic/archives/516542",
+            "publishedAt": "2026-03-16",
+            "effectiveAt": "2026-04-06"
+          }
+        ]
+      },
       "officialServiceUrl": "Unknown",
       "lastChecked": "2026-04-29",
       "verifiedBy": "manual",
-      "verificationLevel": "official_pending",
+      "verificationLevel": "official_confirmed",
       "kakaoMapVerified": false,
-      "sourceUrls": [],
+      "sourceUrls": [
+        "https://news.seoul.go.kr/traffic/archives/516542"
+      ],
       "sourceNote": "On-demand service. Detail page generation deferred until official_confirmed.",
-      "disclaimer": "Service details require additional official verification. Please confirm in Kakao T before riding."
+      "disclaimer": "Service details require additional official verification. Please confirm in Kakao T before riding.",
+      "reservationRequired": {
+        "value": {
+          "required": false,
+          "mode": "realtime_call",
+          "appName": "Kakao T"
+        },
+        "verificationGrade": "official_confirmed",
+        "currentState": "confirmed",
+        "reason": null,
+        "sources": [
+          {
+            "title": "'강남 심야 자율주행 택시' 4월부터 유료 전환 … 운행대수도 확대",
+            "publisher": "서울특별시",
+            "url": "https://news.seoul.go.kr/traffic/archives/516542",
+            "publishedAt": "2026-03-16",
+            "effectiveAt": "2026-04-06"
+          }
+        ]
+      }
     }
   ],
   "_pendingRoutes": [

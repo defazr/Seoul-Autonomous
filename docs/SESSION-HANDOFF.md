@@ -1,35 +1,56 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-08-03 (Round 26 코드 전 라운드 완료 / 통합 오디트 PASS / 사용자 로컬 승인)
+> 마지막 업데이트: 2026-08-03 (Round 26 Production 배포 완료 / DEPLOY PASS / 라이브 QA PASS)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고 시작한다.
 
 ## 현재 위치
 
-**Round 26 코드 작업이 전부 끝났다.** 26-B/B.1, C1E, C2E, C1O, C2O, C3까지 완료했고 로컬에 5커밋이 쌓였다(HEAD `1682447`). 배포 전 통합 기술 오디트가 PASS, Codex 통합 감사가 P0/P1/P2 전부 clean, 사용자 로컬 전체 화면 검수도 2026-08-03 승인 완료다.
+**Round 26 `ba058ee`는 Vultr Production에 배포 완료됐고 라이브 QA도 PASS했다. 코드 구현·재오디트·재배포하지 않는다. 먼저 실제 Git 좌표와 배포 결과 문서를 확인하고, 남은 docs-only push 여부만 판단한다.**
 
-**남은 것은 push 승인과 deploy 승인 두 게이트뿐이다.** 라이브는 `ef0274a` 그대로다.
+26-B/B.1, C1E, C2E, C1O, C2O, C3 전부 완료·커밋됐고 통합 기술 오디트 PASS, Codex 통합 감사 P0/P1/P2 clean, 사용자 로컬 검수 승인, GitHub push, Vultr Production 배포까지 끝났다.
 
-## 다음 세션 첫 작업 — **push 승인 판정**
+```
+Production runtime   ba058ee
+배포 판정            DEPLOY PASS  (2026-08-03)
+실측 중단            3초
+rollback             미실행
+backup·rollback 자산   보존 (삭제·prune 금지)
+Caddy·다른 사이트     변경 0
+남은 코드·배포 작업    0
+```
 
-실제 Git 좌표와 `docs/handoff/HANDOFF-20260803.md`, `docs/worklogs/AUDIT-ROUND26-PREDEPLOY-20260803.md`를 확인한다. push 전 read-only 안전 점검은 2026-08-03에 이미 완료했고 **push와 라이브 배포가 분리돼 있음을 확인했다**(webhook·CI·Vercel 연동 전무, Vultr 수동 Docker 배포).
+## 다음 세션 첫 작업 — **docs-only push 여부 판단**
 
-사용자 승인으로 `git push origin main`을 실행한 뒤, 라이브가 기존 `ef0274a`로 유지되는지 확인한다. 서버 배포는 별도 지시서와 별도 승인이 필요하며 **SSH 접속도 승인 전에는 하지 않는다.**
+남은 것은 배포 결과 문서를 원격에 올리는 push 하나뿐이다. 서버·Docker·Caddy는 더 건드리지 않는다.
 
-코드는 다시 만들거나 다시 검증하지 않는다. C1O 재조사, C2O 재설계, C3 재작성 모두 금지다. 이미 끝났고 동일 HEAD에서 통합 오디트와 사용자 검수를 통과했다.
+코드는 다시 만들거나 다시 검증하지 않는다. C1O 재조사, C2O 재설계, C3 재작성, 재배포 모두 금지다. 이미 끝났고 동일 SHA에서 통합 오디트·사용자 검수·라이브 QA를 통과했다.
 
 ## 좌표
 
 ```
-local HEAD : 1682447  (26-C3)
-             7364d42  (26-C2O)
-             b36ed11  (26-C2E)
-             c6d7290  (26-C1E)
-             a5307b3  (26-B/B.1)
-origin/main: 6ce1c70   ← 미푸시 5건
-live       : ef0274a / 이미지 6d878d66110e / 롤백태그 rollback-1e4b013
-push       : 0
-deploy     : 0
+runtime code SHA    ba058ee                  ← 실행 중인 애플리케이션 코드
+server checkout     ba058ee
+origin/main         ba058ee
+live image revision ba058ee                  ← OCI label로 직접 증명 가능
+live image ID       sha256:f2674161ee68...
+previous runtime    ef0274a (이미지 6d878d66110e) ← 역사 기준점
 ```
+
+**docs-only 커밋이 쌓이면 Git HEAD는 `ba058ee`보다 새로워진다. 그래도 실행 중인 애플리케이션 코드는 계속 `ba058ee`다.** 라이브 판정은 컨테이너 라벨로 한다.
+
+```bash
+docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' seoul_autonomous_web
+```
+
+보존 자산 — **삭제·prune 금지**
+
+```
+backup container   seoul_autonomous_web_backup_ef0274a_20260803-183544
+rollback image     seoul-autonomous-web:rollback-ef0274a → sha256:6d878d66110e...
+new immutable      seoul-autonomous-web:ba058ee        → sha256:f2674161ee68...
+latest             seoul-autonomous-web:latest         → sha256:f2674161ee68...
+```
+
 작업 트리 비접촉 대상: 미추적 보존 2건(`round19-final-이식지시서.md`, `route/`) · 기존 미추적 문서 5건 · `.env.local`
 
 ## 완료 요약
@@ -69,25 +90,38 @@ deploy     : 0
   - hreflang 없는 5페이지는 ko 전용 의도 설계로 회귀 아님(origin 소스 대조 확인)
   - **사용자 로컬 전체 화면 검수 승인 완료 (2026-08-03)**
 
+## 배포 결과 (2026-08-03)
+
+정본: `docs/worklogs/PREFLIGHT-VULTR-DEPLOY-20260803.md` **§M**
+
+```
+판정              DEPLOY PASS
+서버 Git          ef0274a → ba058ee (--ff-only)
+새 이미지          sha256:f2674161ee68... / OCI revision ba058ee
+실측 중단          3초 (T0=기존 컨테이너 중지 직전 → T1=Caddy 내부 /ko 최초 200)
+rollback          미실행
+Caddy             수정·reload·restart 0
+다른 8개 컨테이너    재시작 0 (StartedAt 2026-07-20 유지)
+6개 도메인         기준선 동일 (200/307/301/200/200/200)
+sitemap           53/53 = 200, 중복 0, 5xx 0
+404 매트릭스       4/4
+구버전 Last stop:   0
+Round 26 표식      C2E·C2O·C3 전부 PASS
+```
+
+배포는 선점검 §I 초기 초안이 아니라 후속 승인된 **안전 계약**으로 실행했다 — 실제 image ID 기반 rollback 태그 → immutable SHA 빌드(`latest` 미이동) → candidate 선검증 → 기존 컨테이너 rename 보존 → 전체 QA PASS 후 `latest` 이동.
+
 ## 남은 로드맵
 
-현재 HEAD와 origin/main을 다시 확인한 뒤 사용자 승인으로 `git push origin main`을 실행한다. **Push는 라이브 배포를 유발하지 않는다.** Push 완료 후 라이브가 기존 버전으로 유지되는지 확인하고, 별도 서버 배포 지시서와 사용자 승인을 받은 뒤 Vultr 서버의 Docker 배포를 수행한다.
-
 ```
-docs-only 커밋
-→ push 전 read-only 안전 확인
+배포 결과 문서 docs-only 커밋
 → 사용자 push 승인
-→ git push origin main
-→ origin/main 갱신 확인 · 라이브 ef0274a 유지 확인
-→ 서버 배포 전 read-only 선점검
-→ 사용자 deploy 승인
-→ Vultr SSH → rollback 태그 박제 → git pull --ff-only → docker build → 새 컨테이너 기동
-→ Caddy 헬스체크 (6개 도메인)
-→ 라이브 53 URL·핵심 화면·5xx QA
-→ 이상 시 즉시 rollback
-→ 최종 문서 마감
-→ (별도) 색인 갱신 확인 후 AdSense 재신청 판단
+→ docs-only push
+→ Round 26 종료
+→ (2~3주 후) Search Console 색인 갱신 확인 → AdSense 재신청 판단
 ```
+
+서버·Docker·Caddy 추가 변경 없음. rollback 자산 정리도 별도 승인 전에는 하지 않는다.
 
 ### push와 deploy는 실제로 분리된다
 
@@ -136,11 +170,12 @@ C2E disclosure 임계값 5·미리보기 3, 보조줄 C안 유지
 ## 새 세션 시작 시
 
 1. [ ] 이 문서
-2. [ ] `docs/handoff/HANDOFF-20260803.md` (Round 26 전 라운드 상세·잠금 계약·교훈)
-3. [ ] `docs/worklogs/AUDIT-ROUND26-PREDEPLOY-20260803.md` (통합 오디트 정본 A~N)
-4. [ ] `docs/worklogs/ROUND-26C1O-OFFICIAL-RESEARCH-20260803.md` (C1O 조사 정본 — **재조사 금지**)
-5. [ ] MEMORY.md
-6. [ ] 기준점 확인(`1682447` / origin `6ce1c70` / live `ef0274a` / ahead 5) 후 **push 전 read-only 안전 확인** — 단 포그린이 다른 지시를 주면 그것이 우선. **Round 26 코드는 전부 완료됐으므로 재구현·재조사·재검증 금지**
+2. [ ] `docs/handoff/HANDOFF-20260803.md` (Round 26 전 라운드 상세·잠금 계약·교훈·배포 결과)
+3. [ ] `docs/worklogs/PREFLIGHT-VULTR-DEPLOY-20260803.md` **§M** (배포 실행 결과 정본 — 게이트별 실측·보존 자산)
+4. [ ] `docs/worklogs/AUDIT-ROUND26-PREDEPLOY-20260803.md` (통합 오디트 정본 A~N)
+5. [ ] `docs/worklogs/ROUND-26C1O-OFFICIAL-RESEARCH-20260803.md` (C1O 조사 정본 — **재조사 금지**)
+6. [ ] MEMORY.md
+7. [ ] 기준점 확인 — **runtime = server = origin/main = `ba058ee`, 라이브 이미지 `f2674161ee68`**. Round 26 코드·배포는 전부 끝났다. **재구현·재조사·재오디트·재배포 전부 금지.** 남은 것은 배포 결과 문서의 docs-only push 1건뿐이며, 그것도 포그린 승인이 필요하다. 단 포그린이 다른 지시를 주면 그것이 우선
 
 ## 핸드오프 운영 규칙
 

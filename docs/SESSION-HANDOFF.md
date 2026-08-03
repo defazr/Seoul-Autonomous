@@ -1,42 +1,44 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-08-03 (Round 26 Production 배포 완료 / DEPLOY PASS / 라이브 QA PASS)
+> 마지막 업데이트: 2026-08-03 (Round 27 CLOSED / Production DEPLOY PASS)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고 시작한다.
 
 ## 현재 위치
 
-**Round 26 `ba058ee`는 Vultr Production에 배포 완료됐고 라이브 QA도 PASS했다. 코드 구현·재오디트·재배포하지 않는다. 먼저 실제 Git 좌표와 배포 결과 문서를 확인하고, 남은 docs-only push 여부만 판단한다.**
+**Round 27 CLOSED — Production DEPLOY PASS.** `/ko/night-bus-map` 노선도에 **PC 더블클릭 전체화면 진입**과 **스마트폰 한 손가락 더블탭 전체화면 진입**이 라이브 완료됐다. **기존 "크게 보기" 버튼은 유지**되며, 세 진입 경로가 같은 전체화면을 연다. Round 26(콘텐츠·운영정보)도 그 전에 완료·배포·문서화까지 닫혀 있다.
 
-26-B/B.1, C1E, C2E, C1O, C2O, C3 전부 완료·커밋됐고 통합 기술 오디트 PASS, Codex 통합 감사 P0/P1/P2 clean, 사용자 로컬 검수 승인, GitHub push, Vultr Production 배포까지 끝났다.
+**Round 27 재구현·재감사·재배포 금지.** 실행 중인 애플리케이션과 Git 좌표가 모두 `abb0ba7`로 일치한다.
 
 ```
-Production runtime   ba058ee
-배포 판정            DEPLOY PASS  (2026-08-03)
-실측 중단            3초
-rollback             미실행
-backup·rollback 자산   보존 (삭제·prune 금지)
-Caddy·다른 사이트     변경 0
-남은 코드·배포 작업    0
+Round 27 배포 판정      DEPLOY PASS  (2026-08-03)
+자동 기술 QA           PASS (라이브 32/32 · sitemap 53/53 · 404 4/4)
+iPhone Safari 라이브    포그린 직접 승인
+실측 중단              2초
+rollback               미실행
+Caddy 변경             0
+다른 8개 컨테이너       재시작 0
+삭제·prune             0
 ```
 
-## 다음 세션 첫 작업 — **docs-only push 여부 판단**
+## 다음 세션 첫 작업 — **Round 27 docs-only push 여부 판단**
 
-남은 것은 배포 결과 문서를 원격에 올리는 push 하나뿐이다. 서버·Docker·Caddy는 더 건드리지 않는다.
-
-코드는 다시 만들거나 다시 검증하지 않는다. C1O 재조사, C2O 재설계, C3 재작성, 재배포 모두 금지다. 이미 끝났고 동일 SHA에서 통합 오디트·사용자 검수·라이브 QA를 통과했다.
+남은 Round 27 작업은 **배포 결과 docs-only push 1건**뿐이며, 그것도 **사용자 별도 승인**이 필요하다. push와 deploy는 계속 분리다. 서버·Docker·Caddy는 더 건드리지 않고, rollback 자산 정리도 별도 승인 전 금지다.
 
 ## 좌표
 
 ```
-runtime code SHA    ba058ee                  ← 실행 중인 애플리케이션 코드
-server checkout     ba058ee
-origin/main         ba058ee
-live image revision ba058ee                  ← OCI label로 직접 증명 가능
-live image ID       sha256:f2674161ee68...
-previous runtime    ef0274a (이미지 6d878d66110e) ← 역사 기준점
+local HEAD          abb0ba7                  (docs 커밋이 쌓이면 이보다 새로워질 수 있음)
+origin/main         abb0ba7
+server checkout     abb0ba7
+runtime revision    abb0ba7                  ← OCI label로 직접 증명
+live image ID       sha256:23bfedc2ba78fe511b6909dfecfd3663bc0b3e05601ef82aa0f49cd47bfe1ee3
+immutable image     seoul-autonomous-web:abb0ba7
+latest              동일 image ID (iPhone 라이브 승인 후 이동)
+RestartCount        0
+previous runtime    ba058ee (이미지 f2674161ee68) ← 역사 기준점
 ```
 
-**docs-only 커밋이 쌓이면 Git HEAD는 `ba058ee`보다 새로워진다. 그래도 실행 중인 애플리케이션 코드는 계속 `ba058ee`다.** 라이브 판정은 컨테이너 라벨로 한다.
+**docs-only 커밋이 쌓이면 Git HEAD는 `abb0ba7`보다 새로워진다. 그래도 실행 중인 애플리케이션 코드는 계속 `abb0ba7`다.** 라이브 판정은 컨테이너 라벨로 한다.
 
 ```bash
 docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' seoul_autonomous_web
@@ -45,10 +47,10 @@ docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revisi
 보존 자산 — **삭제·prune 금지**
 
 ```
-backup container   seoul_autonomous_web_backup_ef0274a_20260803-183544
-rollback image     seoul-autonomous-web:rollback-ef0274a → sha256:6d878d66110e...
-new immutable      seoul-autonomous-web:ba058ee        → sha256:f2674161ee68...
-latest             seoul-autonomous-web:latest         → sha256:f2674161ee68...
+R27 backup    seoul_autonomous_web_backup_ba058ee_20260803-210527  (exited)
+R27 rollback  seoul-autonomous-web:rollback-ba058ee → sha256:f2674161ee68c058cbe6fc8a464fc1778d5cd756ab7cb30ba46cccf816f5162f
+R26 backup    seoul_autonomous_web_backup_ef0274a_20260803-183544  (exited)
+R26 rollback  seoul-autonomous-web:rollback-ef0274a → sha256:6d878d66110ec6444f27447f04e054d922b45b6b3d63883b204c26d4d26a2406
 ```
 
 작업 트리 비접촉 대상: 미추적 보존 2건(`round19-final-이식지시서.md`, `route/`) · 기존 미추적 문서 5건 · `.env.local`
@@ -90,35 +92,33 @@ latest             seoul-autonomous-web:latest         → sha256:f2674161ee68..
   - hreflang 없는 5페이지는 ko 전용 의도 설계로 회귀 아님(origin 소스 대조 확인)
   - **사용자 로컬 전체 화면 검수 승인 완료 (2026-08-03)**
 
-## 배포 결과 (2026-08-03)
+## Round 27 배포 결과 (2026-08-03)
 
-정본: `docs/worklogs/PREFLIGHT-VULTR-DEPLOY-20260803.md` **§M**
+정본: `docs/worklogs/ROUND-27-NIGHT-BUS-MAP-FULLSCREEN-20260803.md` / 상세 핸드오프: `docs/handoff/HANDOFF-20260803_2.md`
 
 ```
 판정              DEPLOY PASS
-서버 Git          ef0274a → ba058ee (--ff-only)
-새 이미지          sha256:f2674161ee68... / OCI revision ba058ee
-실측 중단          3초 (T0=기존 컨테이너 중지 직전 → T1=Caddy 내부 /ko 최초 200)
+서버 Git          ba058ee → abb0ba7 (--ff-only)
+새 이미지          sha256:23bfedc2ba78fe51... / OCI revision abb0ba7
+실측 중단          2초 (T0=기존 컨테이너 중지 직전 → T1=Caddy 내부 /ko 최초 200)
 rollback          미실행
 Caddy             수정·reload·restart 0
 다른 8개 컨테이너    재시작 0 (StartedAt 2026-07-20 유지)
 6개 도메인         기준선 동일 (200/307/301/200/200/200)
 sitemap           53/53 = 200, 중복 0, 5xx 0
 404 매트릭스       4/4
-구버전 Last stop:   0
-Round 26 표식      C2E·C2O·C3 전부 PASS
+Round 27 기능      라이브 32/32 PASS (데스크톱·390·844·/en 무영향)
 ```
 
-배포는 선점검 §I 초기 초안이 아니라 후속 승인된 **안전 계약**으로 실행했다 — 실제 image ID 기반 rollback 태그 → immutable SHA 빌드(`latest` 미이동) → candidate 선검증 → 기존 컨테이너 rename 보존 → 전체 QA PASS 후 `latest` 이동.
+Round 26 안전 계약 그대로 + **이번 라운드 추가 게이트**: `latest` 이동을 자동 QA 통과 후가 아니라 **포그린 iPhone Safari 라이브 승인 뒤로** 미뤘다(승인 전 실패 시 latest는 애초에 무변경). 검증 체인: 빈 컨텍스트 대체 독립 감사 AUDIT PASS(P0/P1/신규P2 0) → 로컬 iPhone 실기기 승인 → 커밋·push → 선점검 → 배포 → 자동 라이브 QA → **라이브 iPhone 승인** → latest 이동.
 
 ## 남은 로드맵
 
 ```
-배포 결과 문서 docs-only 커밋
-→ 사용자 push 승인
-→ docs-only push
-→ Round 26 종료
-→ (2~3주 후) Search Console 색인 갱신 확인 → AdSense 재신청 판단
+Round 27 배포 결과 docs-only 커밋 (이 커밋)
+→ 사용자 push 승인 → docs-only push → Round 27 완전 종료
+→ (2~3주 후, 배포일 2026-08-03 기준) Search Console 색인 갱신 확인 → AdSense 재신청 판단
+→ 후속 후보 3건은 별도 라운드: ① fs 확대 시 전체보기/✕ 버튼 겹침 ② 초기화 viewBox 드리프트 ③ 데스크톱 전체화면 더블클릭 종료 토글
 ```
 
 서버·Docker·Caddy 추가 변경 없음. rollback 자산 정리도 별도 승인 전에는 하지 않는다.
@@ -148,6 +148,13 @@ FAQ q4 는 C2O 상태 모델 기반 조건부
 C2E disclosure 임계값 5·미리보기 3, 보조줄 C안 유지
 비교 표현은 전 노선 데이터 대조 후에만
 콘텐츠에 근거 없는 편의·성능 평가 금지
+--- Round 27 추가 ---
+더블클릭·더블탭은 전체화면 진입만 담당 (종료 제스처는 사양에 없음)
+기존 크게 보기 버튼 유지
+/ko/night-bus-map 만 인터랙티브 대상, /en 은 텍스트 가이드 유지
+CSS 오버레이 구조 유지, Fullscreen API 추가 금지
+인라인 핀치·팬 유지, 전체화면 내부 더블탭 확대 유지
+전역 viewport·touch-action 정책 변경 금지
 ```
 
 ## 협업 규칙 (필수)
@@ -170,12 +177,12 @@ C2E disclosure 임계값 5·미리보기 3, 보조줄 C안 유지
 ## 새 세션 시작 시
 
 1. [ ] 이 문서
-2. [ ] `docs/handoff/HANDOFF-20260803.md` (Round 26 전 라운드 상세·잠금 계약·교훈·배포 결과)
-3. [ ] `docs/worklogs/PREFLIGHT-VULTR-DEPLOY-20260803.md` **§M** (배포 실행 결과 정본 — 게이트별 실측·보존 자산)
-4. [ ] `docs/worklogs/AUDIT-ROUND26-PREDEPLOY-20260803.md` (통합 오디트 정본 A~N)
-5. [ ] `docs/worklogs/ROUND-26C1O-OFFICIAL-RESEARCH-20260803.md` (C1O 조사 정본 — **재조사 금지**)
+2. [ ] `docs/handoff/HANDOFF-20260803_2.md` (Round 27 상세 — 구현 계약·검증 체인·배포 좌표)
+3. [ ] `docs/worklogs/ROUND-27-NIGHT-BUS-MAP-FULLSCREEN-20260803.md` (Round 27 정본 A~R)
+4. [ ] `docs/handoff/HANDOFF-20260803.md` (Round 26 정본 — 소급 수정 금지)
+5. [ ] `docs/worklogs/PREFLIGHT-VULTR-DEPLOY-20260803.md` §M (Round 26 배포 결과)
 6. [ ] MEMORY.md
-7. [ ] 기준점 확인 — **runtime = server = origin/main = `ba058ee`, 라이브 이미지 `f2674161ee68`**. Round 26 코드·배포는 전부 끝났다. **재구현·재조사·재오디트·재배포 전부 금지.** 남은 것은 배포 결과 문서의 docs-only push 1건뿐이며, 그것도 포그린 승인이 필요하다. 단 포그린이 다른 지시를 주면 그것이 우선
+7. [ ] 기준점 확인 — **runtime = server = origin/main = `abb0ba7`, 라이브 이미지 `23bfedc2ba78`**. Round 26·27 코드·배포는 전부 끝났다. **재구현·재조사·재감사·재배포 전부 금지.** 남은 것은 Round 27 docs-only push 1건뿐이며, 그것도 포그린 승인이 필요하다. 단 포그린이 다른 지시를 주면 그것이 우선
 
 ## 핸드오프 운영 규칙
 

@@ -121,13 +121,23 @@
     },
     "disclaimer": "Information based on Kakao Map. Please confirm before riding.",
     "context": {
-      "title": "About this route"
+      "title": "About this route",
+      "patternTitle": "How the route runs",
+      "factsTitle": "Route at a glance",
+      "firstStop": "First stop",
+      "turnaround": "Turnaround",
+      "lastStop": "Final stop",
+      "serviceHours": "Service hours",
+      "keyStopsTitle": "Key stops",
+      "useCaseTitle": "When to use it"
     },
     "footer": "Last verified {date}. Information is verified manually and may not reflect real-time changes.",
     "aeo": {
       "sectionTitle": "Common questions about this route",
       "q1": "Where do I board this route?",
-      "a1": "Board at {firstStop}. Last stop: {lastStop}.",
+      "a1SameStop": "Board at {first}. The route turns around at {turnaround} and returns to the same stop.",
+      "a1SameNameReturn": "Board at {first}. The route turns around at {turnaround} and returns to {last}.",
+      "a1DistinctTerminal": "Board at {first}. The turnaround stop is {turnaround}, and the final stop is {last}.",
       "q2": "When does this route operate?",
       "a2": "Service runs from {firstBus} to {lastBus}.",
       "a2Single": "The checked departure time is {firstBus}. Check the latest service information before travel.",

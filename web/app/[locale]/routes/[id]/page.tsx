@@ -4,6 +4,7 @@ import { getVerifiedRoutes, getRouteById } from '../../../../lib/routes';
 import { routeContextKo } from '../../../../data/route-context/route-context.ko';
 import { routeContextEn } from '../../../../data/route-context/route-context.en';
 import type { VerifiedRouteId } from '../../../../lib/types/route-context';
+import type { Stop } from '../../../../lib/types/route';
 import { routing } from '../../../../i18n/routing';
 import { StopsList } from '../../../../components/route-detail/StopsList';
 import { getOfficialStopNameEn } from '../../../../lib/stops';
@@ -151,6 +152,59 @@ export default async function RouteDetailPage({
     throw new Error(`Missing route context for route id: ${route.id}`);
   }
 
+  // 26-C3: 노선 사실은 stop 배열에서만 파생한다. startPoint/endPoint 는 쓰지 않는다.
+  // 26-C3.1: 계약 위반은 조건 없이 즉시 실패시킨다 (빈 답변을 조용히 렌더하지 않는다).
+  if (stops.length === 0) {
+    throw new Error(`Route ${route.id} has no stops`);
+  }
+  const turnaroundStops = stops.filter((stop) => stop.isTurnaround === true);
+  if (turnaroundStops.length !== 1) {
+    throw new Error(
+      `Route ${route.id} must have exactly one turnaround stop, found ${turnaroundStops.length}`,
+    );
+  }
+  const firstStop = stops[0];
+  const turnaroundStop = turnaroundStops[0];
+  const lastStop = stops[stops.length - 1];
+
+  /** FAQ·주요 정류장·노선 사실이 공유하는 단일 표시명 resolver */
+  const resolveStopName = (stop: Stop) =>
+    isKo ? stop.nameKo : (getOfficialStopNameEn(stop.stopId) ?? stop.nameKo);
+
+  const contextStops = context.keyStopIds.map((stopId) => {
+    const stop = stops.find((item) => item.stopId === stopId);
+    if (!stop) {
+      throw new Error(`Route context stop ${stopId} is not part of ${route.id}`);
+    }
+    return { stopId, name: resolveStopName(stop) };
+  });
+
+  // 26-C3: FAQ q1 은 노선 id 가 아니라 stop 배열 구조로만 분기한다.
+  const routeShape: 'sameStop' | 'sameNameReturn' | 'distinctTerminal' =
+    firstStop.stopId === lastStop.stopId
+      ? 'sameStop'
+      : firstStop.nameKo === lastStop.nameKo
+        ? 'sameNameReturn'
+        : 'distinctTerminal';
+
+  const boardingAnswer =
+    routeShape === 'sameStop'
+      ? t('routeDetail.aeo.a1SameStop', {
+          first: resolveStopName(firstStop),
+          turnaround: resolveStopName(turnaroundStop),
+        })
+      : routeShape === 'sameNameReturn'
+        ? t('routeDetail.aeo.a1SameNameReturn', {
+            first: resolveStopName(firstStop),
+            turnaround: resolveStopName(turnaroundStop),
+            last: resolveStopName(lastStop),
+          })
+        : t('routeDetail.aeo.a1DistinctTerminal', {
+            first: resolveStopName(firstStop),
+            turnaround: resolveStopName(turnaroundStop),
+            last: resolveStopName(lastStop),
+          });
+
   // 26-C2E: 표시명 해결은 서버에서 끝낸다 (SSOT 는 client bundle 로 나가지 않는다).
   // 보조줄 노출 여부는 StopsList 가 렌더 문맥(미리보기/전체)에 따라 결정한다.
   // 26-C2E.1: 영문 표시명의 유일한 출처는 공식 SSOT 다. 미스는 한국어명으로만 대체한다
@@ -267,6 +321,60 @@ export default async function RouteDetailPage({
       >
         <h2 id="route-context-title">{t('routeDetail.context.title')}</h2>
         <p className={styles.contextBody}>{context.overview}</p>
+
+        <h3 className={styles.contextSubTitle}>
+          {t('routeDetail.context.patternTitle')}
+        </h3>
+        <p className={styles.contextBody}>{context.routePattern}</p>
+
+        <h3 className={styles.contextSubTitle}>
+          {t('routeDetail.context.factsTitle')}
+        </h3>
+        <dl className={styles.factList}>
+          <div className={styles.factRow}>
+            <dt className={styles.factLabel}>
+              {t('routeDetail.context.firstStop')}
+            </dt>
+            <dd className={styles.factValue}>{resolveStopName(firstStop)}</dd>
+          </div>
+          <div className={styles.factRow}>
+            <dt className={styles.factLabel}>
+              {t('routeDetail.context.turnaround')}
+            </dt>
+            <dd className={styles.factValue}>
+              {resolveStopName(turnaroundStop)}
+            </dd>
+          </div>
+          <div className={styles.factRow}>
+            <dt className={styles.factLabel}>
+              {t('routeDetail.context.lastStop')}
+            </dt>
+            <dd className={styles.factValue}>{resolveStopName(lastStop)}</dd>
+          </div>
+          <div className={styles.factRow}>
+            <dt className={styles.factLabel}>
+              {t('routeDetail.context.serviceHours')}
+            </dt>
+            <dd className={styles.factValue}>
+              {formatHours(route.firstBus, route.lastBus)}
+            </dd>
+          </div>
+        </dl>
+
+        <h3 className={styles.contextSubTitle}>
+          {t('routeDetail.context.keyStopsTitle')}
+        </h3>
+        <ul className={styles.keyStopList}>
+          {contextStops.map((s) => (
+            <li key={s.stopId} className={styles.keyStopItem}>
+              {s.name}
+            </li>
+          ))}
+        </ul>
+
+        <h3 className={styles.contextSubTitle}>
+          {t('routeDetail.context.useCaseTitle')}
+        </h3>
         <p className={styles.contextBody}>{context.useCase}</p>
       </section>
 
@@ -377,12 +485,7 @@ export default async function RouteDetailPage({
         <dl className={styles.aeoList}>
           <div className={styles.aeoItem}>
             <dt className={styles.aeoQ}>{t('routeDetail.aeo.q1')}</dt>
-            <dd className={styles.aeoA}>
-              {t('routeDetail.aeo.a1', {
-                firstStop: isKo ? (stops[0]?.nameKo || route.startPointKo) : route.startPoint,
-                lastStop: isKo ? (stops[stops.length - 1]?.nameKo || route.endPointKo) : route.endPoint,
-              })}
-            </dd>
+            <dd className={styles.aeoA}>{boardingAnswer}</dd>
           </div>
           <div className={styles.aeoItem}>
             <dt className={styles.aeoQ}>{t('routeDetail.aeo.q2')}</dt>

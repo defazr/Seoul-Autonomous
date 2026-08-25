@@ -1,40 +1,45 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-08-25 2회차 (Phase 1A Graph Core CLOSED·push 완료 / A21 UX 선점검 대기)
+> 마지막 업데이트: 2026-08-25 3회차 (Phase 1B A21 slice **PRODUCTION LIVE**·CLOSED / 다음 라운드 선택 대기)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고 시작한다.
 
 ## 현재 위치
 
-**CTG 전환 진행 중 — Phase 0 감사와 Phase 1A Graph Core가 모두 CLOSED.** AdSense 3차 거절
-("가치가 별로 없는 콘텐츠") 확인 후 Phase 0 구조 감사(EXIT 0)로 전환을 확정했고, 같은 날
-Phase 1A로 **Route → StopVisit → Stop 3층 그래프 엔진을 구현·검증·push까지 완료**했다.
+**CTG 전환 — Phase 0·1A·1B 전부 CLOSED, 1B는 Production LIVE.** AdSense 3차 거절
+("가치가 별로 없는 콘텐츠") 확인 후 같은 날: Phase 0 구조 감사(EXIT 0) → Phase 1A
+그래프 엔진(`891fc02`) → **Phase 1B A21 vertical slice(`2d380c9`)를 구현·배포까지 완료**.
+A21 상세에서 Route → Stop → 다른 Route 실링크 탐색이 라이브로 작동한다(신규 URL 0).
 Round 26·27은 CLOSED 유지(재작업 금지).
 
 ```
 Phase 0 감사          APPROVED / CLOSED   (2026-08-25)
-Phase 1A Graph Core   APPROVED / CLOSED   (2026-08-25, commit 891fc02 push 완료)
-  신규 2파일           web/lib/graph/graph-core.mjs · web/scripts/validate-graph.mjs
-  검증                validator 21항 전항 PASS · Codex 재감사 P0/P1/P2 0/0/0
-  기존 코드 수정       0 / 신규 dependency 0 / 신규 URL·UI 0 / Production 변화 0
+Phase 1A Graph Core   APPROVED / CLOSED   (891fc02 — 3층 엔진 + validator 21항)
+Phase 1B A21 slice    APPROVED / PRODUCTION LIVE / CLOSED   (2d380c9)
+  UX                  요약 1줄 + shared 17행 칩(2노선 12+3노선 5 · 새벽A160 17·새벽A741 5),
+                      비공유 23행 무변화 · A21 게이트 격리 · "환승" 단정 0 · out/inbound 노출 0
+  배포                abb0ba7 → 2d380c9(fd10551bb9c6) · 중단 실측 0.9초 · latest 동일 이동
+                      신규 URL 0 · sitemap 53 유지 · Live QA 전항 PASS
+  승인                사용자 로컬 + 라이브 육안 승인 (2026-08-25)
 web Graph SSOT        web/data/routes.json
 전략                  STATIC-FIRST / NO EXTERNAL STATE NEEDED
 엔터티                Route → StopVisit → Stop (267 ARS = 원자, 177 그룹 = 보조 후보)
 금지                  267 Stop 전량 페이지 생성 / AdSense 재신청(당분간) / 신규 dependency
 ```
 
-정본: Phase 0 `docs/worklogs/PHASE0-CTG-STRUCTURE-AUDIT-20260825.md` /
-Phase 1A `docs/worklogs/PHASE1A-GRAPH-CORE-20260825.md`
-핸드오프: `docs/handoff/HANDOFF-20260825.md`(1회차) · `HANDOFF-20260825_2.md`(2회차)
+정본: Phase 0 `PHASE0-CTG-STRUCTURE-AUDIT-20260825.md` / Phase 1A `PHASE1A-GRAPH-CORE-20260825.md` /
+**Phase 1B `PHASE1B-A21-VERTICAL-SLICE-20260825.md`** (전부 docs/worklogs/)
+핸드오프: `HANDOFF-20260825.md` · `_2.md` · **`_3.md`** (docs/handoff/)
 
 ## 다음 세션 첫 작업
 
-1. **Phase 1A 종료 docs-only 커밋(정본 3건)의 커밋·push 승인 확인** — 각각 별도 승인.
-2. push 완료 후: **A21 vertical slice READ-ONLY UX 선점검** — GPT 지시서 대기. 목표는
-   기존 A21 노선 상세 위에서 "Route → Stop → 같은 Stop을 지나는 다른 Route" 탐색이
-   사용자에게 의미 있게 작동하는 UX 증명. 관례대로 선보고 → 최종 지시서 → 구현.
-   **"Phase 1B = Stop 페이지 생성"으로 선확정 금지** — 선점검 결과를 보고 결정.
-3. Robotaxi Freshness Round(8/19 공식 반영)는 **취소 아님** — A21 UX 선점검 이후
-   별도 라운드로 순서 조정됨(2026-08-25 확정). 두 코드 작업 동시 실행 금지 원칙 유지.
+1. **Phase 1B 종료 docs-only 커밋(정본 3건: 이 파일·PHASE1B worklog·HANDOFF _3)의
+   커밋·push 승인 확인** — 각각 별도 승인.
+2. push 완료 후: **다음 큰 기능 라운드 선택 (포그린·GPT 결정 대기 — 단독 확정 금지).**
+   후보(우선순위 미확정): shared-stop UX 확대(A21 게이트 해제 → 4노선 양방향) /
+   Robotaxi Freshness(8/19 공식 출처 확보 완료) / Stop URL 정책·품질 게이트 /
+   Night Bus Map ↔ CTG 매핑 / static "지금 운행 중" decision / N버스 통합(대형 조사 선행).
+3. 어떤 라운드든 관례 유지: read-only 선점검 → 선보고 → 최종 지시서 → 구현+QA →
+   승인 → commit → push → (배포 라운드면) deploy 게이트 분리.
 
 ## 확정 설계 (Phase 0, 포그린 검수 — 깨면 안 됨)
 
@@ -70,11 +75,13 @@ stopId 반복 2건에서 prev/next 정확 / loop 오분류 0 / shared-stop이 St
 ## 좌표
 
 ```
-local HEAD          891fc02 + 2026-08-25 2회차 docs-only 커밋 (커밋·push는 승인 후)
-origin/main         891fc02  (Phase 1A Graph Core까지 push 완료)
-server checkout     abb0ba7
-runtime revision    abb0ba7                  ← OCI label로 직접 증명 가능
-live image ID       sha256:23bfedc2ba78fe511b6909dfecfd3663bc0b3e05601ef82aa0f49cd47bfe1ee3
+local HEAD          2d380c9 + 2026-08-25 3회차 docs-only 커밋 (커밋·push는 승인 후)
+origin/main         2d380c9  (Phase 1B까지 push 완료)
+server checkout     2d380c9
+runtime revision    2d380c9                  ← OCI label로 직접 증명 가능 (full SHA)
+live image ID       sha256:fd10551bb9c6b26cc5645997793d974c9b3291175558739c167ac8c26c092576
+latest              동일 (fd10551bb9c6 — 사용자 라이브 승인 후 이동 완료)
+previous runtime    abb0ba7 (이미지 23bfedc2ba78) ← rollback 기준점
 ```
 
 **Git HEAD ≠ runtime은 docs-only 커밋 때문 — 정상.** 라이브 판정은 컨테이너 라벨로:
@@ -86,6 +93,8 @@ docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revisi
 보존 자산 — **삭제·prune 금지**
 
 ```
+1B backup     seoul_autonomous_web_backup_abb0ba7_20260825-204839  (exited)
+1B rollback   seoul-autonomous-web:rollback-abb0ba7 → sha256:23bfedc2ba78…
 R27 backup    seoul_autonomous_web_backup_ba058ee_20260803-210527  (exited)
 R27 rollback  seoul-autonomous-web:rollback-ba058ee → sha256:f2674161ee68…
 R26 backup    seoul_autonomous_web_backup_ef0274a_20260803-183544  (exited)
@@ -135,6 +144,10 @@ web/data/routes.json 원본 무수정 (파생 레이어만) / 루트 routes.json
 267 Stop 전량 페이지 생성 금지 / 노선 선 기하·night-bus-data.ts 수정 금지 유지
 Graph 계산은 web/lib/graph/graph-core.mjs 단일 source (validator·앱 공용, 생성 JSON 커밋 금지)
 Graph 변경 시 node scripts/validate-graph.mjs 21항 PASS 필수 / lint baseline 5err·27warn 고정(신규 회귀 0 기준)
+--- Phase 1B ---
+shared-stop UI 는 현재 A21 게이트(route.id === 'simya-a21') — 해제는 별도 승인 라운드
+"환승" 계열 단정 표현 금지 ("이 정류장을 지나는 다른 노선"까지만) / outbound·inbound·loop 사용자 노출 금지
+칩 텍스트는 SSOT displayName/displayNameKo 원문만 (임의 교정·창작 금지) / 행 비인터랙티브 유지(칩 <a>만)
 ```
 
 ## 협업 규칙 (필수)
@@ -165,7 +178,10 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 - 서버에 untracked `Dockerfile` — `git pull --ff-only`만 / 배포 전 `rollback-<해시>` 태그 /
   Caddy는 validate→reload만, docker restart 금지
 - 배포 안전 계약: rollback 태그 → immutable SHA 태그 단독 빌드(+revision 라벨) →
-  candidate 선검증 → 기존 컨테이너 rename 보존 → 전체 QA PASS 후에만 `latest` 이동
+  candidate 선검증 → 기존 컨테이너 rename 보존 → **라이브 QA + 사용자 승인 후에만 `latest` 이동**
+  (R27·Phase 1B에서 확정된 순서)
+- ⚠ candidate·본 컨테이너 공히 **`--hostname 0.0.0.0` 필수** — 누락 시 Next standalone이
+  컨테이너 해시 hostname에 bind되어 내부 검증 fetch 실패 (2026-08-25 실사고 1회)
 - 배포 시 수 초 502 불가피(실측 2~3초). 같은 Caddy가 6도메인·9컨테이너 담당 → 비접촉
 - **Vercel 미사용.** main push는 라이브 무영향 — push와 deploy는 각각 별도 승인
 - 로컬 최종 판정은 `node .next/standalone/server.js` (static·public 복사, 좀비 포트 확인)
@@ -175,14 +191,14 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 ## 새 세션 시작 시
 
 1. [ ] 이 문서
-2. [ ] `docs/worklogs/PHASE1A-GRAPH-CORE-20260825.md` (Phase 1A 정본 — 최신)
-3. [ ] `docs/handoff/HANDOFF-20260825_2.md`
-4. [ ] `docs/worklogs/PHASE0-CTG-STRUCTURE-AUDIT-20260825.md` (Phase 0 정본)
-5. [ ] `docs/handoff/HANDOFF-20260825.md` (1회차)
+2. [ ] `docs/worklogs/PHASE1B-A21-VERTICAL-SLICE-20260825.md` (Phase 1B 정본 — 최신)
+3. [ ] `docs/handoff/HANDOFF-20260825_3.md`
+4. [ ] `docs/worklogs/PHASE1A-GRAPH-CORE-20260825.md` · `PHASE0-CTG-STRUCTURE-AUDIT-20260825.md`
+5. [ ] `docs/handoff/HANDOFF-20260825_2.md` · `HANDOFF-20260825.md`
 6. [ ] MEMORY.md
-7. [ ] 기준점 확인 — runtime = `abb0ba7`, origin = `891fc02`(+2회차 docs 커밋 여부 확인).
-   Round 26·27·Phase 0·Phase 1A 재작업 금지. **다음 작업 = A21 UX read-only 선점검.**
-   단 포그린이 다른 지시를 주면 그것이 우선
+7. [ ] 기준점 확인 — **runtime = server = origin = `2d380c9`, 라이브 이미지 `fd10551bb9c6`,
+   latest 동일**(+3회차 docs 커밋 여부 확인). Round 26·27·Phase 0·1A·1B 재작업 금지.
+   **다음 작업 = 다음 기능 라운드 선택(포그린·GPT).** 단 포그린이 다른 지시를 주면 그것이 우선
 
 ## 핸드오프 운영 규칙
 

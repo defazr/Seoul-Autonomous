@@ -15,7 +15,13 @@ import { SiteFooter } from '../../../../components/common/SiteFooter';
 import { PageContainer } from '../../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
 import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import routesData from '../../../../data/routes.json';
+import { buildGraph } from '../../../../lib/graph/graph-core.mjs';
 import styles from './page.module.css';
+
+// Phase 1B: shared-stop 관계는 Graph Core 파생으로만 계산한다 (routes.json 무수정).
+// 모듈 로드 시 1회 파생하며, 입력 구조 위반은 GraphInputError 로 즉시 실패한다.
+const transitGraph = buildGraph(routesData);
 
 export function generateStaticParams() {
   const routes = getVerifiedRoutes();
@@ -205,16 +211,63 @@ export default async function RouteDetailPage({
             last: resolveStopName(lastStop),
           });
 
+  // Phase 1B vertical slice: shared-stop UI 는 A21 에만 노출한다
+  // (아래 심야버스 CTA 와 동일 수준의 route.id 게이트 — 전 노선 확대는 별도 승인 단계).
+  const showSharedStops = route.id === 'simya-a21';
+  // stopId → 이 정류장을 지나는 다른 fixed route. Stop 층 routeIds(Set) 기준이라
+  // 같은 노선의 반복 occurrence 가 노선 수를 부풀리지 않는다.
+  const otherRoutesByStopId = new Map<string, { routeId: string; name: string }[]>();
+  if (showSharedStops) {
+    const graphRoute = transitGraph.routes.find((r) => r.routeId === route.id);
+    for (const visit of graphRoute?.visits ?? []) {
+      if (otherRoutesByStopId.has(visit.stopId)) continue;
+      const stopNode = transitGraph.stopsById.get(visit.stopId);
+      const otherIds = [...(stopNode?.routeIds ?? [])].filter((rid) => rid !== route.id);
+      if (otherIds.length === 0) continue;
+      otherRoutesByStopId.set(
+        visit.stopId,
+        otherIds.map((rid) => {
+          const other = getRouteById(rid);
+          return {
+            routeId: rid,
+            name: other ? (isKo ? other.displayNameKo : other.displayName) : rid,
+          };
+        }),
+      );
+    }
+  }
+  // 요약 1줄: 닫힌 <details> 미리보기 3곳(첫·반환점·마지막)이 전부 비공유일 수 있어
+  // 기능 발견성은 이 줄이 담당한다. 수치·노선 목록 전부 Graph 계산에서 파생 (하드코딩 금지).
+  const connectedRoutes: { routeId: string; name: string }[] = [];
+  for (const list of otherRoutesByStopId.values()) {
+    for (const other of list) {
+      if (!connectedRoutes.some((c) => c.routeId === other.routeId)) {
+        connectedRoutes.push(other);
+      }
+    }
+  }
+  const sharedSummary =
+    showSharedStops && otherRoutesByStopId.size > 0
+      ? {
+          text: t('routeDetail.stops.sharedStopsSummary', {
+            count: otherRoutesByStopId.size,
+          }),
+          routes: connectedRoutes,
+        }
+      : undefined;
+
   // 26-C2E: 표시명 해결은 서버에서 끝낸다 (SSOT 는 client bundle 로 나가지 않는다).
   // 보조줄 노출 여부는 StopsList 가 렌더 문맥(미리보기/전체)에 따라 결정한다.
   // 26-C2E.1: 영문 표시명의 유일한 출처는 공식 SSOT 다. 미스는 한국어명으로만 대체한다
   // (routes.json 의 legacy nameEn 은 표시 경로에서 사용하지 않는다).
   const displayStops = stops.map((stop) => {
+    const otherRoutes = otherRoutesByStopId.get(stop.stopId);
     if (isKo) {
       return {
         seq: stop.seq,
         displayName: stop.nameKo,
         isTurnaround: stop.isTurnaround,
+        ...(otherRoutes ? { otherRoutes } : {}),
       };
     }
     const officialNameEn = getOfficialStopNameEn(stop.stopId);
@@ -223,6 +276,7 @@ export default async function RouteDetailPage({
       displayName: officialNameEn ?? stop.nameKo,
       secondaryName: officialNameEn ? stop.nameKo : undefined,
       isTurnaround: stop.isTurnaround,
+      ...(otherRoutes ? { otherRoutes } : {}),
     };
   });
 
@@ -393,6 +447,12 @@ export default async function RouteDetailPage({
                     count: stops.length,
                   })}
                   collapseLabel={t('routeDetail.collapseStops')}
+                  {...(sharedSummary
+                    ? {
+                        sharedSummary,
+                        otherRoutesLabel: t('routeDetail.stops.otherRoutes'),
+                      }
+                    : {})}
                 />
             </div>
           )}

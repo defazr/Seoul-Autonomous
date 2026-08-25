@@ -103,6 +103,10 @@
     "expandStops": "Show all {count} stops",
     "collapseStops": "Show key stops only",
     "stopsSection": "Stops",
+    "stops": {
+      "otherRoutes": "Other routes serving this stop",
+      "sharedStopsSummary": "{count} stops are also served by other routes"
+    },
     "info": {
       "hours": "Hours",
       "days": "Days",

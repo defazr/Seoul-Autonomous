@@ -101,6 +101,10 @@
     "expandStops": "전체 {count}개 정류장 보기",
     "collapseStops": "주요 정류장만 보기",
     "stopsSection": "정류장",
+    "stops": {
+      "otherRoutes": "이 정류장을 지나는 다른 노선",
+      "sharedStopsSummary": "다른 노선과 함께 지나는 정류장 {count}곳"
+    },
     "info": {
       "hours": "운행 시간",
       "days": "운행일",

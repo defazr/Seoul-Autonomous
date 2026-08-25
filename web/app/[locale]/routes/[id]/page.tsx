@@ -211,30 +211,28 @@ export default async function RouteDetailPage({
             last: resolveStopName(lastStop),
           });
 
-  // Phase 1B vertical slice: shared-stop UI 는 A21 에만 노출한다
-  // (아래 심야버스 CTA 와 동일 수준의 route.id 게이트 — 전 노선 확대는 별도 승인 단계).
-  const showSharedStops = route.id === 'simya-a21';
+  // Phase 1C: shared-stop UI 는 Graph relation 이 있는 노선에서만 자연 노출된다.
+  // (Phase 1B 의 A21 전용 게이트는 전 노선 확대로 제거 — shared 가 없는 노선은
+  //  아래 맵이 비어 요약·행 UI 가 자동 미생성된다. whitelist 없음.)
   // stopId → 이 정류장을 지나는 다른 fixed route. Stop 층 routeIds(Set) 기준이라
   // 같은 노선의 반복 occurrence 가 노선 수를 부풀리지 않는다.
   const otherRoutesByStopId = new Map<string, { routeId: string; name: string }[]>();
-  if (showSharedStops) {
-    const graphRoute = transitGraph.routes.find((r) => r.routeId === route.id);
-    for (const visit of graphRoute?.visits ?? []) {
-      if (otherRoutesByStopId.has(visit.stopId)) continue;
-      const stopNode = transitGraph.stopsById.get(visit.stopId);
-      const otherIds = [...(stopNode?.routeIds ?? [])].filter((rid) => rid !== route.id);
-      if (otherIds.length === 0) continue;
-      otherRoutesByStopId.set(
-        visit.stopId,
-        otherIds.map((rid) => {
-          const other = getRouteById(rid);
-          return {
-            routeId: rid,
-            name: other ? (isKo ? other.displayNameKo : other.displayName) : rid,
-          };
-        }),
-      );
-    }
+  const graphRoute = transitGraph.routes.find((r) => r.routeId === route.id);
+  for (const visit of graphRoute?.visits ?? []) {
+    if (otherRoutesByStopId.has(visit.stopId)) continue;
+    const stopNode = transitGraph.stopsById.get(visit.stopId);
+    const otherIds = [...(stopNode?.routeIds ?? [])].filter((rid) => rid !== route.id);
+    if (otherIds.length === 0) continue;
+    otherRoutesByStopId.set(
+      visit.stopId,
+      otherIds.map((rid) => {
+        const other = getRouteById(rid);
+        return {
+          routeId: rid,
+          name: other ? (isKo ? other.displayNameKo : other.displayName) : rid,
+        };
+      }),
+    );
   }
   // 요약 1줄: 닫힌 <details> 미리보기 3곳(첫·반환점·마지막)이 전부 비공유일 수 있어
   // 기능 발견성은 이 줄이 담당한다. 수치·노선 목록 전부 Graph 계산에서 파생 (하드코딩 금지).
@@ -247,7 +245,7 @@ export default async function RouteDetailPage({
     }
   }
   const sharedSummary =
-    showSharedStops && otherRoutesByStopId.size > 0
+    otherRoutesByStopId.size > 0
       ? {
           text: t('routeDetail.stops.sharedStopsSummary', {
             count: otherRoutesByStopId.size,

@@ -1,38 +1,40 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-08-25 (AdSense 3차 거절 / Phase 0 CTG 구조 감사 APPROVED / Phase 1A 대기)
+> 마지막 업데이트: 2026-08-25 2회차 (Phase 1A Graph Core CLOSED·push 완료 / A21 UX 선점검 대기)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고 시작한다.
 
 ## 현재 위치
 
-**AdSense 3차 거절 확인 → Connected Transit Graph(CTG) 전환 확정.** 2026-08-11 3차 신청이
-"가치가 별로 없는 콘텐츠"로 거절됐고(포그린이 AdSense 화면에서 직접 확인), 심사 대기 잠금은
-종료됐다. 2026-08-25 Phase 0 read-only 구조 감사가 **EXIT 0 / BLOCK 없음**으로 완료·검수됐고,
-사이트를 "노선→정류장→환승→시간→요금→공식 근거"가 연결되는 서비스로 전환하는 Phase 1이
-확정됐다. Round 26·27은 CLOSED 유지(재작업 금지).
+**CTG 전환 진행 중 — Phase 0 감사와 Phase 1A Graph Core가 모두 CLOSED.** AdSense 3차 거절
+("가치가 별로 없는 콘텐츠") 확인 후 Phase 0 구조 감사(EXIT 0)로 전환을 확정했고, 같은 날
+Phase 1A로 **Route → StopVisit → Stop 3층 그래프 엔진을 구현·검증·push까지 완료**했다.
+Round 26·27은 CLOSED 유지(재작업 금지).
 
 ```
 Phase 0 감사          APPROVED / CLOSED   (2026-08-25)
+Phase 1A Graph Core   APPROVED / CLOSED   (2026-08-25, commit 891fc02 push 완료)
+  신규 2파일           web/lib/graph/graph-core.mjs · web/scripts/validate-graph.mjs
+  검증                validator 21항 전항 PASS · Codex 재감사 P0/P1/P2 0/0/0
+  기존 코드 수정       0 / 신규 dependency 0 / 신규 URL·UI 0 / Production 변화 0
 web Graph SSOT        web/data/routes.json
 전략                  STATIC-FIRST / NO EXTERNAL STATE NEEDED
 엔터티                Route → StopVisit → Stop (267 ARS = 원자, 177 그룹 = 보조 후보)
 금지                  267 Stop 전량 페이지 생성 / AdSense 재신청(당분간) / 신규 dependency
 ```
 
-정본: `docs/worklogs/PHASE0-CTG-STRUCTURE-AUDIT-20260825.md` (실측 수치·QA 매트릭스 포함)
-핸드오프: `docs/handoff/HANDOFF-20260825.md`
+정본: Phase 0 `docs/worklogs/PHASE0-CTG-STRUCTURE-AUDIT-20260825.md` /
+Phase 1A `docs/worklogs/PHASE1A-GRAPH-CORE-20260825.md`
+핸드오프: `docs/handoff/HANDOFF-20260825.md`(1회차) · `HANDOFF-20260825_2.md`(2회차)
 
 ## 다음 세션 첫 작업
 
-1. **docs push 승인 여부 확인** — 2026-08-25 docs-only 커밋(정본 3건)은 로컬에만 있다.
-   push는 포그린 승인 후에만.
-2. push 완료 후: **Phase 1A Graph Core** — 포그린의 read-only 선보고 지시서를 받고,
-   선보고 12항목(타입 구조 / consumer / stopId 반복 2건 / 순환형 2개 / isTurnaround /
-   getOfficialStopNameEn consumer / 테스트 러너 유무 / TS 실행 방법 / graph 모듈 위치 /
-   lint·typecheck·build baseline / 예상 변경 파일 / validation command) 보고 →
-   최종 지시서 → 구현+로컬 QA → 승인. **선보고 승인 전 코드 수정 금지.**
-3. Phase 1A 승인 후: 별도 Robotaxi Freshness Round(8/19 공식 반영) → Phase 1B A21 slice UX.
-   **두 코드 작업 동시 실행 금지** (1A의 입력 routes.json이 도중에 바뀌면 안 됨).
+1. **Phase 1A 종료 docs-only 커밋(정본 3건)의 커밋·push 승인 확인** — 각각 별도 승인.
+2. push 완료 후: **A21 vertical slice READ-ONLY UX 선점검** — GPT 지시서 대기. 목표는
+   기존 A21 노선 상세 위에서 "Route → Stop → 같은 Stop을 지나는 다른 Route" 탐색이
+   사용자에게 의미 있게 작동하는 UX 증명. 관례대로 선보고 → 최종 지시서 → 구현.
+   **"Phase 1B = Stop 페이지 생성"으로 선확정 금지** — 선점검 결과를 보고 결정.
+3. Robotaxi Freshness Round(8/19 공식 반영)는 **취소 아님** — A21 UX 선점검 이후
+   별도 라운드로 순서 조정됨(2026-08-25 확정). 두 코드 작업 동시 실행 금지 원칙 유지.
 
 ## 확정 설계 (Phase 0, 포그린 검수 — 깨면 안 됨)
 
@@ -58,8 +60,9 @@ N버스                별도 대형 공식 조사 라운드로 이월 (최종 �
                      있는 한·영 심야 이동 서비스." — 기능 채택 기준. URL 수·SEO 점수 아님
 ```
 
-**Phase 1A 수치 QA 매트릭스** (SSOT 계산 결과가 재현해야 함, 하드코딩 PASS 금지):
-Route 11 / ARS Stop 267 / StopVisit 307 / 다노선 33(2노선 28+3노선 5) / 방향쌍 90(전부
+**Phase 1A 수치 QA 매트릭스** — 구현·재현 완료: `cd web && node scripts/validate-graph.mjs`
+가 21항 전항을 자동 대조한다(불일치 시 exit 1, 하드코딩 PASS 불가 구조). 기준값:
+Route 11(roundTrip 9 + loop 2) / ARS Stop 267 / StopVisit 307 / 다노선 33(2노선 28+3노선 5) / 방향쌍 90(전부
 같은 노선 왕복) / null 0 / 충돌 0 / 공식EN 261+fallback 6 / 노선당 반환점 1 / 노선 내
 stopId 반복 2건에서 prev/next 정확 / loop 오분류 0 / shared-stop이 StopVisit 중복으로
 부풀지 않음. 의미가 다르면 숫자 맞추지 말고 BLOCK.
@@ -67,8 +70,8 @@ stopId 반복 2건에서 prev/next 정확 / loop 오분류 0 / shared-stop이 St
 ## 좌표
 
 ```
-local HEAD          4fdfc93 + 2026-08-25 docs-only 커밋 (push 미실행 — 승인 대기)
-origin/main         4fdfc93
+local HEAD          891fc02 + 2026-08-25 2회차 docs-only 커밋 (커밋·push는 승인 후)
+origin/main         891fc02  (Phase 1A Graph Core까지 push 완료)
 server checkout     abb0ba7
 runtime revision    abb0ba7                  ← OCI label로 직접 증명 가능
 live image ID       sha256:23bfedc2ba78fe511b6909dfecfd3663bc0b3e05601ef82aa0f49cd47bfe1ee3
@@ -130,6 +133,8 @@ robots.txt 에 Disallow 추가 금지
 --- CTG (2026-08-25) ---
 web/data/routes.json 원본 무수정 (파생 레이어만) / 루트 routes.json 비접촉
 267 Stop 전량 페이지 생성 금지 / 노선 선 기하·night-bus-data.ts 수정 금지 유지
+Graph 계산은 web/lib/graph/graph-core.mjs 단일 source (validator·앱 공용, 생성 JSON 커밋 금지)
+Graph 변경 시 node scripts/validate-graph.mjs 21항 PASS 필수 / lint baseline 5err·27warn 고정(신규 회귀 0 기준)
 ```
 
 ## 협업 규칙 (필수)
@@ -170,12 +175,13 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 ## 새 세션 시작 시
 
 1. [ ] 이 문서
-2. [ ] `docs/worklogs/PHASE0-CTG-STRUCTURE-AUDIT-20260825.md` (Phase 0 정본 — 최신)
-3. [ ] `docs/handoff/HANDOFF-20260825.md`
-4. [ ] `docs/handoff/HANDOFF-20260811.md` (3차 신청 경위)
-5. [ ] MEMORY.md
-6. [ ] 기준점 확인 — runtime = `abb0ba7`, origin = `4fdfc93`(+로컬 docs 커밋, push 승인 대기).
-   Round 26·27 재작업 금지. **다음 작업 = docs push 승인 → Phase 1A 선보고.**
+2. [ ] `docs/worklogs/PHASE1A-GRAPH-CORE-20260825.md` (Phase 1A 정본 — 최신)
+3. [ ] `docs/handoff/HANDOFF-20260825_2.md`
+4. [ ] `docs/worklogs/PHASE0-CTG-STRUCTURE-AUDIT-20260825.md` (Phase 0 정본)
+5. [ ] `docs/handoff/HANDOFF-20260825.md` (1회차)
+6. [ ] MEMORY.md
+7. [ ] 기준점 확인 — runtime = `abb0ba7`, origin = `891fc02`(+2회차 docs 커밋 여부 확인).
+   Round 26·27·Phase 0·Phase 1A 재작업 금지. **다음 작업 = A21 UX read-only 선점검.**
    단 포그린이 다른 지시를 주면 그것이 우선
 
 ## 핸드오프 운영 규칙

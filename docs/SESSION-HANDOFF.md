@@ -1,6 +1,6 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-08-25 3회차 (Phase 1B A21 slice **PRODUCTION LIVE**·CLOSED / 다음 라운드 선택 대기)
+> 마지막 업데이트: 2026-08-25 4회차 (Phase 1C 전 노선 확대 **PRODUCTION LIVE**·CLOSED + audit KEEP / 다음 = Robotaxi Freshness)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고 시작한다.
 
 ## 현재 위치
@@ -15,10 +15,13 @@ Round 26·27은 CLOSED 유지(재작업 금지).
 Phase 0 감사          APPROVED / CLOSED   (2026-08-25)
 Phase 1A Graph Core   APPROVED / CLOSED   (891fc02 — 3층 엔진 + validator 21항)
 Phase 1B A21 slice    APPROVED / PRODUCTION LIVE / CLOSED   (2d380c9)
-  UX                  요약 1줄 + shared 17행 칩(2노선 12+3노선 5 · 새벽A160 17·새벽A741 5),
-                      비공유 23행 무변화 · A21 게이트 격리 · "환승" 단정 0 · out/inbound 노출 0
-  배포                abb0ba7 → 2d380c9(fd10551bb9c6) · 중단 실측 0.9초 · latest 동일 이동
-                      신규 URL 0 · sitemap 53 유지 · Live QA 전항 PASS
+Phase 1C 전 노선 확대   APPROVED / PRODUCTION LIVE / CLOSED   (f693e01, page.tsx 1파일)
+  범위                A21 게이트 정리형 제거 → 실관계 4노선 자동·양방향
+                      A160 33/87(A148 16·A21 17·A741 5) · A148 16/41 · A741 5/34 · A21 17 불변
+                      A148↔A741·A21 = 0 · 무관계 7노선 UI 0 · 신규 URL 0 · sitemap 53
+  배포                2d380c9 → f693e01(443ef5711270) · 중단 0.9초 · latest 동일 정렬
+  audit               post-expansion KEEP + BACKLOG (필수 0·권장 0·low-value 감소 판정)
+  백로그(후보만)        EN 라벨 반복 축약 · summary "일부 정류장" 명확화 · 칩 tap 44px
   승인                사용자 로컬 + 라이브 육안 승인 (2026-08-25)
 web Graph SSOT        web/data/routes.json
 전략                  STATIC-FIRST / NO EXTERNAL STATE NEEDED
@@ -26,20 +29,22 @@ web Graph SSOT        web/data/routes.json
 금지                  267 Stop 전량 페이지 생성 / AdSense 재신청(당분간) / 신규 dependency
 ```
 
-정본: Phase 0 `PHASE0-CTG-STRUCTURE-AUDIT-20260825.md` / Phase 1A `PHASE1A-GRAPH-CORE-20260825.md` /
-**Phase 1B `PHASE1B-A21-VERTICAL-SLICE-20260825.md`** (전부 docs/worklogs/)
-핸드오프: `HANDOFF-20260825.md` · `_2.md` · **`_3.md`** (docs/handoff/)
+정본: Phase 0 `PHASE0-CTG-STRUCTURE-AUDIT…` / 1A `PHASE1A-GRAPH-CORE…` / 1B `PHASE1B-A21-VERTICAL-SLICE…` /
+**1C `PHASE1C-SHARED-STOP-EXPANSION-20260825.md`** (전부 docs/worklogs/)
+핸드오프: `HANDOFF-20260825.md` · `_2` · `_3` · **`_4`** (docs/handoff/)
 
 ## 다음 세션 첫 작업
 
-1. **Phase 1B 종료 docs-only 커밋(정본 3건: 이 파일·PHASE1B worklog·HANDOFF _3)의
+1. **Phase 1C 종료 docs-only 커밋(정본 3건: 이 파일·PHASE1C worklog·HANDOFF _4)의
    커밋·push 승인 확인** — 각각 별도 승인.
-2. push 완료 후: **다음 큰 기능 라운드 선택 (포그린·GPT 결정 대기 — 단독 확정 금지).**
-   후보(우선순위 미확정): shared-stop UX 확대(A21 게이트 해제 → 4노선 양방향) /
-   Robotaxi Freshness(8/19 공식 출처 확보 완료) / Stop URL 정책·품질 게이트 /
-   Night Bus Map ↔ CTG 매핑 / static "지금 운행 중" decision / N버스 통합(대형 조사 선행).
+2. push 완료 후 (포그린 확정 순서): **① Robotaxi Freshness** — 독립 소형 라운드
+   (8/19 공식 출처 확보 완료: seoul.go.kr nttNo=464205 · mediahub 2019107. 범위 후보:
+   operatingHours 승격·serviceArea 20.4㎢·출처 추가·19대 update 기사) →
+   **② Stop URL 정책 READ-ONLY audit** → 이후 후보: 지도↔CTG · static decision
+   (C1O 재조사 선행: days 7/11·headway 4/11 미확인) · N버스 통합.
 3. 어떤 라운드든 관례 유지: read-only 선점검 → 선보고 → 최종 지시서 → 구현+QA →
-   승인 → commit → push → (배포 라운드면) deploy 게이트 분리.
+   승인 → commit → push → (배포 라운드면) deploy 게이트 분리. 1C 백로그 3건은
+   결함 아님 — 별도 승인 없이 착수 금지.
 
 ## 확정 설계 (Phase 0, 포그린 검수 — 깨면 안 됨)
 
@@ -75,13 +80,13 @@ stopId 반복 2건에서 prev/next 정확 / loop 오분류 0 / shared-stop이 St
 ## 좌표
 
 ```
-local HEAD          2d380c9 + 2026-08-25 3회차 docs-only 커밋 (커밋·push는 승인 후)
-origin/main         2d380c9  (Phase 1B까지 push 완료)
-server checkout     2d380c9
-runtime revision    2d380c9                  ← OCI label로 직접 증명 가능 (full SHA)
-live image ID       sha256:fd10551bb9c6b26cc5645997793d974c9b3291175558739c167ac8c26c092576
-latest              동일 (fd10551bb9c6 — 사용자 라이브 승인 후 이동 완료)
-previous runtime    abb0ba7 (이미지 23bfedc2ba78) ← rollback 기준점
+local HEAD          f693e01 + 2026-08-25 4회차 docs-only 커밋 (커밋·push는 승인 후)
+origin/main         f693e01  (Phase 1C까지 push 완료)
+server checkout     f693e01
+runtime revision    f693e01                  ← OCI label로 직접 증명 가능 (full SHA)
+live image ID       sha256:443ef571127094e100f3075fa07a7bfde272e3dae6943b41e0cd8f12f744f215
+latest              동일 (443ef5711270 — 사용자 라이브 승인 후 정렬 완료)
+previous runtime    2d380c9 (이미지 fd10551bb9c6) ← rollback 기준점 (rollback-2d380c9)
 ```
 
 **Git HEAD ≠ runtime은 docs-only 커밋 때문 — 정상.** 라이브 판정은 컨테이너 라벨로:
@@ -93,6 +98,8 @@ docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revisi
 보존 자산 — **삭제·prune 금지**
 
 ```
+1C backup     seoul_autonomous_web_backup_2d380c9_20260825-214434  (exited)
+1C rollback   seoul-autonomous-web:rollback-2d380c9 → fd10551bb9c6
 1B backup     seoul_autonomous_web_backup_abb0ba7_20260825-204839  (exited)
 1B rollback   seoul-autonomous-web:rollback-abb0ba7 → sha256:23bfedc2ba78…
 R27 backup    seoul_autonomous_web_backup_ba058ee_20260803-210527  (exited)
@@ -144,10 +151,12 @@ web/data/routes.json 원본 무수정 (파생 레이어만) / 루트 routes.json
 267 Stop 전량 페이지 생성 금지 / 노선 선 기하·night-bus-data.ts 수정 금지 유지
 Graph 계산은 web/lib/graph/graph-core.mjs 단일 source (validator·앱 공용, 생성 JSON 커밋 금지)
 Graph 변경 시 node scripts/validate-graph.mjs 21항 PASS 필수 / lint baseline 5err·27warn 고정(신규 회귀 0 기준)
---- Phase 1B ---
-shared-stop UI 는 현재 A21 게이트(route.id === 'simya-a21') — 해제는 별도 승인 라운드
+--- Phase 1B·1C ---
+shared-stop UI 노출 조건 = Graph relation 존재 (1C에서 A21 게이트 제거 — whitelist 없음)
+A21 Night Bus Map CTA 게이트(simya-a21 && ko)는 별개 기능 — 유지
 "환승" 계열 단정 표현 금지 ("이 정류장을 지나는 다른 노선"까지만) / outbound·inbound·loop 사용자 노출 금지
 칩 텍스트는 SSOT displayName/displayNameKo 원문만 (임의 교정·창작 금지) / 행 비인터랙티브 유지(칩 <a>만)
+1C 백로그 3건(EN 라벨 축약·summary 명확화·tap 44px)은 후보일 뿐 — 별도 승인 전 착수 금지
 ```
 
 ## 협업 규칙 (필수)
@@ -191,14 +200,14 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 ## 새 세션 시작 시
 
 1. [ ] 이 문서
-2. [ ] `docs/worklogs/PHASE1B-A21-VERTICAL-SLICE-20260825.md` (Phase 1B 정본 — 최신)
-3. [ ] `docs/handoff/HANDOFF-20260825_3.md`
-4. [ ] `docs/worklogs/PHASE1A-GRAPH-CORE-20260825.md` · `PHASE0-CTG-STRUCTURE-AUDIT-20260825.md`
-5. [ ] `docs/handoff/HANDOFF-20260825_2.md` · `HANDOFF-20260825.md`
-6. [ ] MEMORY.md
-7. [ ] 기준점 확인 — **runtime = server = origin = `2d380c9`, 라이브 이미지 `fd10551bb9c6`,
-   latest 동일**(+3회차 docs 커밋 여부 확인). Round 26·27·Phase 0·1A·1B 재작업 금지.
-   **다음 작업 = 다음 기능 라운드 선택(포그린·GPT).** 단 포그린이 다른 지시를 주면 그것이 우선
+2. [ ] `docs/worklogs/PHASE1C-SHARED-STOP-EXPANSION-20260825.md` (Phase 1C 정본 — 최신)
+3. [ ] `docs/handoff/HANDOFF-20260825_4.md`
+4. [ ] 이전 정본: PHASE1B·PHASE1A·PHASE0 worklog / HANDOFF `_3`·`_2`·1회차
+5. [ ] MEMORY.md
+6. [ ] 기준점 확인 — **runtime = server = origin = `f693e01`, 라이브 이미지 `443ef5711270`,
+   latest 동일**(+4회차 docs 커밋 여부 확인). Round 26·27·Phase 0·1A·1B·1C 재작업 금지.
+   **다음 작업 = Robotaxi Freshness(별도 승인) → Stop URL 정책 audit.**
+   단 포그린이 다른 지시를 주면 그것이 우선
 
 ## 핸드오프 운영 규칙
 

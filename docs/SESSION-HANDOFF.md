@@ -1,14 +1,14 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-08-25 4회차 (Phase 1C 전 노선 확대 **PRODUCTION LIVE**·CLOSED + audit KEEP / 다음 = Robotaxi Freshness)
+> 마지막 업데이트: 2026-08-26 (Robotaxi Freshness **LIVE**·CLOSED · sitemap 53→55 / 다음 = Stop URL 정책 audit)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고 시작한다.
 
 ## 현재 위치
 
-**CTG 전환 — Phase 0·1A·1B 전부 CLOSED, 1B는 Production LIVE.** AdSense 3차 거절
-("가치가 별로 없는 콘텐츠") 확인 후 같은 날: Phase 0 구조 감사(EXIT 0) → Phase 1A
-그래프 엔진(`891fc02`) → **Phase 1B A21 vertical slice(`2d380c9`)를 구현·배포까지 완료**.
-A21 상세에서 Route → Stop → 다른 Route 실링크 탐색이 라이브로 작동한다(신규 URL 0).
+**CTG 전환 5개 라운드 전부 CLOSED (Phase 0·1A·1B·1C + Robotaxi Freshness).**
+AdSense 3차 거절 확인(8/25) 후 이틀 만에: 구조 감사 → 그래프 엔진 → A21 슬라이스 →
+전 노선 양방향 확대 → 로보택시 공식 최신화·첫 콘텐츠형 기사까지 라이브 완료.
+노선 간 실링크 탐색이 4노선 양방향으로 작동하고, sitemap은 53→55(의도적 증가).
 Round 26·27은 CLOSED 유지(재작업 금지).
 
 ```
@@ -22,7 +22,12 @@ Phase 1C 전 노선 확대   APPROVED / PRODUCTION LIVE / CLOSED   (f693e01, pag
   배포                2d380c9 → f693e01(443ef5711270) · 중단 0.9초 · latest 동일 정렬
   audit               post-expansion KEEP + BACKLOG (필수 0·권장 0·low-value 감소 판정)
   백로그(후보만)        EN 라벨 반복 축약 · summary "일부 정류장" 명확화 · 칩 tap 44px
-  승인                사용자 로컬 + 라이브 육안 승인 (2026-08-25)
+Robotaxi Freshness    APPROVED / PRODUCTION LIVE / CLOSED   (8e3c9f8, 2026-08-26)
+  핵심                operatingHours C2O 승격(official 8/19, 평일 22:00~05:00) · 20.4㎢ ·
+                      카드 운영시간 표시 · 19대 확대 콘텐츠형 기사(H2 6·출처 실링크) · 요금 수정 0 ·
+                      7대 기사 보존 · **sitemap 53→55**(첫 의도적 URL 증가, live 55/55)
+  배포                f693e01 → 8e3c9f8(f13663508dc2) · 중단 0.4초 · latest 동일 정렬
+  승인                사용자 로컬 + 라이브 육안 승인 (2026-08-26)
 web Graph SSOT        web/data/routes.json
 전략                  STATIC-FIRST / NO EXTERNAL STATE NEEDED
 엔터티                Route → StopVisit → Stop (267 ARS = 원자, 177 그룹 = 보조 후보)
@@ -35,15 +40,15 @@ web Graph SSOT        web/data/routes.json
 
 ## 다음 세션 첫 작업
 
-1. **Phase 1C 종료 docs-only 커밋(정본 3건: 이 파일·PHASE1C worklog·HANDOFF _4)의
-   커밋·push 승인 확인** — 각각 별도 승인.
-2. push 완료 후 (포그린 확정 순서): **① Robotaxi Freshness** — 독립 소형 라운드
-   (8/19 공식 출처 확보 완료: seoul.go.kr nttNo=464205 · mediahub 2019107. 범위 후보:
-   operatingHours 승격·serviceArea 20.4㎢·출처 추가·19대 update 기사) →
-   **② Stop URL 정책 READ-ONLY audit** → 이후 후보: 지도↔CTG · static decision
-   (C1O 재조사 선행: days 7/11·headway 4/11 미확인) · N버스 통합.
-3. 어떤 라운드든 관례 유지: read-only 선점검 → 선보고 → 최종 지시서 → 구현+QA →
-   승인 → commit → push → (배포 라운드면) deploy 게이트 분리. 1C 백로그 3건은
+1. **Robotaxi Freshness 종료 docs-only 커밋(정본 3건: 이 파일·ROBOTAXI worklog·
+   HANDOFF-20260826)의 커밋·push 승인 확인** — 각각 별도 승인.
+2. push 완료 후: **Stop URL 정책 READ-ONLY audit** — Phase 0 §13 품질 게이트
+   (다노선/기·종점·반환점/에디토리얼/N버스 연결/decision value) 기준으로 독립 페이지
+   후보 60~80을 재계산하고 URL 정책을 만드는 read-only 라운드. **페이지 생성이 아니라
+   정책 수립이 목적** — 267 전량 생성 금지 유지.
+3. 이후 후보: 지도↔CTG 매핑 · static decision(C1O 재조사 선행: days 7/11·headway 4/11
+   미확인) · N버스 통합. 관례 유지: 선점검 → 선보고 → 최종 지시서 → 구현+QA → 승인 →
+   commit → push → deploy 게이트 분리. 1C 백로그 3건·update 템플릿 출처 체계 정비는
    결함 아님 — 별도 승인 없이 착수 금지.
 
 ## 확정 설계 (Phase 0, 포그린 검수 — 깨면 안 됨)
@@ -80,13 +85,14 @@ stopId 반복 2건에서 prev/next 정확 / loop 오분류 0 / shared-stop이 St
 ## 좌표
 
 ```
-local HEAD          f693e01 + 2026-08-25 4회차 docs-only 커밋 (커밋·push는 승인 후)
-origin/main         f693e01  (Phase 1C까지 push 완료)
-server checkout     f693e01
-runtime revision    f693e01                  ← OCI label로 직접 증명 가능 (full SHA)
-live image ID       sha256:443ef571127094e100f3075fa07a7bfde272e3dae6943b41e0cd8f12f744f215
-latest              동일 (443ef5711270 — 사용자 라이브 승인 후 정렬 완료)
-previous runtime    2d380c9 (이미지 fd10551bb9c6) ← rollback 기준점 (rollback-2d380c9)
+local HEAD          8e3c9f8 + 2026-08-26 docs-only 커밋 (커밋·push는 승인 후)
+origin/main         8e3c9f8  (Robotaxi Freshness까지 push 완료)
+server checkout     8e3c9f8
+runtime revision    8e3c9f8                  ← OCI label로 직접 증명 가능 (full SHA)
+live image ID       sha256:f13663508dc2bfcc753bfde5de0ab92c7eeb1c3b7e5c81d8729d059ca7c0771c
+latest              동일 (f13663508dc2 — 사용자 라이브 승인 후 정렬 완료)
+previous runtime    f693e01 (이미지 443ef5711270) ← rollback 기준점 (rollback-f693e01)
+sitemap             55 (Robotaxi 라운드에서 update KO/EN +2 — 의도된 증가)
 ```
 
 **Git HEAD ≠ runtime은 docs-only 커밋 때문 — 정상.** 라이브 판정은 컨테이너 라벨로:
@@ -98,6 +104,8 @@ docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revisi
 보존 자산 — **삭제·prune 금지**
 
 ```
+RF backup     seoul_autonomous_web_backup_f693e01_20260826-192453  (exited)
+RF rollback   seoul-autonomous-web:rollback-f693e01 → 443ef5711270
 1C backup     seoul_autonomous_web_backup_2d380c9_20260825-214434  (exited)
 1C rollback   seoul-autonomous-web:rollback-2d380c9 → fd10551bb9c6
 1B backup     seoul_autonomous_web_backup_abb0ba7_20260825-204839  (exited)
@@ -136,6 +144,8 @@ endPoint 는 종점·마지막 정류장으로 사용 금지 (반환점)
 운영정보는 official_confirmed + confirmed 조합만 화면 표시
 reverification_required 상태에서는 금액 표시 금지
 로보택시는 시간대별 요금 4구간·실시간 호출·카카오T 필수 계약 유지
+로보택시 operatingHours는 C2O 승격됨(official 8/19) — 평문 회귀·operatingDays 부활 금지
+update 기사는 콘텐츠형 우선(articleSections·명사형 H2·공식 출처 링크) — 공지형 라벨 반복 지양
 FAQ q1 은 stop 배열 구조 기반 3분기 / q4 는 C2O 상태 모델 기반 조건부
 C2E disclosure 임계값 5·미리보기 3, 보조줄 C안 유지
 비교 표현은 전 노선 데이터 대조 후에만 / 근거 없는 편의·성능 평가 금지
@@ -200,13 +210,13 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 ## 새 세션 시작 시
 
 1. [ ] 이 문서
-2. [ ] `docs/worklogs/PHASE1C-SHARED-STOP-EXPANSION-20260825.md` (Phase 1C 정본 — 최신)
-3. [ ] `docs/handoff/HANDOFF-20260825_4.md`
-4. [ ] 이전 정본: PHASE1B·PHASE1A·PHASE0 worklog / HANDOFF `_3`·`_2`·1회차
+2. [ ] `docs/worklogs/ROBOTAXI-FRESHNESS-20260826.md` (최신 정본)
+3. [ ] `docs/handoff/HANDOFF-20260826.md`
+4. [ ] 이전 정본: PHASE1C·PHASE1B·PHASE1A·PHASE0 worklog / HANDOFF-20260825 `_4`~1회차
 5. [ ] MEMORY.md
-6. [ ] 기준점 확인 — **runtime = server = origin = `f693e01`, 라이브 이미지 `443ef5711270`,
-   latest 동일**(+4회차 docs 커밋 여부 확인). Round 26·27·Phase 0·1A·1B·1C 재작업 금지.
-   **다음 작업 = Robotaxi Freshness(별도 승인) → Stop URL 정책 audit.**
+6. [ ] 기준점 확인 — **runtime = server = origin = `8e3c9f8`, 라이브 이미지 `f13663508dc2`,
+   latest 동일, sitemap 55**(+docs 커밋 여부 확인). Round 26·27·Phase 0·1A·1B·1C·
+   Robotaxi Freshness 재작업 금지. **다음 작업 = Stop URL 정책 READ-ONLY audit.**
    단 포그린이 다른 지시를 주면 그것이 우선
 
 ## 핸드오프 운영 규칙

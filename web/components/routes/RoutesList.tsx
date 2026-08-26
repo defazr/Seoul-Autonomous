@@ -98,6 +98,7 @@ export function RoutesList({ routes, services, locale }: RoutesListProps) {
     appRequired: t('robotaxi.appRequired'),
     checkBeforeRiding: t('robotaxi.checkBeforeRiding'),
     fareTitle: t('robotaxi.fareTitle'),
+    hoursTitle: t('robotaxi.hoursTitle'),
     reservationTitle: t('robotaxi.reservationTitle'),
     reservationRealtimeCall: t('robotaxi.reservationRealtimeCall'),
     appTitle: t('robotaxi.appTitle'),

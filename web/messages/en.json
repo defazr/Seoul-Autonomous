@@ -83,6 +83,8 @@
       "appRequired": "Kakao T (Korean app) required",
       "checkBeforeRiding": "CHECK BEFORE RIDING",
       "fareTitle": "Base fare by time band",
+      "hoursTitle": "Operating hours",
+      "hoursWeekdayOvernight": "Weekdays {start}–{end}",
       "reservationTitle": "How to ride",
       "reservationRealtimeCall": "No advance reservation; request a ride in Kakao T",
       "appTitle": "Required app",
@@ -334,7 +336,8 @@
     "viewRoute": "View route details →",
     "backToUpdates": "← All updates",
     "eventDate": "Event date",
-    "sourceDate": "Source published"
+    "sourceDate": "Source published",
+    "officialSource": "Official source: Seoul Metropolitan Government press release"
   },
   "routeGroups": {
     "earlyMorning": {

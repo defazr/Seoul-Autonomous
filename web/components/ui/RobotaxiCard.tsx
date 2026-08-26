@@ -10,6 +10,7 @@ type RobotaxiCardProps = {
     appRequired: string;
     checkBeforeRiding: string;
     fareTitle: string;
+    hoursTitle: string;
     reservationTitle: string;
     reservationRealtimeCall: string;
     appTitle: string;
@@ -88,7 +89,7 @@ export function RobotaxiCard({ service, locale = 'en', labels }: RobotaxiCardPro
           )}
 
           {/* 26-C2O: 공식 확인된 운영정보만 표시한다. 미확인 항목은 행 자체를 만들지 않는다. */}
-          {(service.fareBands || service.reservation || service.app || service.operatorNames.length > 0) && (
+          {(service.fareBands || service.hoursText || service.reservation || service.app || service.operatorNames.length > 0) && (
             <dl className={styles.opsList}>
               {service.fareBands && (
                 <div className={styles.opsRow}>
@@ -103,6 +104,12 @@ export function RobotaxiCard({ service, locale = 'en', labels }: RobotaxiCardPro
                       ))}
                     </ul>
                   </dd>
+                </div>
+              )}
+              {service.hoursText && (
+                <div className={styles.opsRow}>
+                  <dt className={styles.opsLabel}>{labels?.hoursTitle ?? 'Hours'}</dt>
+                  <dd className={styles.opsValue}>{service.hoursText}</dd>
                 </div>
               )}
               {service.reservation && (

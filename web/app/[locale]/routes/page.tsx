@@ -40,11 +40,14 @@ export default async function RoutesPage({ params }: { params: Promise<{ locale:
     headway: route.headway,
   }));
 
+  const tRoutes = await getTranslations({ locale, namespace: 'routes' });
   const serviceItems: RobotaxiListItem[] = services.map((svc) => {
     const fare = svc.fare.value;
+    const hours = svc.operatingHours.value;
     const reservation = svc.reservationRequired.value;
     const app = svc.appRequired.value;
-    const source = svc.fare.sources[0] ?? null;
+    // 카드 대표 공식 출처는 최신 관련 공식 발표(운영시간) 우선, 없으면 기존 fare 근거 유지.
+    const source = svc.operatingHours.sources[0] ?? svc.fare.sources[0] ?? null;
     return {
       id: svc.id,
       displayName: svc.displayName,
@@ -58,6 +61,9 @@ export default async function RoutesPage({ params }: { params: Promise<{ locale:
         ? { mode: reservation.mode, appName: reservation.appName }
         : null,
       app: app?.required ? { appName: app.appName, purposes: app.purposes } : null,
+      hoursText: hours
+        ? tRoutes('robotaxi.hoursWeekdayOvernight', { start: hours.start, end: hours.end })
+        : null,
       source: source
         ? {
             publisher: source.publisher,

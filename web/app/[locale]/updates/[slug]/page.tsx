@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { routing } from '../../../../i18n/routing';
 import { Link } from '../../../../i18n/navigation';
 import { getAllUpdates, getUpdateBySlug } from '../../../../data/updates';
-import { getRouteById } from '../../../../lib/routes';
+import { getOnDemandServices, getRouteById } from '../../../../lib/routes';
 import { SiteFooter } from '../../../../components/common/SiteFooter';
 import { PageContainer } from '../../../../components/layout/PageContainer';
 import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
@@ -223,6 +223,19 @@ export default async function UpdateDetailPage({
                 </Link>
               );
             }
+            // 로보택시(onDemand)는 전용 상세가 없어 카드가 있는 late-night 페이지로 연결한다.
+            const service = getOnDemandServices().find((svc) => svc.id === id);
+            if (service) {
+              return (
+                <Link
+                  key={id}
+                  href="/routes/late-night"
+                  className={styles.routeChip}
+                >
+                  {isKo ? service.displayNameKo : service.displayName}
+                </Link>
+              );
+            }
             return (
               <span key={id} className={styles.routeChipInactive}>
                 {id}
@@ -233,39 +246,74 @@ export default async function UpdateDetailPage({
       )}
 
       <div className={styles.body}>
-        <section className={styles.section}>
-          <h2 className={styles.h2}>{t('whatChanged')}</h2>
-          <p className={styles.paragraph}>
-            {isKo ? s.whatChanged.ko : s.whatChanged.en}
-          </p>
-        </section>
-
-        <section className={styles.section}>
-          <h2 className={styles.h2}>{t('confirmedInfo')}</h2>
-          <ul className={styles.infoList}>
-            {(isKo ? s.confirmedInfo.ko : s.confirmedInfo.en).map((item, i) => (
-              <li key={i} className={styles.infoItem}>{item}</li>
+        {/* 콘텐츠형 기사: 명사형 고유 소제목 섹션. 공지형 고정 라벨을 쓰지 않는다. */}
+        {entry.articleSections?.map((sec, i) => (
+          <section key={i} className={styles.section}>
+            <h2 className={styles.h2}>{isKo ? sec.heading.ko : sec.heading.en}</h2>
+            {(isKo ? sec.paragraphs.ko : sec.paragraphs.en).map((p, j) => (
+              <p key={j} className={styles.paragraph}>{p}</p>
             ))}
-          </ul>
-        </section>
+            {sec.bullets && (
+              <ul className={styles.infoList}>
+                {(isKo ? sec.bullets.ko : sec.bullets.en).map((item, j) => (
+                  <li key={j} className={styles.infoItem}>{item}</li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))}
 
-        <section className={styles.section}>
-          <h2 className={styles.h2}>{t('reportedInfo')}</h2>
-          <ul className={styles.infoList}>
-            {(isKo ? s.reportedInfo.ko : s.reportedInfo.en).map((item, i) => (
-              <li key={i} className={styles.reportedItem}>
-                {item}
-              </li>
-            ))}
-          </ul>
-        </section>
+        {!entry.articleSections && s && (
+          <>
+            <section className={styles.section}>
+              <h2 className={styles.h2}>{t('whatChanged')}</h2>
+              <p className={styles.paragraph}>
+                {isKo ? s.whatChanged.ko : s.whatChanged.en}
+              </p>
+            </section>
 
-        <section className={styles.section}>
-          <h2 className={styles.h2}>{t('checkBefore')}</h2>
-          <p className={styles.paragraph}>
-            {isKo ? s.checkBefore.ko : s.checkBefore.en}
-          </p>
-        </section>
+            <section className={styles.section}>
+              <h2 className={styles.h2}>{t('confirmedInfo')}</h2>
+              <ul className={styles.infoList}>
+                {(isKo ? s.confirmedInfo.ko : s.confirmedInfo.en).map((item, i) => (
+                  <li key={i} className={styles.infoItem}>{item}</li>
+                ))}
+              </ul>
+            </section>
+
+            {/* 보도 참고 항목이 없는 기사(공식 출처 단독)는 섹션 자체를 만들지 않는다. */}
+            {(isKo ? s.reportedInfo.ko : s.reportedInfo.en).length > 0 && (
+              <section className={styles.section}>
+                <h2 className={styles.h2}>{t('reportedInfo')}</h2>
+                <ul className={styles.infoList}>
+                  {(isKo ? s.reportedInfo.ko : s.reportedInfo.en).map((item, i) => (
+                    <li key={i} className={styles.reportedItem}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            <section className={styles.section}>
+              <h2 className={styles.h2}>{t('checkBefore')}</h2>
+              <p className={styles.paragraph}>
+                {isKo ? s.checkBefore.ko : s.checkBefore.en}
+              </p>
+            </section>
+          </>
+        )}
+
+        {entry.sourceUrl && (
+          <a
+            href={entry.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.viewRoute}
+          >
+            {`${t('officialSource')} · ${formatDate(entry.sourcePublishedAt, isKo)}`}
+          </a>
+        )}
 
         {entry.relatedRouteIds.map((id) => {
           const route = getRouteById(id);

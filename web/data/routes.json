@@ -2792,8 +2792,8 @@
       "id": "gangnam-robotaxi",
       "displayName": "Gangnam Robotaxi",
       "displayNameKo": "강남 로보택시",
-      "serviceArea": "Gangnam-gu, Seocho-gu (Late-night)",
-      "serviceAreaKo": "강남구, 서초구 (심야)",
+      "serviceArea": "Entire Gangnam autonomous driving pilot zone (approx. 20.4 km²)",
+      "serviceAreaKo": "강남 자율주행자동차 시범운행지구 전역 (약 20.4㎢)",
       "appRequired": {
         "value": {
           "required": true,
@@ -2817,8 +2817,25 @@
         ]
       },
       "appName": "Kakao T",
-      "operatingHours": "Unknown",
-      "operatingDays": "Unknown",
+      "operatingHours": {
+        "value": {
+          "days": "weekday",
+          "start": "22:00",
+          "end": "05:00"
+        },
+        "verificationGrade": "official_confirmed",
+        "currentState": "confirmed",
+        "reason": null,
+        "sources": [
+          {
+            "title": "'강남 심야 자율주행택시' 7대→19대로 확대",
+            "publisher": "서울특별시",
+            "url": "https://www.seoul.go.kr/news/news_report.do?nttNo=464205",
+            "publishedAt": "2026-08-19",
+            "effectiveAt": "2026-08-20"
+          }
+        ]
+      },
       "fare": {
         "value": {
           "kind": "time_bands",
@@ -2893,7 +2910,7 @@
         ]
       },
       "officialServiceUrl": "Unknown",
-      "lastChecked": "2026-04-29",
+      "lastChecked": "2026-08-26",
       "verifiedBy": "manual",
       "verificationLevel": "official_confirmed",
       "kakaoMapVerified": false,

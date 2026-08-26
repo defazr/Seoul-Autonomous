@@ -71,6 +71,13 @@ export type OperatorValue = {
   entities: Array<{ name: string; roles: OperatorRole[] }>;
 };
 
+/** 공식 확인된 운영 시간창. days 어휘는 fixedRoutes.daysOfOperation('weekday')과 동일하게 유지한다. */
+export type OperatingWindowValue = {
+  days: 'weekday';
+  start: string;
+  end: string;
+};
+
 export type ReservationValue = {
   required: boolean;
   mode: 'advance_reservation' | 'realtime_call';
@@ -151,6 +158,8 @@ export type RobotaxiListItem = {
   operatorNames: string[];
   reservation: { mode: 'advance_reservation' | 'realtime_call'; appName: string | null } | null;
   app: { appName: string | null; purposes: Array<'request' | 'payment'> } | null;
+  /** 공식 확인된 운영시간의 표시 문자열 (caller 가 locale 로 조립). 미확인이면 생략/null */
+  hoursText?: string | null;
   source: { publisher: string; url: string; publishedAt: string; effectiveAt: string | null } | null;
 };
 
@@ -172,8 +181,9 @@ export type OnDemandService = {
   appRequired: OperationalField<AppRequirementValue>;
   reservationRequired: OperationalField<ReservationValue>;
   appName: string;
-  operatingHours: string;
-  operatingDays: string;
+  /** Robotaxi Freshness(2026-08-26): 평문 "Unknown"에서 C2O 계약으로 승격.
+   *  구 operatingDays 평문 필드는 value.days 로 흡수돼 제거됐다 (consumer 0 확인). */
+  operatingHours: OperationalField<OperatingWindowValue>;
   fare: OperationalField<FareValue>;
   operator: OperationalField<OperatorValue>;
   officialServiceUrl: string;

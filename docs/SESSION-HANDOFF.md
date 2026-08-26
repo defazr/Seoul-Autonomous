@@ -1,6 +1,6 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-08-26 (Robotaxi Freshness **LIVE**·CLOSED · sitemap 53→55 / 다음 = Stop URL 정책 audit)
+> 마지막 업데이트: 2026-08-26 2회차 (**Stop URL Policy 확정** — 구현 0 / 다음 = Stage 1 후보 33개 6/6 전수 판정 READ-ONLY)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고 시작한다.
 
 ## 현재 위치
@@ -40,16 +40,14 @@ web Graph SSOT        web/data/routes.json
 
 ## 다음 세션 첫 작업
 
-1. **Robotaxi Freshness 종료 docs-only 커밋(정본 3건: 이 파일·ROBOTAXI worklog·
-   HANDOFF-20260826)의 커밋·push 승인 확인** — 각각 별도 승인.
-2. push 완료 후: **Stop URL 정책 READ-ONLY audit** — Phase 0 §13 품질 게이트
-   (다노선/기·종점·반환점/에디토리얼/N버스 연결/decision value) 기준으로 독립 페이지
-   후보 60~80을 재계산하고 URL 정책을 만드는 read-only 라운드. **페이지 생성이 아니라
-   정책 수립이 목적** — 267 전량 생성 금지 유지.
-3. 이후 후보: 지도↔CTG 매핑 · static decision(C1O 재조사 선행: days 7/11·headway 4/11
-   미확인) · N버스 통합. 관례 유지: 선점검 → 선보고 → 최종 지시서 → 구현+QA → 승인 →
-   commit → push → deploy 게이트 분리. 1C 백로그 3건·update 템플릿 출처 체계 정비는
-   결함 아님 — 별도 승인 없이 착수 금지.
+1. **Stop URL Policy docs-only 커밋(정본 3건: 이 파일·`docs/strategy/STOP-URL-POLICY-20260826.md`·
+   HANDOFF-20260826_2)의 커밋·push 승인 확인** — 각각 별도 승인.
+2. push 완료 후: **Stage 1 후보(최대 33 = multi-route 전원) 6/6 전수 판정 READ-ONLY audit**
+   — 각 후보를 `PASS 6/6`/`FAIL n/6`로 판정한 표를 산출하고 정지. 판정표를 포그린·GPT가
+   검토한 뒤에야 Stop 페이지 구현 지시서가 나온다. **Stop 페이지 현재 0, 이번에도 생성 0.**
+3. 이후 후보: (Stage 1 구현·배포 뒤) Stage 2 재결정 게이트 · 지도↔CTG 매핑 ·
+   static decision(C1O 재조사 선행: days 7/11·headway 4/11 미확인) · N버스 통합.
+   1C 백로그 3건·update 출처 체계 정비는 결함 아님 — 별도 승인 없이 착수 금지.
 
 ## 확정 설계 (Phase 0, 포그린 검수 — 깨면 안 됨)
 
@@ -156,6 +154,12 @@ CSS 오버레이 유지, Fullscreen API 금지 / 전역 viewport·touch-action �
 --- AdSense ---
 ads.txt publisher ID = pub-7976139023602789 (layout.tsx client ID와 일치 유지)
 robots.txt 에 Disallow 추가 금지
+--- Stop URL Policy (2026-08-26, 정본 docs/strategy/STOP-URL-POLICY-20260826.md) ---
+Policy B 확정(상한 64) + 이중 게이트 — **Stage 1의 33개는 생성 목표가 아니라 심사 상한이다**
+(최대 33 후보를 6/6로 개별 심사, 27개 통과면 27개만 — 숫자 채우기용 약한 페이지 생성 금지)
+최소 콘텐츠 계약 6/6 미달 = URL 생성 금지 / 무신호 single 182 영구 제외 / editorial 21 개별 심사
+slug = stopId-readable-name / EN fallback 6 = 생성+nameKo(품질 계약 동일) / URL identity = ARS stopId
+Stage 1→2 자동 진행 금지(Stage 2 미승인) / adjacent 링크 = 정책 통과 Stop끼리만 / noindex 페이지 0
 --- CTG (2026-08-25) ---
 web/data/routes.json 원본 무수정 (파생 레이어만) / 루트 routes.json 비접촉
 267 Stop 전량 페이지 생성 금지 / 노선 선 기하·night-bus-data.ts 수정 금지 유지
@@ -210,8 +214,8 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 ## 새 세션 시작 시
 
 1. [ ] 이 문서
-2. [ ] `docs/worklogs/ROBOTAXI-FRESHNESS-20260826.md` (최신 정본)
-3. [ ] `docs/handoff/HANDOFF-20260826.md`
+2. [ ] `docs/strategy/STOP-URL-POLICY-20260826.md` (Stop URL 안전 계약 — 최신)
+3. [ ] `docs/handoff/HANDOFF-20260826_2.md` · `HANDOFF-20260826.md` · `docs/worklogs/ROBOTAXI-FRESHNESS-20260826.md`
 4. [ ] 이전 정본: PHASE1C·PHASE1B·PHASE1A·PHASE0 worklog / HANDOFF-20260825 `_4`~1회차
 5. [ ] MEMORY.md
 6. [ ] 기준점 확인 — **runtime = server = origin = `8e3c9f8`, 라이브 이미지 `f13663508dc2`,

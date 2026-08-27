@@ -107,7 +107,8 @@
     "stopsSection": "Stops",
     "stops": {
       "otherRoutes": "Other routes serving this stop",
-      "sharedStopsSummary": "{count} stops are also served by other routes"
+      "sharedStopsSummary": "{count} stops are also served by other routes",
+      "stopDetailLink": "Stop details"
     },
     "info": {
       "hours": "Hours",
@@ -311,6 +312,8 @@
     "routesDescription": "Browse Seoul autonomous routes with their endpoints, stops and listed operating times.",
     "routeDetailTitle": "{name} — Seoul Autonomous",
     "routeDetailDescription": "Autonomous bus route {name}. Check stops, hours, and map before riding.",
+    "stopDetailTitle": "{name} (Stop {ars}) — Seoul Autonomous",
+    "stopDetailDescription": "Autonomous routes serving {name} (stop {ars}): {routes}. See the stop order on each route and the neighboring stops. Next stops: {nextStops}.",
     "howToRideTitle": "How to ride — Seoul Autonomous",
     "howToRideDescription": "How to ride autonomous buses and robotaxis in Seoul. Step-by-step guide for tourists.",
     "dataSourceTitle": "Data source — Seoul Autonomous",
@@ -357,5 +360,19 @@
     "officialPending": "Official confirmation pending",
     "communityReported": "Community-reported",
     "checkBeforeRiding": "CHECK BEFORE RIDING"
+  },
+  "stopDetail": {
+    "ars": "ARS",
+    "nextStops": "{count, plural, one {Next stop} other {Next stops}}",
+    "previousStop": "Previous stop",
+    "routesTitle": "Autonomous routes serving this stop",
+    "sharedSentence": "{routes} serve {name} (ARS {ars}).",
+    "positionTitle": "Position on {route}",
+    "positionValue": "Stop {seq} of {total} on this route",
+    "viewRoute": "View {route} route",
+    "provenanceTitle": "How this information was checked",
+    "provenanceStopNames": "Official stop names — Seoul Metropolitan Government open data",
+    "provenanceRouteData": "Stop order and neighboring stops — route data based on Kakao Map",
+    "checkedOn": "checked {date}"
   }
 }

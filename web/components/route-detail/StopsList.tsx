@@ -21,6 +21,11 @@ type DisplayStop = {
    * 없으면 행은 기존과 완전히 동일하게 렌더된다.
    */
   otherRoutes?: OtherRouteChip[];
+  /**
+   * Phase Stop-1E: Stage 1 승인 Stop 의 상세 경로. 승인된 행에만 존재하며,
+   * 없으면 행은 기존과 완전히 동일하게 렌더된다 (URL 이 없는 정류장은 링크하지 않는다).
+   */
+  stopDetailHref?: string;
 };
 
 type StopsListProps = {
@@ -29,6 +34,8 @@ type StopsListProps = {
   collapseLabel: string;
   /** shared stop 행의 보조 라벨. otherRoutes 가 있는 행에서만 사용된다 */
   otherRoutesLabel?: string;
+  /** Stop 상세 링크 문구. stopDetailHref 가 있는 행에서만 사용된다 */
+  stopDetailLabel?: string;
   /** 목록 상단 요약 1줄 (닫힌 <details> 상태에서의 기능 발견성 담당) */
   sharedSummary?: { text: string; routes: OtherRouteChip[] };
 };
@@ -56,12 +63,14 @@ function StopRow({
   isLast,
   showSecondary,
   otherRoutesLabel,
+  stopDetailLabel,
 }: {
   stop: DisplayStop;
   isFirst: boolean;
   isLast: boolean;
   showSecondary: boolean;
   otherRoutesLabel?: string;
+  stopDetailLabel?: string;
 }) {
   return (
     <li className={styles.stopRow}>
@@ -88,6 +97,15 @@ function StopRow({
             <RouteChips routes={stop.otherRoutes} />
           </div>
         ) : null}
+        {/* 행 자체는 계속 비인터랙티브다. 승인 Stop 에만 명시적 링크 하나를 더 둔다. */}
+        {stop.stopDetailHref && stopDetailLabel ? (
+          <div className={styles.stopDetail}>
+            <Link href={stop.stopDetailHref} className={styles.stopDetailLink}>
+              {stopDetailLabel}
+              <span aria-hidden="true"> →</span>
+            </Link>
+          </div>
+        ) : null}
       </div>
     </li>
   );
@@ -97,10 +115,12 @@ function StopItems({
   stops,
   showSecondary,
   otherRoutesLabel,
+  stopDetailLabel,
 }: {
   stops: DisplayStop[];
   showSecondary: boolean;
   otherRoutesLabel?: string;
+  stopDetailLabel?: string;
 }) {
   return stops.map((stop, i) => (
     <StopRow
@@ -110,6 +130,7 @@ function StopItems({
       isLast={i === stops.length - 1}
       showSecondary={showSecondary}
       otherRoutesLabel={otherRoutesLabel}
+      stopDetailLabel={stopDetailLabel}
     />
   ));
 }
@@ -128,6 +149,7 @@ export function StopsList({
   expandLabel,
   collapseLabel,
   otherRoutesLabel,
+  stopDetailLabel,
   sharedSummary,
 }: StopsListProps) {
   // 정류장 수가 적으면 disclosure 없이 전체를 기본 화면으로 보여준다.
@@ -136,7 +158,12 @@ export function StopsList({
       <>
         {sharedSummary ? <SharedSummary summary={sharedSummary} /> : null}
         <ol className={styles.list}>
-          <StopItems stops={stops} showSecondary otherRoutesLabel={otherRoutesLabel} />
+          <StopItems
+            stops={stops}
+            showSecondary
+            otherRoutesLabel={otherRoutesLabel}
+            stopDetailLabel={stopDetailLabel}
+          />
         </ol>
       </>
     );
@@ -162,12 +189,22 @@ export function StopsList({
           </summary>
           {/* 펼친 전체 목록: 보조줄 없이 표시명만 */}
           <ol className={styles.list}>
-            <StopItems stops={stops} showSecondary={false} otherRoutesLabel={otherRoutesLabel} />
+            <StopItems
+              stops={stops}
+              showSecondary={false}
+              otherRoutesLabel={otherRoutesLabel}
+              stopDetailLabel={stopDetailLabel}
+            />
           </ol>
         </details>
         {/* 닫힌 화면의 미리보기: 보조줄 표시 */}
         <ol className={`${styles.list} ${styles.previewList}`}>
-          <StopItems stops={previewStops} showSecondary otherRoutesLabel={otherRoutesLabel} />
+          <StopItems
+            stops={previewStops}
+            showSecondary
+            otherRoutesLabel={otherRoutesLabel}
+            stopDetailLabel={stopDetailLabel}
+          />
         </ol>
       </div>
     </>

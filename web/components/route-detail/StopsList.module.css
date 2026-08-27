@@ -181,6 +181,26 @@
   color: var(--color-fg-4);
 }
 
+/* Stage 1 승인 Stop 행 전용 링크 — 행은 비인터랙티브 유지, 이 <a> 만 추가된다 */
+.stopDetail {
+  margin-top: 6px;
+  margin-left: 30px;
+}
+
+.stopDetailLink {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.stopDetailLink:hover {
+  opacity: 0.8;
+}
+
 .routeChip {
   display: inline-flex;
   align-items: center;

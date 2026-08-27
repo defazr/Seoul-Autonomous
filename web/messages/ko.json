@@ -105,7 +105,8 @@
     "stopsSection": "정류장",
     "stops": {
       "otherRoutes": "이 정류장을 지나는 다른 노선",
-      "sharedStopsSummary": "다른 노선과 함께 지나는 정류장 {count}곳"
+      "sharedStopsSummary": "다른 노선과 함께 지나는 정류장 {count}곳",
+      "stopDetailLink": "정류장 상세"
     },
     "info": {
       "hours": "운행 시간",
@@ -311,6 +312,8 @@
     "routesDescription": "서울 자율주행 노선의 기·종점, 정류장과 표시된 운행 시각을 노선별로 확인하세요.",
     "routeDetailTitle": "{name} — Seoul Autonomous",
     "routeDetailDescription": "자율주행 버스 {name} 노선. 정류장, 운행시간, 지도를 확인하세요.",
+    "stopDetailTitle": "{name} 정류장 {ars} — Seoul Autonomous",
+    "stopDetailDescription": "{name} 정류장(ARS {ars})을 지나는 자율주행 노선 {routes}의 정차 순서와 이전·다음 정류장을 확인하세요. 다음 정류장: {nextStops}.",
     "howToRideTitle": "서울 자율주행버스 타는 법 — Seoul Autonomous",
     "howToRideDescription": "서울 자율주행 버스와 로보택시 이용 방법. 정류장, 탑승법, 결제 안내.",
     "dataSourceTitle": "데이터 출처 — Seoul Autonomous",
@@ -357,5 +360,19 @@
     "officialPending": "공식 확인 대기",
     "communityReported": "제보 정보",
     "checkBeforeRiding": "탑승 전 확인"
+  },
+  "stopDetail": {
+    "ars": "ARS",
+    "nextStops": "다음 정류장",
+    "previousStop": "이전 정류장",
+    "routesTitle": "이 정류장을 지나는 자율주행 노선",
+    "sharedSentence": "{name} ARS {ars}에는 {routes} 노선이 함께 정차합니다.",
+    "positionTitle": "{route}에서의 위치",
+    "positionValue": "전체 {total}개 정류장 중 {seq}번째",
+    "viewRoute": "{route} 노선 보기",
+    "provenanceTitle": "정보 확인 기준",
+    "provenanceStopNames": "정류장 공식명 — 서울특별시 공공데이터",
+    "provenanceRouteData": "노선 정차 순서·이전·다음 정류장 — 카카오맵 기반 노선 데이터",
+    "checkedOn": "확인 {date}"
   }
 }

@@ -1,0 +1,331 @@
+/* Stage 1 Stop 상세 — 노선 상세의 디자인 언어(카드·칩·타이포·토큰)를 그대로 따른다 */
+
+.topBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0 16px;
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-2);
+  cursor: pointer;
+  color: var(--color-fg-1);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.backBtn:hover {
+  background-color: var(--color-bg-3);
+}
+
+/* Hero */
+.hero {
+  margin-bottom: 32px;
+}
+
+.heading {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 36px;
+  color: var(--color-fg-1);
+  letter-spacing: -0.96px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.subName {
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--color-fg-3);
+  margin-top: 4px;
+  overflow-wrap: anywhere;
+}
+
+.arsLine {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.arsLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--color-fg-4);
+  letter-spacing: 0.88px;
+}
+
+.arsValue {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--color-fg-1);
+  letter-spacing: 0.56px;
+}
+
+.nextLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 10px 0 0;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border-2);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-2);
+}
+
+.nextLabel {
+  flex: 0 0 auto;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-fg-3);
+}
+
+.nextValue {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 500;
+  color: var(--color-fg-1);
+  overflow-wrap: anywhere;
+}
+
+/* Sections */
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--color-fg-1);
+  margin: 0 0 12px;
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.routeChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border: 1px solid var(--color-border-1);
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+  color: var(--color-fg-2);
+  background-color: var(--color-bg-2);
+  text-decoration: none;
+}
+
+.routeChip:hover {
+  border-color: var(--color-accent);
+  color: var(--color-fg-1);
+  background-color: var(--color-bg-3);
+}
+
+.sharedSentence {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-fg-2);
+  overflow-wrap: anywhere;
+}
+
+/* 노선별 위치 카드 */
+.routeCard {
+  margin-bottom: 16px;
+  padding: 20px;
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-1);
+  border-radius: var(--radius-lg);
+}
+
+.cardTitle {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--color-fg-1);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.cardPosition {
+  margin: 6px 0 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-fg-3);
+  letter-spacing: 0.26px;
+}
+
+.neighborList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--color-border-2);
+}
+
+.neighborRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: baseline;
+}
+
+.neighborLabel {
+  flex: 0 0 auto;
+  min-width: 108px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-fg-3);
+}
+
+.neighborValue {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--color-fg-1);
+  overflow-wrap: anywhere;
+}
+
+.cardLink {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--color-accent);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.cardLink:hover {
+  opacity: 0.8;
+}
+
+/* provenance */
+.provList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border-2);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-2);
+}
+
+.provRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: baseline;
+}
+
+.provLabel {
+  flex: 1 1 220px;
+  min-width: 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-fg-3);
+  overflow-wrap: anywhere;
+}
+
+.provValue {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  flex: 0 1 auto;
+  margin: 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-fg-2);
+  overflow-wrap: anywhere;
+}
+
+.provLink {
+  color: var(--color-fg-2);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+}
+
+.provLink:hover {
+  color: var(--color-fg-1);
+}
+
+.provDate {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--color-fg-4);
+  letter-spacing: 0.44px;
+}
+
+.disclaimer {
+  margin: 10px 0 0;
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--color-warning);
+  letter-spacing: 0.22px;
+}
+
+/* 하단 이동 */
+.allRoutesLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-fg-3);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 20px;
+  text-decoration: none;
+  transition: color 0.15s;
+  padding: 4px 0;
+}
+
+.allRoutesLink:hover {
+  color: var(--color-accent);
+}
+
+.allRoutesLink svg {
+  width: 14px;
+  height: 14px;
+}
+
+@media (max-width: 640px) {
+  .heading {
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: -0.48px;
+  }
+
+  .neighborLabel {
+    min-width: 84px;
+  }
+}

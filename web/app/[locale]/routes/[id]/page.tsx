@@ -8,6 +8,7 @@ import type { Stop } from '../../../../lib/types/route';
 import { routing } from '../../../../i18n/routing';
 import { StopsList } from '../../../../components/route-detail/StopsList';
 import { getOfficialStopNameEn } from '../../../../lib/stops';
+import { getApprovedStopPath } from '../../../../lib/stop-pages';
 import { MapLinkButton } from '../../../../components/route-detail/MapLinkButton';
 import { Pill, StatusDot } from '../../../../components/ui/Pill';
 import { Link } from '../../../../i18n/navigation';
@@ -258,14 +259,18 @@ export default async function RouteDetailPage({
   // 보조줄 노출 여부는 StopsList 가 렌더 문맥(미리보기/전체)에 따라 결정한다.
   // 26-C2E.1: 영문 표시명의 유일한 출처는 공식 SSOT 다. 미스는 한국어명으로만 대체한다
   // (routes.json 의 legacy nameEn 은 표시 경로에서 사용하지 않는다).
+  // Phase Stop-1E: Stage 1 에서 승인된 Stop 에만 상세 링크가 붙는다. 승인 목록에 없는
+  // 정류장은 URL 자체가 없으므로 링크를 만들지 않는다 (행 렌더는 기존과 동일).
   const displayStops = stops.map((stop) => {
     const otherRoutes = otherRoutesByStopId.get(stop.stopId);
+    const stopDetailHref = getApprovedStopPath(stop.stopId);
     if (isKo) {
       return {
         seq: stop.seq,
         displayName: stop.nameKo,
         isTurnaround: stop.isTurnaround,
         ...(otherRoutes ? { otherRoutes } : {}),
+        ...(stopDetailHref ? { stopDetailHref } : {}),
       };
     }
     const officialNameEn = getOfficialStopNameEn(stop.stopId);
@@ -275,6 +280,7 @@ export default async function RouteDetailPage({
       secondaryName: officialNameEn ? stop.nameKo : undefined,
       isTurnaround: stop.isTurnaround,
       ...(otherRoutes ? { otherRoutes } : {}),
+      ...(stopDetailHref ? { stopDetailHref } : {}),
     };
   });
 
@@ -445,6 +451,7 @@ export default async function RouteDetailPage({
                     count: stops.length,
                   })}
                   collapseLabel={t('routeDetail.collapseStops')}
+                  stopDetailLabel={t('routeDetail.stops.stopDetailLink')}
                   {...(sharedSummary
                     ? {
                         sharedSummary,

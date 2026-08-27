@@ -1,15 +1,28 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-08-26 2회차 (**Stop URL Policy 확정** — 구현 0 / 다음 = Stage 1 후보 33개 6/6 전수 판정 READ-ONLY)
+> 마지막 업데이트: 2026-08-27 (**Stage 1 Stop Pages CLOSED** — 첫 Stop 상세 14 URL 라이브, sitemap 69)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고 시작한다.
 
 ## 현재 위치
 
-**CTG 전환 5개 라운드 전부 CLOSED (Phase 0·1A·1B·1C + Robotaxi Freshness).**
-AdSense 3차 거절 확인(8/25) 후 이틀 만에: 구조 감사 → 그래프 엔진 → A21 슬라이스 →
-전 노선 양방향 확대 → 로보택시 공식 최신화·첫 콘텐츠형 기사까지 라이브 완료.
-노선 간 실링크 탐색이 4노선 양방향으로 작동하고, sitemap은 53→55(의도적 증가).
-Round 26·27은 CLOSED 유지(재작업 금지).
+**Stage 1 Stop Pages CLOSED.** CTG 전환 5개 라운드(Phase 0·1A·1B·1C + Robotaxi Freshness)에 이어
+**Stop URL 정책 → Stage 1 판정 → 페이지 설계 → 구현·배포 → post-launch audit → EN metadata polish →
+표적 재감사**까지 완주했다. 사이트에 **첫 Stop 상세 페이지 14개(7 stop × ko/en)** 가 생겼고
+Route ↔ Stop 양방향 탐색이 실제로 작동한다. sitemap 55→69(신규 14만).
+Round 26·27, Phase 0~1C, Robotaxi Freshness는 CLOSED 유지(재작업 금지).
+
+```
+Stop URL 정책      APPROVED / CLOSED  (7cb467d — Policy B·6/6 계약·slug·Stage 게이트)
+Stage 1 판정       33/33 PASS 6/6 → 포그린 결정으로 구현 승인 7개 (V3 26 보류)
+Stop-1D 설계       APPROVED / CLOSED  (STAGE1-STOP-PAGE-DESIGN-20260826.md)
+Stop-1E 구현·배포   PRODUCTION LIVE / CLOSED  (f34ede8 · 이미지 dd19df584b62 · 중단 0.21초)
+Stop-1E audit      IMPROVE  (필수 수정 0 · low-value risk DECREASED)
+Stop-1F polish     PRODUCTION LIVE / CLOSED  (19ebf0e · 이미지 2e6545253cc4 · 중단 0.18초)
+Stop-1F 재감사      CLOSED  (개선 ① 종결 — title/desc split 56→9 · 82→9)
+Stage 1 전체        CLOSED  (필수 수정 0 · BLOCK 0 · Production 추가 수정 없음)
+```
+
+**CLOSED는 향후 개선이 전부 끝났다는 뜻이 아니다** — backlog와 Search Console 후속 감사는 별도로 살아 있다.
 
 ```
 Phase 0 감사          APPROVED / CLOSED   (2026-08-25)
@@ -34,20 +47,29 @@ web Graph SSOT        web/data/routes.json
 금지                  267 Stop 전량 페이지 생성 / AdSense 재신청(당분간) / 신규 dependency
 ```
 
-정본: Phase 0 `PHASE0-CTG-STRUCTURE-AUDIT…` / 1A `PHASE1A-GRAPH-CORE…` / 1B `PHASE1B-A21-VERTICAL-SLICE…` /
-**1C `PHASE1C-SHARED-STOP-EXPANSION-20260825.md`** (전부 docs/worklogs/)
-핸드오프: `HANDOFF-20260825.md` · `_2` · `_3` · **`_4`** (docs/handoff/)
+**Stage 1 정본: `docs/worklogs/STAGE1-STOP-PAGES-DEPLOYMENT-20260827.md`** (구현·배포·QA 계약·backlog 전부)
+설계 `STAGE1-STOP-PAGE-DESIGN-20260826.md` / 감사 `STAGE1-STOP-PAGES-POST-LAUNCH-AUDIT-20260827.md` ·
+`STOP-1F-EN-METADATA-POST-LAUNCH-AUDIT-20260827.md` / 정책 `docs/strategy/STOP-URL-POLICY-20260826.md`
+이전 정본: Phase 0 `PHASE0-CTG-STRUCTURE-AUDIT…` / 1A `PHASE1A-GRAPH-CORE…` / 1B `PHASE1B-A21-VERTICAL-SLICE…` /
+1C `PHASE1C-SHARED-STOP-EXPANSION-20260825.md` / `ROBOTAXI-FRESHNESS-20260826.md`
+핸드오프: **`HANDOFF-20260827.md`** ← 최신 / `HANDOFF-20260826.md` · `_2` · `_3` / `HANDOFF-20260825.md` · `_2`~`_4`
 
 ## 다음 세션 첫 작업
 
-1. **Stop URL Policy docs-only 커밋(정본 3건: 이 파일·`docs/strategy/STOP-URL-POLICY-20260826.md`·
-   HANDOFF-20260826_2)의 커밋·push 승인 확인** — 각각 별도 승인.
-2. push 완료 후: **Stage 1 후보(최대 33 = multi-route 전원) 6/6 전수 판정 READ-ONLY audit**
-   — 각 후보를 `PASS 6/6`/`FAIL n/6`로 판정한 표를 산출하고 정지. 판정표를 포그린·GPT가
-   검토한 뒤에야 Stop 페이지 구현 지시서가 나온다. **Stop 페이지 현재 0, 이번에도 생성 0.**
-3. 이후 후보: (Stage 1 구현·배포 뒤) Stage 2 재결정 게이트 · 지도↔CTG 매핑 ·
-   static decision(C1O 재조사 선행: days 7/11·headway 4/11 미확인) · N버스 통합.
-   1C 백로그 3건·update 출처 체계 정비는 결함 아님 — 별도 승인 없이 착수 금지.
+**다음 제품 라운드는 정해지지 않았다.** 아래 중 무엇을 할지는 별도 결정 사항이며,
+자동으로 착수하지 않는다.
+
+1. **Stage 2 여부** — V3 26개 재심사. 정책 §11대로 **미승인 상태**이며 수량·대상 모두 미정.
+   Stage 1 결과(방향 차별 장치가 라이브에서 작동)는 그 판단의 입력일 뿐이다.
+2. **실시간 버스 도착정보 조사** — 서울시 실시간 교통 API READ-ONLY 조사 / 정류장별 도착시간 /
+   차량 위치 지도. **가용성·구현 가능성 미확정**이며 STATIC-FIRST·"실시간처럼 보이는 표현 금지"
+   계약이 있으므로 조사 라운드부터 별도 승인 필요.
+3. **Search Console 후속 감사** — 배포 후 약 2~3주 시점(9월 중순 전후). index coverage ·
+   14 URL 색인 여부 · duplicate/canonical 신호 · 방향쌍 처리. 지금은 판정하지 않는다.
+4. **backlog** (전부 미해결·착수 금지): 01008 카드 prev/next 중복 · 데스크톱 여백 ·
+   tap target 44px · 1C backlog 3건.
+5. 그 밖의 이월: 지도↔CTG 매핑 · static decision(C1O 재조사 선행: days 7/11·headway 4/11 미확인) ·
+   N버스 통합.
 
 ## 확정 설계 (Phase 0, 포그린 검수 — 깨면 안 됨)
 
@@ -83,14 +105,15 @@ stopId 반복 2건에서 prev/next 정확 / loop 오분류 0 / shared-stop이 St
 ## 좌표
 
 ```
-local HEAD          8e3c9f8 + 2026-08-26 docs-only 커밋 (커밋·push는 승인 후)
-origin/main         8e3c9f8  (Robotaxi Freshness까지 push 완료)
-server checkout     8e3c9f8
-runtime revision    8e3c9f8                  ← OCI label로 직접 증명 가능 (full SHA)
-live image ID       sha256:f13663508dc2bfcc753bfde5de0ab92c7eeb1c3b7e5c81d8729d059ca7c0771c
-latest              동일 (f13663508dc2 — 사용자 라이브 승인 후 정렬 완료)
-previous runtime    f693e01 (이미지 443ef5711270) ← rollback 기준점 (rollback-f693e01)
-sitemap             55 (Robotaxi 라운드에서 update KO/EN +2 — 의도된 증가)
+local HEAD          19ebf0e + 2026-08-27 docs-only 커밋 (커밋·push는 승인 후)
+origin/main         19ebf0e  (Stage 1 코드 2건까지 push 완료)
+server checkout     19ebf0e
+runtime revision    19ebf0eafd3450484959465946f5fa89a80c9ff8   ← OCI label로 직접 증명 가능
+live image ID       sha256:2e6545253cc44a6a5e1b1d9fccc7c070fd4c6165f852af5aeabdf36159d10dc9
+latest              동일 (2e6545253cc4 — 사용자 라이브 승인 후 정렬 완료)
+previous runtime    f34ede8 (이미지 dd19df584b62) ← rollback 기준점 (rollback-f34ede8)
+sitemap             69 (Stage 1 Stop URL 14 — 7 stop × ko/en)
+Stage 1 코드 커밋    f34ede8 구현 / 19ebf0e EN metadata polish
 ```
 
 **Git HEAD ≠ runtime은 docs-only 커밋 때문 — 정상.** 라이브 판정은 컨테이너 라벨로:
@@ -102,6 +125,10 @@ docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revisi
 보존 자산 — **삭제·prune 금지**
 
 ```
+1F backup     seoul_autonomous_web_backup_f34ede8_20260827-212828  (exited)
+1F rollback   seoul-autonomous-web:rollback-f34ede8 → dd19df584b62
+1E backup     seoul_autonomous_web_backup_8e3c9f8_20260827-193733  (exited)
+1E rollback   seoul-autonomous-web:rollback-8e3c9f8 → f13663508dc2
 RF backup     seoul_autonomous_web_backup_f693e01_20260826-192453  (exited)
 RF rollback   seoul-autonomous-web:rollback-f693e01 → 443ef5711270
 1C backup     seoul_autonomous_web_backup_2d380c9_20260825-214434  (exited)
@@ -160,6 +187,16 @@ Policy B 확정(상한 64) + 이중 게이트 — **Stage 1의 33개는 생성 �
 최소 콘텐츠 계약 6/6 미달 = URL 생성 금지 / 무신호 single 182 영구 제외 / editorial 21 개별 심사
 slug = stopId-readable-name / EN fallback 6 = 생성+nameKo(품질 계약 동일) / URL identity = ARS stopId
 Stage 1→2 자동 진행 금지(Stage 2 미승인) / adjacent 링크 = 정책 통과 Stop끼리만 / noindex 페이지 0
+--- Stage 1 Stop Pages (2026-08-27 CLOSED, 정본 docs/worklogs/STAGE1-STOP-PAGES-DEPLOYMENT-20260827.md) ---
+승인 Stop 7개 = URL 14개가 전부 — 이 목록(web/lib/stop-pages.ts 리터럴)을 넓히는 것은 별도 승인 사항
+Stop 페이지 관계·seq·이웃은 Graph Core 파생 단독 (하드코딩은 stopId/slug 뿐)
+방향쌍 구분 = ARS + 노선별 next-stop union / outbound·inbound·loop 노출 금지 / 창작 방향어 금지
+Stop→Stop 링크 v1 0 (이전·다음은 텍스트만) / Route↔Stop 양방향만 / StopsList 행은 비인터랙티브 유지
+  (승인 Stop 행에만 "정류장 상세" 링크 1개 — route chip 외 행 클릭 동작 금지)
+breadcrumb = JSON-LD 2-level [Home, Stop], 가시 breadcrumb 없음 / `/stops` index 페이지 없음(404)
+운영정보(운행시간·요금·배차·운행일)는 Stop 페이지에 복제하지 않는다 (route 페이지가 담당)
+EN metadata 어순 = `Stop {ars} · {name} — Seoul Autonomous` (방향쌍 SERP 구분용, KO는 이름 우선 유지)
+공식 EN 정류장명 원문 보존 — 축약·교정 금지 / Stop lastmod = 멤버 노선 lastChecked 최대(현재 날짜 금지)
 --- CTG (2026-08-25) ---
 web/data/routes.json 원본 무수정 (파생 레이어만) / 루트 routes.json 비접촉
 267 Stop 전량 페이지 생성 금지 / 노선 선 기하·night-bus-data.ts 수정 금지 유지
@@ -214,14 +251,17 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 ## 새 세션 시작 시
 
 1. [ ] 이 문서
-2. [ ] `docs/strategy/STOP-URL-POLICY-20260826.md` (Stop URL 안전 계약 — 최신)
-3. [ ] `docs/handoff/HANDOFF-20260826_2.md` · `HANDOFF-20260826.md` · `docs/worklogs/ROBOTAXI-FRESHNESS-20260826.md`
-4. [ ] 이전 정본: PHASE1C·PHASE1B·PHASE1A·PHASE0 worklog / HANDOFF-20260825 `_4`~1회차
-5. [ ] MEMORY.md
-6. [ ] 기준점 확인 — **runtime = server = origin = `8e3c9f8`, 라이브 이미지 `f13663508dc2`,
-   latest 동일, sitemap 55**(+docs 커밋 여부 확인). Round 26·27·Phase 0·1A·1B·1C·
-   Robotaxi Freshness 재작업 금지. **다음 작업 = Stop URL 정책 READ-ONLY audit.**
-   단 포그린이 다른 지시를 주면 그것이 우선
+2. [ ] `docs/worklogs/STAGE1-STOP-PAGES-DEPLOYMENT-20260827.md` (Stage 1 정본 — 최신)
+3. [ ] `docs/strategy/STOP-URL-POLICY-20260826.md` (Stop URL 안전 계약)
+4. [ ] `docs/handoff/HANDOFF-20260827.md` · 설계 `STAGE1-STOP-PAGE-DESIGN-20260826.md` ·
+   감사 2건(`STAGE1-STOP-PAGES-POST-LAUNCH-AUDIT-20260827.md` · `STOP-1F-EN-METADATA-…-20260827.md`)
+5. [ ] 이전 정본: ROBOTAXI-FRESHNESS · PHASE1C·1B·1A·PHASE0 worklog / HANDOFF-20260826 `_3`~1회차 · 20260825 `_4`~1회차
+6. [ ] MEMORY.md
+7. [ ] 기준점 확인 — **runtime = server = origin = `19ebf0e`, 라이브 이미지·latest `2e6545253cc4`,
+   sitemap 69, Stop URL 14**(+docs 커밋 여부 확인). Round 26·27·Phase 0·1A·1B·1C·
+   Robotaxi Freshness·**Stage 1 Stop Pages 재작업 금지**.
+   **다음 작업은 미정** — Stage 2 / 실시간 도착정보 조사 / Search Console 후속 감사 중
+   포그린 결정 대기. 자동 착수 금지
 
 ## 핸드오프 운영 규칙
 

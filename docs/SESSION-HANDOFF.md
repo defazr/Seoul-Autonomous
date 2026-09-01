@@ -1,7 +1,69 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-08-27 (**Stage 1 Stop Pages CLOSED** — 첫 Stop 상세 14 URL 라이브, sitemap 69)
-> 다음 세션은 **이 파일을 가장 먼저** 읽고 시작한다.
+> 마지막 업데이트: 2026-09-01 (**RT-2 KO 01009 CLOSED / Production Live Approved**)
+> 다음 세션은 **이 파일을 가장 먼저** 읽고, 이어서 `docs/handoff/HANDOFF-20260901.md`를 읽는다.
+
+## 🔒 직전 완료 — Phase RT-2 (KO 01009 실시간 도착 카드)
+
+```
+RT-2 KO 01009        CLOSED / Production Live Approved
+배포                  2026-09-01 19:07 KST · downtime 1.87초 · BLOCK 0
+정본                  docs/worklogs/RT2-PRODUCTION-DEPLOYMENT-20260901.md   (배포)
+                     docs/worklogs/RT2-POST-LAUNCH-AUDIT-20260901.md       (감사)
+                     docs/worklogs/RT2-ARRIVAL-CARD-DESIGN-20260901.md     (설계 v2)
+                     docs/worklogs/RT2-IMPLEMENTATION-PREFLIGHT-20260901.md (preflight)
+```
+
+**최종 좌표**
+
+```
+Git local / origin   b10c7d3333b9e448fcfe2b116301635bd178d160
+server checkout      b10c7d3333b9e448fcfe2b116301635bd178d160
+runtime revision     b10c7d3333b9e448fcfe2b116301635bd178d160
+image / latest       sha256:d55dbf7d9afd…
+sitemap 69 · Stop URLs 14
+```
+
+**보존 자산** — 삭제·prune 0
+
+```
+backup   seoul_autonomous_web_backup_19ebf0e_20260901-190732   (backup container 8 observed)
+rollback seoul-autonomous-web:rollback-19ebf0e → 2e6545253cc4  (rollback image tags 16 observed)
+```
+
+**잠금 예외**: `approved server-side arrival proxy only` — `/api/arrivals/[stopId]` 서버측 호출만.
+브라우저 → 서울시 API 직접 호출은 **영구 금지**.
+
+**secret**: `/etc/seoul-autonomous/secrets/realtime.env` (`root:root 600`, 상위 `700`).
+값은 repo·docs·로그·보고서 어디에도 기록하지 않는다.
+
+**신규 운영 계약 2건** (배포 안전 계약 반영 대상 — 상세는 배포 정본 §8)
+
+```
+1. 컨테이너 내부 HTTP health probe 는 localhost 대신 127.0.0.1 을 사용한다.
+   이번 Production 환경에서 localhost 가 IPv6 로 해석되어, 동일 명령이 기존 Production 과
+   candidate 양쪽에서 모두 실패하는 것이 대조군으로 재현됐다.
+2. /opt/seoul-autonomous/Dockerfile 은 server-only untracked build recipe 다.
+   working-tree gate 에서 이 파일 1건만 예외 허용하고 SHA-256 pin 으로 immutability 를 확인한다.
+   pinned: 01429bd8539ae6918b86f0218cdc54027cd8423819d881a0128a587a5d2c68ac
+   ⚠ pin 은 동일성만 보장하며 Dockerfile 의 정당성을 보장하지 않는다.
+```
+
+## 👁 WATCH / backlog (RT-2 를 다시 OPEN 시키지 않는다)
+
+```
+자연 운행시간대 Production B 화면      non-blocking WATCH (데이터 조작·fixture 주입 금지)
+며칠 뒤 로그·호출량 재감사             stability follow-up 후보
+                                    (배포 직후 14분 감사는 즉시 장애 없음의 근거일 뿐)
+dev AbortError / cleanup-state flow  expansion 전 TECH-DEBT
+CLS 0.0994                          pilot ACCEPT / expansion WATCH
+RT-2 7-stop 확장                     미승인
+EN realtime localization             미승인 (기존 gate 유지)
+RT-3 map                            별도 round
+System restart required              별도 운영 라운드 (RT-2 와 분리)
+backup / image retention policy      별도 운영 backlog
+server-only Dockerfile 의 repo 편입   별도 backlog
+```
 
 ## 현재 위치
 
@@ -56,14 +118,14 @@ web Graph SSOT        web/data/routes.json
 
 ## 다음 세션 첫 작업
 
-**다음 제품 라운드는 정해지지 않았다.** 아래 중 무엇을 할지는 별도 결정 사항이며,
-자동으로 착수하지 않는다.
+**진행 중인 것은 Phase RT-1 하나다** (위 🔴 절 · 정본 `HANDOFF-20260828_2.md`).
+아래 2~5는 착수 금지이며 별도 결정 사항이다.
 
-1. **Stage 2 여부** — V3 26개 재심사. 정책 §11대로 **미승인 상태**이며 수량·대상 모두 미정.
+1. **RT-1 잔여** ← 현재 작업. 야간 03~04시 A160 관측이 남은 Gate 대부분을 닫는다.
+   그 뒤 RT-1 결과 문서 → commit/push → RT-2 설계 여부 판단.
+2. **Stage 2 여부** — V3 26개 재심사. 정책 §11대로 **미승인 상태**이며 수량·대상 모두 미정.
    Stage 1 결과(방향 차별 장치가 라이브에서 작동)는 그 판단의 입력일 뿐이다.
-2. **실시간 버스 도착정보 조사** — 서울시 실시간 교통 API READ-ONLY 조사 / 정류장별 도착시간 /
-   차량 위치 지도. **가용성·구현 가능성 미확정**이며 STATIC-FIRST·"실시간처럼 보이는 표현 금지"
-   계약이 있으므로 조사 라운드부터 별도 승인 필요.
+   RT-1 결과가 나오기 전에는 우선순위 비교도 하지 않는다.
 3. **Search Console 후속 감사** — 배포 후 약 2~3주 시점(9월 중순 전후). index coverage ·
    14 URL 색인 여부 · duplicate/canonical 신호 · 방향쌍 처리. 지금은 판정하지 않는다.
 4. **backlog** (전부 미해결·착수 금지): 01008 카드 prev/next 중복 · 데스크톱 여백 ·

@@ -373,6 +373,20 @@
     "provenanceTitle": "정보 확인 기준",
     "provenanceStopNames": "정류장 공식명 — 서울특별시 공공데이터",
     "provenanceRouteData": "노선 정차 순서·이전·다음 정류장 — 카카오맵 기반 노선 데이터",
-    "checkedOn": "확인 {date}"
+    "checkedOn": "확인 {date}",
+    "realtime": {
+      "title": "실시간 도착",
+      "refresh": "새로고침",
+      "fetchedAt": "{time} 기준",
+      "stale": "오래된 정보일 수 있습니다",
+      "failed": "실시간 정보를 불러오지 못했습니다",
+      "retry": "다시 시도"
+    },
+    "serviceHours": {
+      "title": "노선 운행 시간",
+      "window": "{first} ~ {last}",
+      "singleDeparture": "{time} 출발",
+      "note": "노선 운행 기준 시각입니다. 이 정류장의 도착 시각이 아닙니다."
+    }
   }
 }

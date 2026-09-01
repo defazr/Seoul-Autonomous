@@ -373,6 +373,20 @@
     "provenanceTitle": "How this information was checked",
     "provenanceStopNames": "Official stop names — Seoul Metropolitan Government open data",
     "provenanceRouteData": "Stop order and neighboring stops — route data based on Kakao Map",
-    "checkedOn": "checked {date}"
+    "checkedOn": "checked {date}",
+    "realtime": {
+      "title": "Live arrivals",
+      "refresh": "Refresh",
+      "fetchedAt": "As of {time}",
+      "stale": "This may be outdated",
+      "failed": "Live arrival information is unavailable right now",
+      "retry": "Try again"
+    },
+    "serviceHours": {
+      "title": "Route service hours",
+      "window": "{first} \u2013 {last}",
+      "singleDeparture": "Departs {time}",
+      "note": "These are route-level service hours, not arrival times at this stop."
+    }
   }
 }

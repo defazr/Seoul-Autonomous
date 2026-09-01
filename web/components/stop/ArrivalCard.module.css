@@ -1,0 +1,151 @@
+/* RT-2 실시간 도착 카드 — Stop 상세의 카드 언어(토큰·radius·spacing)를 그대로 따른다 */
+
+.card {
+  margin-bottom: 16px;
+  padding: 20px;
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-lg);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--color-fg-1);
+  margin: 0;
+}
+
+.refreshBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* tap target 44px — 1C backlog 의 지적을 신규 요소에서는 처음부터 지킨다 */
+  width: 44px;
+  height: 44px;
+  margin: -10px -10px -10px 0;
+  border: none;
+  background: none;
+  border-radius: 999px;
+  color: var(--color-fg-3);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.refreshBtn:hover:not(:disabled) {
+  background-color: var(--color-bg-3);
+  color: var(--color-fg-1);
+}
+
+.refreshBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.routeName {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 21px;
+  color: var(--color-fg-1);
+  overflow-wrap: anywhere;
+}
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.primary {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--color-accent);
+  letter-spacing: 0.2px;
+}
+
+.secondary {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-fg-3);
+  letter-spacing: 0.24px;
+}
+
+.meta {
+  margin: 14px 0 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-fg-3);
+  letter-spacing: 0.24px;
+}
+
+.stale {
+  color: var(--color-fg-3);
+}
+
+/* D 상태 — 비차단 소영역. 정적 콘텐츠를 밀어내지 않도록 작게 유지한다 */
+.failure {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-1);
+  border-radius: var(--radius-lg);
+}
+
+.failureText {
+  margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-fg-3);
+  overflow-wrap: anywhere;
+}
+
+.retryBtn {
+  min-height: 44px;
+  padding: 0 12px;
+  border: none;
+  background: none;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--color-accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.retryBtn:hover {
+  opacity: 0.8;
+}

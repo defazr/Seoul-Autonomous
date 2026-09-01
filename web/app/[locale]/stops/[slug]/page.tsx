@@ -9,6 +9,8 @@ import { buildPageMetadata } from '../../../../lib/seo/metadata';
 import { getOfficialStopNameEn, stopNamesSourceMeta } from '../../../../lib/stops';
 import { getRouteById } from '../../../../lib/routes';
 import { APPROVED_STOPS, getApprovedStopBySlug } from '../../../../lib/stop-pages';
+import { ArrivalCard } from '../../../../components/stop/ArrivalCard';
+import { StopServiceHours } from '../../../../components/stop/StopServiceHours';
 import routesData from '../../../../data/routes.json';
 import { buildGraph } from '../../../../lib/graph/graph-core.mjs';
 import styles from './page.module.css';
@@ -27,6 +29,11 @@ type StopRouteCard = {
   nextStopId: string | null;
   nextNameKo: string | null;
   lastChecked: string;
+  /** 노선 운행 기준값. 이 정류장의 첫차/막차가 아니다 (RT-2 설계 §3-2). */
+  routeFirstBus: string;
+  /** 노선 운행 기준값. 이 정류장의 첫차/막차가 아니다 (RT-2 설계 §3-2). */
+  routeLastBus: string;
+  routeDaysOfOperation: string;
 };
 
 type StopPageData = {
@@ -77,6 +84,9 @@ function buildStopPageData(stopId: string): StopPageData {
       nextStopId: visit.next?.stopId ?? null,
       nextNameKo: visit.next?.nameKo ?? null,
       lastChecked: route.lastChecked,
+      routeFirstBus: route.firstBus,
+      routeLastBus: route.lastBus,
+      routeDaysOfOperation: route.daysOfOperation,
     };
   });
 
@@ -262,6 +272,27 @@ export default async function StopDetailPage({
           </p>
         ) : null}
       </div>
+
+      {/* RT-2 pilot gate — KO 01009 한정. expansion 시 이 조건은 제거한다.
+          정적 안내는 항상 남는 base layer 이고, 실시간 카드는 그 위에 조건부로 추가된다. */}
+      {isKo && data.stopId === '01009' ? (
+        <>
+          <ArrivalCard
+            stopId={data.stopId}
+            ssotOrder={data.cards.map((card) => card.routeId)}
+            routeNames={Object.fromEntries(
+              data.cards.map((card, index) => [card.routeId, routeNames[index]]),
+            )}
+          />
+          <StopServiceHours entries={data.cards.map((card, index) => ({
+            routeId: card.routeId,
+            routeName: routeNames[index],
+            routeFirstBus: card.routeFirstBus,
+            routeLastBus: card.routeLastBus,
+            routeDaysOfOperation: card.routeDaysOfOperation,
+          }))} />
+        </>
+      ) : null}
 
       {/* 경유 노선 + 구조 역할 문장 (설계 V절: 별도 H2 없이 한 섹션으로 통합) */}
       <section className={styles.section} aria-labelledby="stop-routes-title">

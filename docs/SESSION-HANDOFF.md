@@ -1,9 +1,14 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-09-01 (**RT-2 KO 01009 CLOSED / Production Live Approved**)
-> 다음 세션은 **이 파일을 가장 먼저** 읽고, 이어서 `docs/handoff/HANDOFF-20260901.md`를 읽는다.
+> 마지막 업데이트: 2026-09-07 (**Search Console gate FAIL — NOT DISCOVERED / sitemap T0 SUCCESS**)
+> RT-2 KO 01009 = **CLOSED / Production Live Approved 유지** (runtime PASS / real-usage WATCH 해소)
+> 다음 세션은 **이 파일을 가장 먼저** 읽고, 이어서 `docs/handoff/HANDOFF-20260907.md`(최신) ·
+> 정본 `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md`를 읽는다.
 
-## 🔒 직전 완료 — Phase RT-2 (KO 01009 실시간 도착 카드)
+## 🔒 마지막 배포 라운드 — Phase RT-2 (KO 01009 실시간 도착 카드)
+
+> ⚠ **이건 "마지막 배포"이지 "마지막 작업"이 아니다.** 2026-09-07 에 Search Console
+> discovery 라운드가 있었고 **그게 현재 진행 축**이다 — 「다음 세션 첫 작업」 절을 볼 것.
 
 ```
 RT-2 KO 01009        CLOSED / Production Live Approved
@@ -53,8 +58,9 @@ rollback seoul-autonomous-web:rollback-19ebf0e → 2e6545253cc4  (rollback image
 
 ```
 자연 운행시간대 Production B 화면      non-blocking WATCH (데이터 조작·fixture 주입 금지)
-며칠 뒤 로그·호출량 재감사             stability follow-up 후보
-                                    (배포 직후 14분 감사는 즉시 장애 없음의 근거일 뿐)
+며칠 뒤 로그·호출량 재감사             ✅ 완료 2026-09-07 — 재실행 금지
+                                    runtime PASS · real-usage WATCH(→ GA4로 해소)
+                                    정본 RT2-STABILITY-FOLLOWUP-20260907.md
 dev AbortError / cleanup-state flow  expansion 전 TECH-DEBT
 CLS 0.0994                          pilot ACCEPT / expansion WATCH
 RT-2 7-stop 확장                     미승인
@@ -114,22 +120,49 @@ web Graph SSOT        web/data/routes.json
 `STOP-1F-EN-METADATA-POST-LAUNCH-AUDIT-20260827.md` / 정책 `docs/strategy/STOP-URL-POLICY-20260826.md`
 이전 정본: Phase 0 `PHASE0-CTG-STRUCTURE-AUDIT…` / 1A `PHASE1A-GRAPH-CORE…` / 1B `PHASE1B-A21-VERTICAL-SLICE…` /
 1C `PHASE1C-SHARED-STOP-EXPANSION-20260825.md` / `ROBOTAXI-FRESHNESS-20260826.md`
-핸드오프: **`HANDOFF-20260827.md`** ← 최신 / `HANDOFF-20260826.md` · `_2` · `_3` / `HANDOFF-20260825.md` · `_2`~`_4`
+핸드오프: **`HANDOFF-20260907.md`** ← 최신 / `HANDOFF-20260901.md` / `HANDOFF-20260827.md` / `HANDOFF-20260826.md` · `_2` · `_3` / `HANDOFF-20260825.md` · `_2`~`_4`
 
 ## 다음 세션 첫 작업
 
-**진행 중인 것은 Phase RT-1 하나다** (위 🔴 절 · 정본 `HANDOFF-20260828_2.md`).
-아래 2~5는 착수 금지이며 별도 결정 사항이다.
+**진행 중인 라운드는 없다.** RT-1 = **CLOSED**, RT-2 KO 01009 = **CLOSED / Production Live Approved**.
+2026-09-07 stability follow-up 완료 — 정본 `docs/worklogs/RT2-STABILITY-FOLLOWUP-20260907.md`.
 
-1. **RT-1 잔여** ← 현재 작업. 야간 03~04시 A160 관측이 남은 Gate 대부분을 닫는다.
-   그 뒤 RT-1 결과 문서 → commit/push → RT-2 설계 여부 판단.
-2. **Stage 2 여부** — V3 26개 재심사. 정책 §11대로 **미승인 상태**이며 수량·대상 모두 미정.
+```
+RT-2 runtime / operational stability   PASS
+RT-2 real-usage / long-load evidence   WATCH
+RT-2 product status                    CLOSED / Production Live Approved 유지
+```
+
+**이 WATCH는 RT-2 재오픈 사유가 아니다.**
+
+```
+SEARCH CONSOLE GATE — 2026-09-07 조기 개방 · 판정 완료
+판정          FAIL — NOT DISCOVERED   (색인 거절 아님. 발견 실패)
+실측          14/14 URL is unknown to Google · lastCrawlTime 14/14 없음
+indexability  14/14 PASS (200·canonical·robots·sitemap·내부링크·본문 전부 정상)
+내부 링크      crawlable <a href> 14/14 도달 가능 — 단 보유 route 3개가 출시 전 마지막 크롤
+
+sitemap T0 개입   SUCCESS   2026-09-07 13:28:05 KST · HTTP 204 · write 정확히 1회
+  lastDownloaded  2026-06-14 → 2026-09-07 13:28 KST
+  reported URLs   50 → 69          errors/warnings 0/0
+  ※ ①재다운로드 ②69 반영 ③14 URL UNKNOWN 탈출 은 서로 다른 신호다. ①②를 ③으로 읽지 않는다.
+
+NEXT   2026-09-08 13:30 KST 전후 (T+24h) READ-ONLY discovery observation
+       T+72h 2026-09-10 / Decision T+7d 2026-09-14 — 정본 §8 관측 계약
+       실험 변수 고정. 재제출·Request Indexing·재크롤 요청 전부 금지
+AdSense  Search Console discovery 문제를 닫은 뒤 별도 GO/HOLD (3차 거절과 연결 금지)
+```
+
+아래는 전부 **착수 금지**이며 별도 결정 사항이다.
+
+1. **Stage 2 여부** — V3 26개 재심사. 정책 §11대로 **미승인 상태**이며 수량·대상 모두 미정.
    Stage 1 결과(방향 차별 장치가 라이브에서 작동)는 그 판단의 입력일 뿐이다.
-   RT-1 결과가 나오기 전에는 우선순위 비교도 하지 않는다.
-3. **Search Console 후속 감사** — 배포 후 약 2~3주 시점(9월 중순 전후). index coverage ·
-   14 URL 색인 여부 · duplicate/canonical 신호 · 방향쌍 처리. 지금은 판정하지 않는다.
-4. **backlog** (전부 미해결·착수 금지): 01008 카드 prev/next 중복 · 데스크톱 여백 ·
-   tap target 44px · 1C backlog 3건.
+2. **RT-2 6-stop 확장 / RT-3 지도 / EN realtime / observability 코드** — 전부 미승인.
+   observability 개선을 제품 코드로 선행 구현하지 않는다.
+3. **backlog** (전부 미해결·착수 금지): 01008 카드 prev/next 중복 · 데스크톱 여백 ·
+   tap target 44px · 1C backlog 3건 · `.playwright-mcp/` 반복 재생성(housekeeping) ·
+   `.gitignore` 추가(미승인) · `Failed to find Server Action` 프로빙(RT-2와 별도).
+4. **A21 static 40 ↔ API 44** — RT-3 시작 전 CLOSE 필수.
 5. 그 밖의 이월: 지도↔CTG 매핑 · static decision(C1O 재조사 선행: days 7/11·headway 4/11 미확인) ·
    N버스 통합.
 
@@ -167,16 +200,21 @@ stopId 반복 2건에서 prev/next 정확 / loop 오분류 0 / shared-stop이 St
 ## 좌표
 
 ```
-local HEAD          19ebf0e + 2026-08-27 docs-only 커밋 (커밋·push는 승인 후)
-origin/main         19ebf0e  (Stage 1 코드 2건까지 push 완료)
-server checkout     19ebf0e
-runtime revision    19ebf0eafd3450484959465946f5fa89a80c9ff8   ← OCI label로 직접 증명 가능
-live image ID       sha256:2e6545253cc44a6a5e1b1d9fccc7c070fd4c6165f852af5aeabdf36159d10dc9
-latest              동일 (2e6545253cc4 — 사용자 라이브 승인 후 정렬 완료)
-previous runtime    f34ede8 (이미지 dd19df584b62) ← rollback 기준점 (rollback-f34ede8)
+local HEAD          4af3bb7   (RT-2 docs closure — docs-only)
+origin/main         4af3bb7   ahead/behind 0/0
+server checkout     b10c7d3333b9e448fcfe2b116301635bd178d160
+Production runtime  b10c7d3333b9e448fcfe2b116301635bd178d160   ← OCI label로 직접 증명 가능
+image / latest      sha256:d55dbf7d9afdcefa10968507e26d3ad6fa5302cb94801ec5b242f4011f2c3fa5
+                    (IMAGE_MATCH=PASS — running image == latest)
+previous runtime    19ebf0e (이미지 2e6545253cc4) ← rollback 기준점 (rollback-19ebf0e)
 sitemap             69 (Stage 1 Stop URL 14 — 7 stop × ko/en)
 Stage 1 코드 커밋    f34ede8 구현 / 19ebf0e EN metadata polish
+RT-2 코드 커밋       b10c7d3
 ```
+
+⚠ **docs-only 커밋 때문에 local/origin HEAD와 Production runtime SHA는 의도적으로 다를 수 있다.**
+현재 정상 관계는 `local/origin = 4af3bb7` · `server/runtime = b10c7d3` 이며, 이 차이는 **drift가 아니다.**
+`runtime = server = origin` 을 단일 SHA로 강제 기대하지 말 것.
 
 **Git HEAD ≠ runtime은 docs-only 커밋 때문 — 정상.** 라이브 판정은 컨테이너 라벨로:
 
@@ -187,6 +225,8 @@ docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revisi
 보존 자산 — **삭제·prune 금지**
 
 ```
+RT2 backup    seoul_autonomous_web_backup_19ebf0e_20260901-190732  (exited)
+RT2 rollback  seoul-autonomous-web:rollback-19ebf0e → 2e6545253cc4
 1F backup     seoul_autonomous_web_backup_f34ede8_20260827-212828  (exited)
 1F rollback   seoul-autonomous-web:rollback-f34ede8 → dd19df584b62
 1E backup     seoul_autonomous_web_backup_8e3c9f8_20260827-193733  (exited)
@@ -313,17 +353,21 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 ## 새 세션 시작 시
 
 1. [ ] 이 문서
-2. [ ] `docs/worklogs/STAGE1-STOP-PAGES-DEPLOYMENT-20260827.md` (Stage 1 정본 — 최신)
+2. [ ] `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md` (**최상위 정본 — discovery 실험·관측 계약**)
+   `docs/worklogs/STAGE1-STOP-PAGES-DEPLOYMENT-20260827.md` (Stage 1 구현·배포 정본)
 3. [ ] `docs/strategy/STOP-URL-POLICY-20260826.md` (Stop URL 안전 계약)
-4. [ ] `docs/handoff/HANDOFF-20260827.md` · 설계 `STAGE1-STOP-PAGE-DESIGN-20260826.md` ·
+4. [ ] `docs/handoff/HANDOFF-20260907.md`(최신) · `HANDOFF-20260901.md` · 설계 `STAGE1-STOP-PAGE-DESIGN-20260826.md` ·
    감사 2건(`STAGE1-STOP-PAGES-POST-LAUNCH-AUDIT-20260827.md` · `STOP-1F-EN-METADATA-…-20260827.md`)
 5. [ ] 이전 정본: ROBOTAXI-FRESHNESS · PHASE1C·1B·1A·PHASE0 worklog / HANDOFF-20260826 `_3`~1회차 · 20260825 `_4`~1회차
 6. [ ] MEMORY.md
-7. [ ] 기준점 확인 — **runtime = server = origin = `19ebf0e`, 라이브 이미지·latest `2e6545253cc4`,
-   sitemap 69, Stop URL 14**(+docs 커밋 여부 확인). Round 26·27·Phase 0·1A·1B·1C·
-   Robotaxi Freshness·**Stage 1 Stop Pages 재작업 금지**.
-   **다음 작업은 미정** — Stage 2 / 실시간 도착정보 조사 / Search Console 후속 감사 중
-   포그린 결정 대기. 자동 착수 금지
+7. [ ] 기준점 확인 — **축을 따로 본다. 단일 SHA 기대 금지.**
+   - local/origin docs HEAD = `4af3bb7` (ahead/behind 0/0)
+   - server checkout / Production runtime = `b10c7d3` (RT-2 코드)
+   - image·latest = `d55dbf7d9afd…` / sitemap 69 / Stop URL 14
+   **Production runtime이 origin/main보다 docs commit 1개 뒤인 것은 현재 정상이며 drift가 아니다.**
+   Round 26·27·Phase 0·1A·1B·1C·Robotaxi Freshness·**Stage 1 Stop Pages·RT-2 재작업 금지**.
+   **다음 = 2026-09-08 T+24h discovery 관측** (게이트는 09-07 조기 개방·FAIL NOT DISCOVERED 판정 완료). 그 전에 RT-2 6-stop 확장 ·
+   RT-3 지도 · EN realtime · observability 코드 · AdSense 재신청 전부 자동 착수 금지
 
 ## 핸드오프 운영 규칙
 

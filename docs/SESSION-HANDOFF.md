@@ -19,13 +19,13 @@ RT-2 KO 01009        CLOSED / Production Live Approved
                      docs/worklogs/RT2-IMPLEMENTATION-PREFLIGHT-20260901.md (preflight)
 ```
 
-**최종 좌표**
+**RT-2 종료 시점(2026-09-01) 좌표 — 역사 기록. 현재값 아님**
 
 ```
-Git local / origin   b10c7d3333b9e448fcfe2b116301635bd178d160
-server checkout      b10c7d3333b9e448fcfe2b116301635bd178d160
-runtime revision     b10c7d3333b9e448fcfe2b116301635bd178d160
-image / latest       sha256:d55dbf7d9afd…
+Git local / origin   b10c7d3…   ← 당시 값. 이후 docs 커밋으로 전진했다 (현재값은 git rev-parse)
+server checkout      b10c7d3333b9e448fcfe2b116301635bd178d160   ← 현재도 유효 (Production axis)
+runtime revision     b10c7d3333b9e448fcfe2b116301635bd178d160   ← 현재도 유효
+image / latest       sha256:d55dbf7d9afd…                       ← 현재도 유효
 sitemap 69 · Stop URLs 14
 ```
 
@@ -124,8 +124,17 @@ web Graph SSOT        web/data/routes.json
 
 ## 다음 세션 첫 작업
 
-**진행 중인 라운드는 없다.** RT-1 = **CLOSED**, RT-2 KO 01009 = **CLOSED / Production Live Approved**.
+**현재 활성 구현·배포 라운드는 없다.** RT-1 = **CLOSED**, RT-2 KO 01009 = **CLOSED / Production Live Approved**.
 2026-09-07 stability follow-up 완료 — 정본 `docs/worklogs/RT2-STABILITY-FOLLOWUP-20260907.md`.
+
+**단, 현재 진행 축은 있다 — Stage-1 Search Console discovery 관측이다.**
+코드 작업이 아니라 **observation-only** 상태이며, 실험 변수는 전면 동결이다.
+
+```
+implementation / deployment round   none
+observation axis                    ACTIVE — Stage-1 discovery (T0 2026-09-07 13:28 KST)
+NEXT                                2026-09-08 13:30 KST 전후 · T+24h READ-ONLY discovery observation
+```
 
 ```
 RT-2 runtime / operational stability   PASS
@@ -199,9 +208,17 @@ stopId 반복 2건에서 prev/next 정확 / loop 오분류 0 / shared-stop이 St
 
 ## 좌표
 
+**Git docs axis — 절대 SHA를 기대값으로 pin하지 않는다** (docs-only 커밋마다 전진하므로 pin하면 즉시 stale):
+
 ```
-local HEAD          4af3bb7   (RT-2 docs closure — docs-only)
-origin/main         4af3bb7   ahead/behind 0/0
+local HEAD == origin/main
+ahead/behind = 0/0
+최신 local/origin SHA = 새 세션에서 git rev-parse 로 동적 확인 (문서에 고정하지 않음)
+```
+
+**Production axis — pin 가능 (docs 커밋으로 변하지 않음):**
+
+```
 server checkout     b10c7d3333b9e448fcfe2b116301635bd178d160
 Production runtime  b10c7d3333b9e448fcfe2b116301635bd178d160   ← OCI label로 직접 증명 가능
 image / latest      sha256:d55dbf7d9afdcefa10968507e26d3ad6fa5302cb94801ec5b242f4011f2c3fa5
@@ -212,9 +229,18 @@ Stage 1 코드 커밋    f34ede8 구현 / 19ebf0e EN metadata polish
 RT-2 코드 커밋       b10c7d3
 ```
 
-⚠ **docs-only 커밋 때문에 local/origin HEAD와 Production runtime SHA는 의도적으로 다를 수 있다.**
-현재 정상 관계는 `local/origin = 4af3bb7` · `server/runtime = b10c7d3` 이며, 이 차이는 **drift가 아니다.**
-`runtime = server = origin` 을 단일 SHA로 강제 기대하지 말 것.
+⚠ **docs-only 커밋은 local/origin HEAD만 전진시키고 Production runtime 을 바꾸지 않는다.**
+따라서 두 SHA 가 다른 것은 **정상이며 drift 가 아니다.** 정상 게이트는 다음 형태다:
+
+```
+local HEAD == origin/main  ·  ahead/behind 0/0        ← docs axis (절대 SHA 대조 안 함)
+server checkout == runtime == b10c7d3                 ← Production axis (pin)
+running image == d55dbf7d9afd…                        ← Production axis (pin)
+```
+
+🚫 **`local/origin = <특정 SHA>` 를 current-state 기대값으로 쓰지 않는다** — 다음 docs 커밋에서 반드시 어긋난다.
+🚫 **`runtime = server = origin` 단일 SHA 계약은 영구 금지.**
+(과거 기록으로서의 SHA — 예 "docs commit `f446d8d` 에서 T0 정본화 완료" — 는 유효하며 삭제하지 않는다.)
 
 **Git HEAD ≠ runtime은 docs-only 커밋 때문 — 정상.** 라이브 판정은 컨테이너 라벨로:
 
@@ -361,10 +387,18 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 5. [ ] 이전 정본: ROBOTAXI-FRESHNESS · PHASE1C·1B·1A·PHASE0 worklog / HANDOFF-20260826 `_3`~1회차 · 20260825 `_4`~1회차
 6. [ ] MEMORY.md
 7. [ ] 기준점 확인 — **축을 따로 본다. 단일 SHA 기대 금지.**
-   - local/origin docs HEAD = `4af3bb7` (ahead/behind 0/0)
-   - server checkout / Production runtime = `b10c7d3` (RT-2 코드)
-   - image·latest = `d55dbf7d9afd…` / sitemap 69 / Stop URL 14
-   **Production runtime이 origin/main보다 docs commit 1개 뒤인 것은 현재 정상이며 drift가 아니다.**
+   - **docs axis (동적 확인 — 절대 SHA 대조 금지)**
+     ```
+     git rev-parse HEAD ; git rev-parse origin/main
+     git rev-list --left-right --count HEAD...origin/main
+     → HEAD == origin/main 이고 0/0 이면 docs Git axis PASS
+     ```
+     필요하면 `git merge-base --is-ancestor b10c7d3 HEAD` 로 RT-2 코드가 history 에 포함됐는지 확인.
+     **이것을 Production deploy SHA 동일성으로 오독하지 말 것.**
+   - **Production axis (pin — 이 값과 달라지면 조사)**
+     server checkout / runtime = `b10c7d3` · image·latest = `d55dbf7d9afd…` / sitemap 69 / Stop URL 14
+   **Production runtime 이 origin/main 보다 docs 커밋 N개 뒤인 것은 정상이며 drift 가 아니다.**
+   (N 은 docs 커밋마다 늘어난다 — 숫자를 문서에 고정하지 말 것. 확인은 `git rev-list --count b10c7d3..HEAD`)
    Round 26·27·Phase 0·1A·1B·1C·Robotaxi Freshness·**Stage 1 Stop Pages·RT-2 재작업 금지**.
    **다음 = 2026-09-08 T+24h discovery 관측** (게이트는 09-07 조기 개방·FAIL NOT DISCOVERED 판정 완료). 그 전에 RT-2 6-stop 확장 ·
    RT-3 지도 · EN realtime · observability 코드 · AdSense 재신청 전부 자동 착수 금지

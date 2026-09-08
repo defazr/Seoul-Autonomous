@@ -28,6 +28,12 @@ CLOSED / Production Live Approved 유지
 
 게이트는 원래 2026년 9월 중순 예정이었으나 **2026-09-07 실측으로 조기 개방·판정 완료**했다.
 
+> **⚠ Superseded 2026-09-09 — §13 참조.**
+> 위 `FAIL — NOT DISCOVERED` 는 **T0(2026-09-07) 당시 사실**이며 삭제·수정하지 않는다.
+> 당시 14/14 가 `URL is unknown to Google` 이었으므로 정확한 역사 기록이다.
+> 2026-09-09 08:14 KST(T+42.8h) 관측에서 10/14 가 UNKNOWN 을 벗어나,
+> 현재 Stage-1 discovery 상태는 **`DISCOVERY STARTED`** 로 갱신됐다.
+
 ---
 
 ## 1. 게이트 실측 — 14/14 unknown
@@ -259,6 +265,12 @@ T+7d 에도 14/14 UNKNOWN
     T+7d 에도 자동 실행하지 않고 별도 판단을 받는다.
 ```
 
+> **⚠ 관측 계약 갱신 2026-09-09 — §13 이 대체한다.**
+> 위 계약의 `T+7d 에도 14/14 UNKNOWN → 두 번째 discovery 축 개방` 조건은
+> **더 이상 성립하지 않는다** (T+42.8h 에 10/14 discovery 확인).
+> T+72h·T+7d 의 우선 관측 신호와 Decision 기준은 §13 을 따른다.
+> 원문은 T0 당시 계약의 역사 기록으로 보존한다.
+
 ---
 
 ## 9. 외부 변경 동결
@@ -330,3 +342,147 @@ Stop 출시    2026-08-27
 **아이디어** — §3 이 사실이라면, 재제출과 별개로 **최근 크롤되는 페이지에 Stop 진입 경로가
 하나도 없다**는 구조가 남는다. 코드 변경 사안이므로 이번에 착수하지 않으며, T+7d 판정
 이후 후보로만 남긴다.
+
+---
+
+## 13. T+42.8h follow-up — DISCOVERY STARTED (2026-09-09)
+
+> 이 절은 §0 판정과 §8 관측 계약을 **대체(supersede)** 한다.
+> 두 절의 원문은 수정하지 않는다 — T0 시점의 정확한 역사 기록이기 때문이다.
+
+### 13.1 판정 갱신
+
+```
+Stage-1 discovery 상태
+DISCOVERY STARTED
+
+T0(2026-09-07) 판정   FAIL — NOT DISCOVERED   ← 당시 사실. 삭제·수정하지 않는다
+2026-09-09 관측        위 상태를 Superseded
+```
+
+읽는 법은 이 한 문장이다:
+**"T0 에서 FAIL — NOT DISCOVERED 였으나, 2026-09-09 후속 관측에서 DISCOVERY STARTED 확인."**
+
+"T0 판정이 틀렸다"가 아니다. T0 시점 14/14 는 실제로 `URL is unknown to Google` 이었고,
+그 측정과 판정은 지금도 유효한 기록이다.
+
+### 13.2 실측 — 2026-09-09 08:14 KST (T+42.8h)
+
+sitemap
+
+```
+lastSubmitted    2026-09-07 13:28 KST    변동 없음 (재제출 0회)
+lastDownloaded   2026-09-08 16:55 KST    T0 이후 자동 재수집 1회 추가 발생
+reported URLs    69                      유지
+errors/warnings  0 / 0
+contents         web submitted 69 / indexed 0
+```
+
+URL Inspection — Stage-1 14 URL 전수, 각 URL 1회
+
+```
+Discovered - currently not indexed   10 / 14
+URL is unknown to Google              4 / 14
+lastCrawlTime                         0 / 14   (전건 없음)
+verdict                              14 / 14   NEUTRAL
+```
+
+잔여 UNKNOWN 4건
+
+```
+/en/stops/01007-seoul-museum-of-history-gyeonghuigung-palace
+/en/stops/01008-seoul-museum-of-history-gyeonghuigung-palace
+/en/stops/01009-gwanghwamun-station
+/ko/stops/01007-seoul-museum-of-history-gyeonghuigung-palace
+```
+
+검색 성과
+
+```
+/stops/ impressions   0             (2026-08-27 ~ 09-08)
+사이트 전체 대조군      18 impressions / 11일   ← 사이트 자체는 정상 노출 중
+```
+
+외부 변경 — 전부 0
+
+```
+GSC write 0 · sitemap 재제출 0 · Request Indexing 0 · route 재크롤 요청 0
+제품 코드 0 · Production 0
+발급 scope = webmasters.readonly 단독 (쓰기 scope 미발급)
+```
+
+### 13.3 해석 — 넘지 않는 4개 선
+
+1. **DISCOVERY STARTED 는 "색인 시작"이 아니다.**
+   Google 이 URL 의 **존재를 인식하기 시작했다**는 뜻까지다.
+
+2. **아직 크롤은 시작되지 않았다.**
+   근거 = `lastCrawlTime` 14/14 없음. 발견 → 크롤 → 색인 중 **첫 단계만** 넘었다.
+
+3. **인과 순서는 확정하지 않는다.**
+   09-08 16:55 자동 재다운로드가 discovery 를 만든 것인지, T0 fetch 가 이미 만든 것을
+   오늘 처음 관측한 것인지 구분할 수 없다 — T+24h 중간 체크포인트를 관측하지 않았기
+   때문이다. 어느 쪽이든 **sitemap 축이 열렸다는 결론은 같다.**
+
+4. **잔여 4 URL 의 공통 결함을 추론하지 않는다.**
+   §2 preflight 14/14 PASS 를 뒤집을 근거가 아직 없다. 언어로도 stop 으로도 갈리지
+   않는다 — 같은 01007 쌍이 ko/en 으로 갈리고, 01009 는 ko 만 전환됐다.
+
+### 13.4 관측 계약 갱신 (§8 대체)
+
+체크포인트 시각은 유지하고 **우선 관측 신호만 교체**한다.
+
+```
+T+72h      2026-09-10 13:30 KST 전후   READ-ONLY observation (판정 아님)
+Decision   2026-09-14 13:30 KST 전후   T+7d
+```
+
+T+72h 우선 관측 신호 — 순서대로
+
+```
+1  14 URL 중 lastCrawlTime 이 하나라도 최초 발생했는가
+2  잔여 4 UNKNOWN 이 추가로 Discovered 로 전환됐는가
+3  Discovered 가 Crawled / Indexed 계열로 진행했는가
+```
+
+**indexed 까지 즉시 요구하지 않는다.**
+
+T+7d Decision 갱신
+
+```
+폐기   "T+7d 에도 discovery absent → route 미재크롤 두 번째 축 개방"
+       → discovery 가 이미 시작됐으므로 조건 자체가 성립하지 않는다.
+         2026-09-14 에 route 재크롤을 자동 개방하지 않는다.
+
+대체   Decision 에서 보는 것
+       · 14 URL 의 discovery 완료 정도
+       · lastCrawlTime 발생 여부
+       · Crawled / Indexed 전환 여부
+       · 잔여 UNKNOWN 의 지속 여부
+       → 그 결과를 보고 다음 원인 조사·외부 조치를 별도 판단한다. 자동 실행 금지.
+```
+
+§9 외부 변경 동결은 **그대로 유효**하다. 재제출·Request Indexing·재크롤 요청·
+내부링크 변경·sitemap 구조 변경은 계속 금지다.
+
+### 13.5 이번 갱신에서 하지 않은 것
+
+```
+제품 코드 수정 · GSC/GA4 write · sitemap 재제출 · Request Indexing · route 재크롤 요청
+Production 변경 · RT-2 확장 · RT-3 · EN realtime · AdSense 재신청 · backlog 정리
+commit · push        ← 별도 승인 대기 (이번 라운드에서 실행하지 않는다)
+```
+
+### 13.6 CC 이견 및 아이디어 (T+42.8h 시점)
+
+**이견 1 — §12 이견 2 를 여기서 뒤집어 기록한다.** T0 당시 CC 는 "이후에도 14 URL 이
+unknown 이면 두 번째 축(route 미재크롤)을 강하게 지지한다"고 적었다. 그 전제 자체가
+소멸했다 — 10/14 가 sitemap 축만으로 발견됐다. §12 원문은 **당시 판단으로 보존**하되,
+현재 유효한 것은 §13.4 다.
+
+**이견 2 — T+24h 를 놓친 실제 손실은 인과 구분 하나다.** 실험은 훼손되지 않았고 판정도
+가능했다. 다만 §13.3-3 을 영구히 미확정으로 남기게 됐다. 이후 라운드에서 관측
+체크포인트는 "놓쳐도 되는 것"이 아니라 **인과를 사는 비용**으로 취급한다.
+
+**아이디어 없음** — 관측 대기 국면에서 제안은 변수만 늘린다. §12 아이디어(최근 크롤
+페이지에 Stop 진입 경로 0)는 여전히 후보로만 남기며, Decision 이후에 다시 본다.

@@ -1,9 +1,10 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-09-07 (**Search Console gate FAIL — NOT DISCOVERED / sitemap T0 SUCCESS**)
+> 마지막 업데이트: 2026-09-09 (**Stage-1 discovery = DISCOVERY STARTED — T0 FAIL 판정은 Superseded**)
 > RT-2 KO 01009 = **CLOSED / Production Live Approved 유지** (runtime PASS / real-usage WATCH 해소)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고, 이어서 `docs/handoff/HANDOFF-20260907.md`(최신) ·
 > 정본 `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md`를 읽는다.
+> ⚠ 그 문서에서 **현재 유효한 판정·관측 계약은 §13** 이다. §0·§8 은 T0 당시 기록이며 Superseded.
 
 ## 🔒 마지막 배포 라운드 — Phase RT-2 (KO 01009 실시간 도착 카드)
 
@@ -133,7 +134,8 @@ web Graph SSOT        web/data/routes.json
 ```
 implementation / deployment round   none
 observation axis                    ACTIVE — Stage-1 discovery (T0 2026-09-07 13:28 KST)
-NEXT                                2026-09-08 13:30 KST 전후 · T+24h READ-ONLY discovery observation
+현재 판정                            DISCOVERY STARTED  (2026-09-09 08:14 KST · T+42.8h 관측)
+NEXT                                2026-09-10 13:30 KST 전후 · T+72h READ-ONLY discovery observation
 ```
 
 ```
@@ -145,19 +147,37 @@ RT-2 product status                    CLOSED / Production Live Approved 유지
 **이 WATCH는 RT-2 재오픈 사유가 아니다.**
 
 ```
-SEARCH CONSOLE GATE — 2026-09-07 조기 개방 · 판정 완료
-판정          FAIL — NOT DISCOVERED   (색인 거절 아님. 발견 실패)
-실측          14/14 URL is unknown to Google · lastCrawlTime 14/14 없음
-indexability  14/14 PASS (200·canonical·robots·sitemap·내부링크·본문 전부 정상)
-내부 링크      crawlable <a href> 14/14 도달 가능 — 단 보유 route 3개가 출시 전 마지막 크롤
+SEARCH CONSOLE GATE — 2026-09-07 조기 개방 · 2026-09-09 후속 관측으로 갱신
+현재 판정      DISCOVERY STARTED
+              읽는 법 = "T0 에서 FAIL — NOT DISCOVERED 였으나,
+                        2026-09-09 후속 관측에서 DISCOVERY STARTED 확인"
+T0 판정        FAIL — NOT DISCOVERED   ← 삭제·수정하지 않는다.
+              T0 당시 14/14 가 URL is unknown to Google 이었으므로 정확한 역사 기록이다
+indexability  14/14 PASS (200·canonical·robots·sitemap·내부링크·본문 전부 정상) — 불변
+내부 링크      crawlable <a href> 14/14 도달 가능 (Stop 링크 보유 route 3개는 출시 전 마지막 크롤)
 
-sitemap T0 개입   SUCCESS   2026-09-07 13:28:05 KST · HTTP 204 · write 정확히 1회
-  lastDownloaded  2026-06-14 → 2026-09-07 13:28 KST
+sitemap   T0 개입 SUCCESS   2026-09-07 13:28:05 KST · HTTP 204 · write 정확히 1회
+  lastSubmitted   2026-09-07 13:28 KST (그대로 · 재제출 0회)
+  lastDownloaded  2026-06-14 → 2026-09-07 13:28 → 2026-09-08 16:55 KST (자동 재수집 부활)
   reported URLs   50 → 69          errors/warnings 0/0
-  ※ ①재다운로드 ②69 반영 ③14 URL UNKNOWN 탈출 은 서로 다른 신호다. ①②를 ③으로 읽지 않는다.
 
-NEXT   2026-09-08 13:30 KST 전후 (T+24h) READ-ONLY discovery observation
-       T+72h 2026-09-10 / Decision T+7d 2026-09-14 — 정본 §8 관측 계약
+T+42.8h 실측   2026-09-09 08:14 KST · GSC write 0 · readonly scope 단독
+  Discovered - currently not indexed   10 / 14
+  URL is unknown to Google              4 / 14   (/en 01007·01008·01009 · /ko 01007)
+  lastCrawlTime                         0 / 14   ← 크롤은 아직 시작되지 않았다
+  verdict                              14 / 14   NEUTRAL
+  /stops/ impressions                   0        (사이트 전체 대조군 18 imp / 11일)
+
+  ※ DISCOVERY STARTED = "Google 이 URL 존재를 인식하기 시작" 이지 색인 시작이 아니다
+  ※ 09-08 재다운로드와 discovery 의 인과 순서는 미확정 (T+24h 미관측) — 단정 금지
+  ※ 잔여 4건의 공통 결함 추론 금지 — preflight 14/14 PASS 를 뒤집을 근거 없음
+
+NEXT   2026-09-10 13:30 KST 전후 (T+72h) READ-ONLY discovery observation
+       우선 신호 ①lastCrawlTime 최초 발생 ②잔여 4 UNKNOWN 전환 ③Crawled/Indexed 진행
+       indexed 까지 즉시 요구하지 않는다
+Decision  2026-09-14 (T+7d) — 정본 §13.4 갱신 계약
+       🚫 "discovery absent → route 미재크롤 두 번째 축 개방" 조건은 폐기됐다(이미 발견됨).
+          2026-09-14 에 route 재크롤을 자동 개방하지 않는다. 결과를 보고 별도 판단한다
        실험 변수 고정. 재제출·Request Indexing·재크롤 요청 전부 금지
 AdSense  Search Console discovery 문제를 닫은 뒤 별도 GO/HOLD (3차 거절과 연결 금지)
 ```
@@ -379,7 +399,7 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 ## 새 세션 시작 시
 
 1. [ ] 이 문서
-2. [ ] `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md` (**최상위 정본 — discovery 실험·관측 계약**)
+2. [ ] `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md` (**최상위 정본 — discovery 실험·관측 계약. 유효 계약은 §13**)
    `docs/worklogs/STAGE1-STOP-PAGES-DEPLOYMENT-20260827.md` (Stage 1 구현·배포 정본)
 3. [ ] `docs/strategy/STOP-URL-POLICY-20260826.md` (Stop URL 안전 계약)
 4. [ ] `docs/handoff/HANDOFF-20260907.md`(최신) · `HANDOFF-20260901.md` · 설계 `STAGE1-STOP-PAGE-DESIGN-20260826.md` ·
@@ -400,7 +420,7 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
    **Production runtime 이 origin/main 보다 docs 커밋 N개 뒤인 것은 정상이며 drift 가 아니다.**
    (N 은 docs 커밋마다 늘어난다 — 숫자를 문서에 고정하지 말 것. 확인은 `git rev-list --count b10c7d3..HEAD`)
    Round 26·27·Phase 0·1A·1B·1C·Robotaxi Freshness·**Stage 1 Stop Pages·RT-2 재작업 금지**.
-   **다음 = 2026-09-08 T+24h discovery 관측** (게이트는 09-07 조기 개방·FAIL NOT DISCOVERED 판정 완료). 그 전에 RT-2 6-stop 확장 ·
+   **다음 = 2026-09-10 T+72h discovery 관측** (현재 판정 DISCOVERY STARTED — T0 FAIL 은 09-09 관측으로 Superseded). 그 전에 RT-2 6-stop 확장 ·
    RT-3 지도 · EN realtime · observability 코드 · AdSense 재신청 전부 자동 착수 금지
 
 ## 핸드오프 운영 규칙

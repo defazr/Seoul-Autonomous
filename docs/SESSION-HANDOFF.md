@@ -1,10 +1,10 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-09-09 (**Stage-1 discovery = DISCOVERY STARTED — T0 FAIL 판정은 Superseded**)
+> 마지막 업데이트: 2026-09-10 (**DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED — T+72.6h 관측**)
 > RT-2 KO 01009 = **CLOSED / Production Live Approved 유지** (runtime PASS / real-usage WATCH 해소)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고, 이어서 `docs/handoff/HANDOFF-20260907.md`(최신) ·
 > 정본 `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md`를 읽는다.
-> ⚠ 그 문서에서 **현재 유효한 판정·관측 계약은 §13** 이다. §0·§8 은 T0 당시 기록이며 Superseded.
+> ⚠ 그 문서에서 **현재 유효한 판정·관측 계약은 §14** 다. §0·§8·§13 은 당시 기록이며 Superseded.
 
 ## 🔒 마지막 배포 라운드 — Phase RT-2 (KO 01009 실시간 도착 카드)
 
@@ -134,8 +134,9 @@ web Graph SSOT        web/data/routes.json
 ```
 implementation / deployment round   none
 observation axis                    ACTIVE — Stage-1 discovery (T0 2026-09-07 13:28 KST)
-현재 판정                            DISCOVERY STARTED  (2026-09-09 08:14 KST · T+42.8h 관측)
-NEXT                                2026-09-10 13:30 KST 전후 · T+72h READ-ONLY discovery observation
+현재 판정                            DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED
+                                    (2026-09-10 14:01 KST · T+72.6h 관측)
+NEXT                                2026-09-14 13:30 KST 전후 · T+7d Decision
 ```
 
 ```
@@ -147,7 +148,7 @@ RT-2 product status                    CLOSED / Production Live Approved 유지
 **이 WATCH는 RT-2 재오픈 사유가 아니다.**
 
 ```
-SEARCH CONSOLE GATE — 2026-09-07 조기 개방 · 2026-09-09 후속 관측으로 갱신
+SEARCH CONSOLE GATE — 2026-09-07 조기 개방 · 2026-09-10 T+72.6h 관측까지 반영
 현재 판정      DISCOVERY STARTED
               읽는 법 = "T0 에서 FAIL — NOT DISCOVERED 였으나,
                         2026-09-09 후속 관측에서 DISCOVERY STARTED 확인"
@@ -161,25 +162,35 @@ sitemap   T0 개입 SUCCESS   2026-09-07 13:28:05 KST · HTTP 204 · write 정�
   lastDownloaded  2026-06-14 → 2026-09-07 13:28 → 2026-09-08 16:55 KST (자동 재수집 부활)
   reported URLs   50 → 69          errors/warnings 0/0
 
-T+42.8h 실측   2026-09-09 08:14 KST · GSC write 0 · readonly scope 단독
-  Discovered - currently not indexed   10 / 14
-  URL is unknown to Google              4 / 14   (/en 01007·01008·01009 · /ko 01007)
-  lastCrawlTime                         0 / 14   ← 크롤은 아직 시작되지 않았다
-  verdict                              14 / 14   NEUTRAL
-  /stops/ impressions                   0        (사이트 전체 대조군 18 imp / 11일)
+coverageState snapshot   ※ 개별 URL 추세로 읽지 않는다. 그 시점 총계로만 기록
+  2026-09-09 T+42.8h    Discovered 10 / UNKNOWN 4
+  2026-09-10 T+72.6h    Discovered  9 / UNKNOWN 5   (U→D 3 · D→U 4 · 동일 7)
+  lastCrawlTime          0 / 14   양 회차 모두 — CRAWL NOT OBSERVED
+  verdict                09-09 NEUTRAL 14/14 · 09-10 미기록 확정(추정·승계 금지)
+                         → T+72h 기록 품질 = 부분 불완전. "관측 훼손 없음" 식 표현 금지
+  /stops/ impressions    0        (사이트 전체 대조군 18 imp / 12일)
 
   ※ DISCOVERY STARTED = "Google 이 URL 존재를 인식하기 시작" 이지 색인 시작이 아니다
+  ※ 실측한 것은 "Search Console 이 두 시점에 다른 coverageState 를 보고했다" 까지다.
+     🚫 "발견 취소" 🚫 "discovery 후퇴" 🚫 "내부 파이프라인이 되돌아갔다" — 전부 금지
   ※ 09-08 재다운로드와 discovery 의 인과 순서는 미확정 (T+24h 미관측) — 단정 금지
-  ※ 잔여 4건의 공통 결함 추론 금지 — preflight 14/14 PASS 를 뒤집을 근거 없음
+  ※ 특정 URL 의 UNKNOWN 지속·복귀만으로 페이지 결함 판정 금지 (preflight 14/14 PASS 유효)
 
-NEXT   2026-09-10 13:30 KST 전후 (T+72h) READ-ONLY discovery observation
-       우선 신호 ①lastCrawlTime 최초 발생 ②잔여 4 UNKNOWN 전환 ③Crawled/Indexed 진행
-       indexed 까지 즉시 요구하지 않는다
-Decision  2026-09-14 (T+7d) — 정본 §13.4 갱신 계약
-       🚫 "discovery absent → route 미재크롤 두 번째 축 개방" 조건은 폐기됐다(이미 발견됨).
-          2026-09-14 에 route 재크롤을 자동 개방하지 않는다. 결과를 보고 별도 판단한다
-       실험 변수 고정. 재제출·Request Indexing·재크롤 요청 전부 금지
-AdSense  Search Console discovery 문제를 닫은 뒤 별도 GO/HOLD (3차 거절과 연결 금지)
+NEXT   2026-09-14 13:30 KST 전후 (T+7d) Decision — 정본 §14.6 갱신 계약
+  제1 입력  lastCrawlTime 발생 건수   0/14 = "첫 crawl 기록 미확인" · 1건 이상 = CRAWL STARTED
+  제2 입력  coverageState aggregate snapshot (개별 URL 연속 추세 금지)
+  제3 입력  verdict (수집되면) · Crawled/Indexed 계열 진행 별도 기록
+  0/14 인 경우 → route 재크롤 자동 실행 금지 · AdSense HOLD 유지 ·
+                 다음 외부 write 전에 READ-ONLY 원인조사 여부를 별도 판정
+  실험 변수 고정. 재제출·Request Indexing·재크롤 요청 전부 금지
+관측 도구  web/scripts/observe-gsc-discovery.mjs (러너, READ-ONLY scope 단독)
+          web/scripts/lib/gsc-discovery-core.mjs (순수 분석) · test-gsc-discovery.mjs (오프라인 QA)
+          ⚠ 미커밋. 09-14 실행 순서 = ①cd web && node scripts/test-gsc-discovery.mjs (QA 먼저)
+             ②node scripts/observe-gsc-discovery.mjs --key <sa.json> ③§14.6 순서로 판정
+          비교 축 2개 분리 = comparison baseline 09-10 snapshot / decision anchor T0 09-07(14/14 UNKNOWN)
+          scope 는 webmasters.readonly 정확히 1개만 허용 (혼합·write 전부 실행 전 BLOCK)
+AdSense  HOLD 유지. 09-14 에 lastCrawlTime 이 생겨도 자동 GO 아니고,
+         0/14 여도 즉시 수정 착수 아님 — 어느 쪽이든 별도 판정 (3차 거절과 연결 금지)
 ```
 
 아래는 전부 **착수 금지**이며 별도 결정 사항이다.
@@ -399,7 +410,7 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 ## 새 세션 시작 시
 
 1. [ ] 이 문서
-2. [ ] `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md` (**최상위 정본 — discovery 실험·관측 계약. 유효 계약은 §13**)
+2. [ ] `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md` (**최상위 정본 — discovery 실험·관측 계약. 유효 계약은 §14**)
    `docs/worklogs/STAGE1-STOP-PAGES-DEPLOYMENT-20260827.md` (Stage 1 구현·배포 정본)
 3. [ ] `docs/strategy/STOP-URL-POLICY-20260826.md` (Stop URL 안전 계약)
 4. [ ] `docs/handoff/HANDOFF-20260907.md`(최신) · `HANDOFF-20260901.md` · 설계 `STAGE1-STOP-PAGE-DESIGN-20260826.md` ·
@@ -420,7 +431,7 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
    **Production runtime 이 origin/main 보다 docs 커밋 N개 뒤인 것은 정상이며 drift 가 아니다.**
    (N 은 docs 커밋마다 늘어난다 — 숫자를 문서에 고정하지 말 것. 확인은 `git rev-list --count b10c7d3..HEAD`)
    Round 26·27·Phase 0·1A·1B·1C·Robotaxi Freshness·**Stage 1 Stop Pages·RT-2 재작업 금지**.
-   **다음 = 2026-09-10 T+72h discovery 관측** (현재 판정 DISCOVERY STARTED — T0 FAIL 은 09-09 관측으로 Superseded). 그 전에 RT-2 6-stop 확장 ·
+   **다음 = 2026-09-14 T+7d Decision** (현재 판정 DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED). 그 전에 RT-2 6-stop 확장 ·
    RT-3 지도 · EN realtime · observability 코드 · AdSense 재신청 전부 자동 착수 금지
 
 ## 핸드오프 운영 규칙

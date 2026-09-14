@@ -205,6 +205,7 @@ server log 원인조사 (2026-09-14, READ-ONLY 완료) — 정본 §15.3·§15.4
             🚫 rDNS 미검증이므로 "verified Googlebot" 표현 금지
   결론      crawl-not-observed 증거는 강화도 약화도 되지 않았다. 근거는 여전히
             Search Console 단일 출처. 원인을 crawl budget 으로 확정하지 않는다
+  원인      미확정. crawl budget 은 배제되지 않았으며 가능한 가설 중 하나로 유지한다
 NEXT   2026-09-17 13:30 KST 전후 READ-ONLY checkpoint — 정본 §15.6
   관측 항목 4개로 제한 ①lastCrawlTime 최초 발생 ②/en/01009 UNKNOWN 탈출
                       ③Crawled/Indexed progression ④sitemap lastDownloaded·errors

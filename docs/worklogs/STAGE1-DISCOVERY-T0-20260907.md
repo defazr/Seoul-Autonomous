@@ -922,6 +922,8 @@ Googlebot User-Agent 요청 (전체 로그 기준, 검증 수준 명시)
 
 따라서 **crawl-not-observed 증거는 강화되지 않았고, 약화되지도 않았다.**
 현재 근거는 여전히 Search Console 단일 출처다. 원인을 crawl budget 으로 **확정하지 않는다.**
+동시에 **배제하지도 않는다** — 현재 실측만으로는 원인을 특정할 수 없으므로, crawl budget 은
+**현재 확인된 원인이 아니라 가능한 가설 중 하나로만 유지한다.**
 지금 확정 가능한 것은 두 가지뿐이다 — Search Console 에서 7일째 crawl 기록이 관측되지
 않았다는 것, 그리고 discovery 가 13/14 까지 진행됐다는 것.
 

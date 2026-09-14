@@ -1,10 +1,10 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-09-10 (**DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED — T+72.6h 관측**)
+> 마지막 업데이트: 2026-09-14 (**T+7d Decision — discovery 13/14 · CRAWL NOT OBSERVED · 서버로그 INCONCLUSIVE**)
 > RT-2 KO 01009 = **CLOSED / Production Live Approved 유지** (runtime PASS / real-usage WATCH 해소)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고, 이어서 `docs/handoff/HANDOFF-20260907.md`(최신) ·
 > 정본 `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md`를 읽는다.
-> ⚠ 그 문서에서 **현재 유효한 판정·관측 계약은 §14** 다. §0·§8·§13 은 당시 기록이며 Superseded.
+> ⚠ 그 문서에서 **현재 유효한 판정은 §15**, 관측 계약은 **§14.6** 이다. §0·§8·§13 은 당시 기록이며 Superseded.
 
 ## 🔒 마지막 배포 라운드 — Phase RT-2 (KO 01009 실시간 도착 카드)
 
@@ -135,8 +135,10 @@ web Graph SSOT        web/data/routes.json
 implementation / deployment round   none
 observation axis                    ACTIVE — Stage-1 discovery (T0 2026-09-07 13:28 KST)
 현재 판정                            DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED
-                                    (2026-09-10 14:01 KST · T+72.6h 관측)
-NEXT                                2026-09-14 13:30 KST 전후 · T+7d Decision
+                                    discovery 13/14 · (2026-09-14 14:49 KST · T+7d 관측)
+서버로그 원인조사                     INCONCLUSIVE — access log 미설정으로 확인·반증 불가
+NEXT                                2026-09-17 13:30 KST 전후 · READ-ONLY checkpoint
+Decision (T+14d)                    2026-09-21 13:30 KST 전후 — 사이 기간 전면 동결
 ```
 
 ```
@@ -165,9 +167,13 @@ sitemap   T0 개입 SUCCESS   2026-09-07 13:28:05 KST · HTTP 204 · write 정�
 coverageState snapshot   ※ 개별 URL 추세로 읽지 않는다. 그 시점 총계로만 기록
   2026-09-09 T+42.8h    Discovered 10 / UNKNOWN 4
   2026-09-10 T+72.6h    Discovered  9 / UNKNOWN 5   (U→D 3 · D→U 4 · 동일 7)
-  lastCrawlTime          0 / 14   양 회차 모두 — CRAWL NOT OBSERVED
-  verdict                09-09 NEUTRAL 14/14 · 09-10 미기록 확정(추정·승계 금지)
-                         → T+72h 기록 품질 = 부분 불완전. "관측 훼손 없음" 식 표현 금지
+  2026-09-14 T+7d       Discovered 13 / UNKNOWN 1   (U→D 4 · D→U 0 · 동일 10)
+                         남은 UNKNOWN = /en/01009 1건 · anchor(T0) 대비 이탈 13/14
+  lastCrawlTime          0 / 14   3개 회차 전부 — CRAWL NOT OBSERVED
+  Crawled/Indexed        0 / 14
+  verdict                09-09 NEUTRAL 14/14 · 09-10 미기록(부분 불완전) ·
+                         09-14 NEUTRAL 14/14 미수집 0 → 기록 품질 완전
+  sitemap lastDownloaded 09-07 13:28(제출) → 09-08 16:55 → 09-14 14:02 자동 재수집 지속
   /stops/ impressions    0        (사이트 전체 대조군 18 imp / 12일)
 
   ※ DISCOVERY STARTED = "Google 이 URL 존재를 인식하기 시작" 이지 색인 시작이 아니다
@@ -189,8 +195,29 @@ NEXT   2026-09-14 13:30 KST 전후 (T+7d) Decision — 정본 §14.6 갱신 계�
              ②node scripts/observe-gsc-discovery.mjs --key <sa.json> ③§14.6 순서로 판정
           비교 축 2개 분리 = comparison baseline 09-10 snapshot / decision anchor T0 09-07(14/14 UNKNOWN)
           scope 는 webmasters.readonly 정확히 1개만 허용 (혼합·write 전부 실행 전 BLOCK)
-AdSense  HOLD 유지. 09-14 에 lastCrawlTime 이 생겨도 자동 GO 아니고,
-         0/14 여도 즉시 수정 착수 아님 — 어느 쪽이든 별도 판정 (3차 거절과 연결 금지)
+server log 원인조사 (2026-09-14, READ-ONLY 완료) — 정본 §15.3·§15.4
+  판정      INCONCLUSIVE. A/B/C 분기 어디에도 해당 안 됨 (분기 전제가 불성립)
+  이유      Caddyfile 에 log 지시자 0건 · http.log.access 0 · "status":200 전체 0건
+            → 정상 응답 요청은 크롤러든 사람이든 한 줄도 기록되지 않는다
+  대조군    night-bus-map·routes 도 전부 warn/error 라인뿐 (정상 접근 기록 아님)
+  Googlebot UA  조사 창 내 seoulautonomous 0건. 전체 로그 14건은 타 사이트(01-11)
+            13건 + /ngsw.json 1건(07-18, ip 34.138.x = GCP 일반대역)
+            🚫 rDNS 미검증이므로 "verified Googlebot" 표현 금지
+  결론      crawl-not-observed 증거는 강화도 약화도 되지 않았다. 근거는 여전히
+            Search Console 단일 출처. 원인을 crawl budget 으로 확정하지 않는다
+NEXT   2026-09-17 13:30 KST 전후 READ-ONLY checkpoint — 정본 §15.6
+  관측 항목 4개로 제한 ①lastCrawlTime 최초 발생 ②/en/01009 UNKNOWN 탈출
+                      ③Crawled/Indexed progression ④sitemap lastDownloaded·errors
+  변화가 없어도 외부 write 금지
+Decision  2026-09-21 (T+14d) — 0/14 유지 시 다음 단계 후보를 별도 판단
+  후보 ①Caddy access-log observability 라운드 ②촉진 수단 READ-ONLY 설계 검토
+  🚫 route recrawl·Request Indexing·sitemap 재제출·내부링크 변경 자동 실행 금지
+     별도 GPT + 사용자 승인 없이 write 금지
+⚠ 비교 기준  러너는 comparison baseline 을 2026-09-10 으로 출력한다(코드 미수정).
+             공식 직전 snapshot 은 2026-09-14 T+7d · 판정 anchor 는 T0 2026-09-07
+AdSense  HOLD 유지. 이번 조사만으로 자동 GO 아님 (3차 거절과 연결 금지)
+  13/14 discovery 는 긍정 신호이나 crawl progression 미관측 — 다음 판단은 늦어도 09-21.
+  그 전에 lastCrawlTime·Indexed progression 이 의미 있게 발생하면 조기 재판정 가능
 ```
 
 아래는 전부 **착수 금지**이며 별도 결정 사항이다.

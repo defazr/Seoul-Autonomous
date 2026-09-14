@@ -795,3 +795,210 @@ Indexed 세 계열이다 — 크롤·색인까지 갔다면 발견은 이미 지
 3  §14.6 순서로 판정: 제1 lastCrawlTime → 제2 coverageState snapshot → 제3 verdict → 제4 Crawled/Indexed
 4  결과를 정본에 §15 로 추가 (기존 절 소급 수정 금지)
 ```
+
+---
+
+## 15. T+7d Decision — DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED (2026-09-14)
+
+> §14 의 관측 계약을 이행한 회차다. §0·§8·§13·§14 원문은 소급 수정하지 않는다.
+
+### 15.1 판정
+
+```
+Stage-1 discovery      DISCOVERY STARTED   유지
+Discovery coverage     13 / 14
+Crawl                  NOT OBSERVED in Search Console
+Indexed progression    NOT OBSERVED
+남은 UNKNOWN            /en/stops/01009-gwanghwamun-station  1건
+sitemap auto re-download  계속 관측됨
+AdSense                HOLD
+route recrawl 자동 실행   금지 (조건 폐기 상태 유지)
+```
+
+제1 판정 입력 `lastCrawlTime = 0 / 14` → **"Search Console 기준 첫 crawl 기록 미확인."**
+
+### 15.2 T+7d 실측 — 2026-09-14 14:49 KST
+
+관측 전 오프라인 QA 26항 전항 PASS 를 먼저 확인했다(계약 순서 준수).
+
+```
+제1  lastCrawlTime        0 / 14
+제2  coverageState        Discovered 13 / UNKNOWN 1     ← 그 시점 snapshot
+       decision anchor(T0) 대비 UNKNOWN 이탈  13 / 14   ← 전체 판정 축
+       comparison baseline(09-10) 대비        U→D 4 · D→U 0 · 동일 10
+제3  verdict              14 / 14 NEUTRAL · 미수집 0
+제4  Crawled / Indexed    0 / 14
+```
+
+sitemap
+
+```
+lastSubmitted    2026-09-07 13:28 KST     그대로 (재제출 0회)
+lastDownloaded   2026-09-14 14:02 KST     관측 47분 전 자동 재수집
+                 이력: 09-07 13:28(우리 제출) → 09-08 16:55 → 09-14 14:02
+reported URLs    69        errors/warnings 0 / 0        contents indexed 0
+```
+
+**기록 품질 = 완전(complete).** 계약 필드 3종이 14/14 전부 수집됐다.
+§14.4 의 verdict 누락은 이번 회차에서 재발하지 않았다 — 도구 결함 2 수정이 실데이터에서 검증됐다.
+
+직전 회차(9/5)와의 차이를 **선형 진전으로 판정하지 않는다.** 다만 이번 회차에
+역방향 변동(Discovered→UNKNOWN)이 0건이었다는 사실 자체는 기록한다.
+
+### 15.3 서버 접근 로그 원인조사 (READ-ONLY)
+
+목적: GSC 의 `lastCrawlTime` 14/14 미확인이 **실제 서버 접근 흔적과 일치하는지 독립 확인.**
+
+조사 범위
+
+```
+대상 기간   2026-08-27 00:00 KST ~ 2026-09-14 (관측 시점)
+대상 URL    Stage-1 Stop 14개
+대조군      night-bus-map · /ko/routes · /en/routes · saebyeok-a160 · simya-a21
+로그 소스   apps_ng_caddy (caddy:2-alpine) docker json-file log
+보존 구간   2025-12-24 23:55 ~ 2026-09-14 13:28 KST  → 조사 창을 완전히 포함
+```
+
+**결정적 발견 — 이 서버에는 access log 가 존재하지 않는다.**
+
+```
+Caddyfile (2302 bytes)  log · access 지시자 0건
+                        seoulautonomous.com 블록 = encode + reverse_proxy 뿐
+http.log.access logger  0 건 (전체 13,335 줄 중)
+"status":200 기록       0 건 (전체 로그 통틀어)
+로그 레벨 분포           info 11,181 · warn 1,908 · error 246   ← access 레벨 없음
+앱 컨테이너 로그         GET/HEAD 요청줄 0 · /stops/ 0 · Googlebot 0
+                        (Next.js standalone 은 요청을 기록하지 않는다)
+다른 소스               /var/log/caddy 없음 · /var/log/nginx 없음 · journald 무의미
+```
+
+따라서 로그에 남는 것은 **오류·경고를 유발한 요청뿐**이다.
+정상 응답한 요청은 크롤러든 사람이든 **애초에 한 줄도 기록되지 않는다.**
+
+대조군이 이를 확정한다
+
+```
+night-bus-map 114건 · /ko/routes 64건 · /en/routes 63건 · route detail 각 8건
+→ 숫자는 잡히지만 전부 warn/error 라인(주로 "aborting with incomplete response")이며
+  정상 접근 기록이 아니다. status 200 라인은 전체 로그에 0건이다.
+```
+
+조사 창(08-27~09-14) 내 seoulautonomous 관련 라인 420건의 성격
+
+```
+info 334  대부분 ACME/TLS 갱신 — 요청 기록이 아님
+warn  80  "aborting with incomplete response" 64건 포함
+error  6
+UA    미기재 350 · Mozilla 38 · crusader-worker 25 · curl 7 · Googlebot 0
+/stops/ 6건 = 전부 remote_ip 121.162.194.165 (08-27 출시 QA 시간대, 우리 접속)
+```
+
+Googlebot User-Agent 요청 (전체 로그 기준, 검증 수준 명시)
+
+```
+13건  debt-workbench-web (다른 사이트) · 2026-01-11 · ip 66.249.68.4~6
+       → 66.249.0.0/16 은 Google 공개 크롤러 대역이나 **rDNS 검증은 하지 않았다**
+1건   seoulautonomous.com/ngsw.json · 2026-07-18 16:26 KST · ip 34.138.251.219
+       → 34.138.x.x 는 Google Cloud 일반 대역이며 크롤러 대역이 아니다.
+         UA 만 Googlebot 을 칭한 요청일 수 있다
+조사 창(08-27~) 내 seoulautonomous + Googlebot UA = 0건
+```
+
+**전부 "Googlebot User-Agent 를 가진 요청" 까지만 쓴다.** rDNS 정방향·역방향 검증을
+하지 않았으므로 `verified Googlebot` 이라고 쓰지 않는다.
+
+### 15.4 일치 판정 = INCONCLUSIVE (판정 불가)
+
+지시서의 A·B·C 분기 중 **어디에도 해당하지 않는다.** 세 분기는 access log 가 존재한다는
+전제 위에 있는데, 그 전제가 성립하지 않았다.
+
+```
+🚫 "Server log 에서도 crawl 흔적을 확인하지 못했다"  ← 이렇게 쓰지 않는다
+   흔적이 없는 게 아니라 **기록 수단 자체가 없다.** 성공 요청은 원래 안 남는다.
+
+✅ "이 서버에는 access log 가 설정돼 있지 않아, 서버 로그로는 Stage-1 Stop URL 에 대한
+   crawler 요청 유무를 확인할 수도 반증할 수도 없다."
+```
+
+따라서 **crawl-not-observed 증거는 강화되지 않았고, 약화되지도 않았다.**
+현재 근거는 여전히 Search Console 단일 출처다. 원인을 crawl budget 으로 **확정하지 않는다.**
+지금 확정 가능한 것은 두 가지뿐이다 — Search Console 에서 7일째 crawl 기록이 관측되지
+않았다는 것, 그리고 discovery 가 13/14 까지 진행됐다는 것.
+
+부수 관측(범위 밖, 이번 라운드 조치 0): 조사 창 내 `aborting with incomplete response`
+64건. 기존부터 있던 현상이며 Stage-1·RT-2 회귀가 아니다. 별도 backlog.
+
+### 15.5 이번 회차에서 하지 않은 것
+
+```
+GSC/GA4 write 0 · sitemap 재제출 0 · Request Indexing 0 · route recrawl 요청 0
+발급 scope = webmasters.readonly 단독 · URL Inspection 각 URL 정확히 1회 (총 14회)
+로그 설정 변경 0 · rotate 0 · container restart 0 · 서버 파일 생성·수정 0
+제품 코드 0 · Production 0 · 내부링크 0 · RT-2 확장 0 · RT-3 0 · EN realtime 0
+AdSense 재신청 0 · backlog 정리 0 · commit 0 · push 0
+```
+
+### 15.6 NEXT — 관측 계약 갱신 (§14.6 의 체크포인트 일정을 대체)
+
+T+7d 의 "discovery absent → route recrawl" 조건은 §14.4 에서 이미 폐기됐고,
+이번 조사로도 **자동 실행 사유가 생기지 않았다.** 매일 볼 이유도 없으므로
+간격을 넓힌다. 그 사이는 전면 동결이다.
+
+```
+READ-ONLY checkpoint   2026-09-17 13:30 KST 전후
+Decision (T+14d)       2026-09-21 13:30 KST 전후
+사이 기간               동결 — 외부 write 0
+```
+
+09-17 checkpoint 관측 항목 — 이 4개로 제한한다
+
+```
+1  14 URL 중 lastCrawlTime 최초 발생 여부
+2  남은 /en/stops/01009-gwanghwamun-station 의 UNKNOWN 탈출 여부
+3  Crawled 또는 Indexed 계열 progression 발생 여부
+4  sitemap lastDownloaded 및 errors/warnings 상태
+```
+
+**변화가 없어도 외부 write 를 실행하지 않는다.**
+
+09-21 Decision (T+14d)
+
+```
+lastCrawlTime 0/14 이 유지되면 → 그때 다음 단계 후보를 별도 판단한다
+  후보 ① Caddy access-log observability 라운드 (§15.7 아이디어)
+  후보 ② discovery/crawl 촉진 수단에 대한 READ-ONLY 설계 검토
+🚫 route recrawl · Request Indexing · sitemap 재제출 · 내부링크 변경은
+   어느 경우에도 자동 실행하지 않는다. 별도 GPT + 사용자 승인 없이 write 금지.
+```
+
+**비교 기준 주의.** 러너의 `OBSERVATION_HISTORY` 에 09-14 회차를 넣지 않았으므로
+다음 실행 시 `comparison baseline = 2026-09-10` 이 출력된다. 코드는 이번에 고치지 않는다.
+**공식 직전 snapshot 은 2026-09-14 T+7d 결과**이며, 출력값과 공식 기준을 구분해 읽는다.
+판정 anchor 는 변함없이 T0(2026-09-07, 14/14 UNKNOWN) 다.
+
+### 15.6b AdSense 계약
+
+```
+현재            재신청하지 않는다
+근거            13/14 discovery 는 긍정 신호이나,
+                Search Console 기준 crawl progression 이 아직 관측되지 않았다
+다음 판단 시점   늦어도 2026-09-21 T+14d Decision 에서 다시 한다
+조기 재판정      그 전에 lastCrawlTime 또는 Indexed progression 이
+                의미 있게 발생하면 그 시점에 앞당겨 판단할 수 있다
+```
+
+### 15.7 CC 이견 및 아이디어
+
+**이견 1 — 오늘 조사의 실질 산출물은 "모른다"를 정확히 만든 것이다.** 로그를 보면
+crawl 여부가 갈릴 줄 알았는데, 실제로는 판정에 쓸 수 있는 데이터가 애초에 없었다.
+이것을 A분기(흔적 0)로 적었다면 단일 출처를 이중 출처로 위장하는 오류가 됐을 것이다.
+
+**이견 2 — 관측 도구의 기준선이 09-10 에 멈춰 있다.** `OBSERVATION_HISTORY` 에
+2026-09-14 회차가 없어서, 다음 실행 시 러너가 `comparison baseline = 2026-09-10` 을
+출력한다. 기록으로는 틀리지 않지만 **직전 관측을 가리키지 않는다.** 코드 변경이므로
+이번 라운드에서 손대지 않았다 — 다음 관측 전에 처리 여부를 정해야 한다.
+
+**아이디어 — Caddy access log 활성화는 별도 라운드가 필요하다.** 지금 구조로는
+"구글이 우리 페이지를 실제로 가져갔는가" 를 **영원히 서버 쪽에서 답할 수 없다.**
+다만 Caddy 설정 변경은 6개 도메인·9개 컨테이너에 걸린 운영 사고 이력이 있는 영역이라
+이번 라운드에서 제안 이상은 하지 않는다. validate → reload 계약과 별도 승인이 필요하다.

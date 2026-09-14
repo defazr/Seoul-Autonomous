@@ -30,5 +30,14 @@
 - SSoT 변경 → 포그린 명시적 동의 후만
 - 디테일 변경 → 자유롭게, 결과 보고
 
+## 세션 시작
+
+1. `cd web && node scripts/project-status.mjs` — 좌표 실측 (git·문서 존재 여부만. 네트워크 0)
+2. `docs/SESSION-HANDOFF.md` 읽기
+3. SESSION-HANDOFF 가 가리키는 최신 handoff·정본 문서 읽기
+
+project-status 출력은 **객관적 실측값**이다. 판단·gate·NEXT·금지 계약의 정본은
+**`docs/SESSION-HANDOFF.md`** 다. 둘을 섞지 않는다.
+
 ---
 Operational rules. Details emerge during work.

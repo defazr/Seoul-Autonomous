@@ -4,7 +4,8 @@
 > RT-2 KO 01009 = **CLOSED / Production Live Approved 유지** (runtime PASS / real-usage WATCH 해소)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고, 이어서 `docs/handoff/HANDOFF-20260907.md`(최신) ·
 > 정본 `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md`를 읽는다.
-> ⚠ 그 문서에서 **현재 유효한 판정은 §15**, 관측 계약은 **§14.6** 이다. §0·§8·§13 은 당시 기록이며 Superseded.
+> ⚠ 그 문서에서 **현재 유효한 판정은 §15**, 관측 계약은 **§14.6 + §15.6(09-17 / 09-21 일정)** 이다.
+> §15.6 이 §14.6 의 체크포인트 일정을 대체한다. §0·§8·§13·§14 는 당시 기록이며 Superseded.
 
 ## 🔒 마지막 배포 라운드 — Phase RT-2 (KO 01009 실시간 도착 카드)
 
@@ -191,7 +192,8 @@ NEXT   2026-09-14 13:30 KST 전후 (T+7d) Decision — 정본 §14.6 갱신 계�
   실험 변수 고정. 재제출·Request Indexing·재크롤 요청 전부 금지
 관측 도구  web/scripts/observe-gsc-discovery.mjs (러너, READ-ONLY scope 단독)
           web/scripts/lib/gsc-discovery-core.mjs (순수 분석) · test-gsc-discovery.mjs (오프라인 QA)
-          ⚠ 미커밋. 09-14 실행 순서 = ①cd web && node scripts/test-gsc-discovery.mjs (QA 먼저)
+          ✅ tracked 자산 (commit `e3b84cc` history 에 포함 — current HEAD 기대값 아님)
+          실행 순서 = ①cd web && node scripts/test-gsc-discovery.mjs (관측 전 QA 먼저)
              ②node scripts/observe-gsc-discovery.mjs --key <sa.json> ③§14.6 순서로 판정
           비교 축 2개 분리 = comparison baseline 09-10 snapshot / decision anchor T0 09-07(14/14 UNKNOWN)
           scope 는 webmasters.readonly 정확히 1개만 허용 (혼합·write 전부 실행 전 BLOCK)
@@ -216,6 +218,15 @@ Decision  2026-09-21 (T+14d) — 0/14 유지 시 다음 단계 후보를 별도 
      별도 GPT + 사용자 승인 없이 write 금지
 ⚠ 비교 기준  러너는 comparison baseline 을 2026-09-10 으로 출력한다(코드 미수정).
              공식 직전 snapshot 은 2026-09-14 T+7d · 판정 anchor 는 T0 2026-09-07
+gate 관계 (2026-09-14 확정) — **RT-2 확대와 AdSense 재신청은 서로 독립된 gate 다.**
+  둘 다 2026-09-21 이후 **별도 GO/HOLD 판정**한다. 입력(discovery·crawl 결과)만 공유한다
+  현재 realtime 적용 범위 = **한국어 광화문 01009 한 페이지** (코드 조건 `isKo && stopId === '01009'`)
+    → 14 URL 중 1개. 영어 01009 도, 방향쌍 01010 도 없다
+  확대는 **두 축을 따로** 판단한다 — ①한국어 나머지 6 Stop ②영어 realtime. 같은 결정이 아니다
+  🚫 AdSense 승인·거절이 RT-2 확대 여부를 **자동으로 결정하지 않는다.** 거절 시에도
+     "거절했으니 확대 금지" 로 연결하지 않고 거절 원인과 제품 가치를 각각 본다
+  ⚠ 2026-09-01 의 "색인 정상 → 7-stop 확장 우선 → 그 뒤 재신청 판정" 순서는 이 결정이 대체한다.
+     당시 기록은 삭제하지 않는다
 AdSense  HOLD 유지. 이번 조사만으로 자동 GO 아님 (3차 거절과 연결 금지)
   13/14 discovery 는 긍정 신호이나 crawl progression 미관측 — 다음 판단은 늦어도 09-21.
   그 전에 lastCrawlTime·Indexed progression 이 의미 있게 발생하면 조기 재판정 가능
@@ -438,7 +449,9 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 ## 새 세션 시작 시
 
 1. [ ] 이 문서
-2. [ ] `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md` (**최상위 정본 — discovery 실험·관측 계약. 유효 계약은 §14**)
+2. [ ] `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md` (**최상위 정본 — discovery 실험·관측 계약**)
+   현재 판정 정본 = **§15** · 현재 관측 계약 = **§14.6 + §15.6(09-17 / 09-21)**
+   §0·§8·§13·§14 는 당시 기록으로 보존한다 — 삭제·소급 수정하지 않으며 현재 지시로 읽지 않는다
    `docs/worklogs/STAGE1-STOP-PAGES-DEPLOYMENT-20260827.md` (Stage 1 구현·배포 정본)
 3. [ ] `docs/strategy/STOP-URL-POLICY-20260826.md` (Stop URL 안전 계약)
 4. [ ] `docs/handoff/HANDOFF-20260907.md`(최신) · `HANDOFF-20260901.md` · 설계 `STAGE1-STOP-PAGE-DESIGN-20260826.md` ·
@@ -459,7 +472,8 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
    **Production runtime 이 origin/main 보다 docs 커밋 N개 뒤인 것은 정상이며 drift 가 아니다.**
    (N 은 docs 커밋마다 늘어난다 — 숫자를 문서에 고정하지 말 것. 확인은 `git rev-list --count b10c7d3..HEAD`)
    Round 26·27·Phase 0·1A·1B·1C·Robotaxi Freshness·**Stage 1 Stop Pages·RT-2 재작업 금지**.
-   **다음 = 2026-09-14 T+7d Decision** (현재 판정 DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED). 그 전에 RT-2 6-stop 확장 ·
+   **다음 = 2026-09-17 13:30 KST 전후 READ-ONLY checkpoint** (그다음 Decision = 2026-09-21 T+14d).
+   현재 판정 DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED. 그 전에 RT-2 6-stop 확장 ·
    RT-3 지도 · EN realtime · observability 코드 · AdSense 재신청 전부 자동 착수 금지
 
 ## 핸드오프 운영 규칙

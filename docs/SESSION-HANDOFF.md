@@ -1,11 +1,12 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-09-14 (**T+7d Decision — discovery 13/14 · CRAWL NOT OBSERVED · 서버로그 INCONCLUSIVE**)
+> 마지막 업데이트: 2026-09-17 (**T+10d checkpoint — snapshot 12/14 · anchor 대비 이탈 12/14 · CRAWL NOT OBSERVED**)
 > RT-2 KO 01009 = **CLOSED / Production Live Approved 유지** (runtime PASS / real-usage WATCH 해소)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고, 이어서 `docs/handoff/HANDOFF-20260907.md`(최신) ·
 > 정본 `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md`를 읽는다.
-> ⚠ 그 문서에서 **현재 유효한 판정은 §15**, 관측 계약은 **§14.6 + §15.6(09-17 / 09-21 일정)** 이다.
-> §15.6 이 §14.6 의 체크포인트 일정을 대체한다. §0·§8·§13·§14 는 당시 기록이며 Superseded.
+> ⚠ 그 문서에서 **현재 유효한 판정은 §16**, 관측 계약은 **§16.7(09-21 T+14d Decision)** 이다.
+> §16 이 §15 를, §15.6 이 §14.6 을 대체했다. §0·§8·§13·§14·§15 는 당시 기록이며 Superseded.
+> 승인된 후속 1건 = **§16.8 OBSERVATION_HISTORY housekeeping** (이번 checkpoint 와 분리된 별도 라운드).
 
 ## 🔒 마지막 배포 라운드 — Phase RT-2 (KO 01009 실시간 도착 카드)
 
@@ -136,10 +137,13 @@ web Graph SSOT        web/data/routes.json
 implementation / deployment round   none
 observation axis                    ACTIVE — Stage-1 discovery (T0 2026-09-07 13:28 KST)
 현재 판정                            DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED
-                                    discovery 13/14 · (2026-09-14 14:49 KST · T+7d 관측)
+                                    snapshot 12/14 · anchor(T0) 대비 이탈 12/14
+                                    (2026-09-17 15:09 KST · T+10d checkpoint · 정본 §16)
 서버로그 원인조사                     INCONCLUSIVE — access log 미설정으로 확인·반증 불가
-NEXT                                2026-09-17 13:30 KST 전후 · READ-ONLY checkpoint
-Decision (T+14d)                    2026-09-21 13:30 KST 전후 — 사이 기간 전면 동결
+NEXT                                2026-09-21 13:30 KST 전후 · T+14d Decision
+                                    사이 기간 전면 동결 (외부 write 0)
+승인된 후속 1건                       OBSERVATION_HISTORY housekeeping — 정본 §16.8
+                                    09-21 직전이 아닌 여유 있는 때 · 관측 라운드와 분리
 ```
 
 ```
@@ -170,11 +174,16 @@ coverageState snapshot   ※ 개별 URL 추세로 읽지 않는다. 그 시점 �
   2026-09-10 T+72.6h    Discovered  9 / UNKNOWN 5   (U→D 3 · D→U 4 · 동일 7)
   2026-09-14 T+7d       Discovered 13 / UNKNOWN 1   (U→D 4 · D→U 0 · 동일 10)
                          남은 UNKNOWN = /en/01009 1건 · anchor(T0) 대비 이탈 13/14
-  lastCrawlTime          0 / 14   3개 회차 전부 — CRAWL NOT OBSERVED
+  2026-09-17 T+10d      Discovered 12 / UNKNOWN 2   (09-14 대비 U→D 1 · D→U 2 · 동일 11)
+                         UNKNOWN = /en/01010 · /en/01013 · anchor(T0) 대비 이탈 12/14
+                         09-14 의 마지막 UNKNOWN /en/01009 는 Discovered 로 보고됨
+                         ※ 러너 출력(09-10 대비 U→D 4 · D→U 1)은 추세 판정에 쓰지 않는다
+  lastCrawlTime          0 / 14   4개 회차 전부 — CRAWL NOT OBSERVED
   Crawled/Indexed        0 / 14
   verdict                09-09 NEUTRAL 14/14 · 09-10 미기록(부분 불완전) ·
-                         09-14 NEUTRAL 14/14 미수집 0 → 기록 품질 완전
-  sitemap lastDownloaded 09-07 13:28(제출) → 09-08 16:55 → 09-14 14:02 자동 재수집 지속
+                         09-14 · 09-17 NEUTRAL 14/14 미수집 0 → 기록 품질 완전
+  sitemap lastDownloaded 09-07 13:28(제출) → 09-08 16:55 → 09-14 14:02 → 09-17 변동 없음
+                         3일 무재수집은 사실로만 기록 — 이상 징후로 해석 금지(표본 3점)
   /stops/ impressions    0        (사이트 전체 대조군 18 imp / 12일)
 
   ※ DISCOVERY STARTED = "Google 이 URL 존재를 인식하기 시작" 이지 색인 시작이 아니다
@@ -183,7 +192,7 @@ coverageState snapshot   ※ 개별 URL 추세로 읽지 않는다. 그 시점 �
   ※ 09-08 재다운로드와 discovery 의 인과 순서는 미확정 (T+24h 미관측) — 단정 금지
   ※ 특정 URL 의 UNKNOWN 지속·복귀만으로 페이지 결함 판정 금지 (preflight 14/14 PASS 유효)
 
-NEXT   2026-09-14 13:30 KST 전후 (T+7d) Decision — 정본 §14.6 갱신 계약
+(완료) 2026-09-14 T+7d Decision — 정본 §15. 아래는 당시 판정 입력 계약이며 현재도 유효하다
   제1 입력  lastCrawlTime 발생 건수   0/14 = "첫 crawl 기록 미확인" · 1건 이상 = CRAWL STARTED
   제2 입력  coverageState aggregate snapshot (개별 URL 연속 추세 금지)
   제3 입력  verdict (수집되면) · Crawled/Indexed 계열 진행 별도 기록
@@ -208,16 +217,21 @@ server log 원인조사 (2026-09-14, READ-ONLY 완료) — 정본 §15.3·§15.4
   결론      crawl-not-observed 증거는 강화도 약화도 되지 않았다. 근거는 여전히
             Search Console 단일 출처. 원인을 crawl budget 으로 확정하지 않는다
   원인      미확정. crawl budget 은 배제되지 않았으며 가능한 가설 중 하나로 유지한다
-NEXT   2026-09-17 13:30 KST 전후 READ-ONLY checkpoint — 정본 §15.6
-  관측 항목 4개로 제한 ①lastCrawlTime 최초 발생 ②/en/01009 UNKNOWN 탈출
-                      ③Crawled/Indexed progression ④sitemap lastDownloaded·errors
-  변화가 없어도 외부 write 금지
+(완료) 2026-09-17 T+10d READ-ONLY checkpoint — 정본 §16 · 외부 write 0 · QA 26/26 PASS 선행
+  ①lastCrawlTime 최초 발생       미발생 0/14
+  ②/en/01009 UNKNOWN 탈출        탈출함 (Discovered - currently not indexed)
+  ③Crawled/Indexed progression  미발생 0/14
+  ④sitemap lastDownloaded        2026-09-14 14:02 KST 유지 · errors/warnings 0/0
+NEXT   2026-09-21 13:30 KST 전후 T+14d Decision — 정본 §16.7
+  변화가 없어도 외부 write 금지 · 사이 기간 전면 동결
 Decision  2026-09-21 (T+14d) — 0/14 유지 시 다음 단계 후보를 별도 판단
   후보 ①Caddy access-log observability 라운드 ②촉진 수단 READ-ONLY 설계 검토
   🚫 route recrawl·Request Indexing·sitemap 재제출·내부링크 변경 자동 실행 금지
      별도 GPT + 사용자 승인 없이 write 금지
-⚠ 비교 기준  러너는 comparison baseline 을 2026-09-10 으로 출력한다(코드 미수정).
-             공식 직전 snapshot 은 2026-09-14 T+7d · 판정 anchor 는 T0 2026-09-07
+⚠ 비교 기준  러너는 comparison baseline 을 2026-09-10 으로 출력한다(코드 미수정 유지).
+             공식 직전 snapshot 은 **2026-09-17 T+10d** · 판정 anchor 는 T0 2026-09-07
+             러너 출력을 추세 판정으로 쓰지 않는다 — 보고서에 두 값을 항상 병기한다
+             이 불일치 해소는 §16.8 housekeeping (09-21 Decision 전 · 별도 라운드)
 gate 관계 (2026-09-14 확정) — **RT-2 확대와 AdSense 재신청은 서로 독립된 gate 다.**
   둘 다 2026-09-21 이후 **별도 GO/HOLD 판정**한다. 입력(discovery·crawl 결과)만 공유한다
   현재 realtime 적용 범위 = **한국어 광화문 01009 한 페이지** (코드 조건 `isKo && stopId === '01009'`)
@@ -450,8 +464,8 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 
 1. [ ] 이 문서
 2. [ ] `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md` (**최상위 정본 — discovery 실험·관측 계약**)
-   현재 판정 정본 = **§15** · 현재 관측 계약 = **§14.6 + §15.6(09-17 / 09-21)**
-   §0·§8·§13·§14 는 당시 기록으로 보존한다 — 삭제·소급 수정하지 않으며 현재 지시로 읽지 않는다
+   현재 판정 정본 = **§16** · 현재 관측 계약 = **§16.7(09-21 T+14d Decision)**
+   §0·§8·§13·§14·§15 는 당시 기록으로 보존한다 — 삭제·소급 수정하지 않으며 현재 지시로 읽지 않는다
    `docs/worklogs/STAGE1-STOP-PAGES-DEPLOYMENT-20260827.md` (Stage 1 구현·배포 정본)
 3. [ ] `docs/strategy/STOP-URL-POLICY-20260826.md` (Stop URL 안전 계약)
 4. [ ] `docs/handoff/HANDOFF-20260907.md`(최신) · `HANDOFF-20260901.md` · 설계 `STAGE1-STOP-PAGE-DESIGN-20260826.md` ·
@@ -472,7 +486,7 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
    **Production runtime 이 origin/main 보다 docs 커밋 N개 뒤인 것은 정상이며 drift 가 아니다.**
    (N 은 docs 커밋마다 늘어난다 — 숫자를 문서에 고정하지 말 것. 확인은 `git rev-list --count b10c7d3..HEAD`)
    Round 26·27·Phase 0·1A·1B·1C·Robotaxi Freshness·**Stage 1 Stop Pages·RT-2 재작업 금지**.
-   **다음 = 2026-09-17 13:30 KST 전후 READ-ONLY checkpoint** (그다음 Decision = 2026-09-21 T+14d).
+   **다음 = 2026-09-21 13:30 KST 전후 T+14d Decision** (09-17 checkpoint 는 완료 · 정본 §16).
    현재 판정 DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED. 그 전에 RT-2 6-stop 확장 ·
    RT-3 지도 · EN realtime · observability 코드 · AdSense 재신청 전부 자동 착수 금지
 

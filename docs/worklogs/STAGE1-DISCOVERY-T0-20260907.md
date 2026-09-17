@@ -1004,3 +1004,171 @@ crawl 여부가 갈릴 줄 알았는데, 실제로는 판정에 쓸 수 있는 �
 "구글이 우리 페이지를 실제로 가져갔는가" 를 **영원히 서버 쪽에서 답할 수 없다.**
 다만 Caddy 설정 변경은 6개 도메인·9개 컨테이너에 걸린 운영 사고 이력이 있는 영역이라
 이번 라운드에서 제안 이상은 하지 않는다. validate → reload 계약과 별도 승인이 필요하다.
+
+---
+
+## 16. T+10d READ-ONLY checkpoint — DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED (2026-09-17)
+
+> §15.6 의 관측 계약을 이행한 회차다. §0·§8·§13·§14·§15 원문은 소급 수정하지 않는다.
+> 이 회차는 **checkpoint 이며 Decision 라운드가 아니다.** Decision 은 09-21 T+14d 다.
+
+### 16.1 판정
+
+```
+Stage-1 discovery        DISCOVERY STARTED   유지
+decision anchor          T0 2026-09-07 13:28 KST · 14/14 UNKNOWN   (불변)
+Discovery coverage       anchor 대비 UNKNOWN 이탈  12 / 14
+현재 snapshot            Discovered 12 / UNKNOWN 2
+lastCrawlTime            0 / 14        ← Search Console 기준
+Crawl                    NOT OBSERVED
+Crawled / Indexed progression   NOT OBSERVED
+기록 품질                 완전 — verdict 미수집 0 / 14 · 14 URL 전건 수집
+AdSense                  HOLD 유지
+외부 write               0
+```
+
+제1 판정 입력 `lastCrawlTime = 0 / 14` → **"Search Console 기준 첫 crawl 기록 미확인."**
+T0·T+42.8h·T+72.6h·T+7d 에 이어 **4회차 연속 0/14** 다.
+
+### 16.2 실측 — 2026-09-17 15:09~15:12 KST
+
+관측 전 오프라인 QA **26항 전항 PASS** 를 먼저 확인했다(계약 순서 준수).
+발급 scope = `webmasters.readonly` 단독, 서명 전·네트워크 요청 전 2중 방어선 통과.
+URL Inspection 은 14 URL 각 정확히 1회(총 14회).
+
+```
+제1  lastCrawlTime        0 / 14
+제2  coverageState        Discovered 12 / UNKNOWN 2     ← 그 시점 snapshot
+       decision anchor(T0) 대비 UNKNOWN 이탈  12 / 14   ← 전체 판정 축
+제3  verdict              14 / 14 NEUTRAL · 미수집 0
+제4  Crawled / Indexed    0 / 14
+```
+
+UNKNOWN 으로 보고된 2건
+
+```
+/en/stops/01010-gwanghwamun-station
+/en/stops/01013-jongno-2-ga
+```
+
+계약 시각(13:30 전후) 대비 약 1.6시간 늦게 실행했다. 관측 성격상 판정에 영향이 없으나
+사실로 기록한다.
+
+### 16.3 비교 축 3개 — 명시적으로 보존한다
+
+```
+runner comparison baseline    2026-09-10 T+72.6h    ← 러너가 출력한 값
+official previous snapshot    2026-09-14 T+7d       ← 직전 회차 변화 서술은 이 축으로 한다
+decision anchor               2026-09-07 T0         ← 전체 판정 기준점 (14/14 UNKNOWN)
+```
+
+**러너의 09-10 비교 결과를 현재 추세 판정으로 사용하지 않는다.**
+`OBSERVATION_HISTORY` 에 09-14 회차가 없어 러너는 여전히 09-10 을 baseline 으로 출력한다
+(§15.6 의 B안 — 이번 라운드에서도 코드는 고치지 않았다).
+
+두 축의 출력이 서로 다른 그림을 준다 — **양쪽 다 기록하고 어느 쪽도 추세로 읽지 않는다.**
+
+```
+runner 출력 (09-10 대비)             U→D 4 · D→U 1 · 동일 9
+official previous (09-14 대비)       U→D 1 · D→U 2 · 동일 11      ← 직전 회차 변화 서술
+                                     총계 Discovered 13 → 12
+```
+
+### 16.4 해석 — 넘지 않는 선
+
+09-14 에 마지막 UNKNOWN 1건이던 `/en/stops/01009-gwanghwamun-station` 은 이번 회차에
+`Discovered - currently not indexed` 로 보고됐다. 반대로 `/en/stops/01010-gwanghwamun-station`
+과 `/en/stops/01013-jongno-2-ga` 는 09-14 snapshot 과 다른 상태로 보고됐다.
+
+```
+허용 표현   "Search Console 이 09-14 와 09-17 에 서로 다른 coverageState 를 보고했다"
+🚫 금지     "발견이 취소됐다"  "페이지 결함이 생겼다"  "discovery 가 후퇴했다"
+            "나빠졌다"  "내부 파이프라인이 되돌아갔다"
+```
+
+- **snapshot 12/14 를 regression 으로도 개선 추세로도 판정하지 않는다.**
+- 특정 URL 의 UNKNOWN 복귀만으로 페이지 결함을 판정하지 않는다.
+  **preflight 14/14 PASS 를 뒤집을 새 근거는 없다.**
+- 전체 discovery 판정의 비교 대상은 직전 회차가 아니라 decision anchor(T0) 다 → 12/14.
+
+**핵심 병목은 바뀌지 않았다** — Search Console 기준 `lastCrawlTime 0/14` ·
+`Crawled/Indexed 0/14` 다. coverageState 의 URL별 차이는 이 병목을 바꾸지 않는다.
+
+### 16.5 sitemap
+
+```
+lastSubmitted    2026-09-07 13:28 KST     유지 (재제출 0회)
+lastDownloaded   2026-09-14 14:02 KST     유지 — 09-14 관측 시점 값 그대로
+reported URLs    69        errors / warnings 0 / 0        contents indexed 0
+이력             09-07 13:28(우리 제출) → 09-08 16:55 → 09-14 14:02 → (이후 없음)
+```
+
+**09-14 이후 3일간 추가 재다운로드가 관측되지 않았다는 사실만 기록한다.**
+이를 "Google 이 사이트를 덜 크롤한다" 또는 이상 징후로 해석하지 않는다.
+관측된 재수집 간격은 1일·6일·(진행중 3일) 로 표본이 3점뿐이라 어떤 패턴도 주장할 수 없다.
+
+### 16.6 이번 회차에서 하지 않은 것
+
+```
+GSC/GA4 write 0 · sitemap 재제출 0 · Request Indexing 0 · route recrawl 요청 0
+발급 scope = webmasters.readonly 단독 · URL Inspection 각 URL 정확히 1회 (총 14회)
+OBSERVATION_HISTORY 수정 0 · 관측 runner 수정 0 · 판정 로직 수정 0
+제품 코드 0 · Production 0 · 내부링크 0 · RT-2 확장 0 · RT-3 0 · EN realtime 0
+AdSense 재신청 0 · 새 HANDOFF 파일 생성 0 · commit 0 · push 0
+```
+
+`HANDOFF-20260917.md` 는 만들지 않는다 — 09-17 은 Decision 라운드가 아니라 checkpoint 이므로
+**정본 §추가 + SESSION-HANDOFF 갱신으로 충분하다.**
+
+### 16.7 NEXT
+
+```
+Decision (T+14d)   2026-09-21 13:30 KST 전후
+사이 기간           동결 — 외부 write 0
+```
+
+```
+lastCrawlTime 0/14 이 유지되면 → 그때 다음 단계 후보를 별도 판단한다
+  후보 ① Caddy access-log observability 라운드
+  후보 ② discovery/crawl 촉진 수단에 대한 READ-ONLY 설계 검토
+🚫 route recrawl · Request Indexing · sitemap 재제출 · 내부링크 변경은
+   어느 경우에도 자동 실행하지 않는다. 별도 GPT + 사용자 승인 없이 write 금지.
+```
+
+**gate 관계 — 기존 계약 유지.** RT-2 확대와 AdSense 재신청은 **서로 독립된 gate** 이며
+둘 다 09-21 에 **각각 별도 GO/HOLD** 판단한다. 입력(discovery·crawl 결과)만 공유한다.
+
+AdSense = **HOLD 유지.** §15.6b 의 조기 재판정 조건이었던 `lastCrawlTime` 또는
+의미 있는 `Indexed progression` 이 **발생하지 않았다.** 다음 판단은 09-21 T+14d.
+
+### 16.8 후속 housekeeping 라운드 (승인 · 이번 라운드와 분리)
+
+포그린 확정 2026-09-17. §15.7 이견 2 의 후속이며 **이번 문서 라운드와 절대 섞지 않는다.**
+
+```
+시점   이 문서 정본화가 닫힌 뒤 · 09-21 Decision 직전이 아닌 여유 있는 때
+목적   OBSERVATION_HISTORY 에 2026-09-14 · 2026-09-17 snapshot 을 추가하여
+       09-21 러너가 직전 관측(09-17)을 comparison baseline 으로 사용하게 만든다
+범위   이력 데이터 추가 + 오프라인 QA 갱신·PASS 까지
+🚫 금지 관측 로직 자체 · API 호출 방식 · 판정 로직 변경
+```
+
+**관측과 도구 정리를 같은 라운드에 섞지 않는다** 는 원칙은 유지된다.
+
+### 16.9 CC 이견 및 아이디어
+
+**이견 1 — B안(러너 미수정) 유지가 이번 회차에서 실제로 값을 했다.** 09-14 를 미리
+`OBSERVATION_HISTORY` 에 넣었다면 러너가 곧바로 09-14 대비 delta 를 출력했을 것이고 그게
+더 정확했겠지만, **두 축의 그림이 서로 다르다는 사실 자체**는 기록에 남지 않았을 것이다.
+손계산 병기가 §16.3 의 대비를 남겼다. 다만 이 장점은 이번 한 번으로 끝이다 — §16.8 참조.
+
+**이견 2 — 09-21 Decision 을 손계산 의존으로 치르면 안 된다.** 지금 baseline 이 09-10 에
+멈춰 있어 09-21 에 러너를 그대로 돌리면 **11일 전 상태와 비교**한다. checkpoint 회차는
+손계산으로 메울 수 있었지만 Decision 라운드에서 같은 방식은 위험하다. §16.8 housekeeping 을
+**09-21 이전에, 그러나 09-21 직전이 아닌 시점에** 닫아두는 것이 안전선이다.
+
+**이견 3 — sitemap 3일 무재수집은 지금 판단 근거로 쓰지 않는다.** 표본이 3점(1일·6일·
+진행중 3일)뿐이라 패턴을 주장할 수 없다. 09-21 에 한 점이 더 생기면 그때 네 점으로 언급
+가능한 수준이 된다. 그 전에 crawl budget 이나 사이트 품질과 연결하는 해석은 금지선 안쪽이다.
+
+**아이디어 — 없다.** 09-21 까지 새 작업을 열지 않는다. Caddy access-log 는 09-21 후보로만 유지한다.

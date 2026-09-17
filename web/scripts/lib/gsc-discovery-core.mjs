@@ -94,6 +94,31 @@ export const OBSERVATION_HISTORY = {
     lastCrawlTimeCount: 0,
     verdictRecorded: false,
   },
+  '2026-09-14T14:49+09:00': {
+    label: 'T+7d',
+    note: 'Discovered 13 / UNKNOWN 1. verdict 14/14 NEUTRAL 미수집 0. 정본 §15.1·§15.2.',
+    states: Object.fromEntries(STAGE1_STOP_PATHS.map((p) => [
+      p,
+      [
+        '/en/stops/01009-gwanghwamun-station',
+      ].includes(p) ? 'UNKNOWN' : 'DISCOVERED',
+    ])),
+    lastCrawlTimeCount: 0,
+    verdictRecorded: true,
+  },
+  '2026-09-17T15:09+09:00': {
+    label: 'T+10d',
+    note: 'Discovered 12 / UNKNOWN 2. verdict 14/14 NEUTRAL 미수집 0. 정본 §16.1·§16.2.',
+    states: Object.fromEntries(STAGE1_STOP_PATHS.map((p) => [
+      p,
+      [
+        '/en/stops/01010-gwanghwamun-station',
+        '/en/stops/01013-jongno-2-ga',
+      ].includes(p) ? 'UNKNOWN' : 'DISCOVERED',
+    ])),
+    lastCrawlTimeCount: 0,
+    verdictRecorded: true,
+  },
 };
 
 /**

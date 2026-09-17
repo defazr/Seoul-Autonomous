@@ -171,8 +171,8 @@ function check(name, ok, detail = '') {
 // 13. 다음 회차 기준선 = 가장 최근 관측
 {
   const b = latestBaseline();
-  check('13 latestBaseline() = 2026-09-10 T+72.6h',
-    b.at === '2026-09-10T14:01+09:00' && b.verdictRecorded === false, `${b.at} ${b.label}`);
+  check('13 latestBaseline() = 2026-09-17 T+10d',
+    b.at === '2026-09-17T15:09+09:00' && b.verdictRecorded === true, `${b.at} ${b.label}`);
 }
 
 // 14~15. 안전 상수 (러너를 import 해도 네트워크 호출은 일어나지 않는다)
@@ -197,7 +197,7 @@ check('19 [scope] readonly + 무관 scope / 빈 값 / 비문자열 → BLOCK',
   const a = decisionAnchor();
   const anchorUnknown = Object.values(a.states).filter((v) => v === 'UNKNOWN').length;
   check('20 [축분리] comparison baseline ≠ decision anchor',
-    b.at !== a.at && b.at === '2026-09-10T14:01+09:00' && a.at === DECISION_ANCHOR_AT,
+    b.at !== a.at && b.at === '2026-09-17T15:09+09:00' && a.at === DECISION_ANCHOR_AT,
     `baseline=${b.at} anchor=${a.at}`);
   check('21 [축분리] decision anchor = T0 14/14 UNKNOWN (발견 0)',
     a.at === '2026-09-07T13:28+09:00' && anchorUnknown === 14, `${anchorUnknown}/14 UNKNOWN`);

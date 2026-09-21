@@ -1172,3 +1172,178 @@ AdSense = **HOLD 유지.** §15.6b 의 조기 재판정 조건이었던 `lastCra
 가능한 수준이 된다. 그 전에 crawl budget 이나 사이트 품질과 연결하는 해석은 금지선 안쪽이다.
 
 **아이디어 — 없다.** 09-21 까지 새 작업을 열지 않는다. Caddy access-log 는 09-21 후보로만 유지한다.
+
+---
+
+## 17. T+14d Decision — DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED (2026-09-21)
+
+> §16.7 의 관측 계약을 이행한 **Decision 라운드**다.
+> §0·§8·§13·§14·§15·§16 원문은 소급 수정하지 않는다.
+
+### 17.1 판정 (고정)
+
+```
+Stage-1 discovery                DISCOVERY STARTED   유지
+Crawl                            NOT OBSERVED — 6회차 연속 0 / 14
+Crawled / Indexed progression    NOT OBSERVED
+AdSense                          HOLD
+RT-2 확대                         HOLD
+decision anchor                  T0 2026-09-07 13:28 KST · 14/14 UNKNOWN   (불변)
+anchor 대비 UNKNOWN 이탈           11 / 14
+현재 snapshot                     Discovered 11 / UNKNOWN 3
+기록 품질                          완전 — verdict 미수집 0 / 14
+외부 write                        0
+```
+
+**AdSense = HOLD 근거.** §15.6b 가 정한 조기 재판정 조건 —
+`lastCrawlTime` 또는 의미 있는 `Indexed progression` 발생 — 이
+T0 이후 14일 동안 **한 번도 성립하지 않았다.**
+
+**RT-2 확대 = HOLD 근거. 🚫 AdSense 때문이 아니다.**
+RT-2 확대는 AdSense 와 **독립된 gate** 이며(2026-09-14 확정),
+**색인 부진을 RT-2 확대의 근거로도 반대 근거로도 사용하지 않는다.**
+이번 HOLD 사유는 오직 하나 — **확대 자체를 정당화할 제품 근거가 아직 부족하다.**
+자연 운행시간대 B 화면이 Production 에서 관측되지 않았고(§ WATCH 유지),
+현재 실시간 적용 범위는 KO 01009 한 페이지뿐이다.
+"색인이 안 되니 다른 걸 하자" 는 확대 사유가 될 수 없다.
+
+### 17.2 T+14d 실측 — 2026-09-21 16:57~17:00 KST
+
+관측 전 오프라인 QA **26항 전항 PASS** 선행 확인(계약 순서 준수).
+scope = `webmasters.readonly` 단독 · URL Inspection 14 URL 각 정확히 1회.
+
+계약 시각(13:30 전후) 대비 약 3.5시간 늦게 실행했다. T+14d 경계 안이며 판정에
+영향은 없으나 사실로 기록한다.
+
+```
+제1  lastCrawlTime        0 / 14
+제2  coverageState        Discovered 11 / UNKNOWN 3     ← 그 시점 snapshot
+       decision anchor(T0) 대비 UNKNOWN 이탈  11 / 14   ← 전체 판정 축
+제3  verdict              14 / 14 NEUTRAL · 미수집 0
+제4  Crawled / Indexed    0 / 14
+```
+
+UNKNOWN 으로 보고된 3건
+
+```
+/en/stops/01013-jongno-2-ga
+/ko/stops/01013-jongno-2-ga
+/ko/stops/01014-jongno-2-ga
+```
+
+직전 회차(09-17 T+10d) 대비 변동 — **관측 사실로만 기록한다**
+
+```
+U→D 1   /en/stops/01010-gwanghwamun-station
+D→U 2   /ko/stops/01013-jongno-2-ga · /ko/stops/01014-jongno-2-ga
+동일 11
+```
+
+**이번 회차부터 러너의 comparison baseline 이 직전 공식 관측을 가리킨다.**
+§16.8 housekeeping(commit `fc611e1`) 이 실데이터에서 검증됐다 —
+러너가 `comparison baseline = 2026-09-17T15:09+09:00` 을 출력했고,
+09-17 회차에서 필요했던 손계산 보정이 이번에는 불필요했다.
+
+```
+runner comparison baseline    2026-09-17 T+10d   ← 러너 출력 = 공식 직전 snapshot (일치)
+decision anchor               2026-09-07 T0      ← 전체 판정 기준점
+```
+
+### 17.3 해석 — 넘지 않는 선
+
+```
+허용 표현   "Search Console 이 09-17 과 09-21 에 서로 다른 coverageState 를 보고했다"
+🚫 금지     "발견이 취소됐다" · "discovery 가 후퇴했다" · "나빠졌다" ·
+            "페이지 결함이 생겼다" · "내부 파이프라인이 되돌아갔다"
+```
+
+- **snapshot 11/14 와 U→D 1 · D→U 2 를 regression 으로도 개선 추세로도 판정하지 않는다.**
+- **Search Console 만으로 "실제 Googlebot 접근 자체가 없었다" 고 단정하지 않는다.**
+  실측한 것은 "Search Console 이 `lastCrawlTime` 을 14/14 에서 보고하지 않았다" 까지다.
+  서버 측 독립 확인 수단은 §15.3 대로 **현재 존재하지 않는다**(Caddy log 지시자 0건).
+- 원인을 **crawl budget 으로 확정하지 않는다.** 배제되지도 않았으며 가설 중 하나다.
+- 특정 URL 의 UNKNOWN 복귀만으로 페이지 결함을 판정하지 않는다.
+  **preflight 14/14 PASS 는 유효하다.**
+- 전체 discovery 판정의 비교 대상은 직전 회차가 아니라 decision anchor(T0) 다 → 11/14.
+
+### 17.4 sitemap
+
+```
+lastSubmitted    2026-09-07 13:28 KST     유지 (재제출 0회)
+lastDownloaded   2026-09-14 14:02 KST     유지
+reported URLs    69     errors / warnings 0 / 0     contents indexed 0
+이력             09-07 13:28(우리 제출) → 09-08 16:55 → 09-14 14:02 → (이후 없음)
+```
+
+**2026-09-14 이후 현재까지 7일간 새 다운로드 기록이 없다는 사실까지만 기록한다.**
+패턴도 원인도 주장하지 않는다. "Google 이 사이트를 덜 크롤한다" 로 읽지 않는다.
+
+### 17.5 §15.6 조건 성립 기록
+
+§15.6 이 정한 **"`lastCrawlTime` 0/14 가 유지되면 그때 다음 단계 후보를 별도 판단한다"**
+조건이 **성립했다.** 이 판단을 이번 라운드에서 수행했고 결과는 §17.6 이다.
+
+조건이 성립했다는 것은 **후보를 판단한다**는 뜻이지 **후보를 실행한다**는 뜻이 아니다.
+route recrawl · Request Indexing · sitemap 재제출 · 내부링크 변경은 이번에도 0 건이다.
+
+### 17.6 다음 라운드 — 우선 후보 확정
+
+```
+다음 라운드   Caddy access-log observability — READ-ONLY discovery / 설계
+범위 밖       실제 Caddyfile 수정 · validate/reload 실행 · 배포
+```
+
+**왜 촉진 수단보다 계측이 먼저인가.** 지금 촉진 수단(Request Indexing 등)을 먼저 쓰면
+이후 Googlebot 이 들어와도 **어떤 변화 때문에 들어왔는지 분리할 수 없다.** 게다가 현재
+crawl 근거는 Search Console 단일 출처이고 서버 쪽에서는 **영원히 답할 수 없는 구조**다.
+따라서 현재 가장 큰 공백은 색인 촉진책 부족이 아니라 **서버 측 독립 관측 수단 부재**다.
+순서는 **계측기 먼저, 촉진 나중.**
+
+READ-ONLY discovery 에서 실측할 항목
+
+```
+현재 Caddyfile 구조 · log 지시자 유무 · 전역/사이트 블록 경계
+seoulautonomous 단일 도메인만 격리해 기록 가능한지
+로그 위치 · 포맷 · rotation · 보존기간 · 디스크 영향
+validate → reload 절차와 rollback 경로 (전문 백업 포함)
+6도메인·9컨테이너 공유 Caddy 에 대한 영향 범위
+```
+
+구현 여부는 **그 조사 결과를 보고 다시 승인**한다. 공유 Caddy 는 운영 사고 이력이 있는
+영역이므로 조사와 구현을 같은 라운드에 섞지 않는다.
+
+**discovery/crawl 촉진 수단은 계측 확보 이후 별도 판단한다.**
+
+```
+🚫 계속 금지 (자동 실행 0)
+   Request Indexing · sitemap 재제출 · route recrawl · 내부링크 변경 ·
+   그 밖의 모든 외부 write. 별도 GPT 판단 + 사용자 승인 없이 실행하지 않는다.
+```
+
+### 17.7 이번 회차에서 하지 않은 것
+
+```
+GSC/GA4 write 0 · sitemap 재제출 0 · Request Indexing 0 · route recrawl 0
+Caddy 접촉 0 (조사·수정·validate·reload 전부) · Production 0 · 서버 파일 0
+제품 코드 0 · 관측 runner 0 · OBSERVATION_HISTORY 0 · 내부링크 0
+RT-2 확장 0 · RT-3 0 · EN realtime 0 · AdSense 재신청 0
+```
+
+### 17.8 CC 이견 및 아이디어
+
+**이견 1 — 14일 0/14 는 이제 "아직 이르다" 로 설명하기 어렵다.** 다만 그 다음 문장을
+조심해야 한다. 근거는 여전히 **Search Console 단일 출처**이고, 서버 로그는 구조상 답을
+줄 수 없다. 정확한 서술은 "크롤이 없었다" 가 아니라 **"크롤 기록을 확인할 수단이 한 곳뿐이고
+그 한 곳이 0 을 보고한다"** 까지다. 이 구분이 §17.6 의 순서(계측 먼저)를 정당화한다.
+
+**이견 2 — sitemap 무재수집 공백이 이번에 표본 네 점째가 됐다.** 09-07→09-08(1일) ·
+09-08→09-14(6일) · 09-14→현재(7일 경과·진행중). **관측된 것 중 가장 긴 공백이 갱신 중**
+이라는 사실은 Decision 입력으로 기록할 가치가 있다. 그러나 네 점으로도 패턴 주장은 못 하며
+원인 해석은 하지 않는다.
+
+**이견 3 — RT-2 확대 HOLD 의 사유 분리가 이번 판정에서 가장 중요한 기록이다.**
+"AdSense 가 HOLD 니까 RT-2 도 HOLD" 로 요약되면 2026-09-14 에 확정한 독립 gate 구조가
+한 라운드 만에 무너진다. §17.1 에 사유를 명시적으로 분리해 적은 이유다.
+
+**아이디어 — 없다.** 다음 라운드는 Caddy READ-ONLY 조사 하나이며, 그 전까지 새 작업을
+열지 않는다.

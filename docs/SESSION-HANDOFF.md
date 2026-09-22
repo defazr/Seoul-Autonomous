@@ -1,13 +1,16 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-09-21 (**T+14d Decision — anchor 대비 이탈 11/14 · CRAWL NOT OBSERVED 6회차 · AdSense·RT-2 확대 둘 다 HOLD**)
+> 마지막 업데이트: 2026-09-22 (**Caddy 로그 첫 판독 조기 실행 — verified Search Googlebot 29건 · Stop Search crawl 0건 · AdSense HUMAN DECISION REQUIRED**)
 > RT-2 KO 01009 = **CLOSED / Production Live Approved 유지** (runtime PASS / real-usage WATCH 해소)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고, 이어서 `docs/handoff/HANDOFF-20260907.md`(최신) ·
 > 정본 `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md`를 읽는다.
 > ⚠ 그 문서에서 **현재 유효한 판정은 §17**, 다음 라운드 계약은 **§17.6** 이다.
 > §17 이 §16 을 대체했다. §0·§8·§13·§14·§15·§16 은 당시 기록이며 Superseded.
 > §16.8 OBSERVATION_HISTORY housekeeping 은 **✅ 실행 완료**(commit `fc611e1`) — 다시 열지 않는다.
-> 다음 라운드 = **Caddy access-log observability READ-ONLY discovery/설계** (실제 수정·reload 는 범위 밖).
+> Caddy access-log observability 는 **✅ 2026-09-21 구현 완료 / ACTIVE** —
+> 정본 `docs/worklogs/CADDY-ACCESS-LOG-OBSERVABILITY-20260921.md`. **재조사·재적용 금지.**
+> **첫 판독도 2026-09-22 에 조기 실행 완료** — 정본 `docs/worklogs/CADDY-LOG-FIRST-READING-20260922.md`.
+> 다음 관측은 **자동으로 열지 않는다.**
 
 ## 🔒 마지막 배포 라운드 — Phase RT-2 (KO 01009 실시간 도착 카드)
 
@@ -144,11 +147,28 @@ observation axis                    ACTIVE — Stage-1 discovery (T0 2026-09-07 
 AdSense                             HOLD — 조기 재판정 조건 14일간 미성립
 RT-2 확대                            HOLD — 🚫 AdSense 때문이 아니다. 독립 gate 이며
                                     확대를 정당화할 제품 근거 부족이 유일한 사유 (정본 §17.1)
-서버로그 원인조사                     INCONCLUSIVE — access log 미설정으로 확인·반증 불가
-NEXT                                Caddy access-log observability — READ-ONLY discovery/설계
-                                    정본 §17.6 · 실제 Caddyfile 수정·validate/reload·배포는 범위 밖
-                                    촉진 수단은 계측 확보 이후 별도 판단 (순서 = 계측기 먼저)
+서버로그 원인조사                     ✅ 해소 진행중 — 2026-09-21 Caddy access-log 계측기 가동
+Caddy observability                 IMPLEMENTATION COMPLETED / ACTIVE  (계측 시작 09-21 17:56 KST)
+                                    정본 docs/worklogs/CADDY-ACCESS-LOG-OBSERVABILITY-20260921.md
+                                    로그 /data/access-seoulautonomous.log (JSON · 10MiB×5 roll)
+첫 판독                              ✅ 2026-09-22 조기 실행 완료 (계약 09-24 → 포그린 판단으로 앞당김)
+                                    정본 docs/worklogs/CADDY-LOG-FIRST-READING-20260922.md
+                                    관측창 28.7h (09-21 17:56 ~ 09-22 22:38) · 총 2,764건
+  verified Google-origin requests   54건 (공식 IP 6개)
+    ├ Search Googlebot (D+S)        29건   ← AdSense 조기 재판정 조건은 이것만으로 충족
+    ├ Google-adstxt                 20건
+    └ Mediapartners-Google           5건   (AdSense crawler · Search 와 별개)
+  Stop 페이지 Search crawl           0건   (관측창 기준)
+  기술적 차단                        미발견 — robots Allow:/ · sitemap 200 수집 · /stops/ 200
+  ⚠ 09-21 이전 14일은 로그 부재로 소급 검증 불가
+AdSense                             **HUMAN DECISION REQUIRED**
+                                    technical crawl-access uncertainty substantially reduced
+                                    🚫 Stop Search crawl 0건을 자동 HOLD 조건으로 쓰지 않는다
+NEXT                                **자동으로 열지 않는다.** 다음 행동은 포그린 결정 사항
+                                    후보 ①AdSense 재신청 판단 ②09-28 추가 판독(독립 · 선택)
 완료된 후속                           OBSERVATION_HISTORY housekeeping ✅ commit fc611e1 — 재개 금지
+                                    Caddy access-log 구현 ✅ commit d93e6dd — 재개 금지
+                                    Caddy 로그 첫 판독 ✅ 2026-09-22 — 재실행 금지
 ```
 
 ```
@@ -236,9 +256,21 @@ server log 원인조사 (2026-09-14, READ-ONLY 완료) — 정본 §15.3·§15.4
   lastCrawlTime 0/14 (6회차) · Crawled/Indexed 0/14 · anchor 대비 이탈 11/14
   §15.6 의 「0/14 유지 시 다음 단계 후보 별도 판단」 조건 성립 → 판단 수행(실행 아님)
   AdSense HOLD · RT-2 확대 HOLD(사유 분리 — §17.1)
-NEXT   Caddy access-log observability — READ-ONLY discovery/설계 — 정본 §17.6
-  실제 Caddyfile 수정·validate/reload·배포는 범위 밖 · 조사와 구현을 같은 라운드에 섞지 않는다
-  촉진 수단(Request Indexing·재제출·recrawl·내부링크)은 계측 확보 이후 별도 판단 · 자동 실행 금지
+(완료) 2026-09-21 Caddy access-log observability — 정본 CADDY-ACCESS-LOG-OBSERVABILITY-20260921.md
+  조사 판정 A → candidate validate PASS → inode 유지 제자리 적용 → graceful reload(무중단) →
+  smoke 검증까지 완료. StartedAt 불변 · RestartCount 0 · 6도메인 pre/post 동일
+(완료) 2026-09-22 Caddy 로그 첫 판독 — 정본 CADDY-LOG-FIRST-READING-20260922.md
+  §7.1 6단계 전부 이행 · remote_ip 보존 PASS(고유 IP 280) · self-test 2건 제외
+  verified Google-origin 54건 = Search Googlebot 29 + Google-adstxt 20 + Mediapartners 5
+  Stop 페이지 Search crawl 0건 · UA 위장 IP 1개 적발(471건 · 461건 404 · Google 집계 제외)
+  가설 5개 배제 — robots Allow:/ · /stops/ 200 · sitemap 내 Stop URL 존재 · sitemap 200 수집 · 사이트 크롤 중
+  🚫 "선택적으로 안 가져간다" 의도 해석 금지 · queue/defer/priority 미확정
+  🚫 로그가 비었다는 사실만으로 사이트 결함·crawl budget·Google 차단 단정 금지
+  🚫 이 로그는 계측 시작(09-21 17:56) 이전을 영원히 답하지 못한다
+NEXT   **자동으로 열지 않는다.** 다음 행동은 포그린 결정
+  후보 ① AdSense 재신청 판단 (조기 재판정 조건 성립 · HUMAN DECISION REQUIRED)
+       ② 2026-09-28 추가 판독 — **후보일 뿐이며 AdSense 결정과 독립**
+  촉진 수단(Request Indexing·재제출·recrawl·내부링크)은 판독 결과 이후 별도 판단 · 자동 실행 금지
 Decision  2026-09-21 (T+14d) — 0/14 유지 시 다음 단계 후보를 별도 판단
   후보 ①Caddy access-log observability 라운드 ②촉진 수단 READ-ONLY 설계 검토
   🚫 route recrawl·Request Indexing·sitemap 재제출·내부링크 변경 자동 실행 금지
@@ -259,11 +291,14 @@ gate 관계 (2026-09-14 확정 · 2026-09-21 최초 적용) — **RT-2 확대와
      "거절했으니 확대 금지" 로 연결하지 않고 거절 원인과 제품 가치를 각각 본다
   ⚠ 2026-09-01 의 "색인 정상 → 7-stop 확장 우선 → 그 뒤 재신청 판정" 순서는 이 결정이 대체한다.
      당시 기록은 삭제하지 않는다
-AdSense  HOLD 유지 (2026-09-21 T+14d 판정 · 정본 §17.1). 3차 거절과 연결 금지
-  discovery 자체는 진행됐으나 crawl progression 이 T0 이후 14일간 미관측 —
-  §15.6b 의 조기 재판정 조건이 한 번도 성립하지 않았다
-  다음 판단 시점은 **Caddy 계측 확보 이후** 별도로 정한다 (고정 날짜 없음).
-  그 전에 lastCrawlTime·Indexed progression 이 의미 있게 발생하면 조기 재판정 가능
+AdSense  **HUMAN DECISION REQUIRED** (2026-09-22 첫 판독으로 조기 재판정 조건 성립)
+  2026-09-21 T+14d 에서는 HOLD 였으나(정본 §17.1), 09-22 서버 로그에서
+  **verified Search Googlebot 29건 + Mediapartners-Google(AdSense crawler) 5건**이 확인됐다
+  기술적 차단도 미발견 → **technical crawl-access uncertainty substantially reduced**
+  🚫 Stop 페이지 Search crawl 0건을 AdSense 재신청의 **자동 HOLD 조건으로 쓰지 않는다** —
+     Search Googlebot 과 AdSense crawler 는 별개 크롤러다
+  🚫 이 문서가 GO/HOLD 를 결정하지 않는다. 3차 거절과의 연결도 금지
+  판단 시점 고정 날짜 없음 — 포그린이 정한다
 ```
 
 아래는 전부 **착수 금지**이며 별도 결정 사항이다.
@@ -506,7 +541,9 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
    **Production runtime 이 origin/main 보다 docs 커밋 N개 뒤인 것은 정상이며 drift 가 아니다.**
    (N 은 docs 커밋마다 늘어난다 — 숫자를 문서에 고정하지 말 것. 확인은 `git rev-list --count b10c7d3..HEAD`)
    Round 26·27·Phase 0·1A·1B·1C·Robotaxi Freshness·**Stage 1 Stop Pages·RT-2 재작업 금지**.
-   **다음 = Caddy access-log observability READ-ONLY discovery/설계** (09-21 T+14d Decision 완료 · 정본 §17).
+   **다음 = 자동으로 열지 않는다.** T+14d Decision · Caddy 계측 구현 · 첫 판독 **셋 다 완료**.
+   다음 행동은 포그린 결정 — 후보 ①AdSense 재신청 판단 ②09-28 추가 판독(독립·선택).
+   Caddy 정본 = `CADDY-ACCESS-LOG-OBSERVABILITY-20260921.md`(구현) · `CADDY-LOG-FIRST-READING-20260922.md`(판독) — **재조사·재실행 금지**.
    현재 판정 DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED. 그 전에 RT-2 6-stop 확장 ·
    RT-3 지도 · EN realtime · observability 코드 · AdSense 재신청 전부 자동 착수 금지
 

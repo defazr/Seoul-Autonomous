@@ -2,9 +2,14 @@
 
 > 마지막 업데이트: 2026-09-22 (**AdSense 4차 재신청 제출 23:30 KST · 심사 중 — Production 동결 / 대기 작업 0건**)
 > RT-2 KO 01009 = **CLOSED / Production Live Approved 유지** (runtime PASS / real-usage WATCH 해소)
-> 다음 세션은 **이 파일을 가장 먼저** 읽고, 이어서 `docs/handoff/HANDOFF-20260907.md`(최신) ·
-> 정본 `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md`를 읽는다.
-> ⚠ 그 문서에서 **현재 유효한 판정은 §17**, 다음 라운드 계약은 **§17.6** 이다.
+> 다음 세션은 **이 파일이 단일 진입점(SSOT)** 이다. 이어서 읽을 것은 **이 파일이 지목하는 정본만**이다.
+> 현재 정본은 `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md` §17 ·
+> `docs/worklogs/CADDY-ACCESS-LOG-OBSERVABILITY-20260921.md` · `docs/worklogs/CADDY-LOG-FIRST-READING-20260922.md`.
+> ⚠ `docs/handoff/HANDOFF-*.md` 는 **역사 자료다. "최신" 으로 읽지 않는다** —
+> 09-14 이후 라운드는 dated 파일을 만들지 않았으므로 그 폴더의 마지막 파일은 낡았다.
+> ⚠ 그 문서에서 **현재 유효한 판정은 §17** 이다. **§17.6 은 이미 이행됐다** —
+> 그 라운드(Caddy access-log)는 조사·적용·reload·첫 판독까지 09-21~22 에 완료됐다.
+> 현재 NEXT 는 §17.6 이 아니라 **이 파일의 NEXT = AdSense 심사 결과 대기** 다.
 > §17 이 §16 을 대체했다. §0·§8·§13·§14·§15·§16 은 당시 기록이며 Superseded.
 > §16.8 OBSERVATION_HISTORY housekeeping 은 **✅ 실행 완료**(commit `fc611e1`) — 다시 열지 않는다.
 > Caddy access-log observability 는 **✅ 2026-09-21 구현 완료 / ACTIVE** —
@@ -119,7 +124,8 @@ Robotaxi Freshness    APPROVED / PRODUCTION LIVE / CLOSED   (8e3c9f8, 2026-08-26
 web Graph SSOT        web/data/routes.json
 전략                  STATIC-FIRST / NO EXTERNAL STATE NEEDED
 엔터티                Route → StopVisit → Stop (267 ARS = 원자, 177 그룹 = 보조 후보)
-금지                  267 Stop 전량 페이지 생성 / AdSense 재신청(당분간) / 신규 dependency
+금지                  267 Stop 전량 페이지 생성 / 신규 dependency
+                     (AdSense 는 2026-09-22 4차 재신청 제출 · UNDER REVIEW — 금지 항목 아님)
 ```
 
 **Stage 1 정본: `docs/worklogs/STAGE1-STOP-PAGES-DEPLOYMENT-20260827.md`** (구현·배포·QA 계약·backlog 전부)
@@ -127,7 +133,8 @@ web Graph SSOT        web/data/routes.json
 `STOP-1F-EN-METADATA-POST-LAUNCH-AUDIT-20260827.md` / 정책 `docs/strategy/STOP-URL-POLICY-20260826.md`
 이전 정본: Phase 0 `PHASE0-CTG-STRUCTURE-AUDIT…` / 1A `PHASE1A-GRAPH-CORE…` / 1B `PHASE1B-A21-VERTICAL-SLICE…` /
 1C `PHASE1C-SHARED-STOP-EXPANSION-20260825.md` / `ROBOTAXI-FRESHNESS-20260826.md`
-핸드오프: **`HANDOFF-20260907.md`** ← 최신 / `HANDOFF-20260901.md` / `HANDOFF-20260827.md` / `HANDOFF-20260826.md` · `_2` · `_3` / `HANDOFF-20260825.md` · `_2`~`_4`
+핸드오프(역사 자료 · **진입점 아님**): `HANDOFF-20260907.md` / `HANDOFF-20260901.md` / `HANDOFF-20260827.md` / `HANDOFF-20260826.md` · `_2` · `_3` / `HANDOFF-20260825.md` · `_2`~`_4`
+  ⚠ 09-14 이후 라운드는 dated handoff 를 만들지 않는다. 현재 진입점은 이 SESSION-HANDOFF 하나다.
 
 ## 다음 세션 첫 작업
 
@@ -217,7 +224,9 @@ coverageState snapshot   ※ 개별 URL 추세로 읽지 않는다. 그 시점 �
   2026-09-21 T+14d      Discovered 11 / UNKNOWN 3   (09-17 대비 U→D 1 · D→U 2 · 동일 11)
                          UNKNOWN = /en/01013 · /ko/01013 · /ko/01014
                          anchor(T0) 대비 이탈 11/14
-                         ※ 이 회차부터 러너 baseline == 공식 직전 snapshot (손계산 불필요)
+                         ⚠ **러너 OBSERVATION_HISTORY 에 09-21 T+14d snapshot 이 없다.**
+                            현재 코드 최신 엔트리는 2026-09-17 T+10d 다 (2026-09-22 예행에서 적발)
+                            → 다음 관측 실행 **전에** 별도 코드 라운드로 반드시 해결한다
   lastCrawlTime          0 / 14   T0 포함 6개 회차 전부 — CRAWL NOT OBSERVED
   Crawled/Indexed        0 / 14
   verdict                09-09 NEUTRAL 14/14 · 09-10 미기록(부분 불완전) ·
@@ -289,7 +298,8 @@ Decision  2026-09-21 (T+14d) — 0/14 유지 시 다음 단계 후보를 별도 
   🚫 route recrawl·Request Indexing·sitemap 재제출·내부링크 변경 자동 실행 금지
      별도 GPT + 사용자 승인 없이 write 금지
 ⚠ 비교 기준  ✅ 불일치 해소됨 (§16.8 housekeeping · commit `fc611e1`).
-             러너 comparison baseline == 공식 직전 snapshot **2026-09-21 T+14d**
+             ⚠ **09-14·09-17 까지만 해소됐다.** 09-21 T+14d snapshot 은 코드에 **미반영** —
+             지금 러너를 돌리면 baseline 이 2026-09-17 로 잡힌다 (별도 라운드 backlog)
              판정 anchor 는 변함없이 T0 2026-09-07 (14/14 UNKNOWN)
              두 축은 여전히 분리해 읽는다 — 직전 회차 변화 ≠ 전체 discovery 판정
 gate 관계 (2026-09-14 확정 · 2026-09-21 최초 적용) — **RT-2 확대와 AdSense 재신청은 서로 독립된 gate 다.**
@@ -435,7 +445,8 @@ Round 26     2026-08-03   거절 원인 3건 수리 배포
 3차 신청     2026-08-11   Final Gate APPLY-NOW (P0/P1 0) 후 포그린 실행
 3차 거절     (2026-08-25 확인)  "정책 위반 → 가치가 별로 없는 콘텐츠"
 4차 신청     2026-09-22 23:30 KST  preflight 8항 PASS 후 포그린 실행 — **심사 중**
-현재         재신청 금지. CTG 구조 전환 후 색인 반영을 보고 별도 판단
+현재         **UNDER REVIEW** — 2026-09-22 23:30 KST 4차 제출 후 심사 중
+             심사 결과 대기가 현재 NEXT 이며 추가 AdSense 작업은 없다
 ```
 
 거절 원인이 "그래프 부재"로 확정된 것은 아니다(미증명). 기술 게이트(robots·ads.txt·
@@ -535,11 +546,12 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
 
 1. [ ] 이 문서
 2. [ ] `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md` (**최상위 정본 — discovery 실험·관측 계약**)
-   현재 판정 정본 = **§17** · 다음 라운드 계약 = **§17.6(Caddy access-log READ-ONLY 조사)**
+   현재 판정 정본 = **§17**. ⚠ **§17.6(Caddy READ-ONLY 조사)은 이미 완료된 계약이다** —
+   재조사·재적용 금지. 현재 NEXT 는 이 파일의 NEXT(AdSense 심사 결과 대기) 다.
    §0·§8·§13·§14·§15·§16 은 당시 기록으로 보존한다 — 삭제·소급 수정하지 않으며 현재 지시로 읽지 않는다
    `docs/worklogs/STAGE1-STOP-PAGES-DEPLOYMENT-20260827.md` (Stage 1 구현·배포 정본)
 3. [ ] `docs/strategy/STOP-URL-POLICY-20260826.md` (Stop URL 안전 계약)
-4. [ ] `docs/handoff/HANDOFF-20260907.md`(최신) · `HANDOFF-20260901.md` · 설계 `STAGE1-STOP-PAGE-DESIGN-20260826.md` ·
+4. [ ] (역사 자료 · 필요할 때만) `docs/handoff/HANDOFF-20260907.md` · `HANDOFF-20260901.md` · 설계 `STAGE1-STOP-PAGE-DESIGN-20260826.md` ·
    감사 2건(`STAGE1-STOP-PAGES-POST-LAUNCH-AUDIT-20260827.md` · `STOP-1F-EN-METADATA-…-20260827.md`)
 5. [ ] 이전 정본: ROBOTAXI-FRESHNESS · PHASE1C·1B·1A·PHASE0 worklog / HANDOFF-20260826 `_3`~1회차 · 20260825 `_4`~1회차
 6. [ ] MEMORY.md

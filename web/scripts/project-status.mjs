@@ -112,20 +112,24 @@ if (!inHistory) notes.push(`${RT2_CODE_COMMIT} 가 현재 HEAD history 에 없�
 console.log('\n=== 읽어야 할 문서 ===');
 const HANDOFF = 'docs/SESSION-HANDOFF.md';
 const handoffExists = existsSync(join(REPO, HANDOFF));
-row('1. 판단·gate·NEXT 정본', HANDOFF, handoffExists ? '' : '← 없음');
+row('1. CC 세션 진입점 (단일 SSOT)', HANDOFF, handoffExists ? '' : '← 없음');
 if (!handoffExists) notes.push(`${HANDOFF} 가 없다`);
+console.log(`${' '.repeat(31)}현재 판정·gate·NEXT 는 전부 이 파일이 정본이다.`);
+console.log(`${' '.repeat(31)}이어서 읽을 정본은 이 파일이 지목하는 것만 읽는다.`);
 
-// 최신 handoff = 파일명 사전순 최대 (HANDOFF-YYYYMMDD[_n].md 이므로 날짜순과 일치)
-let newest = null;
+// ⚠ docs/handoff/HANDOFF-YYYYMMDD.md 는 **역사 자료**다.
+// 파일명 사전순 최대를 "최신" 으로 안내하면, dated 파일을 만들지 않은 라운드가 생기는 순간
+// 낡은 문서가 최신으로 승격돼 새 세션을 오도한다 (2026-09-22 예행에서 실제 적발).
+// 따라서 진입점은 SESSION-HANDOFF 하나로 고정하고, dated 파일은 개수만 참고로 보고한다.
+let archived = 0;
 const hdir = join(REPO, 'docs', 'handoff');
 if (existsSync(hdir)) {
-  const files = readdirSync(hdir).filter((f) => /^HANDOFF-\d{8}(_\d+)?\.md$/.test(f)).sort();
-  newest = files.length ? files[files.length - 1] : null;
+  archived = readdirSync(hdir).filter((f) => /^HANDOFF-\d{8}(_\d+)?\.md$/.test(f)).length;
 }
-row('2. 최신 handoff', newest ? `docs/handoff/${newest}` : '(없음)');
+row('2. docs/handoff/ (역사 자료)', `${archived}건 보존`, '← 최신 아님 · 진입점 아님');
 
-// SESSION-HANDOFF 와 최신 handoff 가 가리키는 docs 경로가 실재하는지만 확인
-const refSources = [handoffExists ? HANDOFF : null, newest ? `docs/handoff/${newest}` : null].filter(Boolean);
+// SESSION-HANDOFF 가 가리키는 docs 경로가 실재하는지만 확인
+const refSources = [handoffExists ? HANDOFF : null].filter(Boolean);
 const refs = new Set();
 for (const rel of refSources) {
   const text = readFileSync(join(REPO, rel), 'utf8');

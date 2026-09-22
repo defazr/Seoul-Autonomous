@@ -1182,6 +1182,13 @@ AdSense = **HOLD 유지.** §15.6b 의 조기 재판정 조건이었던 `lastCra
 
 ### 17.1 판정 (고정)
 
+> ⚠ **이 절의 `AdSense = HOLD` 는 2026-09-22 결정으로 대체됐다.** 당시 기록으로 보존하며
+> 소급 수정하지 않는다. 09-22 Caddy 로그 첫 판독에서 verified Search Googlebot 29건과
+> Mediapartners-Google 5건이 확인돼 기술적 차단 가설이 배제됐고, preflight 8항 PASS 후
+> **4차 재신청이 2026-09-22 23:30 KST 에 제출됐다 (UNDER REVIEW).**
+> 현재 AdSense 상태의 정본은 `docs/SESSION-HANDOFF.md` 와
+> `docs/worklogs/CADDY-LOG-FIRST-READING-20260922.md` 다.
+
 ```
 Stage-1 discovery                DISCOVERY STARTED   유지
 Crawl                            NOT OBSERVED — 6회차 연속 0 / 14
@@ -1287,6 +1294,11 @@ reported URLs    69     errors / warnings 0 / 0     contents indexed 0
 route recrawl · Request Indexing · sitemap 재제출 · 내부링크 변경은 이번에도 0 건이다.
 
 ### 17.6 다음 라운드 — 우선 후보 확정
+
+> ⚠ **이 절은 이미 이행됐다 (2026-09-21~22).** Caddy access-log observability 는 조사·적용·
+> graceful reload·첫 판독까지 완료됐다 — 정본 `CADDY-ACCESS-LOG-OBSERVABILITY-20260921.md` ·
+> `CADDY-LOG-FIRST-READING-20260922.md`. **재조사·재적용 금지.**
+> 아래는 당시 계약 기록이며 현재 지시가 아니다. 현재 NEXT 는 `docs/SESSION-HANDOFF.md` 를 본다.
 
 ```
 다음 라운드   Caddy access-log observability — READ-ONLY discovery / 설계

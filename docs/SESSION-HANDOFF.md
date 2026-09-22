@@ -1,6 +1,6 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-09-22 (**Caddy 로그 첫 판독 조기 실행 — verified Search Googlebot 29건 · Stop Search crawl 0건 · AdSense HUMAN DECISION REQUIRED**)
+> 마지막 업데이트: 2026-09-22 (**AdSense 4차 재신청 제출 23:30 KST · 심사 중 — Production 동결 / 대기 작업 0건**)
 > RT-2 KO 01009 = **CLOSED / Production Live Approved 유지** (runtime PASS / real-usage WATCH 해소)
 > 다음 세션은 **이 파일을 가장 먼저** 읽고, 이어서 `docs/handoff/HANDOFF-20260907.md`(최신) ·
 > 정본 `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md`를 읽는다.
@@ -161,11 +161,22 @@ Caddy observability                 IMPLEMENTATION COMPLETED / ACTIVE  (계측 �
   Stop 페이지 Search crawl           0건   (관측창 기준)
   기술적 차단                        미발견 — robots Allow:/ · sitemap 200 수집 · /stops/ 200
   ⚠ 09-21 이전 14일은 로그 부재로 소급 검증 불가
-AdSense                             **HUMAN DECISION REQUIRED**
-                                    technical crawl-access uncertainty substantially reduced
-                                    🚫 Stop Search crawl 0건을 자동 HOLD 조건으로 쓰지 않는다
-NEXT                                **자동으로 열지 않는다.** 다음 행동은 포그린 결정 사항
-                                    후보 ①AdSense 재신청 판단 ②09-28 추가 판독(독립 · 선택)
+AdSense                             **4차 재신청 제출 완료 — 심사 중 (UNDER REVIEW)**
+                                    2026-09-22 23:30 KST 전후 · 포그린이 콘솔에서 직접 Request review
+                                    콘솔 상태 = 「사이트 소유권 확인 ✅ / 리뷰가 요청됨 ✅」
+                                    신청 직전 READ-ONLY preflight 8항 전건 PASS (채팅 보고 · 문서 미작성)
+                                      ads.txt 200 pub-7976139023602789 · robots Allow:/ Disallow 0
+                                      주요 14 URL 4xx·5xx 0 · canonical self 정상 · hreflang 3종 계약 유지
+                                      sitemap 69 loc(문법 0오류·중복 0) · AdSense script 1개(중복 아님)
+                                      ads.txt ↔ layout client ID 일치
+NEXT                                **심사 결과 대기. 대기 작업 0건.**
+                                    승인 → 종료 / 거절 → 거절 메일 **원문**을 받아 최종 분석 라운드
+                                    심사 보통 며칠 ~ 2·4주 · 결과는 Google 메일 통지
+심사 중 운영 원칙                     **Production 동결** (구글 규칙이 아니라 변수 축소를 위한 운영 판단)
+                                    🚫 RT-2 확장 · RT-3 · EN realtime · Stage 2 · 구조 변경
+                                    🚫 sitemap 재제출 · Request Indexing · route recrawl · 내부링크 변경
+                                    🚫 Caddy 설정 변경 — 단 **계측기는 켜둔 채 계속 수집**
+                                    (심사 결과 시점에 Stop 페이지 Search crawl 여부도 함께 판독 가능)
 완료된 후속                           OBSERVATION_HISTORY housekeeping ✅ commit fc611e1 — 재개 금지
                                     Caddy access-log 구현 ✅ commit d93e6dd — 재개 금지
                                     Caddy 로그 첫 판독 ✅ 2026-09-22 — 재실행 금지
@@ -267,9 +278,11 @@ server log 원인조사 (2026-09-14, READ-ONLY 완료) — 정본 §15.3·§15.4
   🚫 "선택적으로 안 가져간다" 의도 해석 금지 · queue/defer/priority 미확정
   🚫 로그가 비었다는 사실만으로 사이트 결함·crawl budget·Google 차단 단정 금지
   🚫 이 로그는 계측 시작(09-21 17:56) 이전을 영원히 답하지 못한다
-NEXT   **자동으로 열지 않는다.** 다음 행동은 포그린 결정
-  후보 ① AdSense 재신청 판단 (조기 재판정 조건 성립 · HUMAN DECISION REQUIRED)
-       ② 2026-09-28 추가 판독 — **후보일 뿐이며 AdSense 결정과 독립**
+(완료) 2026-09-22 23:30 KST AdSense 4차 재신청 제출 — preflight 8항 PASS 후 포그린 실행
+NEXT   **심사 결과 대기. 대기 작업 0건.**
+  승인 → 종료 / 거절 → 거절 메일 **원문** 확보 후 최종 분석 라운드
+  09-28 추가 판독은 후보일 뿐이며 AdSense 와 독립 · 자동 실행하지 않는다
+  심사 중에는 Production 동결 · 계측기만 켜둔 채 수집 지속
   촉진 수단(Request Indexing·재제출·recrawl·내부링크)은 판독 결과 이후 별도 판단 · 자동 실행 금지
 Decision  2026-09-21 (T+14d) — 0/14 유지 시 다음 단계 후보를 별도 판단
   후보 ①Caddy access-log observability 라운드 ②촉진 수단 READ-ONLY 설계 검토
@@ -291,14 +304,16 @@ gate 관계 (2026-09-14 확정 · 2026-09-21 최초 적용) — **RT-2 확대와
      "거절했으니 확대 금지" 로 연결하지 않고 거절 원인과 제품 가치를 각각 본다
   ⚠ 2026-09-01 의 "색인 정상 → 7-stop 확장 우선 → 그 뒤 재신청 판정" 순서는 이 결정이 대체한다.
      당시 기록은 삭제하지 않는다
-AdSense  **HUMAN DECISION REQUIRED** (2026-09-22 첫 판독으로 조기 재판정 조건 성립)
-  2026-09-21 T+14d 에서는 HOLD 였으나(정본 §17.1), 09-22 서버 로그에서
-  **verified Search Googlebot 29건 + Mediapartners-Google(AdSense crawler) 5건**이 확인됐다
-  기술적 차단도 미발견 → **technical crawl-access uncertainty substantially reduced**
-  🚫 Stop 페이지 Search crawl 0건을 AdSense 재신청의 **자동 HOLD 조건으로 쓰지 않는다** —
+AdSense  **4차 재신청 제출 · UNDER REVIEW** (2026-09-22 23:30 KST 전후)
+  경과  09-21 T+14d 에서는 HOLD 였으나(정본 §17.1), 09-22 서버 로그에서
+        **verified Search Googlebot 29건 + Mediapartners-Google(AdSense crawler) 5건** 확인 →
+        기술적 차단 미발견 → HUMAN DECISION REQUIRED → 포그린 GO → preflight PASS → 제출
+  🚫 Stop 페이지 Search crawl 0건은 AdSense 의 **선행조건이 아니다** —
      Search Googlebot 과 AdSense crawler 는 별개 크롤러다
-  🚫 이 문서가 GO/HOLD 를 결정하지 않는다. 3차 거절과의 연결도 금지
-  판단 시점 고정 날짜 없음 — 포그린이 정한다
+  🚫 심사 중 사이트 구조 변경·색인 촉진 작업을 하지 않는다 (변수 축소)
+  거절 시  **거절 메일 원문을 그대로 확보한다.** 1~3차가 전부 "가치가 별로 없는 콘텐츠"
+           로만 기록돼 있어 원문 없이는 다음 분석이 추측에서 출발한다
+           그때 최종 분석 = 거절 사유 원문 + Caddy 누적 로그 + 콘텐츠 가치 + 사이트 구조
 ```
 
 아래는 전부 **착수 금지**이며 별도 결정 사항이다.
@@ -419,6 +434,7 @@ R26 rollback  seoul-autonomous-web:rollback-ef0274a → sha256:6d878d66110e…
 Round 26     2026-08-03   거절 원인 3건 수리 배포
 3차 신청     2026-08-11   Final Gate APPLY-NOW (P0/P1 0) 후 포그린 실행
 3차 거절     (2026-08-25 확인)  "정책 위반 → 가치가 별로 없는 콘텐츠"
+4차 신청     2026-09-22 23:30 KST  preflight 8항 PASS 후 포그린 실행 — **심사 중**
 현재         재신청 금지. CTG 구조 전환 후 색인 반영을 보고 별도 판단
 ```
 
@@ -541,8 +557,9 @@ raw count 와 deduplicated count 는 항상 분리 / 동일 이름 ≠ 동일 �
    **Production runtime 이 origin/main 보다 docs 커밋 N개 뒤인 것은 정상이며 drift 가 아니다.**
    (N 은 docs 커밋마다 늘어난다 — 숫자를 문서에 고정하지 말 것. 확인은 `git rev-list --count b10c7d3..HEAD`)
    Round 26·27·Phase 0·1A·1B·1C·Robotaxi Freshness·**Stage 1 Stop Pages·RT-2 재작업 금지**.
-   **다음 = 자동으로 열지 않는다.** T+14d Decision · Caddy 계측 구현 · 첫 판독 **셋 다 완료**.
-   다음 행동은 포그린 결정 — 후보 ①AdSense 재신청 판단 ②09-28 추가 판독(독립·선택).
+   **다음 = AdSense 심사 결과 대기. 대기 작업 0건.**
+   T+14d Decision · Caddy 계측 구현 · 첫 판독 · **AdSense 4차 재신청(09-22 23:30) 전부 완료**.
+   승인 → 종료 / 거절 → 메일 원문 확보 후 최종 분석. 심사 중 Production 동결.
    Caddy 정본 = `CADDY-ACCESS-LOG-OBSERVABILITY-20260921.md`(구현) · `CADDY-LOG-FIRST-READING-20260922.md`(판독) — **재조사·재실행 금지**.
    현재 판정 DISCOVERY STARTED 유지 / CRAWL NOT OBSERVED. 그 전에 RT-2 6-stop 확장 ·
    RT-3 지도 · EN realtime · observability 코드 · AdSense 재신청 전부 자동 착수 금지

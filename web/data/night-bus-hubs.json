@@ -1,0 +1,377 @@
+{
+ "_meta": {
+  "generatedBy": "web/scripts/build-night-bus-derived.mjs",
+  "rule": "N노선 3개 이상 물리 그룹(같은 이름·400m) → 역세권 병합 규칙 HUB_RULES",
+  "source": "night-bus-routes.json"
+ },
+ "hubs": [
+  {
+   "slug": "gangnam-station",
+   "nameKo": "강남역",
+   "nameEn": "Gangnam Station",
+   "routes": [
+    "N13",
+    "N31",
+    "N37",
+    "N61",
+    "N64",
+    "N75"
+   ],
+   "ars": [
+    "22011",
+    "22012",
+    "22167",
+    "23280",
+    "23284",
+    "23287",
+    "23305"
+   ],
+   "groups": [
+    "지하철2호선강남역",
+    "강남역1번출구.역삼세무서",
+    "대한사회복지회",
+    "아가방빌딩.하나은행",
+    "강남역12번출구",
+    "강남역9번출구"
+   ],
+   "lat": 37.499911,
+   "lon": 127.031432
+  },
+  {
+   "slug": "hongdae-entrance",
+   "nameKo": "홍대입구역",
+   "nameEn": "Hongik Univ. Station",
+   "routes": [
+    "N26",
+    "N51",
+    "N62",
+    "N72",
+    "N73",
+    "N75"
+   ],
+   "ars": [
+    "13019",
+    "14015",
+    "14016",
+    "14061"
+   ],
+   "groups": [
+    "홍대입구역",
+    "동교동삼거리"
+   ],
+   "lat": 37.557355,
+   "lon": 126.926006
+  },
+  {
+   "slug": "sinchon",
+   "nameKo": "신촌",
+   "nameEn": "Sinchon",
+   "routes": [
+    "N26",
+    "N51",
+    "N62",
+    "N72",
+    "N73",
+    "N75"
+   ],
+   "ars": [
+    "13021",
+    "13023",
+    "14062",
+    "14063"
+   ],
+   "groups": [
+    "신촌오거리.현대백화점",
+    "신촌오거리.2호선신촌역"
+   ],
+   "lat": 37.555753,
+   "lon": 126.938022
+  },
+  {
+   "slug": "dongdaemun-station",
+   "nameKo": "동대문역",
+   "nameEn": "Dongdaemun Station",
+   "routes": [
+    "N13",
+    "N15",
+    "N26",
+    "N30",
+    "N51",
+    "N72"
+   ],
+   "ars": [
+    "01023",
+    "01037",
+    "01041",
+    "01044"
+   ],
+   "groups": [
+    "동묘앞.서울혜화경찰서",
+    "동대문역.흥인지문"
+   ],
+   "lat": 37.573199,
+   "lon": 127.015986
+  },
+  {
+   "slug": "jongno-2ga-jonggak",
+   "nameKo": "종로2가·종각",
+   "nameEn": "Jongno 2-ga · Jonggak",
+   "routes": [
+    "N15",
+    "N26",
+    "N31",
+    "N37",
+    "N62"
+   ],
+   "ars": [
+    "01013",
+    "01014",
+    "02139",
+    "02246"
+   ],
+   "groups": [
+    "종로2가",
+    "을지로입구역.광교",
+    "우리은행종로지점"
+   ],
+   "lat": 37.568575,
+   "lon": 126.983989
+  },
+  {
+   "slug": "city-hall-euljiro",
+   "nameKo": "시청·을지로입구",
+   "nameEn": "City Hall · Euljiro 1-ga",
+   "routes": [
+    "N16",
+    "N51",
+    "N62",
+    "N73",
+    "N75"
+   ],
+   "ars": [
+    "02128",
+    "02132",
+    "02286"
+   ],
+   "groups": [
+    "소공동주민센터",
+    "시청앞.덕수궁",
+    "시청역8번출구"
+   ],
+   "lat": 37.563725,
+   "lon": 126.976476
+  },
+  {
+   "slug": "seoul-station",
+   "nameKo": "서울역",
+   "nameEn": "Seoul Station",
+   "routes": [
+    "N15",
+    "N16",
+    "N30",
+    "N75"
+   ],
+   "ars": [
+    "02004",
+    "02005",
+    "02008",
+    "02122"
+   ],
+   "groups": [
+    "숭례문",
+    "서울역버스환승센터"
+   ],
+   "lat": 37.557021,
+   "lon": 126.973185
+  },
+  {
+   "slug": "dongdaemun-history-culture-park",
+   "nameKo": "동대문역사문화공원",
+   "nameEn": "Dongdaemun History & Culture Park",
+   "routes": [
+    "N13",
+    "N16",
+    "N30",
+    "N62"
+   ],
+   "ars": [
+    "02173",
+    "02174"
+   ],
+   "groups": [
+    "동대문역사문화공원"
+   ],
+   "lat": 37.567354,
+   "lon": 127.008355
+  },
+  {
+   "slug": "jongno-5ga-gwangjang-market",
+   "nameKo": "종로5가·광장시장",
+   "nameEn": "Jongno 5-ga · Gwangjang Market",
+   "routes": [
+    "N15",
+    "N26",
+    "N31",
+    "N62"
+   ],
+   "ars": [
+    "01019",
+    "01020"
+   ],
+   "groups": [
+    "종로5가.광장시장"
+   ],
+   "lat": 37.570931,
+   "lon": 126.999606
+  },
+  {
+   "slug": "sinsa-nonhyeon",
+   "nameKo": "신사역·논현역",
+   "nameEn": "Sinsa · Nonhyeon",
+   "routes": [
+    "N13",
+    "N31",
+    "N37",
+    "N75"
+   ],
+   "ars": [
+    "22013",
+    "22014",
+    "22015",
+    "22016"
+   ],
+   "groups": [
+    "신사역.푸른저축은행",
+    "논현역",
+    "신사역"
+   ],
+   "lat": 37.511445,
+   "lon": 127.021234
+  },
+  {
+   "slug": "samseong-seolleung",
+   "nameKo": "삼성역·선릉역",
+   "nameEn": "Samseong · Seolleung",
+   "routes": [
+    "N13",
+    "N31",
+    "N61"
+   ],
+   "ars": [
+    "23201",
+    "23217",
+    "23218",
+    "23251",
+    "23259",
+    "23260"
+   ],
+   "groups": [
+    "선릉역",
+    "포스코빌딩",
+    "한국무역센터.삼성역",
+    "포스코건너편"
+   ],
+   "lat": 37.506334,
+   "lon": 127.055331
+  },
+  {
+   "slug": "gyodae-station",
+   "nameKo": "교대역",
+   "nameEn": "Seoul Nat’l Univ. of Education Station",
+   "routes": [
+    "N61",
+    "N64",
+    "N75"
+   ],
+   "ars": [
+    "22103",
+    "22170"
+   ],
+   "groups": [
+    "교대역2번출구",
+    "지하철2호선교대역4번출구"
+   ],
+   "lat": 37.494248,
+   "lon": 127.01561
+  },
+  {
+   "slug": "seoul-national-univ-station",
+   "nameKo": "서울대입구역",
+   "nameEn": "Seoul Nat’l Univ. Station",
+   "routes": [
+    "N15",
+    "N61",
+    "N75"
+   ],
+   "ars": [
+    "21104",
+    "21121"
+   ],
+   "groups": [
+    "서울대입구역1번출구.샤로수길",
+    "서울대입구역5번출구"
+   ],
+   "lat": 37.480998,
+   "lon": 126.952799
+  },
+  {
+   "slug": "konkuk-univ-station",
+   "nameKo": "건대입구역",
+   "nameEn": "Konkuk Univ. Station",
+   "routes": [
+    "N61",
+    "N62",
+    "N73"
+   ],
+   "ars": [
+    "05217",
+    "05230"
+   ],
+   "groups": [
+    "건대입구역6번출구",
+    "건대입구역1번출구"
+   ],
+   "lat": 37.540861,
+   "lon": 127.067723
+  },
+  {
+   "slug": "hapjeong-station",
+   "nameKo": "합정역",
+   "nameEn": "Hapjeong Station",
+   "routes": [
+    "N26",
+    "N51",
+    "N62"
+   ],
+   "ars": [
+    "14011",
+    "14012"
+   ],
+   "groups": [
+    "합정역"
+   ],
+   "lat": 37.549002,
+   "lon": 126.91299
+  },
+  {
+   "slug": "cheongnyangni-station",
+   "nameKo": "청량리역",
+   "nameEn": "Cheongnyangni Station",
+   "routes": [
+    "N13",
+    "N26",
+    "N72"
+   ],
+   "ars": [
+    "06015",
+    "06016",
+    "06019"
+   ],
+   "groups": [
+    "청량리역환승센터"
+   ],
+   "lat": 37.580402,
+   "lon": 127.045431
+  }
+ ]
+}

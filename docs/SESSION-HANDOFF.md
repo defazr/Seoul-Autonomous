@@ -1,6 +1,14 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-09-22 (**AdSense 4차 재신청 제출 23:30 KST · 심사 중 — Production 동결 / 대기 작업 0건**)
+> 마지막 업데이트: 2026-10-15 (**AdSense 4차 거절 — "가치 없는 콘텐츠" (포그린 보고 · 거절 메일 원문 미확보) · Production 동결 해제 · 재탄생 분석 라운드 진입**)
+> 현재 NEXT = **R3a 대표 수직 슬라이스 구현 진행 중** — 정본 `docs/worklogs/R3A-VERTICAL-SLICE-PLAN-20261015.md` §6 체크리스트가 진행 상태의 유일한 기록. 재개 절차는 그 문서 §5.
+> 커밋: 코드·데이터 `035eadd` (night-bus SSoT·등록부·core.mjs) · docs 는 별도 docs-only 커밋. 푸시·배포는 미실행(승인 별도).
+> 선행 정본: R0 `SITE-REBIRTH-ANALYSIS-20261015.md` §4.7 · R1 `R1-NIGHT-BUS-DATA-20261015.md`(+`R1-CODEX-REVIEW-20261015.md`) · R2 `R2-PROTOTYPE-20261015.md`(아티팩트 https://claude.ai/artifact/9ZgafDYwRvTqvzsvgRjw4B · 소스 보존 docs/prototypes/) · GPT 조언 `GPT-BRIEF-20261015.md` → 반영 결정은 R3A 문서 §1.
+> 지도 전략 확정: 포그린 노선도 = 정본 노선도(유지·승격, 작도 데이터 무수정) / 지리 지도 = 위치 기능 전용 (R2 문서 §4.1~4.2).
+> R1 산출(미커밋): web/data/night-bus-routes.json(18노선 2,228행) · web/scripts/import-night-bus-routes.py · web/scripts/validate-night-bus.mjs (PASS) · 허브 v1 후보 16곳.
+> 협업 구조 개편(2026-10-15): GPT 지시 레이어 제거 → CC 독자 판단 + 밀스톤마다 Codex read-only 감사. 커밋/푸시/배포 승인 3지점은 유지.
+> 코드·Production 변경 0 (R3 컷오버 전까지 라이브 유지). 거절 메일 원문이 오면 그 문서 §1 보강.
+> (아래 09-22 기록은 당시 상태이며 역사 기록으로 보존한다)
 > RT-2 KO 01009 = **CLOSED / Production Live Approved 유지** (runtime PASS / real-usage WATCH 해소)
 > 다음 세션은 **이 파일이 단일 진입점(SSOT)** 이다. 이어서 읽을 것은 **이 파일이 지목하는 정본만**이다.
 > 현재 정본은 `docs/worklogs/STAGE1-DISCOVERY-T0-20260907.md` §17 ·
@@ -444,7 +452,8 @@ R26 rollback  seoul-autonomous-web:rollback-ef0274a → sha256:6d878d66110e…
 Round 26     2026-08-03   거절 원인 3건 수리 배포
 3차 신청     2026-08-11   Final Gate APPLY-NOW (P0/P1 0) 후 포그린 실행
 3차 거절     (2026-08-25 확인)  "정책 위반 → 가치가 별로 없는 콘텐츠"
-4차 신청     2026-09-22 23:30 KST  preflight 8항 PASS 후 포그린 실행 — **심사 중**
+4차 신청     2026-09-22 23:30 KST  preflight 8항 PASS 후 포그린 실행
+4차 거절     (2026-10-15 포그린 보고)  "가치 없는 콘텐츠" — 원문 미확보 · 분석 SITE-REBIRTH-ANALYSIS-20261015.md
 현재         **UNDER REVIEW** — 2026-09-22 23:30 KST 4차 제출 후 심사 중
              심사 결과 대기가 현재 NEXT 이며 추가 AdSense 작업은 없다
 ```

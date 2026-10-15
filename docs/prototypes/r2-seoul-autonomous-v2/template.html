@@ -1,0 +1,484 @@
+<title>Seoul Autonomous v2</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@700;900&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout concept: one dark night-world page. A real-geometry map of the 14 owl routes is the hero; the question card sits on it;
+   everything below is the board (hubs), the fleet (routes) and the trust footer. Route colors carry the chroma, cyan only marks interaction. */
+:root{
+  --bg:#0A0F1E; --bg-2:#121A33; --bg-3:#1A2447; --bg-4:#223058;
+  --line:rgba(190,205,255,.12); --line-2:rgba(190,205,255,.22);
+  --fg:#F3F5FA; --fg-2:#B4BCD0; --fg-3:#7B8499;
+  --accent:#3FD3FF; --accent-ink:#06212B; --warn:#FFB224; --ok:#4FD08A;
+  --font-display:"Gothic A1","IBM Plex Sans KR","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  --font-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --radius:14px; --gutter:clamp(16px,4vw,40px); --max:1180px;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input{font:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-3);font-weight:600}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;line-height:1.15}
+h2{font-size:clamp(22px,3vw,30px);font-weight:900}
+h3{font-size:17px;font-weight:700}
+p{margin:0}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;font-family:var(--font-mono);font-size:12px;font-weight:500;color:#0B0F1A;background:var(--c,#9AA3B2);letter-spacing:.02em}
+.chip.light{color:#0B0F1A}
+.chip.dark{color:#F3F5FA}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(10,15,30,.78);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:18px;min-height:58px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:900;font-size:16px}
+.brand i{width:26px;height:26px;border-radius:8px;background:conic-gradient(from 200deg,var(--accent),#7A3C8B,#ED8B3A,var(--accent));display:inline-block}
+.top nav{display:flex;gap:4px;margin-left:auto}
+.top nav button{padding:8px 12px;border-radius:10px;color:var(--fg-2);font-weight:500}
+.top nav button[aria-current="page"]{background:var(--bg-3);color:var(--fg)}
+.lang{display:flex;border:1px solid var(--line-2);border-radius:999px;padding:2px}
+.lang span{padding:4px 10px;border-radius:999px;font-size:12px;color:var(--fg-3)}
+.lang span.on{background:var(--fg);color:#0B0F1A;font-weight:600}
+.stamp{font-size:12px;color:var(--fg-3);display:none}
+.top nav button{white-space:nowrap}
+@media(max-width:640px){.top .wrap{gap:10px;min-height:52px}.brand{font-size:15px}.top nav button{padding:7px 9px;font-size:13px}.top nav .full{display:none}.lang{display:none}}
+@media(min-width:900px){.stamp{display:block}}
+
+/* views */
+.view{display:none}.view.on{display:block}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:radial-gradient(1200px 500px at 70% 20%,#17204A 0%,var(--bg) 60%)}
+.hero svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+[hidden]{display:none!important}
+.sch .river{fill:#14335C;opacity:.95}
+.sch .line{fill:none;stroke-width:10;stroke-linecap:round;stroke-linejoin:round}
+.hero .sch .line{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.8s cubic-bezier(.3,.7,.2,1) forwards}
+.sch .line.dim{opacity:.14}
+.sch .line.lit{opacity:.96}
+.sch .line.soft{opacity:.7}
+@keyframes draw{to{stroke-dashoffset:0}}
+.sch .node{fill:#0A0F1E;stroke:#D9DFEC;stroke-width:3;opacity:.9}
+.sch .node.faint{opacity:.25}
+.sch .hubnode{fill:#F3F5FA;stroke:#0A0F1E;stroke-width:4}
+.sch .tick{stroke:#0A0F1E;stroke-width:2.5}
+.sch .tick.turn{stroke:#F3F5FA;stroke-width:4}
+.sch .focus{fill:none;stroke:var(--accent);stroke-width:6}
+.sch .lbl{font:600 26px "IBM Plex Sans KR","Apple SD Gothic Neo",sans-serif;fill:#F3F5FA;paint-order:stroke;stroke:#0A0F1E;stroke-width:7px;stroke-linejoin:round}
+.sch .lbl.small{font-size:22px;fill:#D9DFEC}
+.maptabs{display:flex;gap:4px;padding:8px;border-bottom:1px solid var(--line)}
+.maptabs button{padding:6px 12px;border-radius:9px;font-size:13px;font-weight:600;color:var(--fg-2)}
+.maptabs button[aria-pressed="true"]{background:var(--bg-3);color:var(--fg)}
+.mapbox svg{display:block;width:100%;height:auto;aspect-ratio:16/10;background:#0B1226}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(10,15,30,.94) 0%,rgba(10,15,30,.72) 30%,rgba(10,15,30,.08) 58%,rgba(10,15,30,0) 100%)}
+@media(max-width:860px){.hero::after{background:linear-gradient(180deg,rgba(10,15,30,.55) 0%,rgba(10,15,30,.82) 100%)}}
+@media(prefers-reduced-motion:reduce){.hero .sch .line{animation:none;stroke-dashoffset:0}}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,440px) 1fr;gap:32px;padding-block:48px 56px;min-height:620px;align-items:start}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr;min-height:0;padding-block:28px 36px}}
+.status{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:13px;color:var(--fg-2);margin-bottom:18px}
+.status b{font-family:var(--font-mono);font-weight:500;color:var(--fg)}
+.status .demo{padding:5px 10px;font-size:12px;border-radius:999px}
+.status .demo[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--fg-3);display:inline-block;margin-right:6px;box-shadow:0 0 0 3px rgba(255,255,255,.06)}
+.dot.on{background:var(--ok);box-shadow:0 0 0 3px rgba(79,208,138,.18)}
+.card{background:rgba(18,26,51,.86);backdrop-filter:blur(12px);border:1px solid var(--line-2);border-radius:20px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.card h1{font-size:clamp(26px,4vw,36px);font-weight:900;margin-bottom:6px}
+.card .sub{color:var(--fg-2);font-size:14px;margin-bottom:18px}
+.field{display:grid;gap:6px;margin-bottom:10px}
+.field label{font-size:12px;color:var(--fg-3);letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.field .row{display:flex;gap:8px}
+.field input{flex:1;min-width:0;background:var(--bg);border:1px solid var(--line-2);border-radius:12px;padding:12px 14px;color:var(--fg);font-size:16px}
+.field input::placeholder{color:var(--fg-3)}
+.ghost{border:1px solid var(--line-2);border-radius:12px;padding:0 12px;font-size:13px;color:var(--fg-2);white-space:nowrap}
+.ghost:hover{border-color:var(--accent);color:var(--fg)}
+.go{width:100%;margin-top:6px;padding:14px;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:16px;font-family:var(--font-display)}
+.go:hover{filter:brightness(1.08)}
+.note{font-size:12px;color:var(--fg-3);margin-top:10px;line-height:1.5}
+.hero-side{align-self:end;justify-self:end;text-align:right;color:var(--fg-2);font-size:13px;max-width:360px;display:grid;gap:6px;justify-items:end}
+.map-link{color:var(--accent);font-weight:600;font-size:13px}
+.map-link:hover{text-decoration:underline}
+.hero-side strong{display:block;font-family:var(--font-display);font-size:clamp(22px,3vw,34px);font-weight:900;color:var(--fg);line-height:1.08;margin-bottom:4px;text-shadow:0 2px 18px rgba(10,15,30,.9),0 0 2px rgba(10,15,30,1)}
+.hero-side span,.hero-side a{text-shadow:0 1px 10px rgba(10,15,30,.95)}
+@media(max-width:860px){.hero-side{display:grid;justify-self:start;text-align:left;justify-items:start;margin-top:8px}.hero-side strong{font-size:22px}}
+
+/* result stage */
+.stage{border-bottom:1px solid var(--line);background:var(--bg-2)}
+.stage .wrap{padding-block:30px 40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:28px;align-items:start}
+@media(max-width:860px){.stage .wrap{grid-template-columns:1fr}}
+.road{position:relative;height:200px;border-radius:16px;background:linear-gradient(180deg,#0E1530 0%,#0A0F1E 70%);border:1px solid var(--line);overflow:hidden}
+.road::after{content:"";position:absolute;left:0;right:0;bottom:34px;height:2px;background:repeating-linear-gradient(90deg,var(--line-2) 0 28px,transparent 28px 48px)}
+.road .ground{position:absolute;left:0;right:0;bottom:0;height:34px;background:#0D1326;border-top:1px solid var(--line-2)}
+.road .stopsign{position:absolute;left:28px;bottom:34px;width:3px;height:70px;background:var(--fg-3)}
+.road .stopsign::before{content:attr(data-ars);position:absolute;left:-14px;top:-30px;width:60px;height:26px;border-radius:6px;background:var(--fg);color:#0B0F1A;font-family:var(--font-mono);font-size:12px;line-height:26px;text-align:center;font-weight:500}
+.bus{position:absolute;bottom:28px;left:50%;width:min(300px,70%);transform:translateX(140vw);filter:drop-shadow(0 12px 24px rgba(0,0,0,.6))}
+.stage.arrived .bus{animation:arrive 1.7s cubic-bezier(.16,.8,.22,1) .15s forwards}
+.stage.arrived .wheel{animation:spin 1.3s cubic-bezier(.2,.7,.3,1) .15s}
+.stage.arrived .beam{animation:beam 2.4s ease-out .6s forwards}
+@keyframes arrive{from{transform:translateX(140vw)}to{transform:translateX(-40%)}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(-900deg)}}
+@keyframes beam{0%{opacity:0}40%{opacity:.5}100%{opacity:.18}}
+.wheel{transform-origin:center;transform-box:fill-box}
+.beam{opacity:.18}
+@media(prefers-reduced-motion:reduce){.bus{transform:translateX(-40%)}.stage.arrived .bus,.stage.arrived .wheel,.stage.arrived .beam{animation:none}}
+.steps{display:grid;gap:10px}
+.step{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:14px 16px;border-radius:14px;background:var(--bg);border:1px solid var(--line)}
+.step .k{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-family:var(--font-display);font-weight:900;font-size:15px;background:var(--bg-3);color:var(--fg-2)}
+.step.board .k{background:var(--route,#3FD3FF);color:#0B0F1A}
+.step .t{font-weight:600;font-size:15px}
+.step .d{color:var(--fg-2);font-size:13px;margin-top:2px}
+.step .m{font-family:var(--font-mono);font-size:12px;color:var(--fg-3);margin-top:6px}
+.result-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.result-head h2{font-size:20px}
+.result-head .m{font-size:12px;color:var(--fg-3)}
+.empty{padding:18px;border:1px dashed var(--line-2);border-radius:14px;color:var(--fg-2);font-size:14px}
+.pill-live{display:inline-flex;gap:6px;align-items:center;padding:3px 8px;border-radius:999px;border:1px solid var(--line-2);font-size:11px;color:var(--fg-3);font-family:var(--font-mono)}
+
+/* sections */
+section.block{padding-block:48px}
+section.block + section.block{border-top:1px solid var(--line)}
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.sec-head p{color:var(--fg-2);max-width:62ch;margin-top:6px}
+.hubs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.hub{text-align:left;padding:16px;border-radius:16px;background:var(--bg-2);border:1px solid var(--line);display:grid;gap:10px;transition:transform .2s,border-color .2s}
+.hub:hover{transform:translateY(-2px);border-color:var(--line-2)}
+.hub .n{font-family:var(--font-display);font-weight:900;font-size:19px}
+.hub .cnt{font-size:12px;color:var(--fg-3);font-family:var(--font-mono)}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.hub .next{font-size:12px;color:var(--fg-3);border-top:1px solid var(--line);padding-top:8px;display:flex;justify-content:space-between;gap:8px}
+.fleet{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-inline:calc(var(--gutter)*-1);padding-inline:var(--gutter);scrollbar-width:thin}
+.route-card{scroll-snap-align:start;flex:0 0 260px;text-align:left;padding:0 0 14px;border-radius:16px;background:var(--bg-2);border:1px solid var(--line);overflow:hidden;display:grid;gap:8px;transition:transform .2s}
+.route-card:hover{transform:translateY(-2px)}
+.route-card .bar{height:8px;background:var(--c)}
+.route-card .no{font-family:var(--font-display);font-weight:900;font-size:26px;padding:10px 16px 0;color:var(--c)}
+.route-card .ends{padding:0 16px;font-weight:600}
+.route-card .meta{padding:0 16px;font-family:var(--font-mono);font-size:12px;color:var(--fg-3);display:grid;gap:3px}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.tile{padding:18px;border-radius:16px;background:var(--bg-2);border:1px solid var(--line)}
+.tile .num{font-family:var(--font-display);font-weight:900;font-size:30px;color:var(--accent);line-height:1}
+.tile h3{margin-top:8px}
+.tile p{color:var(--fg-2);font-size:14px;margin-top:6px}
+.a21{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;padding:20px;border-radius:16px;border:1px solid rgba(63,211,255,.35);background:linear-gradient(90deg,rgba(63,211,255,.08),transparent)}
+.a21 .badge{font-family:var(--font-display);font-weight:900;font-size:22px;color:var(--accent);border:2px solid var(--accent);border-radius:12px;padding:8px 12px}
+.trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;font-size:13px;color:var(--fg-2)}
+.trust b{display:block;color:var(--fg);margin-bottom:4px;font-weight:600}
+footer{border-top:1px solid var(--line);padding-block:26px 40px;color:var(--fg-3);font-size:12px}
+
+/* route view */
+.rhero{border-bottom:1px solid var(--line);background:linear-gradient(180deg,color-mix(in srgb,var(--c) 18%,var(--bg)) 0%,var(--bg) 100%)}
+.rhero .wrap{padding-block:36px 28px;display:grid;gap:14px}
+.rhero .no{font-family:var(--font-display);font-weight:900;font-size:clamp(44px,8vw,72px);line-height:1;color:var(--c)}
+.rhero .ends{font-size:clamp(18px,2.6vw,24px);font-weight:600}
+.facts{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:13px;color:var(--fg-2)}
+.facts b{font-family:var(--font-mono);font-weight:500;color:var(--fg)}
+.dir{display:inline-flex;border:1px solid var(--line-2);border-radius:12px;padding:3px;gap:3px}
+.dir button{padding:8px 14px;border-radius:9px;font-weight:600;color:var(--fg-2)}
+.dir button[aria-pressed="true"]{background:var(--c);color:#0B0F1A}
+.rbody{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;padding-block:28px 56px;align-items:start}
+@media(max-width:900px){.rbody{grid-template-columns:1fr}}
+.timeline{list-style:none;margin:0;padding:0;position:relative}
+.timeline::before{content:"";position:absolute;left:11px;top:10px;bottom:10px;width:4px;background:var(--c);border-radius:2px;opacity:.9}
+.timeline li{display:grid;grid-template-columns:26px 64px minmax(0,1fr);gap:10px;align-items:center;padding:7px 0;position:relative}
+.timeline li::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--bg);border:3px solid var(--c);margin-left:3px}
+.timeline li.hub::before{background:var(--fg);border-color:var(--fg);width:14px;height:14px;margin-left:2px}
+.timeline li .ars{font-family:var(--font-mono);font-size:12px;color:var(--fg-3)}
+.timeline li .nm{font-size:14px}
+.timeline li.hub .nm{font-weight:600}
+.timeline li .chips{margin-top:3px}
+.timeline li.turn{margin-block:6px}
+.timeline li.turn .nm{color:var(--c);font-weight:700}
+.timeline li.turn::before{background:var(--c)}
+.mapbox{position:sticky;top:76px;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#0B1226}
+.mapbox canvas{display:block;width:100%;height:auto;aspect-ratio:1/1}
+.mapcap{padding:10px 14px;font-size:12px;color:var(--fg-3);border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
+/* hub view */
+.hhero .wrap{padding-block:36px 24px;display:grid;gap:12px;border-bottom:1px solid var(--line)}
+.hhero .n{font-family:var(--font-display);font-weight:900;font-size:clamp(36px,6vw,56px);line-height:1}
+.board{display:grid;gap:8px;padding-block:24px}
+.brow{display:grid;grid-template-columns:76px 1fr auto;gap:14px;align-items:center;padding:14px 16px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line)}
+@media(max-width:600px){.brow{grid-template-columns:64px 1fr}.brow .nx{grid-column:1/-1;justify-self:start}}
+.brow .no{font-family:var(--font-display);font-weight:900;font-size:22px;color:var(--c)}
+.brow .to{font-weight:600}
+.brow .sch{font-family:var(--font-mono);font-size:12px;color:var(--fg-3);margin-top:2px}
+.brow .nx{font-family:var(--font-mono);font-size:12px;color:var(--fg-3);text-align:right;border:1px dashed var(--line-2);border-radius:10px;padding:8px 10px}
+.hgrid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;padding-bottom:56px;align-items:start}
+@media(max-width:900px){.hgrid{grid-template-columns:1fr}}
+.arsrow{display:flex;flex-wrap:wrap;gap:8px}
+.arsrow span{font-family:var(--font-mono);font-size:12px;padding:6px 10px;border-radius:8px;background:var(--bg-3);color:var(--fg-2)}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home" data-nav="home"><i aria-hidden="true"></i>Seoul Autonomous</a>
+    <span class="stamp">시안 v2.3 · 노선도 자체 제작 · 정류장 2026-09-02 · 운행표 2026-03-20</span>
+    <nav aria-label="시안 화면">
+      <button data-nav="home" aria-current="page">홈</button>
+      <button data-nav="route">노선<span class="full"> N61</span></button>
+      <button data-nav="hub">허브<span class="full"> 강남역</span></button>
+    </nav>
+    <div class="lang" aria-hidden="true"><span class="on">KO</span><span>EN</span></div>
+  </div>
+</header>
+
+<!-- ================= HOME ================= -->
+<main id="view-home" class="view on">
+  <section class="hero" aria-label="서울 심야버스 지도와 길찾기">
+    <svg id="heroMap" class="sch" aria-hidden="true" preserveAspectRatio="xMaxYMid meet"></svg>
+    <div class="wrap">
+      <div>
+        <div class="status" id="status"><span><span class="dot" id="statusDot"></span><span id="statusText">운행표 확인 중</span></span><span>기준 <b id="clock">--:--</b> KST</span><button type="button" class="ghost demo" id="demoBtn">밤 00:30 으로 시연 보기</button></div>
+        <form class="card" id="askForm" autocomplete="off">
+          <h1>어디로 가고 싶으세요?</h1>
+          <p class="sub">서울 올빼미버스 14개 노선 2,078개 정류장에서 직통과 1회 환승을 찾습니다.</p>
+          <div class="field">
+            <label for="from">출발</label>
+            <div class="row"><input id="from" list="stops" placeholder="정류장·역 이름 (초성 가능)" value="홍대입구역"><button type="button" class="ghost" id="useLoc">내 위치</button></div>
+          </div>
+          <div class="field">
+            <label for="to">도착</label>
+            <div class="row"><input id="to" list="stops" placeholder="예: 강남역, 사당역, 광장시장" value="강남역"></div>
+          </div>
+          <datalist id="stops"></datalist>
+          <button class="go" type="submit">경로 찾기</button>
+          <p class="note" id="locNote">위치는 탭했을 때만 요청하고 기기 안에서만 계산합니다. 이 시안에서는 홍대입구역을 현재 위치로 가정합니다.</p>
+        </form>
+      </div>
+      <aside class="hero-side">
+        <strong>밤 11시,<br>서울은 14개 선으로 움직입니다.</strong>
+        <span id="heroCap">켜진 선이 지금 운행 시간대인 노선입니다.</span>
+        <a class="map-link" href="https://seoulautonomous.com/ko/night-bus-map" target="_blank" rel="noopener">올빼미버스 노선도 전체 보기 →</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="stage" id="stage" aria-live="polite">
+    <div class="wrap">
+      <div>
+        <div class="result-head"><h2 id="resTitle">경로</h2><span class="m" id="resMeta"></span></div>
+        <div class="road" aria-hidden="true">
+          <div class="stopsign" id="stopsign" data-ars="-----"></div>
+          <div class="ground"></div>
+          <svg class="bus" id="bus" viewBox="0 0 320 150" role="img" aria-label="도착하는 버스">
+            <defs><linearGradient id="g1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient></defs>
+            <path class="beam" d="M18 70 L-120 40 L-120 120 Z" fill="#FFE9A8"/>
+            <rect x="22" y="26" width="282" height="94" rx="16" fill="var(--route,#3FD3FF)"/>
+            <rect x="22" y="26" width="282" height="94" rx="16" fill="url(#g1)"/>
+            <rect x="34" y="38" width="48" height="34" rx="6" fill="#0A0F1E" opacity=".85"/>
+            <rect x="92" y="38" width="48" height="34" rx="6" fill="#0A0F1E" opacity=".85"/>
+            <rect x="150" y="38" width="48" height="34" rx="6" fill="#0A0F1E" opacity=".85"/>
+            <rect x="208" y="38" width="40" height="34" rx="6" fill="#0A0F1E" opacity=".85"/>
+            <rect x="256" y="38" width="40" height="52" rx="6" fill="#0A0F1E" opacity=".85"/>
+            <rect x="34" y="80" width="214" height="22" rx="5" fill="#0A0F1E" opacity=".55"/>
+            <text id="busNo" x="141" y="97" text-anchor="middle" font-family="Gothic A1, sans-serif" font-weight="900" font-size="18" fill="#fff">N61</text>
+            <rect x="24" y="64" width="10" height="14" rx="2" fill="#FFE9A8"/>
+            <rect x="292" y="64" width="10" height="14" rx="2" fill="#FF6B6B"/>
+            <circle class="wheel" cx="86" cy="122" r="20" fill="#0A0F1E" stroke="#2A3558" stroke-width="6"/>
+            <circle class="wheel" cx="240" cy="122" r="20" fill="#0A0F1E" stroke="#2A3558" stroke-width="6"/>
+            <circle cx="86" cy="122" r="6" fill="#5C6A94"/><circle cx="240" cy="122" r="6" fill="#5C6A94"/>
+          </svg>
+        </div>
+        <p class="note" style="margin-top:10px">버스 연출은 노선 색과 번호를 그대로 입습니다. 운행 시간 밖에서는 차고지 대기 장면과 첫차까지 남은 시간으로 바뀝니다.</p>
+      </div>
+      <div>
+        <div class="result-head"><h2>이렇게 가세요</h2><span class="pill-live" id="livePill">도착정보 라이브 연결 전 (시안)</span></div>
+        <div class="steps" id="steps"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="hubsSec">
+    <div class="wrap">
+      <div class="sec-head"><div><p class="eyebrow">허브 보드</p><h2>지금 출발할 수 있는 곳</h2><p>올빼미버스 3개 노선 이상이 만나는 16곳. 실서비스에서는 카드마다 다음 차 2대의 도착을 서울시 API 기준 시각과 함께 보여줍니다.</p></div></div>
+      <div class="hubs" id="hubs"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head"><div><p class="eyebrow">노선</p><h2>14개 올빼미버스</h2><p>서울시 운행표 2026-03-20 기준 첫차·막차·배차. 카드를 누르면 노선 페이지로 갑니다.</p></div></div>
+      <div class="fleet" id="fleet"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head"><div><p class="eyebrow">막차가 끊겼을 때</p><h2>세 가지만 확인하세요</h2></div></div>
+      <div class="three">
+        <div class="tile"><div class="num">1</div><h3>내 근처 정류장에 N이 서는가</h3><p>위치를 켜면 가장 가까운 올빼미버스 정류장과 정류소 번호를 보여줍니다. 번호는 정류장 기둥의 숫자와 같습니다.</p></div>
+        <div class="tile"><div class="num">2</div><h3>방면이 맞는가</h3><p>같은 이름의 정류장이 길 양쪽에 있습니다. 결과 카드의 "○○ 방면"과 정류소 번호를 맞춰 보세요.</p></div>
+        <div class="tile"><div class="num">3</div><h3>환승은 60분 안에</h3><p>심야(21:00~07:00) 교통카드 환승 인정 시간은 60분입니다. 내릴 때 카드를 찍어야 다음 버스가 환승으로 잡힙니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="a21"><div class="badge">A21</div><div><h3>자율주행 심야버스도 함께 봅니다</h3><p style="color:var(--fg-2);font-size:14px;margin-top:4px">동대문역에서 합정역까지 23:00~03:40 운행하는 심야A21과 새벽 A노선은 일반 올빼미버스와 다른 차량입니다. 이 사이트가 처음부터 다뤄 온 노선이며, 같은 정류장에 서면 보드에 같이 표시됩니다.</p></div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head"><div><p class="eyebrow">근거</p><h2>숫자의 출처</h2></div></div>
+      <div class="trust">
+        <div><b>노선도</b>Seoul Autonomous 자체 제작 (CorelDRAW 작도 · 2026-06 데이터화) · 역 노드 115 · 노선 15</div>
+        <div><b>정류장·순서·좌표</b>서울열린데이터광장 「서울시 버스노선별 정류소정보」 2026-09-02 · 공공누리 1유형</div>
+        <div><b>첫차·막차·배차</b>서울특별시 「심야 전용 시내버스(올빼미버스) 운행」 2026-03-20</div>
+        <div><b>도착·차량 위치</b>서울시 버스도착정보 API를 서버에서 받아 기준 시각과 함께 표시 (라이브 연결은 다음 단계)</div>
+        <div><b>운영</b>Seoul Autonomous · 독립 안내 사이트 · 매월 초 데이터 재수입 후 차이 0 확인</div>
+      </div>
+    </div>
+  </section>
+  <footer><div class="wrap">시안 v2 · 2026-10-15 · 실제 사이트의 URL·페이지는 그대로 두고 홈·노선·허브를 추가하는 안입니다.</div></footer>
+</main>
+
+<!-- ================= ROUTE ================= -->
+<main id="view-route" class="view">
+  <section class="rhero" id="rhero">
+    <div class="wrap">
+      <p class="eyebrow">올빼미버스 노선</p>
+      <div class="no" id="rNo">N61</div>
+      <div class="ends" id="rEnds"></div>
+      <div class="facts" id="rFacts"></div>
+      <div class="dir" role="group" aria-label="방면 선택" id="rDir"></div>
+    </div>
+  </section>
+  <div class="wrap rbody">
+    <div>
+      <div class="sec-head"><div><h2 id="rListTitle">정류장</h2><p id="rListSub"></p></div></div>
+      <ol class="timeline" id="rList"></ol>
+    </div>
+    <div class="mapbox"><div class="maptabs" data-for="r"><button data-mtab="sch" aria-pressed="true">노선도</button><button data-mtab="geo" aria-pressed="false">실제 경로</button></div><svg id="rSch" class="sch" preserveAspectRatio="xMidYMid meet" role="img" aria-label="노선도 위 정류장"></svg><canvas id="rMap" width="800" height="800" hidden></canvas><div class="mapcap"><span id="rMapCap"></span><span id="rMapSrc">노선도: 자체 제작 · 작은 점 = 노선도에 없는 정류장을 구간 보간으로 배치</span></div></div>
+  </div>
+</main>
+
+<!-- ================= HUB ================= -->
+<main id="view-hub" class="view">
+  <section class="hhero">
+    <div class="wrap">
+      <p class="eyebrow">허브</p>
+      <div class="n" id="hName">강남역</div>
+      <p id="hSub" style="color:var(--fg-2)"></p>
+      <div class="arsrow" id="hArs"></div>
+    </div>
+  </section>
+  <div class="wrap hgrid">
+    <div>
+      <div class="sec-head" style="margin-top:24px"><div><h2>이 정류장의 올빼미버스</h2><p>실서비스에서는 각 줄 오른쪽에 다음 차 두 대의 도착과 기준 시각이 표시됩니다.</p></div></div>
+      <div class="board" id="hBoard"></div>
+    </div>
+    <div class="mapbox" style="margin-top:24px"><div class="maptabs" data-for="h"><button data-mtab="sch" aria-pressed="true">노선도</button><button data-mtab="geo" aria-pressed="false">실제 위치</button></div><svg id="hSch" class="sch" preserveAspectRatio="xMidYMid meet" role="img" aria-label="노선도 위 허브"></svg><canvas id="hMap" width="800" height="800" hidden></canvas><div class="mapcap"><span id="hMapCap"></span><span id="hMapSrc">켜진 선 = 이 허브를 지나는 노선</span></div></div>
+  </div>
+</main>
+
+<script>
+const DATA = __DATA__;
+const R = DATA.routes;
+const DISPLAY = { N72: '#C9CFDA' }; // N72 공식색 #1E1E1E 는 다크 배경에서 보이지 않아 표시색만 치환
+const col = r => DISPLAY[r.no] || r.color;
+const norm = s => s.replace(/\s+/g, '').replace(/[().·,]/g, '');
+const byName = new Map();
+R.forEach((r, ri) => r.stops.forEach((s, si) => { const k = norm(s[2]); if (!byName.has(k)) byName.set(k, []); byName.get(k).push({ ri, si }); }));
+const allNames = [...new Set(R.flatMap(r => r.stops.map(s => s[2])))].sort((a, b) => a.localeCompare(b, 'ko'));
+const hubByArs = new Map(); DATA.hubs.forEach(h => h.ars.forEach(a => hubByArs.set(a, h)));
+const routesAtName = new Map(); R.forEach(r => r.stops.forEach(s => { const k = norm(s[2]); if (!routesAtName.has(k)) routesAtName.set(k, new Set()); routesAtName.get(k).add(r.no); }));
+
+/* ---------- 초성 검색 ---------- */
+const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const cho = s => [...s].map(ch => { const c = ch.charCodeAt(0) - 0xAC00; return c >= 0 && c < 11172 ? CHO[Math.floor(c / 588)] : ch; }).join('');
+const isCho = s => /^[ㄱ-ㅎ]+$/.test(s);
+
+/* ---------- 시각·운행 상태 (운행표 기준) ---------- */
+const toMin = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+let DEMO_MIN = null; // 시연용 시각 고정 (분). null 이면 실제 KST
+function kst() { if (DEMO_MIN !== null) { const h = Math.floor(DEMO_MIN / 60), m = DEMO_MIN % 60; return { h, m, min: DEMO_MIN, text: String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ' (시연)' }; } const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date()); const h = +p.find(x => x.type === 'hour').value, m = +p.find(x => x.type === 'minute').value; return { h, m, min: h * 60 + m, text: String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') }; }
+function running(r, nowMin) { let f = toMin(r.first), l = toMin(r.last), n = nowMin; if (l < f) { l += 1440; if (n < f) n += 1440; } return n >= f && n <= l; }
+function statusLine() { const now = kst(); const on = R.filter(r => running(r, now.min)); document.getElementById('clock').textContent = now.text; const dot = document.getElementById('statusDot'); const txt = document.getElementById('statusText'); if (on.length) { dot.classList.add('on'); txt.innerHTML = `운행표 기준 <b>${on.length}/14</b> 노선 운행 시간대`; } else { dot.classList.remove('on'); const firsts = R.map(r => ({ r, m: toMin(r.first) })).sort((a, b) => a.m - b.m); let next = firsts.find(x => x.m > now.min) || firsts[0]; let wait = next.m - now.min; if (wait < 0) wait += 1440; txt.innerHTML = `운행 전 · 첫차 <b>${next.r.first}</b> ${next.r.no} 까지 <b>${Math.floor(wait / 60)}시간 ${wait % 60}분</b>`; } return on; }
+
+/* ---------- 경로 탐색 ---------- */
+function resolve(q) { q = (q || '').trim(); const k = norm(q); if (!k) return []; const exact = byName.get(k) || []; const hub = DATA.hubs.find(h => norm(h.name) === k || h.name.split('·').some(p => norm(p) === k)); if (hub) { const out = [...exact]; R.forEach((r, ri) => r.stops.forEach((s, si) => { if (hub.ars.includes(s[1]) && !out.some(v => v.ri === ri && v.si === si)) out.push({ ri, si }); })); if (out.length) return out; } if (exact.length) return exact; const keys = [...byName.keys()].filter(x => isCho(k) ? cho(x).startsWith(k) : (x.startsWith(k) || x.includes(k))); return keys.slice(0, 40).flatMap(x => byName.get(x)); }
+function dirLabel(r, si) { return (r.stops[si][0] < r.turn ? r.ends[1] : r.ends[0]) + ' 방면'; } // 반환점 자체에서 타면 이미 되돌아가는 방면
+function direct(oV, dV) { let best = null; for (const o of oV) for (const d of dV) { if (o.ri !== d.ri || o.si >= d.si) continue; const n = d.si - o.si; if (!best || n < best.n) best = { ri: o.ri, o: o.si, d: d.si, n }; } return best; }
+function group(v) { const m = new Map(); v.forEach(x => { if (!m.has(x.ri)) m.set(x.ri, []); m.get(x.ri).push(x.si); }); return m; }
+function transfer(oV, dV) { let best = null; const oB = group(oV), dB = group(dV); for (const [ra, os] of oB) for (const [rb, ds] of dB) { if (ra === rb) continue; const A = R[ra], B = R[rb]; const bIdx = new Map(); B.stops.forEach((s, si) => { const k = norm(s[2]); if (!bIdx.has(k)) bIdx.set(k, []); bIdx.get(k).push(si); }); for (const o of os) for (let x = o + 1; x < A.stops.length; x++) { const ys = bIdx.get(norm(A.stops[x][2])); if (!ys) continue; for (const y of ys) for (const d of ds) { if (y >= d) continue; const n = (x - o) + (d - y) + 6; if (!best || n < best.n) best = { ra, o, x, rb, y, d, n }; } } } return best; }
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function chipHTML(no) { const r = R.find(x => x.no === no); const c = col(r); const dark = no === 'N72' || no === 'N61' || no === 'N75' || no === 'N26' || no === 'N30' || no === 'N64'; return `<span class="chip" style="--c:${c};color:${dark && no !== 'N72' ? '#F3F5FA' : '#0B0F1A'}">${no}</span>`; }
+
+function stepHTML(k, cls, t, d, m) { return `<div class="step ${cls}"><div class="k">${k}</div><div><div class="t">${t}</div><div class="d">${d}</div>${m ? `<div class="m">${m}</div>` : ''}</div></div>`; }
+function render(fromQ, toQ) {
+  const oV = resolve(fromQ), dV = resolve(toQ); const steps = document.getElementById('steps'); const stage = document.getElementById('stage');
+  const title = document.getElementById('resTitle'), meta = document.getElementById('resMeta'); const now = kst();
+  stage.classList.remove('arrived'); void stage.offsetWidth;
+  if (!oV.length || !dV.length) { steps.innerHTML = `<div class="empty">정류장 이름을 찾지 못했습니다. 예: 홍대입구역, 강남역, 사당자동차학원, 종로5가.광장시장</div>`; title.textContent = '경로'; meta.textContent = ''; return; }
+  const dr = direct(oV, dV); const tr = dr ? null : transfer(oV, dV); let r, boardStop, html = '';
+  if (dr) { r = R[dr.ri]; boardStop = r.stops[dr.o]; const alight = r.stops[dr.d]; title.textContent = `${r.no} 직통 · ${dr.n}개 정류장`; html += stepHTML('걷기', '', `정류소 <span class="mono">${boardStop[1]}</span> ${esc(boardStop[2])}`, '내 위치에서 가장 가까운 탑승 정류장. 실서비스에서는 도보 거리와 분을 함께 표시합니다.'); html += stepHTML(r.no, 'board', `${r.no} ${esc(dirLabel(r, dr.o))} 탑승`, `${r.ends[0]} ↔ ${r.ends[1]} · 운행표 ${r.first}~${r.last} · 배차 ${r.headway}`, running(r, now.min) ? `지금 운행 시간대 · 다음 차 도착은 라이브 연결 후 ${now.text} 기준으로 표시` : `지금은 운행 전 · 첫차 ${r.first}`); html += stepHTML('하차', '', `${esc(alight[2])} <span class="mono">${alight[1]}</span>`, `${dr.n}개 정류장 뒤 · 심야 배차 간격이 길어 한 대를 놓치면 ${r.headway} 기다립니다.`); }
+  else if (tr) { const A = R[tr.ra], B = R[tr.rb]; r = A; boardStop = A.stops[tr.o]; const x = A.stops[tr.x], y = B.stops[tr.y], d = B.stops[tr.d]; title.textContent = `${A.no} → ${B.no} 환승 1회 · ${tr.n - 6}개 정류장`; html += stepHTML('걷기', '', `정류소 <span class="mono">${boardStop[1]}</span> ${esc(boardStop[2])}`, '내 위치에서 가장 가까운 탑승 정류장.'); html += stepHTML(A.no, 'board', `${A.no} ${esc(dirLabel(A, tr.o))} 탑승`, `${tr.x - tr.o}개 정류장 · 운행표 ${A.first}~${A.last} · 배차 ${A.headway}`); html += stepHTML('환승', '', `${esc(x[2])}에서 내려 ${B.no}로`, `같은 이름 정류장 · 내릴 때 교통카드 태그 · 심야 환승 인정 60분`, `하차 <span class="mono">${x[1]}</span> → 탑승 <span class="mono">${y[1]}</span>`); html += stepHTML(B.no, 'board', `${B.no} ${esc(dirLabel(B, tr.y))} 탑승`, `${tr.d - tr.y}개 정류장 · 운행표 ${B.first}~${B.last} · 배차 ${B.headway}`); html += stepHTML('하차', '', `${esc(d[2])} <span class="mono">${d[1]}</span>`, '목적지'); }
+  else { steps.innerHTML = `<div class="empty">직통도 1회 환승도 없습니다. 올빼미버스 노선이 닿지 않는 구간이면 가장 가까운 정류장까지 다른 수단을 먼저 확인하세요.</div>`; title.textContent = '경로 없음'; meta.textContent = ''; return; }
+  steps.innerHTML = html; meta.textContent = `${now.text} KST · 정류장 2026-09-02 · 운행표 2026-03-20`;
+  document.getElementById('busNo').textContent = r.no; document.getElementById('bus').style.setProperty('--route', col(r)); document.querySelector('.step.board').style.setProperty('--route', col(r)); document.getElementById('stopsign').dataset.ars = boardStop[1];
+  requestAnimationFrame(() => stage.classList.add('arrived'));
+}
+
+/* ---------- 지도 (실좌표 투영) ---------- */
+function bounds(stops) { let a = { minLat: 90, maxLat: -90, minLon: 180, maxLon: -180 }; for (const s of stops) { a.minLat = Math.min(a.minLat, s[3]); a.maxLat = Math.max(a.maxLat, s[3]); a.minLon = Math.min(a.minLon, s[4]); a.maxLon = Math.max(a.maxLon, s[4]); } return a; }
+function projector(b, W, H, pad) { const kx = Math.cos(37.55 * Math.PI / 180); const w = (b.maxLon - b.minLon) * kx, h = (b.maxLat - b.minLat); const s = Math.min((W - 2 * pad) / w, (H - 2 * pad) / h); const ox = (W - w * s) / 2, oy = (H - h * s) / 2; return (lat, lon) => [ox + (lon - b.minLon) * kx * s, oy + (b.maxLat - lat) * s]; }
+function drawRoutes(ctx, W, H, opts) { const { p = 1, pad = 24, width = 2.2, dim = null, hubs = true, labels = false, only = null } = opts; const all = (only || R).flatMap(r => r.stops); const b = bounds(opts.fit || all); const P = projector(b, W, H, pad); ctx.clearRect(0, 0, W, H); ctx.lineJoin = 'round'; ctx.lineCap = 'round'; for (const r of R) { const faded = dim && !dim.has(r.no); ctx.strokeStyle = col(r); ctx.globalAlpha = faded ? .14 : .92; ctx.lineWidth = faded ? 1.2 : (only && only.includes(r) ? width * 1.8 : width); const n = Math.max(1, Math.floor(r.stops.length * p)); ctx.beginPath(); r.stops.slice(0, n).forEach((s, i) => { const [x, y] = P(s[3], s[4]); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.stroke(); } ctx.globalAlpha = 1; if (hubs) for (const h of DATA.hubs) { const [x, y] = P(h.lat, h.lon); ctx.beginPath(); ctx.arc(x, y, 4.5, 0, Math.PI * 2); ctx.fillStyle = '#F3F5FA'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#0A0F1E'; ctx.stroke(); if ((labels || W > 700) && h.routes.length >= 4) { ctx.font = '600 11px "IBM Plex Sans KR", sans-serif'; ctx.fillStyle = 'rgba(243,245,250,.85)'; ctx.fillText(h.name, x + 7, y + 4); } } return P; }
+function fitCanvas(c) { const dpr = Math.min(2, window.devicePixelRatio || 1); const rect = c.getBoundingClientRect(); c.width = Math.round(rect.width * dpr); c.height = Math.round(rect.height * dpr); const ctx = c.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); return { ctx, W: rect.width, H: rect.height }; }
+const SC = DATA.schematic; // 포그린 CorelDRAW 노선도(night-bus-data.ts) 그대로 — 좌표 무보정
+const SC_HUB_NODE = { '강남역': '강남역', '홍대입구역': '홍대입구역', '신촌': '신촌역', '동대문역': '동대문역', '종로2가·종각': '종각역', '서울역': '서울역', '동대문역사문화공원': '동대문역사문화공원역', '시청·을지로입구': '시청역', '신사역·논현역': '논현역', '삼성역·선릉역': '삼성역', '교대역': '교대역', '서울대입구역': '서울대입구역', '건대입구역': '건대입구역', '합정역': '합정역', '청량리역': '청량리역' };
+const shortName = (n) => (n === '서울역' ? n : n.replace(/역$/, ''));
+function a21Running(min) { let f = 23 * 60, l = 3 * 60 + 40 + 1440, n = min; if (n < f) n += 1440; return n >= f && n <= l; }
+const ALIAS = { '종각역': ['종로2가'], '진관차고지': ['진관공영차고지'], '강동차고지': ['강동공영차고지'], '염곡차고지': ['염곡공영차고지', '염곡'], '중랑차고지': ['중랑공영차고지'], '양천차고지': ['양천공영차고지'], '구의역': ['구의'], '신촌역': ['신촌오거리'], '서울역': ['서울역버스환승센터', '서울역'], '강남역': ['강남역', '지하철2호선강남역'], '국민대': ['국민대앞'], '신림동': ['신림'], '홍대입구역': ['홍대입구역', '동교동삼거리'] };
+function polyCum(pts) { const c = [0]; for (let i = 1; i < pts.length; i++) c.push(c[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1])); return c; }
+function pointAt(pts, cum, t) { const L = cum[cum.length - 1]; if (t <= 0) return pts[0]; if (t >= L) return pts[pts.length - 1]; let i = 1; while (cum[i] < t) i++; const a = pts[i - 1], b = pts[i], f = (t - cum[i - 1]) / (cum[i] - cum[i - 1] || 1); return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f]; }
+function nodeT(pts, cum, p) { let best = 0, bd = Infinity; pts.forEach((q, i) => { const d = (q[0] - p[0]) ** 2 + (q[1] - p[1]) ** 2; if (d < bd) { bd = d; best = i; } }); return cum[best]; }
+function matchNode(nodeName, list) { const base = norm(nodeName).replace(/역$/, ''); const cands = [norm(nodeName), ...(ALIAS[nodeName] || []).map(norm)]; for (let i = 0; i < list.length; i++) { const k = norm(list[i][2]); if (cands.some(c => k === c || k.includes(c)) || (base.length >= 2 && k.includes(base))) return i; } return -1; }
+function baseSchematic(litSet, { dimNodes = true } = {}) { let out = `<path class="river" d="${SC.river.d}"/>`; SC.order.forEach(id => { const pts = SC.poly[id]; if (!pts) return; const c = DISPLAY[id] || SC.colors[id]; out += `<path class="line ${litSet.has(id) ? 'lit' : 'dim'}" style="stroke:${c}" d="M${pts.map(p => p.join(' ')).join(' L')}"/>`; }); for (const [, [x, y]] of Object.entries(SC.nodes)) out += `<circle class="node${dimNodes ? ' faint' : ''}" cx="${x}" cy="${y}" r="7"/>`; return out; }
+/* 노선도에 점이 없는 정류장 = 앞뒤 주요 역(앵커) 사이를 실제 순번 비율로 폴리라인 위에 보간 배치 */
+function routeSchematic(r, list) { const id = r.no; const pts = SC.poly[id]; const svg = document.getElementById('rSch'); const vb = SC.vb; if (pts) { const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]); const pad = 140; const x0 = Math.min(...xs) - pad, y0 = Math.min(...ys) - pad, w = Math.max(...xs) - Math.min(...xs) + pad * 2, h = Math.max(...ys) - Math.min(...ys) + pad * 2; svg.setAttribute('viewBox', `${x0} ${y0} ${Math.max(w, h * 1.6)} ${Math.max(h, w / 1.6)}`); } else svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`); if (!pts) { svg.innerHTML = baseSchematic(new Set()); return { before: 0, after: 0, anchors: 0, ticks: 0 }; } const cum = polyCum(pts); const c = DISPLAY[id] || SC.colors[id]; const anchors = []; for (const n of SC.member[id]) { const i = matchNode(n, list); if (i >= 0 && !anchors.some(a => a.i === i)) anchors.push({ i, t: nodeT(pts, cum, SC.nodes[n]), n }); } anchors.sort((a, b) => a.i - b.i); const ticks = []; for (let k = 0; k < anchors.length - 1; k++) { const A = anchors[k], B = anchors[k + 1]; for (let i = A.i + 1; i < B.i; i++) ticks.push({ i, p: pointAt(pts, cum, A.t + (B.t - A.t) * (i - A.i) / (B.i - A.i)) }); } let out = baseSchematic(new Set([id])); for (const tk of ticks) out += `<circle class="tick${list[tk.i][0] === r.turn ? ' turn' : ''}" cx="${tk.p[0].toFixed(1)}" cy="${tk.p[1].toFixed(1)}" r="5.5" fill="${c}"><title>${esc(list[tk.i][2])} ${list[tk.i][1]}</title></circle>`; for (const a of anchors) { const p = SC.nodes[a.n]; out += `<circle class="hubnode" cx="${p[0]}" cy="${p[1]}" r="10"/><text class="lbl small" x="${p[0] + 16}" y="${p[1] + 8}">${esc(shortName(a.n))}</text>`; } svg.innerHTML = out; const before = anchors.length ? anchors[0].i : 0, after = anchors.length ? list.length - 1 - anchors[anchors.length - 1].i : 0; return { before, after, anchors: anchors.length, ticks: ticks.length }; }
+function hubSchematic(h) { const svg = document.getElementById('hSch'); const vb = SC.vb; svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`); let out = baseSchematic(new Set(h.routes)); const node = SC_HUB_NODE[h.name]; const p = node && SC.nodes[node]; if (p) out += `<circle class="focus" cx="${p[0]}" cy="${p[1]}" r="26"/><circle class="hubnode" cx="${p[0]}" cy="${p[1]}" r="12"/><text class="lbl" x="${p[0] + 22}" y="${p[1] + 10}">${esc(shortName(node))}</text>`; svg.innerHTML = out; return !!p; }
+function setMapTab(group, tab) { const tabs = document.querySelector(`.maptabs[data-for="${group}"]`); tabs.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mtab === tab))); const svg = document.getElementById(group === 'r' ? 'rSch' : 'hSch'), cv = document.getElementById(group === 'r' ? 'rMap' : 'hMap'); svg.hidden = tab !== 'sch'; cv.hidden = tab !== 'geo'; if (tab === 'geo') { if (group === 'r') drawRouteGeo(); else drawHubGeo(); } }
+function buildHero() {
+  const svg = document.getElementById('heroMap'); if (!svg) return;
+  const mobile = innerWidth < 860; const vb = mobile ? SC.mvb : SC.vb;
+  svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`); svg.setAttribute('preserveAspectRatio', mobile ? 'xMidYMid slice' : 'xMaxYMid meet');
+  const now = kst(); const on = new Set(R.filter(r => running(r, now.min)).map(r => r.no)); const a21 = a21Running(now.min); const anyOn = on.size > 0 || a21;
+  let out = `<path class="river" d="${SC.river.d}"/>`;
+  SC.order.forEach((id, i) => { const pts = SC.poly[id]; if (!pts) return; const c = DISPLAY[id] || SC.colors[id]; const lit = id === 'A21' ? a21 : on.has(id); const cls = anyOn ? (lit ? 'lit' : 'dim') : 'soft'; out += `<path class="line ${cls}" pathLength="1" style="stroke:${c};animation-delay:${i * 90}ms" d="M${pts.map(p => p.join(' ')).join(' L')}"/>`; });
+  for (const [, [x, y]] of Object.entries(SC.nodes)) out += `<circle class="node" cx="${x}" cy="${y}" r="7"/>`;
+  for (const node of Object.values(SC_HUB_NODE)) { const p = SC.nodes[node]; if (!p) continue; out += `<circle class="hubnode" cx="${p[0]}" cy="${p[1]}" r="11"/><text class="lbl" x="${p[0] + 18}" y="${p[1] + 9}">${esc(shortName(node))}</text>`; }
+  svg.innerHTML = out;
+  const cap = document.getElementById('heroCap'); if (cap) cap.textContent = anyOn ? `켜진 선 ${on.size + (a21 ? 1 : 0)}개가 지금 운행 시간대인 노선입니다.` : '지금은 운행 전입니다. 밤이 되면 운행 중인 노선만 켜집니다.';
+}
+
+/* ---------- 홈 섹션 ---------- */
+function renderHubs() { document.getElementById('hubs').innerHTML = DATA.hubs.map((h, i) => `<button class="hub" data-hub="${i}"><div><div class="n">${esc(h.name)}</div><div class="cnt">N노선 ${h.routes.length}개 · 정류소 ${h.ars.length}곳</div></div><div class="chips">${h.routes.map(chipHTML).join('')}</div><div class="next"><span>다음 차</span><span class="mono">라이브 연결 후 · HH:MM 기준</span></div></button>`).join(''); }
+function renderFleet() { document.getElementById('fleet').innerHTML = R.map((r, i) => `<button class="route-card" data-route="${i}" style="--c:${col(r)}"><div class="bar"></div><div class="no">${r.no}</div><div class="ends">${r.ends[0]} ↔ ${r.ends[1]}</div><div class="meta"><span>${r.first} ~ ${r.last}</span><span>배차 ${r.headway} · ${r.vehicles}대</span><span>정류장 ${r.stops.length} · ${r.km}km</span></div></button>`).join(''); }
+
+/* ---------- 노선 뷰 ---------- */
+let curRoute = R.findIndex(r => r.no === 'N61'), curDir = 0;
+function showRoute(i, dir) { curRoute = i; curDir = dir ?? 0; const r = R[i]; const c = col(r); document.getElementById('rhero').style.setProperty('--c', c); document.getElementById('rNo').textContent = r.no; document.getElementById('rEnds').textContent = `${r.ends[0]} ↔ ${r.ends[1]}`; document.getElementById('rFacts').innerHTML = `<span>첫차 <b>${r.first}</b></span><span>막차 <b>${r.last}</b></span><span>배차 <b>${r.headway}</b></span><span>운행 <b>${r.vehicles}대</b></span><span>거리 <b>${r.km}km</b></span><span>정류장 <b>${r.stops.length}</b></span>`; document.getElementById('rDir').innerHTML = `<button data-dir="0" aria-pressed="${curDir === 0}">${r.ends[1]} 방면</button><button data-dir="1" aria-pressed="${curDir === 1}">${r.ends[0]} 방면</button>`; const list = r.stops.filter(s => curDir === 0 ? s[0] <= r.turn : s[0] >= r.turn); document.getElementById('rListTitle').textContent = `${curDir === 0 ? r.ends[1] : r.ends[0]} 방면 ${list.length}개 정류장`; document.getElementById('rListSub').textContent = `굵은 점은 다른 올빼미버스와 만나는 정류장입니다. 정류소 번호는 기둥의 숫자와 같습니다.`; document.getElementById('rList').innerHTML = list.map(s => { const others = [...(routesAtName.get(norm(s[2])) || [])].filter(n => n !== r.no); const isTurn = s[0] === r.turn; return `<li class="${others.length >= 1 ? 'hub' : ''}${isTurn ? ' turn' : ''}"><span class="ars">${s[1]}</span><span><span class="nm">${esc(s[2])}${isTurn ? ' · 반환' : ''}</span>${others.length ? `<div class="chips">${others.map(chipHTML).join('')}</div>` : ''}</span></li>`; }).join(''); document.querySelectorAll('.rhero, .rbody').forEach(el => el.style.setProperty('--c', c)); const info = routeSchematic(r, list); const outside = info.before + info.after; document.getElementById('rMapCap').textContent = `${r.no} ${curDir === 0 ? r.ends[1] : r.ends[0]} 방면 · 주요 역 ${info.anchors} + 보간 정류장 ${info.ticks}${outside ? ` · 노선도 밖 ${outside}개 (종점 구간)` : ''}`; if (!document.getElementById('rMap').hidden) drawRouteGeo(); }
+function drawRouteGeo() { const r = R[curRoute]; const canvas = document.getElementById('rMap'); if (canvas.hidden) return; const { ctx, W, H } = fitCanvas(canvas); drawRoutes(ctx, W, H, { pad: 30, width: 2.2, dim: new Set([r.no]), only: [r], fit: r.stops, hubs: true, labels: false }); }
+
+/* ---------- 허브 뷰 ---------- */
+let curHub = 0;
+function showHub(i) { curHub = i; const h = DATA.hubs[i]; document.getElementById('hName').textContent = h.name; document.getElementById('hSub').textContent = `올빼미버스 ${h.routes.length}개 노선 · 정류소 ${h.ars.length}곳 (${h.groups.join(' · ')})`; document.getElementById('hArs').innerHTML = h.ars.map(a => `<span>${a}</span>`).join(''); const now = kst(); document.getElementById('hBoard').innerHTML = h.routes.map(no => { const r = R.find(x => x.no === no); const on = running(r, now.min); return `<div class="brow" style="--c:${col(r)}"><div class="no">${no}</div><div><div class="to">${r.ends[0]} ↔ ${r.ends[1]}</div><div class="sch">${r.first}~${r.last} · 배차 ${r.headway} · ${on ? '운행 시간대' : '운행 전'}</div></div><div class="nx">다음 차<br>라이브 연결 후</div></div>`; }).join(''); const onMap = hubSchematic(h); document.getElementById('hMapCap').textContent = `${h.name}을 지나는 ${h.routes.length}개 노선${onMap ? '' : ' · 노선도에 역 표시 없음'}`; if (!document.getElementById('hMap').hidden) drawHubGeo(); }
+function drawHubGeo() { const h = DATA.hubs[curHub]; const canvas = document.getElementById('hMap'); if (canvas.hidden) return; const { ctx, W, H } = fitCanvas(canvas); const only = R.filter(r => h.routes.includes(r.no)); const P = drawRoutes(ctx, W, H, { pad: 30, width: 2, dim: new Set(h.routes), only, fit: R.flatMap(r => r.stops), hubs: false }); const [x, y] = P(h.lat, h.lon); ctx.beginPath(); ctx.arc(x, y, 9, 0, Math.PI * 2); ctx.fillStyle = '#3FD3FF'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#0A0F1E'; ctx.stroke(); ctx.font = '700 13px "IBM Plex Sans KR", sans-serif'; ctx.fillStyle = '#F3F5FA'; ctx.fillText(h.name, x + 12, y + 5); }
+
+/* ---------- 네비 ---------- */
+function nav(v) { document.querySelectorAll('.view').forEach(el => el.classList.toggle('on', el.id === 'view-' + v)); document.querySelectorAll('[data-nav]').forEach(b => { if (b.tagName === 'BUTTON') b.toggleAttribute('aria-current', b.dataset.nav === v) && b.setAttribute('aria-current', 'page'); }); document.querySelectorAll('nav [data-nav]').forEach(b => b.dataset.nav === v ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current')); window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' }); if (v === 'home') buildHero(); if (v === 'route') showRoute(curRoute, curDir); if (v === 'hub') showHub(curHub); }
+document.addEventListener('click', e => { const n = e.target.closest('[data-nav]'); if (n) { e.preventDefault(); nav(n.dataset.nav); return; } const rc = e.target.closest('[data-route]'); if (rc) { curRoute = +rc.dataset.route; curDir = 0; nav('route'); return; } const hb = e.target.closest('[data-hub]'); if (hb) { curHub = +hb.dataset.hub; nav('hub'); return; } const d = e.target.closest('[data-dir]'); if (d) { showRoute(curRoute, +d.dataset.dir); return; } const mt = e.target.closest('[data-mtab]'); if (mt) { setMapTab(mt.closest('.maptabs').dataset.for, mt.dataset.mtab); } });
+document.getElementById('askForm').addEventListener('submit', e => { e.preventDefault(); render(document.getElementById('from').value, document.getElementById('to').value); document.getElementById('stage').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+document.getElementById('demoBtn').addEventListener('click', (e) => { DEMO_MIN = DEMO_MIN === null ? 30 : null; e.currentTarget.setAttribute('aria-pressed', String(DEMO_MIN !== null)); e.currentTarget.textContent = DEMO_MIN !== null ? '지금 시각으로 돌아가기' : '밤 00:30 으로 시연 보기'; statusLine(); buildHero(); render(document.getElementById('from').value, document.getElementById('to').value); });
+document.getElementById('useLoc').addEventListener('click', () => { document.getElementById('from').value = '홍대입구역'; document.getElementById('locNote').textContent = '시안: 실제 사이트에서는 이 탭에서 브라우저 위치 권한을 요청하고, 가장 가까운 정류장을 기기 안에서 계산합니다. 지금은 홍대입구역으로 가정했습니다.'; });
+
+/* ---------- 시작 ---------- */
+document.getElementById('stops').innerHTML = [...DATA.hubs.map(h => h.name), ...allNames].map(n => `<option value="${esc(n)}">`).join('');
+statusLine(); setInterval(() => { statusLine(); if (document.getElementById('view-home').classList.contains('on')) buildHero(); }, 30000);
+renderHubs(); renderFleet(); render('홍대입구역', '강남역'); buildHero();
+let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { const v = document.querySelector('.view.on').id.replace('view-', ''); if (v === 'home') buildHero(); if (v === 'route') showRoute(curRoute, curDir); if (v === 'hub') showHub(curHub); }, 150); });
+</script>

@@ -2,7 +2,8 @@
 
 > 마지막 업데이트: 2026-10-15 (**AdSense 4차 거절 — "가치 없는 콘텐츠" (포그린 보고 · 거절 메일 원문 미확보) · Production 동결 해제 · 재탄생 분석 라운드 진입**)
 > 현재 NEXT = **R3a 대표 수직 슬라이스 구현 진행 중** — 정본 `docs/worklogs/R3A-VERTICAL-SLICE-PLAN-20261015.md` §6 체크리스트가 진행 상태의 유일한 기록. 재개 절차는 그 문서 §5.
-> 커밋: 코드·데이터 `035eadd` (night-bus SSoT·등록부·core.mjs) · docs 는 별도 docs-only 커밋. 푸시·배포는 미실행(승인 별도).
+> 커밋: 코드·데이터 `035eadd` · docs `bc00d1a`. 푸시·배포는 미실행(승인 별도).
+> ⚠ 미커밋 작업 트리(2026-10-15 세션 말): R3a B1·D1·D3 = web/app/globals.css(토큰 v2) · web/app/[locale]/night-bus/[no]/ · web/components/night-bus/ · web/lib/night-bus/{data,schematic}.ts · messages ko/en(nightBus) · sitemap.ts · lib/nav.ts · R3A 문서 §8. 빌드·standalone QA PASS. 포그린 승인 후 커밋(코드 1 + docs 1).
 > 선행 정본: R0 `SITE-REBIRTH-ANALYSIS-20261015.md` §4.7 · R1 `R1-NIGHT-BUS-DATA-20261015.md`(+`R1-CODEX-REVIEW-20261015.md`) · R2 `R2-PROTOTYPE-20261015.md`(아티팩트 https://claude.ai/artifact/9ZgafDYwRvTqvzsvgRjw4B · 소스 보존 docs/prototypes/) · GPT 조언 `GPT-BRIEF-20261015.md` → 반영 결정은 R3A 문서 §1.
 > 지도 전략 확정: 포그린 노선도 = 정본 노선도(유지·승격, 작도 데이터 무수정) / 지리 지도 = 위치 기능 전용 (R2 문서 §4.1~4.2).
 > R1 산출(미커밋): web/data/night-bus-routes.json(18노선 2,228행) · web/scripts/import-night-bus-routes.py · web/scripts/validate-night-bus.mjs (PASS) · 허브 v1 후보 16곳.

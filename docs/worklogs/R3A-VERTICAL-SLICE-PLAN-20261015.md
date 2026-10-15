@@ -78,9 +78,9 @@ URL        /[locale]/night-bus/[no](소문자 n61) · /[locale]/hubs/[slug] · �
 ```
 [x] 0 계획 문서 · 시안 소스 보존(docs/prototypes) · Codex 결과 보존 · 메모리 갱신
 [x] A1 core.mjs (로더·방면·그룹·탐색·허브)            [x] A2 build-night-bus-derived.mjs → hubs.json · anchors.json   [x] A3 validator 파생 검증 (+ registry.ts R3a 노출 등록부)
-[ ] B1 토큰 v2 + globals.css                              [ ] B2 헤더/푸터/카드 재조판                                   [ ] B3 기존 페이지 회귀 확인
+[x] B1 토큰 v2 + globals.css (값만 교체 · 노선색 토큰 추가)                              [ ] B2 헤더/푸터/카드 재조판                                   [ ] B3 기존 페이지 회귀 확인
 [ ] C1 홈 v2 (상태줄·질문 카드·무대·바로가기)             [ ] C2 탐색 엔진 클라이언트 번들                               [ ] C3 버스 연출 컴포넌트
-[ ] D1 노선 페이지 템플릿 + NightSchematic                [ ] D2 노선 5 콘텐츠(경유지·방면·FAQ)                          [ ] D3 sitemap/metadata
+[x] D1 노선 페이지 템플릿 (/night-bus/[no] · RouteExplorer · ServiceStatus)                [ ] D2 노선 5 콘텐츠(경유지·방면·FAQ)                          [x] D3 sitemap/metadata (5 URL · ko 전용 · EN 폴백 nav)
 [ ] E1 허브 페이지 템플릿(지리 기본)                       [ ] E2 허브 3 콘텐츠                                            [ ] E3 sitemap/metadata
 [ ] F1 arrivals 프록시 허브 게이트                         [ ] F2 허브 보드 UI(탭 시 조회·기준 시각)                       [ ] F3 예산·로그 확인
 [ ] G1 소개·출처 페이지 개편                              [ ] G2 "왜 이 결과" 블록 · 제보 경로                            [ ] G3 업데이트 이력 글
@@ -96,6 +96,20 @@ hubs.json       16 허브 (강남역 6노선 · 홍대입구역 6 · 신촌 6 ·
 anchors.json    14노선 × 방면 2 · 미매칭 26건 = 대부분 도심 편도 순환 구간(을지로입구·시청 등 한 방면에만 정류)과 그림 전용 노드(N73 구의역 · N75 새절역 · N72 삼각지역) → R3b 수동표(MANUAL)로 확정
 스모크          홍대입구역→강남역 N75 직통 · 사당자동차학원→청량리역환승센터 N15→N26 환승(종로2가 01013) · 초성 ㅎㄷㅇㄱㅇ→서울역 동작
 validator       데이터 PASS + derived registries OK
+```
+
+## 8. B·D 단계 기록 (2026-10-15)
+
+```
+B1   globals.css 토큰 값 교체(잉크 네이비 바탕 · 경계 · 보조 글자색) + --nb-n13~n75·a21·n72-display 추가. 변수 이름 불변 → 기존 25페이지 자동 재조판
+D1   app/[locale]/night-bus/[no]/page.tsx (ko 전용 · 등록부 5 · dynamicParams=false → n99·/en 은 404)
+     components/night-bus/RouteExplorer.tsx (client: 방면 토글 · 노선도 SVG(해당 노선 강조 · 앵커 흰 점+라벨 · 보간 정류장 점 · 한강 stroke) · 정류장 타임라인(ARS·만나는 노선 칩·허브 링크))
+     components/night-bus/ServiceStatus.tsx (client: 운행표 기준 시간대 · SSR 비움 · 30초 갱신 · "도착 시각 아님" 고정 문구)
+     lib/night-bus/data.ts(서버 로더) · schematic.ts(작도 데이터 파생: 경로 d · bbox · 보간) · messages nightBus(ko/en) · nav KO_ONLY_EN_FALLBACK 5건
+D3   sitemap +5 (/ko/night-bus/n13 n15 n16 n31 n61 · lastmod 2026-09-02) · 메타: 제목 "N61 심야버스 노선·첫차 막차｜신정동~상계동 올빼미버스" · FAQPage·Breadcrumb JSON-LD
+QA   next build OK(81 static) · standalone 127.0.0.1:3123 · n61 200 / n99 404 / en 404 · 본문 837단어 · 보간 점 205 · 방면 토글 OK
+     콘솔 오류 0 · 390px overflow 0 · 기존 홈·심야A21·노선도 페이지 새 토큰에서 정상 · 캡처 27~30
+미완  D2 노선 5 고유 콘텐츠(경유지 설명·방면 안내 문장은 데이터 생성 · 에디토리얼 보강은 R3b) · 헤더/푸터(B2) · 홈(C) · 허브(E) · 라이브(F) · 신뢰층(G) · 노선도 페이지 재조판(H)
 ```
 
 ## CC 이견 및 아이디어

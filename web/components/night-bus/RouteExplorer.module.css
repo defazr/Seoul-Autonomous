@@ -1,0 +1,25 @@
+.wrap { display: grid; gap: var(--space-4); }
+.dir { display: inline-flex; gap: 4px; padding: 3px; border: 1px solid var(--color-border-2); border-radius: var(--radius-lg); width: fit-content; max-width: 100%; }
+.dir button { padding: 9px 16px; border-radius: var(--radius-md); font-weight: 600; font-size: 14px; color: var(--color-fg-3); white-space: nowrap; }
+.dir button[aria-pressed='true'] { color: #0B0F1A; }
+.board { color: var(--color-fg-2); font-size: 14px; line-height: 1.6; max-width: 68ch; }
+.mapbox { margin: 0; border: 1px solid var(--color-border-1); border-radius: var(--radius-xl); overflow: hidden; background: #0B1226; }
+.svg { display: block; width: 100%; height: auto; }
+.cap { padding: 10px 14px; font-size: 12px; line-height: 1.5; color: var(--color-fg-3); border-top: 1px solid var(--color-border-1); }
+.listTitle { font-size: 17px; font-weight: 700; margin-top: var(--space-2); }
+.timeline { list-style: none; margin: 0; padding: 0; position: relative; }
+.timeline::before { content: ''; position: absolute; left: 11px; top: 10px; bottom: 10px; width: 4px; background: var(--c); border-radius: 2px; opacity: 0.9; }
+.timeline li { display: grid; grid-template-columns: 26px 64px minmax(0, 1fr); gap: 10px; align-items: start; padding: 7px 0; position: relative; }
+.timeline li::before { content: ''; width: 12px; height: 12px; border-radius: 50%; background: var(--color-bg-0); border: 3px solid var(--c); margin-left: 3px; margin-top: 4px; }
+.timeline li.meet::before { background: var(--color-fg-1); border-color: var(--color-fg-1); width: 14px; height: 14px; margin-left: 2px; }
+.timeline li.turn::before { background: var(--c); }
+.ars { font-family: var(--font-mono); font-size: 12px; color: var(--color-fg-3); padding-top: 3px; font-variant-numeric: tabular-nums; }
+.name { font-size: 14px; display: grid; gap: 4px; min-width: 0; }
+.meet .name > span:first-child { font-weight: 600; }
+.turnTag { font-style: normal; margin-left: 8px; font-size: 11px; color: var(--c); font-weight: 700; letter-spacing: 0.04em; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+.meets { font-size: 11px; color: var(--color-fg-4); margin-right: 2px; }
+.chip { display: inline-flex; padding: 2px 8px; border-radius: 999px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.02em; }
+.hub { font-size: 12px; color: var(--color-accent); font-weight: 600; }
+.hub:hover { text-decoration: underline; }
+@media (max-width: 480px) { .timeline li { grid-template-columns: 22px 56px minmax(0, 1fr); gap: 8px; } .ars { font-size: 11px; } }

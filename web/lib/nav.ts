@@ -12,4 +12,10 @@ export const KO_ONLY_EN_FALLBACK: Record<string, string> = {
   '/night-bus-fare': NIGHT_BUS_GUIDE_PATH,
   '/after-last-train': NIGHT_BUS_GUIDE_PATH,
   '/updates/night-bus-map-launch': NIGHT_BUS_GUIDE_PATH,
+  // R3a: 올빼미버스 노선 페이지(ko 전용) → EN 은 노선도 가이드로
+  '/night-bus/n15': NIGHT_BUS_GUIDE_PATH,
+  '/night-bus/n61': NIGHT_BUS_GUIDE_PATH,
+  '/night-bus/n31': NIGHT_BUS_GUIDE_PATH,
+  '/night-bus/n13': NIGHT_BUS_GUIDE_PATH,
+  '/night-bus/n16': NIGHT_BUS_GUIDE_PATH,
 };

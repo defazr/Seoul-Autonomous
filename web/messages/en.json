@@ -214,10 +214,22 @@
     },
     "steps": {
       "sectionTitle": "Visual guide",
-      "s1": { "title": "Find a listed stop", "desc": "Use the Routes tab to find checked stops near you." },
-      "s2": { "title": "Check the route and time", "desc": "First/last service times and operating days are listed in each route." },
-      "s3": { "title": "Tap your card or follow app instructions", "desc": "Buses: Tap T-money or a contactless card where accepted. Robotaxis: Follow Kakao T instructions." },
-      "s4": { "title": "Ride with the safety operator if onboard", "desc": "A safety operator may be onboard during pilot operations. Follow their guidance." }
+      "s1": {
+        "title": "Find a listed stop",
+        "desc": "Use the Routes tab to find checked stops near you."
+      },
+      "s2": {
+        "title": "Check the route and time",
+        "desc": "First/last service times and operating days are listed in each route."
+      },
+      "s3": {
+        "title": "Tap your card or follow app instructions",
+        "desc": "Buses: Tap T-money or a contactless card where accepted. Robotaxis: Follow Kakao T instructions."
+      },
+      "s4": {
+        "title": "Ride with the safety operator if onboard",
+        "desc": "A safety operator may be onboard during pilot operations. Follow their guidance."
+      }
     },
     "kakao": {
       "sectionTitle": "For robotaxi riders",
@@ -384,9 +396,72 @@
     },
     "serviceHours": {
       "title": "Route service hours",
-      "window": "{first} \u2013 {last}",
+      "window": "{first} – {last}",
       "singleDeparture": "Departs {time}",
       "note": "These are route-level service hours, not arrival times at this stop."
     }
+  },
+  "nightBus": {
+    "eyebrow": "Seoul Owl Bus route",
+    "title": "{no} night bus route · first & last bus",
+    "ends": "{a} ↔ {b}",
+    "facts": {
+      "first": "First bus",
+      "last": "Last bus",
+      "headway": "Headway",
+      "vehicles": "Buses",
+      "vehiclesUnit": "{n}",
+      "distance": "Distance",
+      "distanceUnit": "{km} km",
+      "stops": "Stops",
+      "stopsUnit": "{n}"
+    },
+    "status": {
+      "label": "Per timetable",
+      "running": "Within service hours now ({first}–{last})",
+      "before": "Not running yet · first bus {first} in {h}h {m}m",
+      "beforeSoon": "Not running yet · first bus {first} in {m} min",
+      "note": "This is the timetable window, not an arrival time. Check the stop display or hub pages for arrivals."
+    },
+    "viaTitle": "Main stops",
+    "viaNote": "Stations shown on the route map, in order. The full stop list is below.",
+    "hubsTitle": "Hubs on this route",
+    "hubsNote": "Stops where three or more owl bus routes meet.",
+    "hubsSoon": "Hub page coming soon",
+    "mapTitle": "Route map",
+    "mapNote": "Route map drawn by Seoul Autonomous. Small dots are stops not drawn on the map, placed by stop order along the line — approximate, not geographic positions.",
+    "mapOutside": "{n} stops beyond the drawn terminal are listed below.",
+    "dirTitle": "Direction and stops",
+    "dirNote": "Stops with the same name sit on both sides of the road. Pick a direction, then match the 5-digit stop number with the one on the stop pole.",
+    "dirStops": "{n} stops toward {toward}",
+    "meets": "Also served by",
+    "hubLink": "Hub",
+    "turnaround": "Turnaround",
+    "boardTitle": "Where to board",
+    "boardText": "To go toward {toward}, board at a stop listed below with that stop number. First stop {first}, last stop {last}.",
+    "boardTransfer": "Late-night (21:00–07:00) card transfers are valid for 60 minutes, up to 4 times. Tap your card when getting off.",
+    "liveTitle": "Live arrivals",
+    "liveText": "Arrivals are shown on hub pages with the Seoul bus API and a reference time. This route page carries the timetable only.",
+    "liveSoon": "Hub arrivals are in preparation. Use the stop display or bus.go.kr for now.",
+    "faqTitle": "{no} FAQ",
+    "faq": {
+      "q1": "When does {no} run?",
+      "a1": "Per the Seoul timetable ({asOf}): first bus {first}, last bus {last}, headway {headway}. Times are at the terminals; mid-route stops are later.",
+      "q2": "What is the fare?",
+      "a2": "KRW 2,500 with a transit card (all Seoul owl buses). Late-night transfers are valid for 60 minutes.",
+      "q3": "How long if I miss one?",
+      "a3": "The headway is {headway}. Near the last bus there may be no next bus, so check the last-bus time.",
+      "q4": "Where is the stop number?",
+      "a4": "A 5-digit number on the stop pole and display. The same number appears in the stop list here, so you can match the direction."
+    },
+    "sourceTitle": "Sources for this page",
+    "sourceStops": "Stops, order, coordinates: Seoul Open Data “bus route stop information” {snapshot} (KOGL type 1)",
+    "sourceSchedule": "First/last bus, headway, fleet, distance: Seoul Metropolitan Government “Late-night bus operation” revised {asOf}",
+    "sourceMap": "Route map: drawn by Seoul Autonomous (digitized 2026-06) · 115 station nodes · 15 lines",
+    "sourceWhy": "Why this order: arranged the way you need it at a stop at night (running? → where to → where to board → next bus).",
+    "report": "Found an error? Tell us",
+    "reportMail": "seoulautonomous@protonmail.com",
+    "crumbMap": "Night bus map",
+    "allMap": "See the full map"
   }
 }

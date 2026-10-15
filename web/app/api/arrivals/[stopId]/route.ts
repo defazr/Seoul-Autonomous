@@ -15,13 +15,23 @@
 
 import { NextResponse } from 'next/server';
 import { getApprovedStopPath } from '../../../../lib/stop-pages';
+import { R3A_HUBS } from '../../../../lib/night-bus/registry';
+import hubsDoc from '../../../../data/night-bus-hubs.json';
 import {
   ROUTE_ID_BY_BUS_ROUTE_ID,
+  NIGHT_BUS_ROUTE_ID_BY_BUS_ROUTE_ID,
   classifyArrmsg,
   type ArrivalItem,
   type ArrivalPayload,
   type FailureReason,
 } from '../../../../lib/realtime/arrival-registry';
+
+/** R3a 허브 ARS 게이트 — 등록부(R3A_HUBS)에 노출된 허브의 정류소만. 임의 arsId 프록시는 계속 금지. */
+const HUB_ARS: ReadonlySet<string> = new Set(
+  (hubsDoc as { hubs: { slug: string; ars: string[] }[] }).hubs
+    .filter((h) => (R3A_HUBS as readonly string[]).includes(h.slug))
+    .flatMap((h) => h.ars),
+);
 
 const UPSTREAM_BASE = 'http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid';
 const TIMEOUT_MS = 3000;
@@ -148,8 +158,8 @@ function parseItems(xml: string): ArrivalItem[] {
   const items: ArrivalItem[] = [];
   for (const block of blocks) {
     const busRouteId = tagOf(block, 'busRouteId');
-    const routeId = ROUTE_ID_BY_BUS_ROUTE_ID[busRouteId];
-    // 승인 노선이 아니면 버린다. 정류장에는 우리와 무관한 노선이 훨씬 많이 온다.
+    const routeId = ROUTE_ID_BY_BUS_ROUTE_ID[busRouteId] ?? NIGHT_BUS_ROUTE_ID_BY_BUS_ROUTE_ID[busRouteId];
+    // 승인 노선(자율주행 11 + 올빼미 14)이 아니면 버린다. 정류장에는 우리와 무관한 노선이 훨씬 많이 온다.
     if (!routeId) continue;
     const raw = tagOf(block, 'arrmsg1');
     items.push({ routeId, busRouteId, raw, ...classifyArrmsg(raw) });
@@ -190,8 +200,8 @@ export async function GET(
 ) {
   const { stopId } = await context.params;
 
-  // 승인 Stop 게이트. 임의 arsId 를 프록시하지 않는다.
-  if (!getApprovedStopPath(stopId)) {
+  // 승인 Stop 게이트(자율주행 Stop 7 + R3a 허브 ARS). 임의 arsId 를 프록시하지 않는다.
+  if (!getApprovedStopPath(stopId) && !HUB_ARS.has(stopId)) {
     return NextResponse.json({ reason: 'UPSTREAM_ERROR' }, { status: 404 });
   }
 

@@ -11,6 +11,7 @@ import { getNightRoute, hubsForRoute, routesAtName, routeColor, ANCHORS, NIGHT_M
 import { allRouteLines, placeStopsOnMap, routeBBox, RIVER, NODES, ROUTE_COLORS } from '../../../../lib/night-bus/schematic';
 import { RouteExplorer, type ExplorerDir } from '../../../../components/night-bus/RouteExplorer';
 import { ServiceStatus } from '../../../../components/night-bus/ServiceStatus';
+import { nightBusEditorialKo } from '../../../../data/night-bus-editorial';
 import styles from './page.module.css';
 
 /* R3a: ko 전용 · 등록부 5노선만 생성. 영문 정류장명 SSoT 가 없으므로 EN 은 노선도 가이드로 폴백(lib/nav.ts). */
@@ -26,7 +27,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const route = getNightRoute(no);
   if (locale !== 'ko' || !route?.official || !(R3A_NIGHT_ROUTES as readonly string[]).includes(route.no)) return {};
   const o = route.official;
-  const title = `${route.no} 심야버스 노선·첫차 막차｜${o.ends[0]}~${o.ends[1]} 올빼미버스`;
+  const ed = nightBusEditorialKo[route.no];
+  const title = `${route.no} 심야버스 노선·첫차 막차｜${ed ? ed.areas.join('·') : `${o.ends[0]}~${o.ends[1]}`} 올빼미버스`;
   const description = `${route.no} 올빼미버스 ${o.ends[0]}~${o.ends[1]}: 첫차 ${o.firstBus} 막차 ${o.lastBus} 배차 ${o.headway}. 정류장 ${route.stops.filter((s) => !s.virtual).length}개 전체 목록과 정류소 번호, 방면, 만나는 노선을 서울시 공식 데이터(${NIGHT_META.stopsSource.snapshot}) 기준으로 정리했습니다.`;
   const url = `${SITE_URL}/ko/night-bus/${route.no.toLowerCase()}`;
   return {
@@ -58,6 +60,7 @@ export default async function NightRoutePage({ params }: { params: Promise<{ loc
     };
   });
   const via = (ANCHORS[route.no]?.out ?? []).map((a) => a.node);
+  const ed = nightBusEditorialKo[route.no];
   const map = { vb: routeBBox(route.no), riverD: RIVER.d, lines: allRouteLines(), nodes: Object.values(NODES) as [number, number][] };
   const stopCount = route.stops.filter((s) => !s.virtual).length;
   const lower = route.no.toLowerCase();
@@ -86,6 +89,16 @@ export default async function NightRoutePage({ params }: { params: Promise<{ loc
         <ServiceStatus first={o.firstBus} last={o.lastBus} labels={{ label: t('status.label'), running: t.raw('status.running'), before: t.raw('status.before'), beforeSoon: t.raw('status.beforeSoon'), note: t('status.note') }} />
         <Link href="/night-bus-map" className={styles.mapLink}>{t('allMap')} →</Link>
       </header>
+
+      {ed && (
+        <section className={styles.section} aria-labelledby="when-title">
+          <h2 id="when-title" className={styles.h2}>{t('whenTitle')}</h2>
+          <p className={styles.lead}>{ed.summary}</p>
+          <ul className={styles.cases}>{ed.useCases.map((u) => <li key={u}>{u}</li>)}</ul>
+          <h3 className={styles.h3}>{t('cautionsTitle')}</h3>
+          <ul className={styles.cautions}>{ed.cautions.map((c) => <li key={c}>{c}</li>)}</ul>
+        </section>
+      )}
 
       <section className={styles.section} aria-labelledby="via-title">
         <h2 id="via-title" className={styles.h2}>{t('viaTitle')}</h2>

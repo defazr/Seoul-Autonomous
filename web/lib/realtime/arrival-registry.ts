@@ -27,6 +27,17 @@ export const BUS_ROUTE_ID_BY_ROUTE_ID: Readonly<Record<string, string>> = {
   'cheongwadae-a01': '100000020',
 } as const;
 
+/**
+ * R3a — 올빼미버스 14노선의 busRouteId (SSoT night-bus-routes.json 에서 모듈 로드 시 파생).
+ * routeId 는 노선번호('N61') 를 그대로 쓴다. 공항 심야(N6xxx)는 운행표 출처가 없어 제외.
+ */
+import nightBusDoc from '../../data/night-bus-routes.json';
+export const NIGHT_BUS_ROUTE_ID_BY_BUS_ROUTE_ID: Readonly<Record<string, string>> = Object.fromEntries(
+  (nightBusDoc as { routes: { no: string; busRouteId: string; category: string }[] }).routes
+    .filter((r) => r.category === 'owl')
+    .map((r) => [r.busRouteId, r.no]),
+);
+
 /** busRouteId → routeId 역인덱스. 응답 필터링은 이쪽을 쓴다. */
 export const ROUTE_ID_BY_BUS_ROUTE_ID: Readonly<Record<string, string>> = Object.fromEntries(
   Object.entries(BUS_ROUTE_ID_BY_ROUTE_ID).map(([routeId, busRouteId]) => [busRouteId, routeId]),

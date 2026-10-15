@@ -18,4 +18,7 @@ export const KO_ONLY_EN_FALLBACK: Record<string, string> = {
   '/night-bus/n31': NIGHT_BUS_GUIDE_PATH,
   '/night-bus/n13': NIGHT_BUS_GUIDE_PATH,
   '/night-bus/n16': NIGHT_BUS_GUIDE_PATH,
+  '/hubs/gangnam-station': NIGHT_BUS_GUIDE_PATH,
+  '/hubs/hongdae-entrance': NIGHT_BUS_GUIDE_PATH,
+  '/hubs/dongdaemun-station': NIGHT_BUS_GUIDE_PATH,
 };

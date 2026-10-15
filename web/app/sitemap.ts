@@ -5,7 +5,7 @@ import type { FixedRoute } from '../lib/types/route';
 import { getAllUpdates } from '../data/updates';
 import { APPROVED_STOPS } from '../lib/stop-pages';
 import { buildGraph } from '../lib/graph/graph-core.mjs';
-import { R3A_NIGHT_ROUTES } from '../lib/night-bus/registry';
+import { R3A_NIGHT_ROUTES, R3A_HUBS } from '../lib/night-bus/registry';
 import nightBusDoc from '../data/night-bus-routes.json';
 
 const fixedRoutes = routesData.fixedRoutes as FixedRoute[];
@@ -133,6 +133,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const no of R3A_NIGHT_ROUTES) {
     entries.push({
       url: `${SITE_URL}/ko/night-bus/${no.toLowerCase()}`,
+      lastModified: nightBusDoc._meta.stopsSource.snapshot,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    });
+  }
+
+  for (const slug of R3A_HUBS) {
+    entries.push({
+      url: `${SITE_URL}/ko/hubs/${slug}`,
       lastModified: nightBusDoc._meta.stopsSource.snapshot,
       changeFrequency: 'monthly' as const,
       priority: 0.7,

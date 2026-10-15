@@ -30,3 +30,8 @@
 .sources { margin: 0; padding-left: 18px; color: var(--color-fg-2); font-size: 13px; line-height: 1.7; display: grid; gap: 4px; }
 .report { font-size: 13px; color: var(--color-fg-3); }
 .mail { font-family: var(--font-mono); color: var(--color-fg-2); user-select: all; }
+.lead { color: var(--color-fg-1); font-size: 15px; line-height: 1.7; max-width: 70ch; }
+.h3 { font-size: 15px; font-weight: 700; margin-top: var(--space-2); }
+.cases { margin: 0; padding-left: 18px; color: var(--color-fg-2); font-size: 14px; line-height: 1.7; display: grid; gap: 4px; }
+.cautions { margin: 0; padding-left: 18px; color: var(--color-fg-2); font-size: 14px; line-height: 1.7; display: grid; gap: 4px; }
+.cautions li::marker { color: var(--color-warning); }

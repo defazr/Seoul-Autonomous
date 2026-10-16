@@ -456,7 +456,7 @@ function StationCard({ station, sel, toggle, setStation, setFrom, setTo, jFrom, 
                     <span className={styles.obCardStopName}><b>{arsId}</b> {name}</span>
                     <span className={styles.obCardStopLinks}>
                       <a href={kakaoMapLink(name, lat, lon)} target="_blank" rel="noopener noreferrer">카카오맵</a>
-                      <a href={naverMapLink(name)} target="_blank" rel="noopener noreferrer">네이버지도</a>
+                      <a href={naverMapLink(name, arsId)} target="_blank" rel="noopener noreferrer">네이버지도</a>
                     </span>
                   </span>
                 </li>

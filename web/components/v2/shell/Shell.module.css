@@ -61,6 +61,7 @@
   .nav { display: none; }
   .lang { display: none; }
   .menuBtn { display: grid; }
+  .nav + .actions { margin-left: auto; } /* 데스크톱 내비가 숨으면 메뉴 버튼을 오른쪽 끝으로 (iPhone 피드백 10-16) */
 }
 
 /* ===== Footer ===== */
@@ -79,5 +80,5 @@
 .footMail { color: var(--fg-2); font-family: var(--font-mono); font-size: 12px; }
 .footMail:hover { color: var(--accent); }
 .copy { margin-top: 14px; }
-@media (max-width: 760px) { .footTop { grid-template-columns: 1fr 1fr; } .footBrand { grid-column: 1 / -1; } }
-@media (max-width: 420px) { .footTop { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .footTop { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .footBrand { grid-column: 1 / -1; } }
+@media (max-width: 420px) { .footTop { grid-template-columns: minmax(0, 1fr); } }

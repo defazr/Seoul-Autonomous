@@ -3,8 +3,8 @@
 .heroMap { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .heroMapMobile { display: none; }
 .hero::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(640px 380px at 86% 88%, rgba(10, 15, 30, 0.78) 0%, rgba(10, 15, 30, 0.36) 46%, rgba(10, 15, 30, 0) 76%), linear-gradient(90deg, rgba(10, 15, 30, 0.94) 0%, rgba(10, 15, 30, 0.72) 30%, rgba(10, 15, 30, 0.08) 58%, rgba(10, 15, 30, 0) 100%); }
-.heroWrap { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 440px) 1fr; gap: 32px; padding-block: 44px 56px; min-height: 620px; align-items: start; }
-.heroLeft { display: grid; gap: 18px; }
+.heroWrap { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 1fr); gap: 32px; padding-block: 44px 56px; min-height: 620px; align-items: start; }
+.heroLeft { display: grid; gap: 18px; min-width: 0; }
 /* 헤드라인 패널 — 노선 위에 맨글자로 얹으면 안 읽힌다(포그린 10-16). 질문 카드와 같은 유리 패널 + 바탕 안개(.hero::after 의 radial) */
 .heroSide { align-self: end; justify-self: end; text-align: right; color: var(--fg-2); font-size: 13px; max-width: 470px; display: grid; gap: 8px; justify-items: end; word-break: keep-all; padding: 22px 24px 20px; background: var(--bg-glass); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border: 1px solid var(--line-2); border-radius: var(--radius-l); box-shadow: var(--shadow-card); }
 .heroSide::before { content: ''; width: 36px; height: 3px; border-radius: 2px; background: var(--accent); margin-bottom: 4px; }
@@ -15,7 +15,7 @@
 @media (max-width: 860px) {
   .heroMapDesk { display: none; } .heroMapMobile { display: block; }
   .hero::after { background: linear-gradient(180deg, rgba(10, 15, 30, 0.55) 0%, rgba(10, 15, 30, 0.82) 100%); }
-  .heroWrap { grid-template-columns: 1fr; min-height: 0; padding-block: 22px 32px; gap: 20px; }
+  .heroWrap { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-block: 22px 32px; gap: 20px; }
   .heroSide { justify-self: stretch; max-width: none; text-align: left; justify-items: start; margin-top: 4px; padding: 18px 18px 16px; }
   .heroSide strong { font-size: 22px; }
 }
@@ -38,7 +38,7 @@
 .field { display: grid; gap: 6px; position: relative; }
 .label { font-size: 12px; color: var(--fg-3); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
 .row { display: flex; gap: 8px; }
-.input { flex: 1; min-width: 0; background: var(--bg); border: 1px solid var(--line-2); border-radius: 12px; padding: 12px 14px; color: var(--fg); font-size: 16px; transition: border-color 0.15s; }
+.input { flex: 1 1 0; width: 0; min-width: 0; background: var(--bg); border: 1px solid var(--line-2); border-radius: 12px; padding: 12px 14px; color: var(--fg); font-size: 16px; transition: border-color 0.15s; }
 .input::placeholder { color: var(--fg-3); }
 .input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .sugs { position: absolute; left: 0; right: 0; top: 100%; z-index: 5; margin-top: 6px; background: var(--bg-2); border: 1px solid var(--line-2); border-radius: 12px; box-shadow: var(--shadow-pop); overflow: hidden; list-style: none; max-height: 300px; overflow-y: auto; }
@@ -54,13 +54,13 @@
 .noteOk { color: var(--ok); }
 .noteWarn { color: var(--warn); }
 .examples { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; color: var(--fg-3); }
-.exBtn { border: 1px solid var(--line-2); border-radius: var(--radius-pill); padding: 4px 10px; font-size: 12px; color: var(--fg-2); }
+.exBtn { border: 1px solid var(--line-2); border-radius: var(--radius-pill); padding: 4px 10px; font-size: 12px; color: var(--fg-2); white-space: normal; text-align: left; max-width: 100%; } /* WebKit 은 버튼 글자를 한 줄로 고정해 카드 폭을 밀어냈다 (iPhone 피드백 10-16) */
 .exBtn:hover { border-color: var(--accent); color: var(--fg); }
 
 /* ===== Result stage (시안 .stage) ===== */
 .stage { border-bottom: 1px solid var(--line); background: var(--bg-2); scroll-margin-top: calc(var(--header-h) + 8px); }
 .stageWrap { padding-block: 30px 40px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 28px; align-items: start; }
-@media (max-width: 860px) { .stageWrap { grid-template-columns: 1fr; } }
+@media (max-width: 860px) { .stageWrap { grid-template-columns: minmax(0, 1fr); } }
 .resultHead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
 .resultHead h2 { font-size: 20px; }
 .resultMeta { font-size: 12px; color: var(--fg-3); font-variant-numeric: tabular-nums; }

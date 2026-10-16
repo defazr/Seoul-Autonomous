@@ -1,4 +1,4 @@
 .status { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 13px; color: var(--fg-2); }
-.item { display: inline-flex; align-items: center; gap: 8px; }
+.item { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
 .status b { font-family: var(--font-mono); font-weight: 500; color: var(--fg); font-variant-numeric: tabular-nums; }
 .pin { font-size: 11px; color: var(--warn); font-family: var(--font-mono); }

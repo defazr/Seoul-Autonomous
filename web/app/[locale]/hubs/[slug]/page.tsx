@@ -59,7 +59,7 @@ export default async function HubPage({ params }: { params: Promise<{ locale: st
           {platforms.map((p) => (
             <li key={p.arsId} className={styles.platform}>
               <div className={styles.pfHead}><span className={styles.ars}>{p.arsId}</span><span className={styles.pfName}>{p.name}</span></div>
-              <MapLinks name={p.name} lat={p.lat} lon={p.lon} labels={mapLabels} />
+              <MapLinks name={p.name} lat={p.lat} lon={p.lon} ars={p.arsId} labels={mapLabels} />
               <ul className={styles.lines}>{p.lines.map((l, i) => <li key={`${l.no}-${i}`}><span className={styles.miniChip} style={{ background: colors[l.no], color: onColor(colors[l.no] ?? '#9AA3B2') }}>{l.no}</span><span>{l.label}</span></li>)}</ul>
             </li>
           ))}

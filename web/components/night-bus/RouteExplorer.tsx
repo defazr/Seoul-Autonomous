@@ -65,7 +65,7 @@ export function RouteExplorer({ no, color, colors, dirs, map, labels, hubBase }:
             <span className={styles.ars}>{s.arsId}</span>
             <span className={styles.name}>
               <button type="button" className={styles.nameBtn} aria-expanded={open} onClick={() => setOpenStop(open ? null : key)}>{s.name}{s.turn ? <em className={styles.turnTag}>{labels.turnaround}</em> : null}</button>
-              {open ? <span className={styles.links} aria-label={labels.mapAria}><a href={kakaoMapLink(s.name, s.lat, s.lon)} target="_blank" rel="noopener noreferrer">{labels.kakao}</a><a href={naverMapLink(s.name)} target="_blank" rel="noopener noreferrer">{labels.naver}</a></span> : null}
+              {open ? <span className={styles.links} aria-label={labels.mapAria}><a href={kakaoMapLink(s.name, s.lat, s.lon)} target="_blank" rel="noopener noreferrer">{labels.kakao}</a><a href={naverMapLink(s.name, s.arsId)} target="_blank" rel="noopener noreferrer">{labels.naver}</a></span> : null}
               {s.others.length ? <span className={styles.chips}><span className={styles.meets}>{labels.meets}</span>{s.others.map(chip)}{s.hubSlug ? <a className={styles.hub} href={`${hubBase}/${s.hubSlug}`}>{s.hubName} · {labels.hubLink}</a> : null}</span> : null}
             </span>
           </li>

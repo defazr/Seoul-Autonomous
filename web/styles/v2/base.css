@@ -37,3 +37,6 @@ h3 { font-size: 17px; font-weight: 800; }
 
 /* 스티키 헤더가 역방향 Tab 포커스를 가리지 않게 (접근성 감사 F1) */
 html { scroll-padding-top: 72px; }
+
+/* 한국어 줄바꿈 — 어절 단위(keep-all) · 칸을 넘칠 때만 글자 단위(anywhere). iPhone 실기기 피드백 "노/선과" (2026-10-16) */
+:lang(ko) { word-break: keep-all; overflow-wrap: anywhere; }

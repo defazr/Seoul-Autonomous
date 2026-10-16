@@ -36,7 +36,7 @@ a.card:hover { transform: translateY(-2px); border-color: var(--line-2); }
 .search { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--line-2); border-radius: 12px; padding: 0 14px; }
 .search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .search svg { color: var(--fg-3); flex: none; }
-.search input { flex: 1; min-width: 0; background: none; border: 0; padding: 12px 0; font-size: 16px; color: var(--fg); }
+.search input { flex: 1 1 0; width: 0; min-width: 0; background: none; border: 0; padding: 12px 0; font-size: 16px; color: var(--fg); }
 .search input::placeholder { color: var(--fg-3); }
 .search input:focus { outline: none; }
 .seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: 12px; padding: 3px; gap: 3px; }

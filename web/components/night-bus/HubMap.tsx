@@ -20,9 +20,10 @@ export default function HubMap({ center, stops, nearby }: HubMapProps) {
     if (!ref.current) return;
     // 번들러가 maplibre 워커 URL 을 해석하지 못하므로 워커 모듈(dist/maplibre-gl-worker.mjs)을 public/vendor 에서 직접 제공한다 (버전 고정 · 업그레이드 시 교체).
     setWorkerUrl('/vendor/maplibre-gl-worker-6.14.0.mjs');
-    const map = new MapLibreMap({ container: ref.current, style: 'https://tiles.openfreemap.org/styles/dark', center, zoom: 14.3, attributionControl: false, cooperativeGestures: true,
+    const map = new MapLibreMap({ container: ref.current, style: 'https://tiles.openfreemap.org/styles/dark', center, zoom: 14.3, attributionControl: false,
+      // 한 손가락 이동 · 두 손가락 확대 (MapLibre 기본). 두 손가락 이동(cooperativeGestures)은 포그린 피드백으로 끔 — bakwijaguk.com 과 같은 조작 (2026-10-16)
       // 지도 UI 문자열 한국어 (허브 페이지는 ko 전용 · 접근성 감사 F5)
-      locale: { 'Map.Title': '지도', 'NavigationControl.ZoomIn': '확대', 'NavigationControl.ZoomOut': '축소', 'AttributionControl.ToggleAttribution': '출처 표시 열기/닫기', 'CooperativeGesturesHandler.WindowsHelpText': 'Ctrl 키를 누른 채 스크롤하면 지도가 확대·축소됩니다', 'CooperativeGesturesHandler.MacHelpText': '⌘ 키를 누른 채 스크롤하면 지도가 확대·축소됩니다', 'CooperativeGesturesHandler.MobileHelpText': '두 손가락으로 지도를 움직이세요' } });
+      locale: { 'Map.Title': '지도', 'NavigationControl.ZoomIn': '확대', 'NavigationControl.ZoomOut': '축소', 'AttributionControl.ToggleAttribution': '출처 표시 열기/닫기' } });
     map.addControl(new AttributionControl({ compact: true, customAttribution: '정류소 위치·노선 경로: 서울시 공식 데이터' }), 'bottom-right');
     map.addControl(new NavigationControl({ showCompass: false }), 'top-right');
     const markers: Marker[] = [];

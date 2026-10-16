@@ -241,7 +241,7 @@ export default async function StopDetailPage({
         <div className={styles.arsLine}>
           <span className={styles.arsLabel}>{t('stopDetail.ars')}</span>
           <span className={styles.arsValue}>{data.stopId}</span>
-          <MapLinks name={data.nameKo} labels={{ kakao: tp('map.kakao'), naver: tp('map.naver'), aria: tp('map.aria') }} />
+          <MapLinks name={data.nameKo} ars={data.stopId} labels={{ kakao: tp('map.kakao'), naver: tp('map.naver'), aria: tp('map.aria') }} />
         </div>
         {nextUnionNames.length > 0 ? (
           <p className={styles.nextLine}>

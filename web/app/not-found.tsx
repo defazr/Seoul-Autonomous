@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import '../styles/v2/tokens.css';
 import '../styles/v2/base.css';
 
@@ -12,9 +13,9 @@ export default function GlobalNotFound() {
             <h1 style={{ fontSize: 'clamp(26px, 5vw, 40px)', lineHeight: 1.1, margin: '8px 0 12px' }}>Page not found · 페이지를 찾을 수 없습니다</h1>
             <p style={{ color: 'var(--fg-2)', maxWidth: '60ch' }}>This address does not exist. 주소가 없거나 바뀌었습니다.</p>
             <p style={{ marginTop: 24, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-              <a href="/en" style={{ color: 'var(--accent)', fontWeight: 600 }}>English home →</a>
-              <a href="/ko" style={{ color: 'var(--accent)', fontWeight: 600 }}>한국어 홈 →</a>
-              <a href="/ko/night-bus-map" style={{ color: 'var(--accent)', fontWeight: 600 }}>올빼미버스 노선도 →</a>
+              <Link href="/en" style={{ color: 'var(--accent)', fontWeight: 600 }}>English home →</Link>
+              <Link href="/ko" style={{ color: 'var(--accent)', fontWeight: 600 }}>한국어 홈 →</Link>
+              <Link href="/ko/night-bus-map" style={{ color: 'var(--accent)', fontWeight: 600 }}>올빼미버스 노선도 →</Link>
             </p>
           </section>
         </main>

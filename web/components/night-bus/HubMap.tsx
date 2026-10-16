@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Map as MapLibreMap, AttributionControl, NavigationControl, Marker, Popup, setWorkerUrl } from 'maplibre-gl';
+import { Map as MapLibreMap, AttributionControl, NavigationControl, FullscreenControl, Marker, Popup, setWorkerUrl } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './HubMap.module.css';
 
@@ -23,9 +23,11 @@ export default function HubMap({ center, stops, nearby }: HubMapProps) {
     const map = new MapLibreMap({ container: ref.current, style: 'https://tiles.openfreemap.org/styles/dark', center, zoom: 14.3, attributionControl: false,
       // 한 손가락 이동 · 두 손가락 확대 (MapLibre 기본). 두 손가락 이동(cooperativeGestures)은 포그린 피드백으로 끔 — bakwijaguk.com 과 같은 조작 (2026-10-16)
       // 지도 UI 문자열 한국어 (허브 페이지는 ko 전용 · 접근성 감사 F5)
-      locale: { 'Map.Title': '지도', 'NavigationControl.ZoomIn': '확대', 'NavigationControl.ZoomOut': '축소', 'AttributionControl.ToggleAttribution': '출처 표시 열기/닫기' } });
+      locale: { 'Map.Title': '지도', 'NavigationControl.ZoomIn': '확대', 'NavigationControl.ZoomOut': '축소', 'AttributionControl.ToggleAttribution': '출처 표시 열기/닫기', 'FullscreenControl.Enter': '전체화면으로 보기', 'FullscreenControl.Exit': '전체화면 끝내기' } });
     map.addControl(new AttributionControl({ compact: true, customAttribution: '정류소 위치·노선 경로: 서울시 공식 데이터' }), 'bottom-right');
     map.addControl(new NavigationControl({ showCompass: false }), 'top-right');
+    // 전체화면 버튼 (bakwijaguk.com 과 같은 구성 · 포그린 요청 10-16). iPhone Safari 는 Fullscreen API 가 없어 MapLibre 가 화면 덮기(pseudo fullscreen)로 대신한다.
+    map.addControl(new FullscreenControl(), 'top-right');
     const markers: Marker[] = [];
     map.on('load', () => {
       // 한국어 지명 우선 (OpenFreeMap 스타일은 라틴 표기를 앞에 둔다)

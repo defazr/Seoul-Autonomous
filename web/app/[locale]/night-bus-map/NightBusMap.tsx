@@ -6,7 +6,7 @@ import {
   ROUTE_ORDER, RIVER,
 } from './night-bus-data';
 import styles from './night-bus-map.module.css';
-import { kakaoMapLink, naverMapLink } from '../../../lib/v2/map-links';
+import { kakaoMapAppLink, kakaoMapLink, naverMapLink } from '../../../lib/v2/map-links';
 import { onColor, routeDisplayColor } from '../../../lib/v2/route-color';
 
 /* ── 역 카드용 정류소 참조 — 서버(page.tsx)가 anchors.json + 노선 데이터로 조립해 넘긴다. 작도 데이터(night-bus-data.ts)는 무수정.
@@ -455,8 +455,10 @@ function StationCard({ station, sel, toggle, setStation, setFrom, setTo, jFrom, 
                     <span className={styles.obCardStopDir}>{towards[no]?.[dir] ?? ''} 방면</span>
                     <span className={styles.obCardStopName}><b>{arsId}</b> {name}</span>
                     <span className={styles.obCardStopLinks}>
-                      <a href={kakaoMapLink(name, lat, lon)} target="_blank" rel="noopener noreferrer">카카오맵</a>
-                      <a href={naverMapLink(name, arsId)} target="_blank" rel="noopener noreferrer">네이버지도</a>
+                      <a className="v2-touch-only" href={kakaoMapAppLink(name, arsId)}>카카오맵</a>
+                      <a className="v2-touch-only" href={naverMapLink(name, arsId)}>네이버지도</a>
+                      <a className="v2-pointer-only" href={kakaoMapLink(name, lat, lon)} target="_blank" rel="noopener noreferrer">카카오맵</a>
+                      <a className="v2-pointer-only" href={naverMapLink(name, arsId)} target="_blank" rel="noopener noreferrer">네이버지도</a>
                     </span>
                   </span>
                 </li>

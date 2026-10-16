@@ -40,3 +40,7 @@ html { scroll-padding-top: 72px; }
 
 /* 한국어 줄바꿈 — 어절 단위(keep-all) · 칸을 넘칠 때만 글자 단위(anywhere). iPhone 실기기 피드백 "노/선과" (2026-10-16) */
 :lang(ko) { word-break: keep-all; overflow-wrap: anywhere; }
+
+/* 지도 링크 기기 분기 — 터치 기기(폰·태블릿)는 앱으로 바로 넘어가는 링크(같은 탭 · 빈 창 없음), 마우스 기기는 핀이 찍히는 웹 지도(새 탭). iPhone 피드백 (2026-10-16) */
+@media not all and (hover: none) and (pointer: coarse) { .v2-touch-only { display: none !important; } }
+@media (hover: none) and (pointer: coarse) { .v2-pointer-only { display: none !important; } }

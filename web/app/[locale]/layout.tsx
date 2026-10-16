@@ -16,6 +16,8 @@ export function generateStaticParams() {
 export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL(SITE_URL),
+    // iPhone 이 "구산동 방면"·정류소 번호를 주소·전화번호로 자동 인식해 점선 밑줄 + 구글 지도 링크를 거는 것을 끈다 (포그린 피드백 10-16)
+    formatDetection: { telephone: false, address: false, email: false },
     verification: {
       google: 'XVe25p6uT1qMSLHgXPUlsGdXvp3vOZYbzJWVdebe2IE',
       other: { 'naver-site-verification': 'e76930efabe656cabb6d52a1245c8cf96b150e53' },

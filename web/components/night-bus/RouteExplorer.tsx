@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { kakaoMapLink, naverMapLink } from '../../lib/v2/map-links';
+import { kakaoMapAppLink, kakaoMapLink, naverMapLink } from '../../lib/v2/map-links';
 import { onColor } from '../../lib/v2/route-color';
 import styles from './RouteExplorer.module.css';
 
@@ -65,7 +65,7 @@ export function RouteExplorer({ no, color, colors, dirs, map, labels, hubBase }:
             <span className={styles.ars}>{s.arsId}</span>
             <span className={styles.name}>
               <button type="button" className={styles.nameBtn} aria-expanded={open} onClick={() => setOpenStop(open ? null : key)}>{s.name}{s.turn ? <em className={styles.turnTag}>{labels.turnaround}</em> : null}</button>
-              {open ? <span className={styles.links} aria-label={labels.mapAria}><a href={kakaoMapLink(s.name, s.lat, s.lon)} target="_blank" rel="noopener noreferrer">{labels.kakao}</a><a href={naverMapLink(s.name, s.arsId)} target="_blank" rel="noopener noreferrer">{labels.naver}</a></span> : null}
+              {open ? <span className={styles.links} aria-label={labels.mapAria}><a className="v2-touch-only" href={kakaoMapAppLink(s.name, s.arsId)}>{labels.kakao}</a><a className="v2-touch-only" href={naverMapLink(s.name, s.arsId)}>{labels.naver}</a><a className="v2-pointer-only" href={kakaoMapLink(s.name, s.lat, s.lon)} target="_blank" rel="noopener noreferrer">{labels.kakao}</a><a className="v2-pointer-only" href={naverMapLink(s.name, s.arsId)} target="_blank" rel="noopener noreferrer">{labels.naver}</a></span> : null}
               {s.others.length ? <span className={styles.chips}><span className={styles.meets}>{labels.meets}</span>{s.others.map(chip)}{s.hubSlug ? <a className={styles.hub} href={`${hubBase}/${s.hubSlug}`}>{s.hubName} · {labels.hubLink}</a> : null}</span> : null}
             </span>
           </li>

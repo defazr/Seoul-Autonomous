@@ -169,6 +169,184 @@ V8 배포      deploy-safety 계약(rollback 태그 → immutable 빌드 → can
 
 §6 체크리스트는 이 §12 의 V0~V8 로 대체한다 (A·D2·E·F 산출물은 V4 에서 재사용).
 
+### 12.1 체크리스트 (진행 상태는 이 표만 갱신)
+
+```
+[x] V0 준비        시안 template.html · R2 §4.1~4.2 · §12 읽기 (2026-10-15 새 세션)
+[x] V1 디자인 시스템 v2  web/styles/v2/tokens.css · base.css · legacy-bridge.css(전환기 전용) · lib/v2/fonts.ts(Gothic A1 800/900 · IBM Plex Sans KR 400/500/600 · Geist Mono · Pretendard 로컬 폴백) · lib/v2/route-color.ts(표시색·휘도 글자색)
+                  components/v2/shell(Header·NavLinks·LangToggle·MobileMenu·Footer) · components/v2/ui(Section·PageHero·Card·RouteChip·Button·Pill·SourceBlock·ReportLine) · components/v2/night(useNightStatus·StatusLine)
+[x] V2 루트 셸     app/layout.tsx(v2 스타일 3종만 import · 옛 globals.css 미참조) · app/[locale]/layout.tsx(Header → main.v2-main → Footer · GA·AdSense 스크립트 유지) · messages shell(ko/en)
+[x] V3 홈 v2       app/[locale]/page.tsx · components/v2/home(SearchContext·HeroMap·AskCard·ResultStage·HubCardActions·home.module.css) · lib/night-bus/client-model.ts·client-doc.ts · app/api/night-bus/client(force-static) · messages nightHome(ko/en)
+                  → 로컬 127.0.0.1:3123 · 캡처 36~44 · 포그린 피드백 대기 (여기서 멈춤)
+[x] V4 재조판      (2026-10-16) 전 페이지 프레임 → PageHero·Section·Crumbs · 옛 토큰 이름 → v2 이름 전면 치환 · components/v2/transit(노선·로보택시·묶음 카드·검색·필터) · lib/transit-items.ts · MapLinks(카카오맵·네이버지도 텍스트 링크)
+                  옛 components/common·ui·home·layout · app/globals.css · legacy-bridge.css · design-preview · lib/fonts.ts · lib/design · routes/SearchBar 삭제 · 기록 §12.4 · 포그린 육안 승인 대기
+[x] V4 피드백      (2026-10-16 아침) 포그린 2건 — 히어로 헤드라인 가독성 → 질문 카드와 같은 유리 패널 · 허브 지도 팝업 글자색 → 기록 §12.5 · 캡처 25~32 · "나머지는 CC 추천대로" → V5 진행
+[x] V5 노선도      (2026-10-16) /ko/night-bus-map 을 v2 액자(어두운 틀 안의 밝은 종이 지도)로 · 역 카드에 정류소 번호·방면 + 카카오맵·네이버지도 텍스트 링크(anchors.json 파생 · 작도 데이터 무수정) · 경로 바의 카카오 노란 버튼 제거 · 허브 16 카드(내부 허브 페이지 + 지도 링크) · 노선 카드 → 노선 상세 링크 · N노선 타임라인 정류장명 탭 → 지도 링크 · NightBusMap 옛 lint 오류 5 → 0 · 기록 §12.6
+[x] V6 신뢰층      (2026-10-16) 소개(운영자·목적·방법·이력·제보) · 데이터 출처(필드별 9행 출처·라이선스·기준일) · 업데이트 글 「올빼미버스 중심으로 다시 만들었습니다」(ko/en) · 노선·허브 제보 mailto(제목 자동) · 자율주행 상세 노란 경고 줄 → 근거 줄 · 기록 §12.7
+[x] V7 검증        (2026-10-16) standalone 빌드 11 · sitemap 79 URL × 데스크톱·모바일 158 검사: 콘솔 오류 0 · overflow 0 · 하이드레이션 0 · h1 1 · 푸터 1(예외 /ko/stops/01009 = 로컬 도착 API 키 없음 → 503 폴링 · 기존) · 내부 href 81 전부 200 · 깨진 링크 0 · 리다이렉트 0 · canonical 불일치 0 · robots/ads/sitemap 200 · 404 응답 정상 · 저장소 eslint 오류 0 · 홈 messages 축소 · Codex BLOCK 0 · FIX 2 반영 · 기록 §12.8
+[ ] V8 배포        ⛔ 포그린 지시(10-16): 배포 전 반드시 정지 — 포그린이 에이전트·404·리다이렉트 등 AdSense 사전 점검을 전부 돌린 뒤 승인. 커밋·푸시도 승인 대기 · (10-16 12:48) 재빌드 17 로 3123 교체 · 소개·푸터 확인 완료 → 커밋 완료: 코드 `73b0fa0` + docs(§12.11) → 푸시·배포 승인 대기
+```
+
+### 12.2 V1~V3 기록 (2026-10-15)
+
+```
+구조     옛 뼈대는 한 줄도 고치지 않았다. 새 토큰 이름(--bg·--fg·--accent·--nb-*)으로 백지에서 만들고, 아직 재조판 전인 옛 페이지는 styles/v2/legacy-bridge.css 가
+         옛 변수 이름(--color-*·--radius-xl 등)을 v2 값으로 이어 주며 옛 페이지가 본문 안에 넣는 옛 푸터(.v2-main footer)를 숨긴다. V4 끝에 bridge·옛 부품을 함께 삭제
+헤더     브랜드 + 태그라인 "서울 심야 이동 안내"(§1 채택) · 데스크톱 내비 5(노선도·자율주행 노선·이용 방법·FAQ·업데이트) · KO/EN · 모바일 시트 메뉴(안내·심야버스·사이트 3묶음 + 언어)
+푸터     링크 3묶음 + 근거 줄(정류장 2026-09-02 · 운행표 2026-03-20 · 자율주행 확인일 · 노선도 자체 제작 — 값은 SSoT _meta 에서) + 제보 메일. 어느 페이지든 출처·제보 1클릭
+홈       시안 v2.3 그대로: 상태줄(운행표 기준 n/14 · 기준 HH:MM KST · 기기 시각만) → 질문 카드(추천 목록 8·초성·허브 우선 · 「내 위치」는 탭 시에만 권한 요청 → 기기 내 최근접 정류장)
+         → 결과 무대(버스 SVG 가 노선색·번호를 입고 들어옴 · 걷기/탑승/환승/하차 단계 · 노출 노선·허브 페이지 링크) → 많이 찾는 노선 5·허브 3 → 허브 보드 16(「여기서 출발」· 노출 3곳만 페이지 링크)
+         → 노선 갤러리 14(노출 5 → 노선 페이지 · 나머지 → 노선도) → 막차 3가지 → A21(routes.json 값·확인일) → 근거(SourceBlock) + 제보
+히어로   포그린 노선도(night-bus-data.ts) 무보정 SVG 2벌(데스크톱 meet 우측 정렬 · 모바일 slice) · 운행 시간대 노선만 lit(.96) 나머지 dim(.14) · SSR·운행 전은 soft(.7) · 허브 라벨 15(종로5가·광장시장은 작도에 역이 없어 라벨 없음)
+탐색     core.mjs 를 그대로 클라이언트에서 사용 (서버 페이지와 같은 계산원). 데이터 = /api/night-bus/client (빌드 시 정적 · 131KB/≈37KB gz · 가상 정류소 포함 · 좌표 5자리) 를 유휴 시점 또는 첫 상호작용에 1회 fetch
+결정     ① 결과 무대는 검색 후에만 (시안의 기본 예시 대신 예시 칩 3개 = 엔진 스모크로 검증한 쌍) ② 검토용 고정 시각 ?at=HH:MM (UI 없음 · 상태줄에 "고정 시각" 표시) ③ EN 홈 = 같은 구조 · 정류장명 한국어 그대로 · 허브 nameEn · 노선·허브 페이지 링크는 ko 로
+         ④ 모바일 메뉴는 body 포털 (헤더 backdrop-filter 가 fixed 기준 상자가 되어 시트가 잘리던 문제) ⑤ 혼합 한글 줄(배차·정류소 수)은 본문 글꼴 + tabular-nums, 모노는 번호·시각만
+QA       next build OK(85 static · 경고 0) · standalone 127.0.0.1:3123 · 데스크톱 1440/모바일 390: 콘솔 오류 0 · overflow 0 · 하이드레이션 경고 0 · 글꼴 3종 로드 확인
+         엔진 스모크 8건(직통 6·환승 2·초성 1 포함) · 내 위치 테스트(홍대 좌표 → 동교동삼거리 14061 · 약 40m → N75 강남역 직통) · 모바일 메뉴 열림 · 옛 페이지(FAQ·N61) 새 셸 아래 푸터 1개
+         캡처 ~/Desktop/seoul-shots/2026-10-15-site-analysis/36~44 (v2-home now/night/search/menu/en · legacy n61)
+후속     홈 HTML 264KB — NextIntlClientProvider 에 messages 전체가 직렬화됨(옛 클라이언트 부품이 common·routes·status·stopDetail 을 써서 지금은 제한 불가 → V4 후 shell·nightHome 만 전달) · 허브 16 중 13 은 페이지 없음(「여기서 출발」만) · 공항 심야 N6xxx 는 official 없어 홈 제외
+Codex    read-only 감사 → §12.3
+```
+
+### 12.3 Codex 감사 (V1~V3 · 2026-10-15) — 정본 docs/worklogs/R3A-V2-SHELL-CODEX-REVIEW-20261015.md
+
+```
+BLOCK 2  ① 같은 허브의 다른 별칭(종로2가 ↔ 종각)을 출발·도착으로 넣으면 허위 경로 → 반영: plan() 이 허브 동일성·방문 집합 동일성까지 "같은 곳"으로 판정
+         ② 모바일 메뉴 dialog 에 초기 포커스·포커스 트랩·닫은 뒤 트리거 복원 없음 → 반영: 열리면 닫기 버튼으로 포커스 · Tab 순환 · 닫히면 메뉴 버튼으로 복원
+FIX 반영  콤보박스 aria-activedescendant + option id · 추천 선택 onClick(onMouseDown 은 blur 방지만) · 위치 성공 후 데이터 실패를 "권한 거절" 로 오안내하던 분기 수정
+         StatusLine 의 aria-live 제거(30초마다 낭독 방지) · 영어 허브명(Gangnam…) 으로도 허브 추천 · 클라이언트 문서 런타임 형태 검사(isClientDoc) · 미사용 키 3개 삭제(ask.swap·ask.clear·steps.alightTitle)
+FIX 이월  타이머 합치기(허브 16 + 상태줄 + 지도 + 캡션 각자 30초) · 히어로 SVG 2벌 → 1벌 · 클라이언트 provider 에 messages 전체 직렬화(옛 클라이언트 부품이 common·routes·status·stopDetail 사용 → V4 후 제한)
+         `.v2-main footer` 전역 선택자(현재 숨기는 건 SiteFooter 뿐 · V4 끝에 bridge 삭제) · HUB_NODE 중복(HubSchematic.tsx 는 V4 재조판 때 lib 판으로 교체) · core.mjs 반환 타입 단언(V4 에서 core 타입 선언 파일 추가 검토)
+검증된 사실  금지 데이터 3종(night-bus-data.ts · routes.json · night-bus-routes.json) 무수정 · 신규 클라이언트 네트워크 호출은 내부 정적 /api/night-bus/client 1곳 · ko/en 키 집합 동일 · ICU 오류 0 · useNightStatus 하이드레이션 경로 안전
+전체 lint   저장소 전체 eslint 는 기존 NightBusMap.tsx 오류로 실패(이번 라운드 이전부터 · V5 에서 다룸) — 신규 범위는 0
+```
+
+### 12.4 V4 재조판 기록 (2026-10-16)
+
+```
+틀       모든 페이지 = PageHero(경로 표시 Crumbs · eyebrow · h1 · lead · 보조 정보) → Section(또는 v2-wrap.v2-body) → 셸 푸터. 옛 PageContainer·PageTopBar·SiteFooter 호출 0
+부품     components/v2/transit: RouteCard(자율주행 고정 노선 · A코드 배지) · RobotaxiCard(26-C2O 불변식 그대로 이식) · GroupCard(새벽·심야 묶음) · Controls(SearchBar·SegmentedControl)
+         components/v2/ui: Crumbs(next-intl Link · 마지막 항목 aria-current) · MapLinks(카카오맵 /link/map/이름,위도,경도 · 네이버지도 이름 검색 · 새 탭 noopener · 로고 없음) · Section width="text"(긴 글 720px) · PageHero crumbs 슬롯
+         lib/transit-items.ts(노선·로보택시 화면 투영 — /routes 와 /routes/late-night 공용) · lib/v2/map-links.ts
+페이지   routes(목록·새벽·심야) · routes/[id] · stops/[slug](정류소 번호 옆 지도 링크 2개) · night-bus/[no] · hubs/[slug](승강장 카드마다 좌표 지도 링크) · how-to-ride · faq · about · data-source · updates(목록·상세 2분기) · privacy · terms · night-bus-map(틀만 · NightBusMap 내부 무수정) · night-bus-fare · after-last-train · EN night-bus guide
+토큰     옛 이름(--color-* · --font-sans/kr) 참조 0. 정당한 세부 척도(--radius-xs~2xl · --shadow-sm/md/lg/glow · --space-screen/card/section-gap · --accent-hi/lo/glow · --info)는 tokens.css 로 편입
+삭제     components/common·ui·home·layout · app/globals.css · styles/v2/legacy-bridge.css · app/design-preview · lib/fonts.ts · lib/design/tokens.ts · components/routes/SearchBar.* · 옛 홈 page.module.css · early/late page.module.css · privacy/terms page.module.css(미사용)
+         각 page.module.css 의 죽은 클래스(topBar·backBtn·heading 등 옛 프레임 잔재) 제거 — 사용 클래스 누락 0 확인 · messages 에서 옛 네임스페이스(globalHeader·siteFooter·home·common) 제거
+내부 링크 Crumbs(홈 › 노선 › …) · 노선 목록 하단 올빼미버스 배너(노선도 + 홈 경로 찾기) · A21 상세 → 동대문역 허브 · 허브 ↔ N노선 ↔ 홈 · EN 홈의 N노선·허브 칩은 locale="ko" 로 ko 페이지에 연결(Codex BLOCK 반영)
+Codex    정본 docs/worklogs/R3A-V4-REFRAME-CODEX-REVIEW-20261016.md — BLOCK 1(EN 홈 노선 칩 404) 반영 · FIX 3(검은 경계선 → --line · 옛 네임스페이스 정리 · 죽은 CSS 제거) 반영 · NOTE(formatDate 중복 · 단언)는 이월
+         검증된 사실: 금지 데이터 3종 무수정 · metadata·canonical·OG·JSON-LD 의미 변경 없음 · 삭제 모듈 참조 0 · h1 중복 0 · 지도 링크 보안 속성 OK
+QA       next build OK(정적 84) · sitemap 77 URL × 데스크톱·모바일 전수: 콘솔 오류 0 · overflow 0 · 하이드레이션 경고 0 · h1 1 · 푸터 1 (예외: /ko/stops/01009 는 로컬에 도착 API 키가 없어 503 → 재시도 폴링으로 networkidle 미도달 — 'load' 기준으로는 정상 · 배포 환경에서는 키 있음)
+         허브 페이지 경고 1건 = OpenFreeMap 스타일 wood-pattern 이미지 누락(이전부터 · 지도 라이브러리 측)
+남은 것   V5 노선도 페이지 액자(역 카드에 정류소 번호·방면) · V6 신뢰층 · V7 전수 캡처 회귀(캡처는 scripts/qa-v2-shots.mjs · 전수 검사는 scratchpad qa-all.mjs 를 repo 로 옮길 것) · 홈 messages 축소(이제 옛 클라이언트 부품이 없어 가능)
+```
+
+### 12.5 V4 포그린 피드백 반영 (2026-10-16 아침)
+
+```
+피드백   ① 히어로 헤드라인("밤 11시, 서울은 …")이 노선 위에 맨글자로 얹혀 가독성 저하 → "다른 방법 강구"  ② 허브 실제 지도의 정류소 팝업(이름 · ARS)이 흰 바탕에 흰 글씨 → "글씨 안보임"  ③ 나머지는 CC 추천대로
+처리     ① components/v2/home/home.module.css — .heroSide 를 질문 카드와 같은 유리 패널(var(--bg-glass) · blur 14px · --line-2 테두리 · --radius-l · --shadow-card)로 바꾸고 위에 시안색 짧은 눈썹 줄, 텍스트 그림자 제거, .hero::after 에 패널 뒤 radial 안개 한 겹 추가. 모바일(≤860px)은 전폭 패널
+         ② components/night-bus/HubMap.module.css — .map :global(.maplibregl-popup-content) 바탕 #F3F5FA · 글자 #0B0F1A(마커 알약과 같은 체계) · 꼬리색 8방향. 원인은 MapLibre 기본 흰 팝업이 본문 글자색(--fg)을 상속한 것. HubMap.tsx 무수정
+         ③ scripts/qa-v2-shots.mjs 에 popup 옵션(마커 button.maplibregl-marker 클릭 + 지도 영역 -map.jpg 캡처)
+검증     next build OK(빌드 8 · 정적 84) · standalone 127.0.0.1:3123 재기동(PID 교체 · 좀비 0) · 캡처 25~32(홈 낮·밤(?at=00:30)·EN · 허브 팝업 데스크톱·모바일): 콘솔 오류 0 · overflow 0 · 허브 경고 1 = 기존 wood-pattern
+         반복 확인은 next dev(3124 · .next/dev 분리 출력)로 하고 끝에 종료 — 최종 판정은 standalone 만
+세션     컨텍스트 요약(compaction) 직후라 여유 있음 → 같은 세션에서 V5 진행 권고. 클리어 시 첫 문구는 SESSION-HANDOFF 머리에 적어 둠
+```
+
+### 12.6 V5 노선도 액자 기록 (2026-10-16)
+
+```
+액자     app/[locale]/night-bus-map/page.tsx 의 .frame(bg-2 · line-2 · radius-l · shadow-card) 안에 NightBusMap. 틀 머리 = 눈썹(자체 제작) · 안내 문장 · 기준일(카카오맵 2026-06-08 · 정류소 서울시 {snapshot}) · 역 위치 권역 표시
+         night-bus-map.module.css 의 틀(chrome)만 v2 토큰으로: 검색 입력(bg-3 · line-2 · accent 포커스) · 버튼(ghost/primary=accent · 브랜드색 0) · 범례(어두운 행 · 노선 칩 링 흰색) · 경로 바(bg-3) · 종이 지도(.obStage #f7f4ec)는 그대로
+역 카드   NightBusMap props stationStops(노드 → [노선, 방면키, ARS, 이름, 위도, 경도] 튜플 · 112 노드 453건 ≈ 34KB) · towards(노선별 방면 이름) · routePaths(등록부 5 + A21). 카드 = 지나는 노선 칩 → 정류소 번호·방면(기본 펼침 · 데스크톱 236px 스크롤) → 카카오맵(좌표)·네이버지도(이름) 링크 → 노선 상세 링크 → 권역 표시 안내. 모바일은 position: relative(닫기 × 가 카드 안에)
+         데이터는 page.tsx(서버)가 anchors.json + night-bus-routes.json 에서 조립 · night-bus-data.ts(작도)·NightBusMap 탐색 로직 무수정
+금지선 5  경로 바의 카카오맵(#FEE500)·네이버(#03C75A) 버튼 → .obMapLinks 텍스트 링크(accent 테두리). 범례 버스 아이콘 색도 토큰으로
+내부 링크  허브 섹션 = HUBS 16 카드(이름 · 노선 · 허브 페이지 →(3곳) · MapLinks) · 노선 카드마다 "노선 상세 — 전체 정류장·정류소 번호·첫차 막차 →"(등록부 5 + 심야A21 → /routes/simya-a21)
+N노선     components/night-bus/RouteExplorer: 정류장 이름 = button(aria-expanded) → 카카오맵(좌표)·네이버지도 링크 펼침 · 안내 문장 nightBus.stopTap(ko/en)
+lint     NightBusMap.tsx 옛 오류 5 → 0: useTouchZoom ref 쓰기 → useEffect 안으로(react-hooks/refs) · SearchBox 선택 동기화 → 렌더 중 파생 상태 패턴 · 경로 리셋 effect → setter 쪽 resetJourneyUi · 미사용 MIN_ZOOM/isDirectMulti 제거. 남은 경고 4(exhaustive-deps · 동작 영향 있어 보류)
+QA       tsc OK · next build 9 OK · 캡처(노선도 낮·역 카드 데스크톱/모바일·전체화면·허브/노선 섹션·N61 정류장 탭): 콘솔 오류 0 · overflow 0. qa-v2-shots.mjs 옵션 추가: station · fs · stoptap
+```
+
+### 12.7 V6 신뢰층 기록 (2026-10-16)
+
+```
+소개     /about (ko/en · messages about 전면 교체): 누가(운영자 한 사람 · 독립 · 소속·제휴 없음 · 연락) → 왜(밤 11시 이후 "지금 어디서 무엇을" · 대상 · 실시간 앱 아님) → 어떻게(필드 6줄 · 날짜는 NIGHT_META·getLatestVerifiedDate 주입) → 갱신과 이력(/updates) → 오류 제보(mailto 제목 자동)
+         운영자 이름·사진은 넣지 않았다(포그린 결정 사항 — §CC 이견)
+출처     /data-source (ko/en · messages dataSource 전면 교체): 필드별 9행 dl(항목 · 출처(링크) · 라이선스·사용 방식 · 기준일) — 정류소(OA-1095 · 공공누리 1유형 · {snapshot}) · 운행표(서울시 공지 · 4유형 페이지 · 사실 수치만 · {revisedOn}) · 노선도(자체 작도 · ⓒ) · 허브 16(자체 선정 규칙) · 자율주행(카카오맵 표시 정보 수동 확인 · 최근 확인일) · 영문명(다국어 목록 · 2025-03-14) · 요금(서울시 · 2026-03-20) · 지도 타일(OpenFreeMap·OpenMapTiles·OSM ODbL) · 도착 정보(공개 API · 조회 시각)
+         lib/night-bus/data.ts 의 NIGHT_META 타입에 url·dataset·title·publisher 추가(JSON 무수정)
+업데이트  data/updates/site-rebirth-night-bus-first.ts (articleSections · ko/en · date 2026-10-16 — V8 컷오버일로 맞출 것) · updates/[slug] 는 게시일=발생일=자료일이면 날짜 1개만 · 목록 설명 심야 중심으로
+제보     night-bus/[no] · hubs/[slug] 의 제보 줄 → mailto:CONTACT_MAIL?subject=[제보] {노선|허브} · 푸터 제보 줄 유지 → 모든 페이지에서 1클릭
+근거 줄   routes/[id] 의 노란 "카카오맵 기반 정보입니다" → fg-2 "근거: 카카오맵에 표시된 서울특별시 제공 노선 정보를 수동으로 확인한 값입니다…"(ko/en) · metadata about/dataSource 설명 심야 중심
+QA       tsc OK · eslint 신규 범위 0 · dev 캡처(소개·출처·업데이트 목록·재탄생 글·EN 출처·청계A01): 콘솔 오류 0 · overflow 0
+미반영    §2 G 의 "왜 이 결과인지" 설명 블록(홈 결과 무대) — V7 성능 항목과 함께 이월
+```
+
+### 12.8 V7 검증 기록 (2026-10-16)
+
+```
+빌드     next build 10 → Codex FIX 반영 후 11 (정적 84 · 콘솔 경고 없음) · standalone 127.0.0.1:3123 재기동(좀비 0 · dev 3124 종료)
+성능     app/[locale]/layout.tsx 의 NextIntlClientProvider messages={{}} (next-intl 4 는 undefined 일 때만 request config 전체 상속 — Codex 가 소스로 확인) · 클라이언트 부품이 있는 페이지만 lib/v2/client-messages.ts 로 자기 네임스페이스 provider: 홈 nightHome · /routes RoutesList routes · /stops/[slug] ArrivalCard stopDetail
+         효과: 비홈 페이지 HTML 에서 ko.json 38KB·en.json 33KB 직렬화 제거(예: /ko/faq 에 홈 문구 0건) · 홈 264KB → 237KB · 노선도 252KB(역 카드 데이터 34KB 포함)
+전수 회귀  scripts/qa-v2-all.mjs: sitemap 79 URL(재탄생 글 ko/en 추가로 77→79) × 데스크톱·모바일 = 158 검사 → bad 2 = /ko/stops/01009 데스크톱·모바일(로컬 도착 API 키 없음 → 503 재시도 폴링 → goto 45s 타임아웃 · 페이지 자체는 h1 1·푸터 1 정상 · V4 와 동일 · 배포 환경은 키 있음). 그 외 콘솔 오류 0 · overflow 0 · 하이드레이션 경고 0 · h1 1 · 푸터 1
+링크·메타  scripts/qa-links.mjs(신규 · AdSense 사전 점검 입력): 79 페이지 전부 200 · 내부 href 81 전부 200 · 깨진 링크 0 · 리다이렉트 링크 0 · canonical 누락 0·불일치 0 · hreflang 없음 13 = ko 전용 페이지(N노선 5 · 허브 3 · 요금·막차 가이드 · 노선도 ko · 노선도 공개 글 등 — 설계대로 self-canonical) · /robots.txt·/ads.txt·/sitemap.xml 200 · / → 307 /en(기본 로케일) · 없는 경로 404
+lint     저장소 전체 eslint 오류 0 · 경고는 public/vendor(maplibre 워커 · 이제 무시 목록) 와 옛 미사용 ChevronLeft/Section 정리 후 NightBusMap 경고 0
+Codex    정본 docs/worklogs/R3A-V5V6-CODEX-REVIEW-20261016.md — BLOCK 0 · FIX 2 반영: ① useTouchZoom ref 갱신 useEffect → useLayoutEffect(연속 터치 이벤트 앞 flush 보장) ② Hook 의존성 경고 4 정리(allDirectRoutes useMemo · 불필요 sel/isMobile 제거 · setVb/stageRef 명시) · NOTE: 금지 데이터 3종 무수정 · 브랜드색 0 · 외부 API 직접 호출 0 · 역 카드 112 노드 누락 0 중복 0 · ko/en 키 동일 104 · ICU 오류 0
+캡처     ~/Desktop/seoul-shots/2026-10-16-v2-shell/33~48 (V5 노선도·역 카드·전체화면·N61 정류장 탭 · V6 소개·출처·재탄생 글·청계A01 근거 줄)
+작업 트리  수정 73 · 삭제 51 · 신규 묶음 25(이 라운드 외 기존 미추적 파일 포함) — 커밋은 정본만 명시 stage(`git add .` 금지)
+이월     §2 G "왜 이 결과인지" 블록 · 영어 정류장명(공식 SSoT 없음) · 허브 16 중 13 페이지 없음(「여기서 출발」만) · HUB_NODE 중복 · 히어로 SVG 2벌 · 타이머 통합 · 운영자 이름·사진(포그린 결정)
+```
+
+### 12.9 배포 전 점검 (2026-10-16 · 포그린 "배포 전 점검은 CC 가" → CC 추천대로 전부 실행 · 배포 직전 정지)
+
+```
+운영자     포그린 지시 "다파라코프(사업자명)" → 소개 「누가 만드나」(ko/en) · 푸터 저작권 줄 · 개인정보처리방침·이용약관 문의처 developer 필드(ko/en) 에 반영. JSON-LD 의 Organization 명은 Seoul Autonomous(브랜드) 유지
+에이전트    read-only 감사 에이전트 3개 병렬: ① AdSense 정책·콘텐츠 가치(필수 페이지·ads.txt·얇은 페이지 5개·탐색·신뢰 신호·언어) ② 기술 SEO(title/description 중복·길이 · canonical/hreflang · OG 이미지 · JSON-LD · 제목 구조 · 이미지 alt · robots/sitemap/404 · 고아 페이지 · 크기) ③ 접근성·모바일(키보드·ARIA·대비·터치 타깃·모바일 레이아웃·reduced-motion) — 결과는 아래 「에이전트 결과」
+CC 직접    라이브 sitemap(69) ↔ 로컬(79) 대조: 라이브에만 있는 URL 0 → 배포 후 404 없음 · 신규 10(허브 3 · N노선 5 · 재탄생 글 ko/en) · robots.txt 동일 · ads.txt pub-7976139023602789 = layout 의 AdSense client
+          성능 실측(모바일 390 · 로컬): 홈 CLS 0.013 · 나머지 0 · DOM 1,277 · 요청 353(그중 글꼴 302) · 글꼴 2.5MB (Gothic A1 900 733KB · Plex 500 804KB · Plex 600 801KB · Plex 400 108KB) · JS 비압축 1.07MB(허브 2.55MB = maplibre) · HTML 은 gzip 적용(/ko 237KB → 45KB 전송)
+고침 ①     글꼴 굵기 축소(lib/v2/fonts.ts): Gothic A1 900 만 · Plex 400·600 만 (CSS 의 500·800 은 가장 가까운 굵기로 자동 매칭 · 시각 변화 미미) → 홈 글꼴 1.03MB · 120 요청 (−59%)
+고침 ②     정적 프리렌더: 모든 locale 페이지가 ƒ(요청마다 서버 렌더 · HTML 파일 0 · Cache-Control no-store) 였음(v2 이전부터). next-intl 요구대로 setRequestLocale(locale) 을 app/[locale]/layout.tsx + 페이지 20개에 추가 → 빌드 12 에서 전부 ●(SSG) · HTML 82장 · x-nextjs-prerender 1 · Cache-Control s-maxage=31536000. 페이지에 searchParams·headers·cookies 사용 0 확인
+검증 빌드   next.config.ts distDir = NEXT_DIST_DIR || '.next' 로 .next-check 에 별도 빌드(12) → 127.0.0.1:3125 에서 검증(에이전트가 쓰는 3123 은 그대로): qa-links 79 페이지·81 링크 전부 200 · 깨진 0 · canonical 0 · 404 정상 · 콘솔 오류 0(새 경고 = CSS preload 미사용 2건 · Chrome 안내성) · qa-v2-all 전수 = 아래
+에이전트 결과  (상세·처리 표시: docs/worklogs/R3A-PREDEPLOY-AGENT-AUDITS-20261016.md) ① 정책·콘텐츠: BLOCK 3 — 「준비 중」 라벨 8페이지(→ 노선도 링크로 교체·liveSoon 삭제 ✅) · 정류장 페이지 14개 얇음·근사중복(Stop URL 정책 §12 잠금: noindex 금지 → 포그린 결정 필요 ⛔) · 셸 없는 404(미해결 ⛔ 아래) / FIX 10 중 반영: 정체성 문구(홈 meta·WebSite JSON-LD·약관 §2·FAQ 올빼미 6문항·이용방법 올빼미 단계·how-to-ride meta) · 실시간 라벨·FAQ 모순 · 자율주행 요금 고지 완화 · 소개 괄호 · 노선도 설명 6건 데이터 검증 재작성 · EN 칩 (KO) 표식 · 방침 §10 링크 · 운행시간 문구 통일(첫차 23:10~00:00 · 막차 03:10~04:10) · 허브 지도 안내 현재형
+          ② 기술 SEO: BLOCK 0 · FIX 반영: 한글 글꼴 preload:false(96 preload → 0) · OG PNG 964KB → JPG 210KB + alt · privacy/updates title 접미 · EN 정류장 description 꼬리 제거 · 허브 카드 칩 title · BreadcrumbList 현지화+정류장 Routes 단계 · Article publisher/image/mainEntityOfPage · sitemap lastmod 고정일·x-default · 푸터 h4 → p · EN how-to-ride h2 / 미반영: 루트 307(미들웨어가 처리 · 의도) · hreflang alternateLinks
+          ③ 접근성: BLOCK 4 반영 — 노선도 검색 콤보박스(ArrowDown·Enter·role) 실측 통과 · 흰 역 카드 버튼 밝은 처방 · 전체화면 aria-modal·포커스 트랩·복귀 실측 통과 · 노선 칩 글자색 공용 onColor + 어두운 노선색 글자 routeTextColor(3:1) / FIX 반영: scroll-padding-top · aria-pressed(범례·카드·경로 칩) · 역 카드 닫기 이름·Esc·크기 · ServiceStatus aria-live 제거 · MapTabs 라벨·tabpanel·화살표 · select 16px · MapLibre 한국어 · 세그먼트 라벨 · FAQItem aria-expanded · LangToggle 라벨 · 장식 svg aria-hidden · reduced-motion 스크롤 · MapLinks role=group · EN 한글 lang
+전수 회귀    최종 빌드 16(127.0.0.1:3123 · 감사 수정 전부 + 루트 레이아웃 복원): qa-v2-all 79 URL × 데스크톱·모바일 = 158 검사 → bad 2 = /ko/stops/01009 뿐(로컬 도착 API 키 없음 → 503 폴링 → goto 45s 타임아웃 · h1 1·푸터 1 정상 · 기존 예외). 그 외 콘솔 오류 0 · overflow 0 · 하이드레이션 0 · h1 1 · 푸터 1 · qa-links 79 페이지·81 링크 전부 200 · 키보드 실측(빌드 15) 통과
+⛔ 미해결    404 셸: notFound() 응답이 Next 의 __next_error__ 문서(빈 body + RSC 페이로드, 클라이언트 렌더)로 나가 서버 HTML 에 헤더·푸터·lang 이 없음 — app/[locale]/not-found.tsx·[...rest] 캐치올·app/not-found.tsx(자기 html) 까지 넣어도 동일(dev 3124 실측). 다음 세션: Next 16 에서 notFound 의 SSR 문서 생성 조건 조사(글로벌 not-found 프리렌더 `/_not-found` 와 로케일 레이아웃 조합)
+⛔ 다음 세션  ① 404 셸 조사·수정 ② 포그린 결정: 정류장 페이지 14개(계약 유지 / 보강 / 임시 noindex 예외) · 자율주행 요금 재확인 · 운영자 이름 ③ 재탄생 글 date → 컷오버일 ④ 커밋(코드 1 + docs 1) → 푸시 → 배포 승인 (최종 빌드 16 전수 회귀는 완료 · 위 줄)
+심야버스 4개  포그린 질문 "4개 노선 추가": 데이터(2026-09-02 스냅샷)는 올빼미 14 + 공항 심야 4(N6000·N6002·N6701·N6703 · 운행표 출처 달라 official 없음 → 운행시간 표시 금지 규칙)뿐. 공개 검색(firecrawl 2회)에서 2026년 올빼미 신설 노선 근거 없음 — 서울시 가을 공지도 "14개 노선 · 23:10~06:00". 추가된 4개 = 공항 심야버스일 가능성. 노출하려면 공식 운행표 출처 확보 후 별도 그룹으로(R3b)
+```
+
+### 12.10 GPT 외부 검토 반영과 5차 신청 전 보강 계획 (2026-10-16 · 포그린 결정 B)
+
+```
+입력     GPT-BRIEF-20261016.md → GPT-REVIEW-20261016.md(원문). 포그린: "CC 이견 2개 동의 · A/B/C 중 B"
+즉시 반영  ① 소개·푸터 운영 주체 문구(GPT 제안): "다파라코프가 서울시 공공데이터와 공식 공지를 바탕으로 직접 검증·가공해 운영하며, 오류 제보를 확인해 수정합니다"(ko/en · 소스만 반영 · 로컬 3123 은 빌드 16 그대로 → 다음 빌드에 포함)
+         ② 기본 로케일: 바꾸지 않음 — `/` 는 이미 next-intl 미들웨어가 Accept-Language 로 보냄(실측: ko 브라우저 → /ko · en → /en · 없음 → /en). GPT 우려는 현 동작으로 충족
+순서(CC 추천) ① V8 배포(포그린 승인 · deploy-safety) → ② 배포 후 4주 관측창 동안 R3b 보강 → ③ 재배포 → ④ AdSense 5차 (GPT: 배포 직후 신청 X · 안정 배포 후 약 4주)
+R3b 보강   (큰 작업 → 설계 문서 먼저: docs/worklogs/R3B-STOP-MERGE-DESIGN-2026MMDD.md · 분석→설계→구현 분리)
+  B 정류장 통합  14 → 7(장소당 1페이지 · 양방향 섹션) — URL /{locale}/stops/{place-slug} 신설 + 옛 14 URL 301 리다이렉트(next.config redirects · 색인된 URL 보존) · sitemap 14 → 7/언어
+              페이지 = 장소 머리(이름·정류소 번호 2개·위치) → 방향 A(정류소 번호 · 이 승강장에서 타는 노선과 방면 · 이전/다음 정류장 · 카카오맵/네이버 링크) → 방향 B(동일) → 「어느 쪽에서 타나」 판단 단락(사람 문장 · 데이터로 확인 가능한 사실만) → 근처 올빼미버스 정류소(좌표 300m 이내 · 노선·정류소 번호·방면 — 심야 이동 연결 = 사이트 정체성) → 출처·기준일 → 제보
+              사람 문장 7곳×ko/en: CC 초안 → 포그린 검수(현장 사실은 포그린 확인) · routes.json 무수정(파생 층) · validate-graph 21항 PASS
+              정책: STOP-URL-POLICY-20260826.md 의 slug·"1 ARS = 1 페이지" 조항을 포그린 결정 B 로 개정(색인·sitemap 포함·noindex 0 원칙은 유지)
+  약한 페이지 4  업데이트 글 05-09 2건(본문 절반 "확인 필요") → 확인된 사실 중심으로 재작성 + 공식 출처 링크(또는 1건으로 통합) · routes/early-morning·late-night(목록만) → 묶음의 공통 성격(03:30 단일 출발·평일·회차·N버스 막차와의 접속) 2~3단락 또는 /routes 로 통합
+  자율주행 재검증  11노선 정류장·표시 시각·요금을 카카오맵/공식 안내로 재확인 → lastChecked·요금 갱신(데이터 변경 = 포그린 지시 사항 · CC 는 대조표와 수정 초안만)
+승인 후 항목  Auto ads 쓰면 404·오류·빈 화면에 광고 금지 설정 · EEA/영국/스위스 개인 맞춤 광고 시 Google 인증 CMP/TCF
+404 셸     GPT: low-value 주범 아님(404 상태·noindex 정상) → 5차 차단 요인에서 제외 · 기술 부채로 R3b 에서 조사
+```
+
+### 12.11 V8 커밋 전 재빌드·확인과 커밋 묶음 (2026-10-16)
+
+```
+재빌드     빌드 17 = BUILD_ID XTgPta3IYrcUjXah70Kaq (12:47) · 오류·경고 0 · 85/85 정적 생성 · ƒ 는 [...rest] 캐치올·/api/arrivals 뿐 · 3123 교체(PID 56202 · 옛 빌드 16 PID 54482 종료)
+확인       /ko/about · /en/about · /ko · /en 서버 HTML: 200 · x-nextjs-prerender 1 · s-maxage · 옛 BUILD_ID 참조 0
+          소개 「누가 만드나」 둘째 단락 = "다파라코프가 서울시 공공데이터와 공식 공지를 바탕으로 직접 검증·가공해 운영하며, 오류 제보를 확인해 수정합니다" / EN "Dapala Corp runs the site by checking and processing Seoul public data and official notices directly, and corrects errors reported by readers" ✅
+          푸터 소개 줄 = "다파라코프가 서울시 공공데이터와 공식 공지를 직접 검증해 만드는 서울 심야 이동 안내입니다" / EN "built by Dapala Corp from Seoul public data and official notices, checked by hand" ✅ · 저작권 "© 2026 다파라코프 · Seoul Autonomous" / "© 2026 Dapala Corp · Seoul Autonomous" ✅ · 옛 "(사업자명)" 0
+          캡처 ~/Desktop/seoul-shots/2026-10-16-v2-shell/49~52(소개 ko/en 데스크톱·모바일 전체) · 53~56(푸터 ko/en) · 콘솔 오류 0 · overflow 0
+컷오버일   재탄생 업데이트 글 date = 2026-10-16 (web/data/updates/site-rebirth-night-bus-first.ts) — 배포가 다른 날로 밀리면 날짜 수정 + 재빌드 1회
+커밋 묶음   ① 코드 1건 = git status 의 web/ 아래 전부(추적 수정·삭제 142 + 신규 50 · 다른 경로 0) ② docs 1건 = SESSION-HANDOFF.md · strategy/STOP-URL-POLICY-20260826.md(개정 예고) · 이 문서 · 신규 6(GPT-BRIEF-20261016 · GPT-REVIEW-20261016 · R3A-PREDEPLOY-AGENT-AUDITS-20261016 · R3A-V2-SHELL-CODEX-REVIEW-20261015 · R3A-V4-REFRAME-CODEX-REVIEW-20261016 · R3A-V5V6-CODEX-REVIEW-20261016)
+stage 제외  .playwright-mcp/ · route/ · round19-final-이식지시서.md · docs/handoff/HANDOFF-20260608·0729·0802·0828·0828_2 · docs/worklogs/REALTIME-TRANSIT-API-PRECHECK-20260828 · ROUND-26B-FINAL-INSTRUCTION-20260729 · ROUND-26C2E-FINAL-INSTRUCTION-20260802 (이 라운드 산출물 아님 · 미추적 보존)
+404 셸 파일  app/[locale]/not-found.* · app/[locale]/[...rest]/page.tsx · app/not-found.tsx 는 빌드 16·17 전수 회귀에 포함된 상태 그대로 커밋(서버 HTML 셸 미해결은 §12.9 ⛔ · R3b 기술 부채)
+커밋 실행   포그린 "너 추천대로 진행" 승인 → 코드 `73b0fa0`(2026-10-16 · 192 파일 = 신규 50 · 수정 90 · 삭제 52 · +4,210 −5,843) · docs = 직후 docs-only 커밋(9 파일) · 푸시·배포는 각각 승인 대기
+```
+
 ## CC 이견 및 아이디어
 
 1 GPT 의 브랜드명 교체 제안에는 반대 — 도메인 변경 없이 이름만 바꾸면 검색 결과에 두 이름이 섞여 신뢰가 떨어진다. 태그라인으로 해결.

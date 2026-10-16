@@ -184,7 +184,7 @@ V8 배포      deploy-safety 계약(rollback 태그 → immutable 빌드 → can
 [x] V5 노선도      (2026-10-16) /ko/night-bus-map 을 v2 액자(어두운 틀 안의 밝은 종이 지도)로 · 역 카드에 정류소 번호·방면 + 카카오맵·네이버지도 텍스트 링크(anchors.json 파생 · 작도 데이터 무수정) · 경로 바의 카카오 노란 버튼 제거 · 허브 16 카드(내부 허브 페이지 + 지도 링크) · 노선 카드 → 노선 상세 링크 · N노선 타임라인 정류장명 탭 → 지도 링크 · NightBusMap 옛 lint 오류 5 → 0 · 기록 §12.6
 [x] V6 신뢰층      (2026-10-16) 소개(운영자·목적·방법·이력·제보) · 데이터 출처(필드별 9행 출처·라이선스·기준일) · 업데이트 글 「올빼미버스 중심으로 다시 만들었습니다」(ko/en) · 노선·허브 제보 mailto(제목 자동) · 자율주행 상세 노란 경고 줄 → 근거 줄 · 기록 §12.7
 [x] V7 검증        (2026-10-16) standalone 빌드 11 · sitemap 79 URL × 데스크톱·모바일 158 검사: 콘솔 오류 0 · overflow 0 · 하이드레이션 0 · h1 1 · 푸터 1(예외 /ko/stops/01009 = 로컬 도착 API 키 없음 → 503 폴링 · 기존) · 내부 href 81 전부 200 · 깨진 링크 0 · 리다이렉트 0 · canonical 불일치 0 · robots/ads/sitemap 200 · 404 응답 정상 · 저장소 eslint 오류 0 · 홈 messages 축소 · Codex BLOCK 0 · FIX 2 반영 · 기록 §12.8
-[ ] V8 배포        ⛔ 포그린 지시(10-16): 배포 전 반드시 정지 — 포그린이 에이전트·404·리다이렉트 등 AdSense 사전 점검을 전부 돌린 뒤 승인. 커밋·푸시도 승인 대기 · (10-16 12:48) 재빌드 17 로 3123 교체 · 소개·푸터 확인 완료 → 커밋 완료: 코드 `73b0fa0` + docs(§12.11) → 푸시·배포 승인 대기
+[x] V8 배포        (2026-10-16 14:39:55 KST) 73b0fa0 라이브 · 중단 1.94초 · candidate·라이브 QA 전항 PASS · latest 이동만 포그린 라이브 승인 대기 · 기록 §12.12
 ```
 
 ### 12.2 V1~V3 기록 (2026-10-15)
@@ -321,7 +321,7 @@ CC 직접    라이브 sitemap(69) ↔ 로컬(79) 대조: 라이브에만 있는
 즉시 반영  ① 소개·푸터 운영 주체 문구(GPT 제안): "다파라코프가 서울시 공공데이터와 공식 공지를 바탕으로 직접 검증·가공해 운영하며, 오류 제보를 확인해 수정합니다"(ko/en · 소스만 반영 · 로컬 3123 은 빌드 16 그대로 → 다음 빌드에 포함)
          ② 기본 로케일: 바꾸지 않음 — `/` 는 이미 next-intl 미들웨어가 Accept-Language 로 보냄(실측: ko 브라우저 → /ko · en → /en · 없음 → /en). GPT 우려는 현 동작으로 충족
 순서(CC 추천) ① V8 배포(포그린 승인 · deploy-safety) → ② 배포 후 4주 관측창 동안 R3b 보강 → ③ 재배포 → ④ AdSense 5차 (GPT: 배포 직후 신청 X · 안정 배포 후 약 4주)
-R3b 보강   (큰 작업 → 설계 문서 먼저: docs/worklogs/R3B-STOP-MERGE-DESIGN-2026MMDD.md · 분석→설계→구현 분리)
+R3b 보강   (큰 작업 → 설계 문서 먼저: docs/worklogs/R3B-STOP-MERGE-DESIGN-20261016.md ✅ 작성(2026-10-16 · DRAFT · 결정 요청 D1~D7) · 분석→설계→구현 분리) ⚠ 아래 "14 → 7" 은 오기 — 승인 7 ARS = 방향쌍 3 + 단독 1 = 장소 4 → URL 14 → 8 (설계 문서 §1.1)
   B 정류장 통합  14 → 7(장소당 1페이지 · 양방향 섹션) — URL /{locale}/stops/{place-slug} 신설 + 옛 14 URL 301 리다이렉트(next.config redirects · 색인된 URL 보존) · sitemap 14 → 7/언어
               페이지 = 장소 머리(이름·정류소 번호 2개·위치) → 방향 A(정류소 번호 · 이 승강장에서 타는 노선과 방면 · 이전/다음 정류장 · 카카오맵/네이버 링크) → 방향 B(동일) → 「어느 쪽에서 타나」 판단 단락(사람 문장 · 데이터로 확인 가능한 사실만) → 근처 올빼미버스 정류소(좌표 300m 이내 · 노선·정류소 번호·방면 — 심야 이동 연결 = 사이트 정체성) → 출처·기준일 → 제보
               사람 문장 7곳×ko/en: CC 초안 → 포그린 검수(현장 사실은 포그린 확인) · routes.json 무수정(파생 층) · validate-graph 21항 PASS
@@ -345,6 +345,38 @@ R3b 보강   (큰 작업 → 설계 문서 먼저: docs/worklogs/R3B-STOP-MERGE-
 stage 제외  .playwright-mcp/ · route/ · round19-final-이식지시서.md · docs/handoff/HANDOFF-20260608·0729·0802·0828·0828_2 · docs/worklogs/REALTIME-TRANSIT-API-PRECHECK-20260828 · ROUND-26B-FINAL-INSTRUCTION-20260729 · ROUND-26C2E-FINAL-INSTRUCTION-20260802 (이 라운드 산출물 아님 · 미추적 보존)
 404 셸 파일  app/[locale]/not-found.* · app/[locale]/[...rest]/page.tsx · app/not-found.tsx 는 빌드 16·17 전수 회귀에 포함된 상태 그대로 커밋(서버 HTML 셸 미해결은 §12.9 ⛔ · R3b 기술 부채)
 커밋 실행   포그린 "너 추천대로 진행" 승인 → 코드 `73b0fa0`(2026-10-16 · 192 파일 = 신규 50 · 수정 90 · 삭제 52 · +4,210 −5,843) · docs = 직후 docs-only 커밋(9 파일) · 푸시·배포는 각각 승인 대기
+```
+
+### 12.12 V8 배포 기록 (2026-10-16 · 포그린 "추천대로 가자")
+
+```
+푸시       1cc6d9e..43b14de → origin/main (local == origin · 0/0)
+Phase 0    서버 실행 b10c7d3(d55dbf7d9afd) · checkout b10c7d3 · 작업 트리 = untracked Dockerfile 1건만 · Dockerfile SHA pin 01429bd8… 일치 · 디스크 여유 37G · secret 700/600 · Caddyfile(컨테이너 안) 7719a106f154… · 타 컨테이너 19개 재시작 0
+rollback   rollback-b10c7d3 = d55dbf7d9afd (MATCH=PASS) · latest 미이동
+build      checkout 73b0fa08757b… · --label revision=73b0fa08757b… -t seoul-autonomous-web:73b0fa0 → sha256:51f33d1f9c77… · 85/85 정적 생성 · 이미지 env 에 secret 0 · Dockerfile pin 3회 일치(Phase 0 · checkout 후 · build 후)
+candidate  외부 트래픽 0 · 컨테이너 안 qa-links: 79 페이지 200 · 내부 href 81 · 깨진 0 · 리다이렉트 0 · canonical 0 · robots/ads/sitemap 200 · 404 정상 / 옛 라이브 69 URL 전부 200 / /api/arrivals 01009 · 22011(강남역 허브) 200(운행종료 = 주간 정상) · 99999 404 / 비밀 노출 0 / 소개 운영 주체 문구 / 서울시 API 호출 2회(budget 2/300) / 운영 컨테이너 무접촉
+cutover    14:39:55 KST · HEALTH=PASS · 중단 1.94초(Caddy 경유 probe 4회 · 실패 시 자동 원복 스크립트) · backup = seoul_autonomous_web_backup_b10c7d3_20261016-143955 · revision 73b0fa0 · restart unless-stopped · candidate 제거
+사후       Caddyfile 해시 불변 · 타 컨테이너 19개 재시작 0 · 같은 Caddy 의 다른 도메인 응답 정상 (opinet-proxy.fazr.co.kr 루트 404 = 정상 — API 전용 프록시라 /api/xxx.do 경로만 응답 · 포그린이 fuel.fazr 운영 쪽 확인 전달 10-16)
+라이브 QA  qa-links https://seoulautonomous.com: 79 페이지 200 · 내부 href 81 · 깨진 0 · 리다이렉트 0 · canonical 0 / 옛 69 URL 전부 200 / / → 307 (ko 브라우저 /ko · 헤더 없음 /en) / /api/arrivals/01009 200 · 99999 404 / 정적 프리렌더 · s-maxage / 비밀 노출 0 / ads.txt pub-7976139023602789
+캡처       ~/Desktop/seoul-shots/2026-10-16-v2-shell/57~66 (홈 ko·en · 소개 · 강남역 허브 · 노선도 × 데스크톱·모바일) · GA4·AdSense 요청 차단 상태로 촬영(관측 데이터 오염 방지) · 콘솔 오류 0 · overflow 0
+남음       latest 이동 = 포그린 라이브 승인 후 · 이 기록 docs 커밋 = 승인 후 · 관측 T0 = 2026-10-16 14:39:55 KST
+```
+
+### 12.13 V8 후속 — iPhone 실기기 피드백 5건 수정 (2026-10-16 · 빌드 18~20 · 코드 커밋 `0061274` · 포그린 "추천대로 · 배포해서 확인하자" 승인)
+
+```
+입력    포그린 iPhone(Safari) 라이브 확인: ① 헤더 이상 ② 네이버지도에서 정류장 안 나옴 ③ 제목 줄바꿈 이상 + 홈 첫 화면 카드 잘림(캡처) ④ 허브 지도가 두 손가락으로만 움직임(bakwijaguk.com 처럼 한 손가락으로)
+재현    Playwright WebKit(webkit-2191 · iPhone 15 393px)로 라이브 재현 — 캡처 67~69
+1 헤더   메뉴 버튼이 브랜드 옆 → 원인: 모바일에서 .nav 를 숨겨도 ".nav + .actions { margin-left: 0 }" 이 남음 (크롬 캡처 58 에도 같은 모습 — 육안 검토 누락) → 모바일 쿼리에 margin-left:auto · 메뉴 오른쪽 끝 241 → 377px
+2 홈 카드 iPhone 에서만 오른쪽 잘림 → 원인: WebKit 은 <input> 기본 폭(≈344px)을 최소 폭으로 계산 → 출발 줄 416 → 카드 462 → 히어로 1fr 트랙 확장 (Chromium 은 input 을 작게 계산해 자동 QA 미검출) → .input · .search input = flex:1 1 0 · width:0 · min-width:0 / heroWrap · stageWrap · footTop = minmax(0,1fr) / heroLeft min-width:0 / 예시 버튼 white-space:normal / 상태 줄 wrap → 카드 462 → 361px
+3 줄바꿈  제목·본문 글자 단위("노/선과") → styles/v2/base.css :lang(ko) { word-break: keep-all; overflow-wrap: anywhere } → "서울 심야버스 / 노선과 환승 노선도"
+4 네이버  정류소 공식명 이름 검색 = 지하철역·출구가 먼저 나와 정류장 미검출 → 정류소 번호(ARS) 단독 검색 (네이버 "정류장번호 검색결과" 서울 정류장 첫 줄 4/4: 22011·01009·01020·13156 · 번호+이름 조합은 결과 0) · 노선도 역 카드 · N노선 정류장 · 허브 승강장 · 정류장 페이지 4곳 / 노선도 허브 목록(장소)은 이름 검색 유지 / 카카오맵 무변경
+5 지도    허브 실제 지도 cooperativeGestures 제거 → 한 손가락 이동 · 두 손가락 확대 · 데스크톱 휠 확대 (MapLibre 기본) · CDP 터치 드래그 대조: 라이브 마커 이동 0 + "두 손가락" 안내 / 빌드 20 −121px
+부수    app/not-found.tsx <a> 3개 → next/link (eslint 21 오류) — §12.9 의 "eslint 오류 0" 은 404 셸 파일 추가 전 수치였다(정정)
+검증    tsc 0 · eslint 0 · 85/85 SSG · WebKit iPhone 15 전수 79 URL: 넘침 0 · 메뉴 위치 0 · keep-all 0 · 오류 0 (빌드 19) · Chromium qa-v2-all 158 중 bad 2 = /ko/stops/01009 로컬 API 키(기존 예외) · qa-links 79 페이지 · 81 링크 전부 200 · 허브 3 재확인(빌드 20) 오류 0 · 넘침 0 · 경고 1 = OpenFreeMap 스타일 "wood-pattern" 이미지 누락(외부 · 기존)
+캡처    ~/Desktop/seoul-shots/2026-10-16-v2-shell/67~69 라이브 재현 · 70~74 수정 후(WebKit iPhone 15) · 75~80 허브 3(크롬)
+코드    13 파일 — Shell.module.css · home.module.css · transit.module.css · StatusLine.module.css · styles/v2/base.css · lib/v2/map-links.ts · v2/ui/MapLinks.tsx · NightBusMap.tsx · RouteExplorer.tsx · hubs/[slug]/page.tsx · stops/[slug]/page.tsx · HubMap.tsx · app/not-found.tsx
+교훈    자동 QA 에 WebKit(iPhone) 전수 측정을 상시 포함한다 — Chromium 만으로는 iPhone 결함(입력창 폭)을 놓친다
 ```
 
 ## CC 이견 및 아이디어

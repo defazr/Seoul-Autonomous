@@ -1,9 +1,9 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-10-16 (**배포 전 점검 §12.9 완료 · GPT 외부 검토 §12.10 · 포그린 결정 = 정류장 B(양방향 통합) · 순서 = V8 배포 → 4주 관측 중 R3b 보강 → 재배포 → AdSense 5차**)
-> 현재 NEXT = **① V8 푸시·배포 승인 대기(코드 커밋 `73b0fa0` + docs 커밋 완료 → 푸시 → deploy-safety 배포 · 각각 포그린 승인) ② R3b 설계 문서(정류장 B 통합 · 약한 페이지 4 · 자율주행 재검증 대조표)** — 정본 `docs/worklogs/R3A-VERTICAL-SLICE-PLAN-20261015.md` §12.9~12.10 · 감사 상세 `R3A-PREDEPLOY-AGENT-AUDITS-20261016.md` · GPT 원문 `GPT-REVIEW-20261016.md`. **상태: 소스에 감사 수정 전부 + 운영 주체 문구(§12.10 ①) 반영 · tsc·eslint 0 · 로컬 3123 = **빌드 17**(BUILD_ID XTgPta3IYrcUjXah70Kaq · 2026-10-16 12:47 교체 · 운영 주체 문구 포함 · 소개·푸터 ko/en 서버 HTML 텍스트 + 캡처 49~56 확인 완료 · 85/85 SSG · §12.11) · 전수 회귀 158 중 예외 = /ko/stops/01009 로컬 API 키뿐. 404 셸은 5차 차단 요인 아님(§12.10) → R3b 기술 부채. 기본 로케일은 Accept-Language 로 이미 동작 → 변경 없음.** 재탄생 업데이트 글 date(2026-10-16)는 컷오버일로 맞출 것. 서버 재기동: web 에서 `rm -rf .next/types .next/dev/types && npx next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/` 후 `lsof -ti :3123 | xargs kill -9; PORT=3123 HOSTNAME=127.0.0.1 node .next/standalone/server.js`.
-> 새 세션 첫 문구(클리어 후 그대로 입력): 「CLAUDE.md 절차대로 web/scripts/project-status.mjs 실측 → docs/SESSION-HANDOFF.md → 거기가 가리키는 docs/worklogs/R3A-VERTICAL-SLICE-PLAN-20261015.md §12.9~12.10 과 GPT-REVIEW-20261016.md 를 읽어. 커밋은 끝났다(코드 73b0fa0 · docs 는 그 직후 docs-only 커밋 · 3123 = 빌드 17 확인 완료 · §12.11). 푸시와 배포를 각각 물어보고, 승인되면 deploy-safety 계약(rollback 태그 → immutable 빌드 → candidate --hostname 0.0.0.0 → rename 보존 → 라이브 QA → 라이브 승인 후 latest)대로 배포해. 그 다음 R3b 설계 문서(정류장 B 통합 · 약한 페이지 4 · 자율주행 재검증 대조표)를 쓰고 멈춰. 협업 구조는 10-15 확정 그대로. 완성 화면만 127.0.0.1:3123 주소와 캡처로 평문 보고, 끝에 「CC 이견 및 아이디어」와 정본 문서 경로 1건.」
-> 커밋: v2 셸 라운드 코드 = `73b0fa0`(2026-10-16 · 192 파일 · +4,210 −5,843 · 포그린 "추천대로 진행" 승인) · docs = 그 직후 docs-only 커밋(이 파일 포함). 푸시·배포는 미실행(승인 별도).
+> 마지막 업데이트: 2026-10-16 (**V8 배포 완료 14:39 KST · 73b0fa0 라이브 · candidate·라이브 QA 전항 PASS · latest 이동만 라이브 승인 대기 · 다음 = R3b 구현(10-17~) → Fable 복원 후 감사 → 재배포 → AdSense 5차**)
+> 현재 NEXT = **① iPhone 실기기 피드백 5건 수정 = 코드 `0061274` 커밋 · 푸시 · 재배포(V8.1) 진행 — 결과는 R3A §12.14 · 지도 위 스와이프 시 페이지 스크롤 처리는 bakwijaguk.com 방식 조사 후 다음 배포(포그린 요청) ② 재배포 후 포그린 라이브 승인 → latest 이동(아직 b10c7d3 의 d55dbf7) ③ R3b 구현 = 약한 글 4 → 정류장 통합 (설계 docs/worklogs/R3B-STOP-MERGE-DESIGN-20261016.md §0-1 · D6 만 포그린 지시 대기) ④ Fable 복원(10-18 14시) 후 Codex·정책 에이전트 감사 ⑤ 재배포 → Caddy 로그 크롤 확인 + 라이브 정책 재감사 BLOCK 0 → AdSense 5차** — V8 배포 기록 §12.12 · 관측 T0 = 2026-10-16 14:39:55 KST · 로컬 127.0.0.1:3123 = 빌드 20(수정 포함 · 라이브보다 앞섬) · QA 는 Chromium + WebKit(iPhone 15) 둘 다.
+> 새 세션 첫 문구(클리어 후 그대로 입력): 「CLAUDE.md 절차대로 web/scripts/project-status.mjs 실측 → docs/SESSION-HANDOFF.md → docs/worklogs/R3B-STOP-MERGE-DESIGN-20261016.md(§0-1 결정·일정) 를 읽어. V8 은 라이브(73b0fa0)다. latest 이동과 배포 기록 docs 커밋이 아직이면 그것부터 물어봐. 그다음 R3b-2(약한 글 4) → R3b-1(정류장 통합)을 로컬에서 구현하고 127.0.0.1:3123 캡처로 보여 줘. 감사는 Fable 복원(10-18 14시) 후. 협업 구조는 10-15 확정 그대로 — 결정은 네가 하고 커밋·푸시·배포만 물어봐. 평문 보고, 끝에 「CC 이견 및 아이디어」와 정본 문서 경로 1건.」
+> 커밋: v2 셸 코드 `73b0fa0` · docs `43b14de` (푸시 완료 10-16 · local == origin) · 이후 docs(배포 기록 §12.12 · R3b 설계 · R3b Codex 결과 · 이 파일)는 미커밋 → 승인 후 docs-only 1건.
 > (아래 "미커밋 작업 트리" 3줄은 `73b0fa0` 로 커밋된 내용의 역사 기록이다 — 현재 작업 트리 아님)
 > ⚠ 미커밋 작업 트리(2026-10-16 V4 끝 기준): 아래 V1~V3 목록 + V4 = app/[locale]/**/page.tsx 전부 · 각 page.module.css(토큰 치환·죽은 클래스 제거) · components/v2/transit/* · v2/ui/{Crumbs,MapLinks,Section,PageHero} · lib/transit-items.ts · lib/v2/map-links.ts · components/routes/RoutesList.tsx · components/legal/LegalDocument.tsx · components/night-bus-guide(s)/* · messages(pages 추가 · globalHeader/siteFooter/home/common 삭제) · scripts/qa-v2-all.mjs · 삭제 49파일(components/common·ui·home·layout · globals.css · legacy-bridge.css · design-preview · lib/fonts.ts · lib/design · routes/SearchBar · 옛 홈/early/late/privacy/terms page.module.css) · docs §12.4 · R3A-V4-REFRAME-CODEX-REVIEW-20261016.md. 캡처 ~/Desktop/seoul-shots/2026-10-16-v2-shell/01~24. **+ 10-16 아침 피드백 반영: components/v2/home/home.module.css · components/night-bus/HubMap.module.css · web/scripts/qa-v2-shots.mjs(popup 옵션) · docs §12.1·§12.5.** **+ V5: night-bus-map/{page.tsx,page.module.css,NightBusMap.tsx,night-bus-map.module.css} · components/night-bus/RouteExplorer.* · night-bus/[no]/page.tsx · messages nightBus.stopTap · scripts/qa-v2-shots.mjs(station·fs·stoptap). + V6: about/{page.tsx,page.module.css} · data-source/{page.tsx,page.module.css} · lib/night-bus/data.ts(NIGHT_META 타입) · data/updates/{index.ts,site-rebirth-night-bus-first.ts} · updates/[slug]/page.tsx · hubs/[slug]/page.tsx · routes/[id]/page.module.css · messages about·dataSource·metadata·routeDetail.disclaimer·updates.pageDescription · docs §12.6·§12.7.** **+ V7: app/[locale]/layout.tsx · lib/v2/client-messages.ts · app/[locale]/page.tsx · routes/page.tsx · stops/[slug]/page.tsx(페이지별 provider) · eslint.config.mjs(public/vendor 무시) · scripts/qa-links.mjs · faq/privacy/terms/routes[id]/stops 미사용 헬퍼 제거 · NightBusMap Codex FIX · docs §12.8 · R3A-V5V6-CODEX-REVIEW-20261016.md. 전체 = 수정 73 · 삭제 51 · 신규 묶음 25(기존 미추적 .playwright-mcp/ · docs/handoff/HANDOFF-2026* · route/ · round19 파일은 이 라운드 산출물 아님 — stage 금지).**
 > ⚠ 미커밋 작업 트리(2026-10-15 세션 2 · V1~V3): web/styles/v2/* · web/lib/v2/* · web/components/v2/** · web/lib/night-bus/client-model.ts·client-doc.ts·schematic.ts(HUB_NODE) · web/app/api/night-bus/client/route.ts · app/layout.tsx · app/[locale]/layout.tsx · app/[locale]/page.tsx · messages ko/en(shell·nightHome) · web/scripts/qa-v2-shots.mjs(캡처 QA) · R3A 문서 §12.1~12.3 · R3A-V2-SHELL-CODEX-REVIEW-20261015.md. 옛 components/common·ui·home·layout · app/globals.css 는 미참조 상태로 보존(V4 끝에 삭제). 커밋은 승인 후(코드 1 + docs 1).
@@ -398,12 +398,13 @@ ahead/behind = 0/0
 **Production axis — pin 가능 (docs 커밋으로 변하지 않음):**
 
 ```
-server checkout     b10c7d3333b9e448fcfe2b116301635bd178d160
-Production runtime  b10c7d3333b9e448fcfe2b116301635bd178d160   ← OCI label로 직접 증명 가능
-image / latest      sha256:d55dbf7d9afdcefa10968507e26d3ad6fa5302cb94801ec5b242f4011f2c3fa5
-                    (IMAGE_MATCH=PASS — running image == latest)
-previous runtime    19ebf0e (이미지 2e6545253cc4) ← rollback 기준점 (rollback-19ebf0e)
-sitemap             69 (Stage 1 Stop URL 14 — 7 stop × ko/en)
+server checkout     73b0fa08757b651c180501dcaa478984c8af8932   (2026-10-16 V8 · v2 셸 재탄생)
+Production runtime  73b0fa08757b651c180501dcaa478984c8af8932   ← OCI label로 직접 증명 가능
+image               sha256:51f33d1f9c7750a08b9fb6cbcf035f85cacee44d9a7eb8979d72915c2405075a  (seoul-autonomous-web:73b0fa0)
+latest              ⏳ 아직 d55dbf7d9afd…(b10c7d3) — 포그린 라이브 승인 후 73b0fa0 으로 이동
+previous runtime    b10c7d3 (이미지 d55dbf7d9afd) ← rollback 기준점 (rollback-b10c7d3)
+sitemap             79 (v2 · Stop URL 14 유지 · 허브 3 · N노선 5 · 재탄생 글 ko/en 신규)
+v2 셸 코드 커밋      73b0fa0 (docs 43b14de)
 Stage 1 코드 커밋    f34ede8 구현 / 19ebf0e EN metadata polish
 RT-2 코드 커밋       b10c7d3
 ```
@@ -413,8 +414,8 @@ RT-2 코드 커밋       b10c7d3
 
 ```
 local HEAD == origin/main  ·  ahead/behind 0/0        ← docs axis (절대 SHA 대조 안 함)
-server checkout == runtime == b10c7d3                 ← Production axis (pin)
-running image == d55dbf7d9afd…                        ← Production axis (pin)
+server checkout == runtime == 73b0fa0                 ← Production axis (pin)
+running image == 51f33d1f9c77…                        ← Production axis (pin)
 ```
 
 🚫 **`local/origin = <특정 SHA>` 를 current-state 기대값으로 쓰지 않는다** — 다음 docs 커밋에서 반드시 어긋난다.
@@ -430,6 +431,8 @@ docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revisi
 보존 자산 — **삭제·prune 금지**
 
 ```
+V8 backup     seoul_autonomous_web_backup_b10c7d3_20261016-143955  (exited)
+V8 rollback   seoul-autonomous-web:rollback-b10c7d3 → d55dbf7d9afd
 RT2 backup    seoul_autonomous_web_backup_19ebf0e_20260901-190732  (exited)
 RT2 rollback  seoul-autonomous-web:rollback-19ebf0e → 2e6545253cc4
 1F backup     seoul_autonomous_web_backup_f34ede8_20260827-212828  (exited)

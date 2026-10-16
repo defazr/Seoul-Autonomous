@@ -1,5 +1,6 @@
 // sitemap 전수 내부 링크 · canonical · hreflang · 리다이렉트 검사 (R3A §12 V7 · AdSense 사전 점검 입력). 네트워크는 로컬 서버만.
 // 사용: node scripts/qa-links.mjs http://127.0.0.1:3123
+import fs from 'node:fs';
 const base = process.argv[2] || 'http://127.0.0.1:3123';
 const xml = await (await fetch(base + '/sitemap.xml')).text();
 const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
@@ -9,6 +10,17 @@ const report = { pages: [], broken: [], redirects: [], noCanonical: [], canonica
 for (const p of ['/robots.txt', '/ads.txt', '/sitemap.xml', '/', '/ko', '/en', '/favicon.ico', '/ko/does-not-exist-404-check']) {
   const r = await fetch(base + p, { redirect: 'manual' });
   report.infra[p] = { status: r.status, location: r.headers.get('location') ?? undefined, type: (r.headers.get('content-type') ?? '').split(';')[0] };
+}
+// 옛 URL 영구 이동(R3b) — data/legacy-redirects.json 항목 × ko/en: 308 1회 → 목적지 200 · 옛 URL 은 sitemap 에 없어야 한다
+const legacy = JSON.parse(fs.readFileSync(new URL('../data/legacy-redirects.json', import.meta.url), 'utf8')).redirects;
+report.legacy = [];
+for (const r of legacy) for (const lc of ['ko', 'en']) {
+  const from = `/${lc}${r.from}`, want = `/${lc}${r.to}`;
+  const res = await fetch(base + from, { redirect: 'manual' });
+  const to = (res.headers.get('location') ?? '').replace(/^https?:\/\/[^/]+/, '');
+  const fin = to ? await fetch(base + to.split('#')[0], { redirect: 'manual' }) : null;
+  const inSitemap = locs.some((l) => new URL(l).pathname === from);
+  report.legacy.push({ from, status: res.status, to, finalStatus: fin?.status, inSitemap, ok: res.status === 308 && to === want && fin?.status === 200 && !inSitemap });
 }
 for (const loc of locs) {
   const res = await fetch(toLocal(loc), { redirect: 'manual' });
@@ -32,4 +44,5 @@ console.log(JSON.stringify({
   internalHrefsChecked: seen.size, broken: report.broken, redirectTargets: uniqRedirects,
   noCanonical: report.noCanonical, canonicalMismatch: report.canonicalMismatch, noHreflang: report.noHreflang,
   hreflangSample: report.pages.slice(0, 3).map((p) => ({ url: p.url, hreflang: p.hreflang })), infra: report.infra,
+  legacyRedirects: report.legacy.length, legacyFailures: report.legacy.filter((l) => !l.ok), legacySample: report.legacy.slice(0, 2),
 }, null, 1));

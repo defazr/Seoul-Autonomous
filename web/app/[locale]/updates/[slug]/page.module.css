@@ -66,6 +66,26 @@
   color: var(--fg);
   margin: 0;
 }
+/* 한 섹션 안 여러 문단·목록 사이 간격 (R3b-2 — 콘텐츠형 글은 섹션당 문단이 2개 이상) */
+.paragraph + .paragraph,
+.paragraph + .infoList {
+  margin-top: 10px;
+}
+.sectionLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 12px 0 0;
+}
+.sectionLink {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+.sectionLink:hover {
+  text-decoration: underline;
+}
 .infoList {
   margin: 0;
   padding: 0 0 0 20px;
@@ -84,7 +104,9 @@
   color: var(--fg-2);
 }
 .viewRoute {
-  display: inline-block;
+  /* 출처 링크가 2개 이상일 수 있어 한 줄에 하나씩 (R3b-2) */
+  display: block;
+  width: fit-content;
   font-size: 14px;
   color: var(--accent);
   text-decoration: none;

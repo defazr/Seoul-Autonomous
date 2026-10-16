@@ -1,387 +1,224 @@
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { NextIntlClientProvider } from 'next-intl';
 import { routing } from '../../../../i18n/routing';
 import { Link } from '../../../../i18n/navigation';
 import { Crumbs } from '../../../../components/v2/ui/Crumbs';
 import { PageHero } from '../../../../components/v2/ui/PageHero';
 import { MapLinks } from '../../../../components/v2/ui/MapLinks';
-import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
-import { buildPageMetadata } from '../../../../lib/seo/metadata';
-import { getOfficialStopNameEn, stopNamesSourceMeta } from '../../../../lib/stops';
-import { getRouteById } from '../../../../lib/routes';
-import { APPROVED_STOPS, getApprovedStopBySlug } from '../../../../lib/stop-pages';
-import { NextIntlClientProvider } from 'next-intl';
-import { clientMessages } from '../../../../lib/v2/client-messages';
+import { SourceBlock, ReportLine } from '../../../../components/v2/ui/SourceBlock';
+import { CONTACT_MAIL } from '../../../../components/v2/shell/Footer';
 import { ArrivalCard } from '../../../../components/stop/ArrivalCard';
 import { StopServiceHours } from '../../../../components/stop/StopServiceHours';
-import routesData from '../../../../data/routes.json';
-import { buildGraph } from '../../../../lib/graph/graph-core.mjs';
+import { HashReanchor } from '../../../../components/stop/HashReanchor';
+import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
+import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { clientMessages } from '../../../../lib/v2/client-messages';
+import { onColor } from '../../../../lib/v2/route-color';
+import { getOfficialStopNameEn, stopNamesSourceMeta } from '../../../../lib/stops';
+import { NIGHT_META } from '../../../../lib/night-bus/data';
+import { STOP_PLACES, getPlaceBySlug, platformAnchor } from '../../../../lib/stop-pages';
+import { assertStopPlaces, buildPlaceView, roundM, stopNameEn, type Platform, type PlaceView } from '../../../../lib/stop-places';
 import styles from './page.module.css';
 
-// Stage 1 Stop 페이지의 모든 관계·순서·이웃은 Graph Core 파생이다 (routes.json 무수정).
-// 페이지가 아는 리터럴은 승인 registry 의 stopId/slug 뿐이다.
-const transitGraph = buildGraph(routesData);
-
-type StopRouteCard = {
-  routeId: string;
-  routeName: string;
-  seq: number;
-  total: number;
-  previousStopId: string | null;
-  previousNameKo: string | null;
-  nextStopId: string | null;
-  nextNameKo: string | null;
-  lastChecked: string;
-  /** 노선 운행 기준값. 이 정류장의 첫차/막차가 아니다 (RT-2 설계 §3-2). */
-  routeFirstBus: string;
-  /** 노선 운행 기준값. 이 정류장의 첫차/막차가 아니다 (RT-2 설계 §3-2). */
-  routeLastBus: string;
-  routeDaysOfOperation: string;
-};
-
-type StopPageData = {
-  stopId: string;
-  nameKo: string;
-  cards: StopRouteCard[];
-  /** 노선별 다음 정류장의 stopId dedup 목록 (노선 표시 순서 보존) */
-  nextUnion: { stopId: string; nameKo: string }[];
-};
-
-/**
- * 승인 Stop 하나의 표시 데이터를 Graph 에서 파생한다.
- * 계약 위반(등록된 stopId 가 SSOT 에 없음 / 노선당 정차가 1회가 아님)은 조용히
- * 빈 화면을 렌더하지 않고 즉시 실패시킨다 — 26-C3.1 과 같은 강도.
- */
-function buildStopPageData(stopId: string): StopPageData {
-  const stop = transitGraph.stopsById.get(stopId);
-  if (!stop) {
-    throw new Error(`Approved stop ${stopId} is not present in the transit graph`);
-  }
-
-  const visits = stop.visits;
-  const routeIds = new Set(visits.map((visit) => visit.routeId));
-  if (routeIds.size !== visits.length) {
-    // 같은 노선이 이 정류장을 두 번 지나면 "노선별 위치" 카드가 노선 수와 어긋난다.
-    // Stage 1 승인 7개는 노선당 1회 정차가 전제이므로 데이터 변화는 설계 재심사 사유다.
-    throw new Error(
-      `Approved stop ${stopId} is visited more than once by the same route (${visits.length} visits, ${routeIds.size} routes)`,
-    );
-  }
-
-  const cards: StopRouteCard[] = visits.map((visit) => {
-    const route = getRouteById(visit.routeId);
-    if (!route) {
-      throw new Error(`Stop ${stopId} references unknown route ${visit.routeId}`);
-    }
-    const graphRoute = transitGraph.routes.find((item) => item.routeId === visit.routeId);
-    if (!graphRoute) {
-      throw new Error(`Route ${visit.routeId} is missing from the transit graph`);
-    }
-    return {
-      routeId: visit.routeId,
-      routeName: route.displayName,
-      seq: visit.seq,
-      total: graphRoute.visits.length,
-      previousStopId: visit.prev?.stopId ?? null,
-      previousNameKo: visit.prev?.nameKo ?? null,
-      nextStopId: visit.next?.stopId ?? null,
-      nextNameKo: visit.next?.nameKo ?? null,
-      lastChecked: route.lastChecked,
-      routeFirstBus: route.firstBus,
-      routeLastBus: route.lastBus,
-      routeDaysOfOperation: route.daysOfOperation,
-    };
-  });
-
-  const nextUnion: { stopId: string; nameKo: string }[] = [];
-  for (const visit of visits) {
-    const next = visit.next;
-    if (!next) continue;
-    if (nextUnion.some((item) => item.stopId === next.stopId)) continue;
-    nextUnion.push({ stopId: next.stopId, nameKo: next.nameKo });
-  }
-
-  return { stopId, nameKo: stop.nameKo, cards, nextUnion };
-}
-
-/** 표시명 계약(26-C2E.1): 영문은 공식 SSOT 단독, 미스는 한국어명으로만 대체한다. */
-function resolveStopName(stopId: string, nameKo: string, isKo: boolean): string {
-  if (isKo) return nameKo;
-  return getOfficialStopNameEn(stopId) ?? nameKo;
-}
-
-function resolveRouteName(routeId: string, fallback: string, isKo: boolean): string {
-  const route = getRouteById(routeId);
-  if (!route) return fallback;
-  return isKo ? route.displayNameKo : route.displayName;
-}
-
-/** 노선명 나열. 한국어는 사이트 관례인 가운뎃점, 영어는 문장용 연결어. */
-function joinNames(names: string[], isKo: boolean): string {
-  if (isKo) return names.join(' · ');
-  if (names.length <= 1) return names[0] ?? '';
-  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
-}
-
-function formatDate(iso: string, isKo: boolean): string {
-  const [year, month, day] = iso.split('-');
-  if (isKo) return `${year}.${month}.${day}`;
-  const monthName = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-  ][Number(month) - 1];
-  return `${monthName} ${Number(day)}, ${year}`;
-}
+// R3b-1 (2026-10-16) — 한 장소(같은 이름의 방향쌍 ARS 2개) = 한 페이지. 관계·순서·방면은 Graph·올빼미 데이터 파생이다.
+// 페이지가 아는 리터럴은 등록부(stop-pages.ts)의 slug·ARS 뿐이다. 옛 ARS URL 은 data/legacy-redirects.json 이 장소#ars 로 옮긴다.
+assertStopPlaces();
 
 export function generateStaticParams() {
-  const params: { locale: string; slug: string }[] = [];
-  for (const locale of routing.locales) {
-    for (const stop of APPROVED_STOPS) {
-      params.push({ locale, slug: stop.slug });
-    }
-  }
-  return params;
+  return routing.locales.flatMap((locale) => STOP_PLACES.map((place) => ({ locale, slug: place.slug })));
 }
+export const dynamicParams = false;
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string; slug: string }>;
-}) {
+const uniq = (xs: string[]) => [...new Set(xs)];
+/** 플랫폼의 자율주행 방면 묶음 (순환 노선 제외 · 등장 순서 유지). */
+const autoTowards = (p: Platform, ko: boolean) => uniq(p.auto.map((a) => (ko ? a.towardKo : a.towardEn)).filter((x): x is string => !!x));
+const owlTowards = (p: Platform) => uniq(p.owl.map((o) => o.towardKo));
+const routeName = (a: Platform['auto'][number], ko: boolean) => (ko ? a.route.displayNameKo : a.route.displayName);
+const placeName = (v: PlaceView, ko: boolean) => (ko ? v.place.nameKo : stopNameEn(v.place.platforms[0], v.place.nameKo));
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
-  const approved = getApprovedStopBySlug(slug);
-  if (!approved) return {};
-
-  const isKo = locale === 'ko';
-  const data = buildStopPageData(approved.stopId);
+  const place = getPlaceBySlug(slug);
+  if (!place) return {};
+  const ko = locale === 'ko';
+  const v = buildPlaceView(place);
   const t = await getTranslations({ locale, namespace: 'metadata' });
-
-  const name = resolveStopName(data.stopId, data.nameKo, isKo);
-  const routes = joinNames(
-    data.cards.map((card) => resolveRouteName(card.routeId, card.routeName, isKo)),
-    isKo,
-  );
-  const nextStops = data.nextUnion
-    .map((item) => resolveStopName(item.stopId, item.nameKo, isKo))
-    .join(' · ');
-
+  const [a, b] = v.platforms;
+  const sep = ko ? '·' : ', ';
   return buildPageMetadata({
     locale,
-    path: `/stops/${approved.slug}`,
-    title: t('stopDetailTitle', { name, ars: data.stopId }),
-    description: t('stopDetailDescription', {
-      name,
-      ars: data.stopId,
-      routes,
-      nextStops,
+    path: `/stops/${place.slug}`,
+    title: t('stopPlaceTitle', { name: placeName(v, ko), a: a.ars, b: b.ars }),
+    description: t('stopPlaceDescription', {
+      name: placeName(v, ko), a: a.ars, b: b.ars,
+      aToward: autoTowards(a, ko).join(sep), bToward: autoTowards(b, ko).join(sep),
+      routes: uniq(v.platforms.flatMap((p) => p.auto.map((x) => routeName(x, ko)))).join(sep),
+      owl: uniq(v.platforms.flatMap((p) => p.owl.map((o) => o.no))).sort().join(sep),
     }),
   });
 }
 
-export default async function StopDetailPage({
-  params,
-}: {
-  params: Promise<{ locale: string; slug: string }>;
-}) {
+export default async function StopPlacePage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
   setRequestLocale(locale); // 정적 프리렌더(next-intl) — 배포 전 점검 10-16
-  const approved = getApprovedStopBySlug(slug);
-
-  // 승인 목록에 없는 slug 는 페이지를 만들지 않는다 (redirect 없음).
-  if (!approved) {
-    notFound();
-  }
-
-  const t = await getTranslations({ locale });
+  const place = getPlaceBySlug(slug);
+  if (!place) notFound();
+  const ko = locale === 'ko';
+  const t = await getTranslations({ locale, namespace: 'stopPlace' });
   const tp = await getTranslations({ locale, namespace: 'pages' });
-  const isKo = locale === 'ko';
-  const data = buildStopPageData(approved.stopId);
-
-  const primaryName = resolveStopName(data.stopId, data.nameKo, isKo);
-  const officialNameEn = getOfficialStopNameEn(data.stopId);
-  const secondaryName = isKo ? officialNameEn : data.nameKo;
-
-  const routeNames = data.cards.map((card) =>
-    resolveRouteName(card.routeId, card.routeName, isKo),
-  );
-  const nextUnionNames = data.nextUnion.map((item) =>
-    resolveStopName(item.stopId, item.nameKo, isKo),
-  );
-
-  // provenance 는 계열별 확인일을 분리한다. 페이지 생성일이 아니라 각 SSOT 의 기준일이다.
-  const stopNamesCheckedOn = stopNamesSourceMeta.collectedAt.slice(0, 10);
-  const routeDataCheckedOn = data.cards.reduce(
-    (latest, card) => (card.lastChecked > latest ? card.lastChecked : latest),
-    data.cards[0].lastChecked,
-  );
+  const ts = await getTranslations({ locale, namespace: 'shell' });
+  const tr = await getTranslations({ locale, namespace: 'routes' });
+  const v = buildPlaceView(place);
+  const [a, b] = v.platforms;
+  const sep = ko ? '·' : ', ';
+  const name = placeName(v, ko);
+  const secondary = ko ? stopNameEn(a.ars, place.nameKo) : place.nameKo;
+  const mapLabels = { kakao: tp('map.kakao'), naver: tp('map.naver'), aria: tp('map.aria') };
+  const nameOf = (ars: string, nameKo: string) => (ko ? nameKo : stopNameEn(ars, nameKo));
+  /** EN 페이지에서 공식 영문명이 없어 한국어로 보이는 이름은 lang="ko" 로 감싼다. */
+  const NameOf = ({ ars, nameKo }: { ars: string; nameKo: string }) => (ko || getOfficialStopNameEn(ars) ? <>{nameOf(ars, nameKo)}</> : <span lang="ko">{nameKo}</span>);
+  const stopSep = ' · '; // 정류장 이름 나열 — 영문 공식명 안의 쉼표와 섞이지 않게
+  const owlRoutesHere = uniq(v.platforms.flatMap((p) => p.owl.map((o) => o.no))).sort();
+  const owlLinks = ko ? owlRoutesHere.map((no) => v.platforms.flatMap((p) => p.owl).find((o) => o.no === no)!).filter((o) => o.path) : [];
+  const autoRoutes = uniq(v.platforms.flatMap((p) => p.auto.map((x) => x.routeId))).map((id) => v.platforms.flatMap((p) => p.auto).find((x) => x.routeId === id)!);
+  const routeLabelById = (id: string) => routeName(v.platforms.flatMap((p) => p.auto).find((x) => x.routeId === id)!, ko);
+  // RT-2 카드(ko · 01009 한정)의 클라이언트 메시지 — map 콜백 안에서 await 할 수 없어 미리 받는다
+  const arrivalMessages = ko && v.platforms.some((p) => p.ars === '01009') ? await clientMessages(locale, ['stopDetail']) : {};
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd(
-              [
-                { name: 'Home', path: '' }, { name: 'Routes', path: '/routes' },
-                {
-                  name: `${primaryName} ${data.stopId}`,
-                  path: `/stops/${approved.slug}`,
-                },
-              ],
-              locale,
-            ),
-          ),
-        }}
-      />
-
-
-      {/* Hero — 공식명 + ARS + 노선별 다음 정류장. 동명 방향쌍은 이 두 줄로 갈린다. */}
-      <PageHero eyebrow={tp('stop.eyebrow')} title={primaryName} lead={secondaryName && secondaryName !== primaryName ? secondaryName : undefined} crumbs={<Crumbs label={tp('crumbs')} items={[{ href: '/', label: t('shell.nav.home') }, { href: '/routes', label: t('routes.title') }, { label: `${primaryName} ${data.stopId}` }]} />}>
-        <div className={styles.arsLine}>
-          <span className={styles.arsLabel}>{t('stopDetail.ars')}</span>
-          <span className={styles.arsValue}>{data.stopId}</span>
-          <MapLinks name={data.nameKo} ars={data.stopId} labels={{ kakao: tp('map.kakao'), naver: tp('map.naver'), aria: tp('map.aria') }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: 'Routes', path: '/routes' }, { name, path: `/stops/${place.slug}` }], locale)) }} />
+      <PageHero eyebrow={t('eyebrow')} title={name} lead={secondary !== name ? (ko ? secondary : <span lang="ko">{secondary}</span>) : undefined} crumbs={<Crumbs label={tp('crumbs')} items={[{ href: '/', label: ts('nav.home') }, { href: '/routes', label: tr('title') }, { label: name }]} />}>
+        <div className={styles.jumps}>
+          {v.platforms.map((p) => <a key={p.ars} href={`#${platformAnchor(p.ars)}`} className={styles.jump} aria-label={t('jump', { ars: p.ars })}>{p.ars} ↓</a>)}
         </div>
-        {nextUnionNames.length > 0 ? (
-          <p className={styles.nextLine}>
-            <span className={styles.nextLabel}>
-              {t('stopDetail.nextStops', { count: nextUnionNames.length })}
-            </span>
-            <span className={styles.nextValue}>{nextUnionNames.join(' · ')}</span>
-          </p>
-        ) : null}
+        <p className={styles.summary}>{t('summaryPair', { a: a.ars, b: b.ars, aToward: autoTowards(a, ko).join(sep), bToward: autoTowards(b, ko).join(sep) })}</p>
+        <p className={styles.summary}>{t('summaryDistance', { m: roundM(v.distanceM) })}</p>
       </PageHero>
+
       <div className="v2-wrap v2-body">
+        <HashReanchor prefix="ars-" />
+        <div className={styles.platforms}>
+          {v.platforms.map((p) => (
+            <article key={p.ars} id={platformAnchor(p.ars)} className={styles.platform} aria-labelledby={`${platformAnchor(p.ars)}-title`}>
+              <header className={styles.pfHead}>
+                <h2 id={`${platformAnchor(p.ars)}-title`} className={styles.pfTitle}><span className={styles.ars}>{p.ars}</span>{' '}<span className={styles.pfName}>{nameOf(p.ars, p.nameKo)}</span></h2>
+                <MapLinks name={p.nameKo} lat={p.lat} lon={p.lon} ars={p.ars} labels={mapLabels} />
+              </header>
 
-      {/* RT-2 pilot gate — KO 01009 한정. expansion 시 이 조건은 제거한다.
-          정적 안내는 항상 남는 base layer 이고, 실시간 카드는 그 위에 조건부로 추가된다. */}
-      {isKo && data.stopId === '01009' ? (
-        <>
-          <NextIntlClientProvider locale={locale} messages={await clientMessages(locale, ['stopDetail'])}>
-            <ArrivalCard
-              stopId={data.stopId}
-              ssotOrder={data.cards.map((card) => card.routeId)}
-              routeNames={Object.fromEntries(
-                data.cards.map((card, index) => [card.routeId, routeNames[index]]),
+              <section className={styles.block} aria-label={t('autoTitle')}>
+                <h3 className={styles.h3}>{t('autoTitle')}</h3>
+                <ul className={styles.autoList}>
+                  {p.auto.map((x) => (
+                    <li key={x.routeId} className={styles.autoRow}>
+                      <Link href={`/routes/${x.routeId}`} className={styles.routeChip}>{routeName(x, ko)}</Link>
+                      <span className={styles.autoMain}>
+                        <b>{x.towardKo ? t('autoToward', { toward: (ko ? x.towardKo : x.towardEn) ?? '' }) : t('autoLoop')}</b>
+                        <span className={styles.autoMeta}>{t('autoPosition', { seq: x.seq, total: x.total })}</span>
+                        <span className={styles.autoMeta}>
+                          {x.prev && <>{t('prev')} {nameOf(x.prev.stopId, x.prev.nameKo)}</>}
+                          {x.prev && x.next && ' · '}
+                          {x.next && <>{t('next')} {nameOf(x.next.stopId, x.next.nameKo)}</>}
+                        </span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+
+              {/* RT-2 pilot gate — KO 01009 한정 (확대 아님 · 장소 페이지의 01009 절로 옮겼을 뿐). 정적 안내가 항상 남는 base layer 다. */}
+              {ko && p.ars === '01009' && (
+                <div className={styles.block}>
+                  <NextIntlClientProvider locale={locale} messages={arrivalMessages}>
+                    <ArrivalCard stopId={p.ars} ssotOrder={p.auto.map((x) => x.routeId)} routeNames={Object.fromEntries(p.auto.map((x) => [x.routeId, routeName(x, ko)]))} headingLevel={3} />
+                  </NextIntlClientProvider>
+                  <StopServiceHours entries={p.auto.map((x) => ({ routeId: x.routeId, routeName: routeName(x, ko), routeFirstBus: x.route.firstBus, routeLastBus: x.route.lastBus, routeDaysOfOperation: x.route.daysOfOperation }))} headingLevel={3} />
+                </div>
               )}
-            />
-          </NextIntlClientProvider>
-          <StopServiceHours entries={data.cards.map((card, index) => ({
-            routeId: card.routeId,
-            routeName: routeNames[index],
-            routeFirstBus: card.routeFirstBus,
-            routeLastBus: card.routeLastBus,
-            routeDaysOfOperation: card.routeDaysOfOperation,
-          }))} />
-        </>
-      ) : null}
 
-      {/* 경유 노선 + 구조 역할 문장 (설계 V절: 별도 H2 없이 한 섹션으로 통합) */}
-      <section className={styles.section} aria-labelledby="stop-routes-title">
-        <h2 id="stop-routes-title" className={styles.sectionTitle}>
-          {t('stopDetail.routesTitle')}
-        </h2>
-        <div className={styles.chipRow}>
-          {data.cards.map((card, index) => (
-            <Link
-              key={card.routeId}
-              href={`/routes/${card.routeId}`}
-              className={styles.routeChip}
-            >
-              {routeNames[index]}
-            </Link>
+              <section className={styles.block} aria-label={t('owlTitle')}>
+                <h3 className={styles.h3}>{t('owlTitle')}</h3>
+                {p.owl.length === 0 ? <p className={styles.muted}>{t('owlNone')}</p> : (
+                  <ul className={styles.owlList}>
+                    {p.owl.map((o) => (
+                      <li key={o.no}>
+                        {ko && o.path
+                          ? <Link href={o.path} className={styles.owlChip} style={{ background: o.color, color: onColor(o.color) }}>{o.no}</Link>
+                          : <span className={styles.owlChip} style={{ background: o.color, color: onColor(o.color) }}>{o.no}</span>}
+                        <span>{t.rich('owlToward', { toward: o.towardKo, ko: (c) => <span lang="ko">{c}</span> })}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            </article>
           ))}
         </div>
-        <p className={styles.sharedSentence}>
-          {t('stopDetail.sharedSentence', {
-            name: primaryName,
-            ars: data.stopId,
-            routes: joinNames(routeNames, isKo),
-          })}
-        </p>
-      </section>
 
-      {/* 노선별 위치 — 이전·다음 정류장은 텍스트만 (Stop↔Stop 링크 v1 제외) */}
-      {data.cards.map((card, index) => (
-        <section
-          key={card.routeId}
-          className={styles.routeCard}
-          aria-labelledby={`stop-position-${card.routeId}`}
-        >
-          <h2 id={`stop-position-${card.routeId}`} className={styles.cardTitle}>
-            {t('stopDetail.positionTitle', { route: routeNames[index] })}
-          </h2>
-          <p className={styles.cardPosition}>
-            {t('stopDetail.positionValue', { seq: card.seq, total: card.total })}
-          </p>
-          <dl className={styles.neighborList}>
-            {card.previousStopId && card.previousNameKo ? (
-              <div className={styles.neighborRow}>
-                <dt className={styles.neighborLabel}>{t('stopDetail.previousStop')}</dt>
-                <dd className={styles.neighborValue}>
-                  {resolveStopName(card.previousStopId, card.previousNameKo, isKo)}
-                </dd>
-              </div>
-            ) : null}
-            {card.nextStopId && card.nextNameKo ? (
-              <div className={styles.neighborRow}>
-                <dt className={styles.neighborLabel}>
-                  {t('stopDetail.nextStops', { count: 1 })}
-                </dt>
-                <dd className={styles.neighborValue}>
-                  {resolveStopName(card.nextStopId, card.nextNameKo, isKo)}
-                </dd>
-              </div>
-            ) : null}
-          </dl>
-          <Link href={`/routes/${card.routeId}`} className={styles.cardLink}>
-            {t('stopDetail.viewRoute', { route: routeNames[index] })}
-          </Link>
+        <section className={styles.section} aria-labelledby="which-title">
+          <h2 id="which-title" className={styles.h2}>{t('whichTitle')}</h2>
+          <div className={styles.prose}>
+            <p>{t('whichDistance', { a: a.ars, b: b.ars })}</p>
+            <ul className={styles.sideList}>
+              {v.platforms.map((p) => (
+                <li key={p.ars}>
+                  <b className={styles.ars}>{p.ars}</b>
+                  <span>{t('whichAuto')} {t('autoToward', { toward: autoTowards(p, ko).join(sep) })}</span>
+                  {owlTowards(p).length > 0 && (
+                    <span>{t('whichOwl')} {t.rich('owlToward', { toward: owlTowards(p).join(sep), ko: (c) => <span lang="ko">{c}</span> })}</span>
+                  )}
+                  <span className={styles.sideNext}>{t('whichNext', { names: uniq(p.auto.map((x) => x.next).filter((n): n is NonNullable<typeof n> => !!n).map((n) => nameOf(n.stopId, n.nameKo))).join(stopSep) })}</span>
+                </li>
+              ))}
+            </ul>
+            <p className={styles.note}>{t('whichNote')}</p>
+            {v.asymmetries.map((s) => {
+              const label = s.kind === 'auto' ? routeLabelById(s.label) : s.label;
+              const key = `${s.kind}-${s.label}-${s.onlyAt}`;
+              if (!s.opposite) return <p key={key}>{t(s.kind === 'auto' ? 'asymAutoNone' : 'asymOwlNone', { route: label, onlyAt: s.onlyAt })}</p>;
+              return <p key={key}>{t(s.kind === 'auto' ? 'asymAuto' : 'asymOwl', { route: label, onlyAt: s.onlyAt, oppName: nameOf(s.opposite.ars, s.opposite.nameKo), oppArs: s.opposite.ars, other: s.otherArs, m: roundM(s.opposite.distanceM) })}</p>;
+            })}
+          </div>
         </section>
-      ))}
 
-      {/* provenance — 정류장명 계열과 노선 데이터 계열의 확인일을 분리 표기 */}
-      <section className={styles.section} aria-labelledby="stop-provenance-title">
-        <h2 id="stop-provenance-title" className={styles.sectionTitle}>
-          {t('stopDetail.provenanceTitle')}
-        </h2>
-        <dl className={styles.provList}>
-          <div className={styles.provRow}>
-            <dt className={styles.provLabel}>{t('stopDetail.provenanceStopNames')}</dt>
-            <dd className={styles.provValue}>
-              <a
-                className={styles.provLink}
-                href={stopNamesSourceMeta.datasetUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {stopNamesSourceMeta.dataset}
-              </a>
-              <span className={styles.provDate}>
-                {t('stopDetail.checkedOn', {
-                  date: formatDate(stopNamesCheckedOn, isKo),
-                })}
-              </span>
-            </dd>
-          </div>
-          <div className={styles.provRow}>
-            <dt className={styles.provLabel}>{t('stopDetail.provenanceRouteData')}</dt>
-            <dd className={styles.provValue}>
-              <span className={styles.provDate}>
-                {t('stopDetail.checkedOn', {
-                  date: formatDate(routeDataCheckedOn, isKo),
-                })}
-              </span>
-            </dd>
-          </div>
-        </dl>
-        <p className={styles.disclaimer}>{t('routeDetail.disclaimer')}</p>
-      </section>
+        <section className={styles.section} aria-labelledby="nearby-title">
+          <h2 id="nearby-title" className={styles.h2}>{t('nearbyTitle')}</h2>
+          {v.nearby.length === 0 ? <p className={styles.muted}>{t('nearbyNone')}</p> : (
+            <>
+              <p className={styles.note}>{t('nearbyNote')}</p>
+              <ul className={styles.nearby}>
+                {v.nearby.map((n) => (
+                  <li key={n.ars}>
+                    <span className={styles.ars}>{n.ars}</span>
+                    <span className={styles.nearName}><NameOf ars={n.ars} nameKo={n.nameKo} /></span>
+                    <span className={styles.nearOwl}>{n.owl.join(' · ')}</span>
+                    <span className={styles.nearDist}>{t('nearbyItem', { m: roundM(n.distanceM) })}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </section>
 
-      <Link href="/routes" className={styles.allRoutesLink}>
-        ← {t('nav.viewAllRoutes')}
-      </Link>
+        <section className={styles.section} aria-labelledby="links-title">
+          <h2 id="links-title" className={styles.h2}>{t('linksTitle')}</h2>
+          <p className={styles.links}>
+            {autoRoutes.map((x) => <Link key={x.routeId} href={`/routes/${x.routeId}`} className={styles.crossLink}>{routeName(x, ko)} →</Link>)}
+            {owlLinks.map((o) => <Link key={o.no} href={o.path!} className={styles.crossLink}>{o.no} →</Link>)}
+            <Link href="/night-bus-map" className={styles.crossLink}>{t('mapLink')} →</Link>
+          </p>
+        </section>
+
+        <section className={styles.section} aria-labelledby="src-title">
+          <h2 id="src-title" className={styles.h2}>{t('sourcesTitle')}</h2>
+          <SourceBlock items={[
+            { label: t('srcStops'), text: t('srcStopsText', { snapshot: NIGHT_META.stopsSource.snapshot, namesDate: stopNamesSourceMeta.collectedAt.slice(0, 10) }) },
+            { label: t('srcAuto'), text: t('srcAutoText', { date: v.lastChecked }) },
+            { label: t('srcOwl'), text: t('srcOwlText', { revisedOn: NIGHT_META.scheduleSource.revisedOn }) },
+          ]} />
+          <ReportLine label={t('report')} mail={CONTACT_MAIL} />
+        </section>
       </div>
     </>
   );

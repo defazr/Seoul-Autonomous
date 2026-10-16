@@ -14,7 +14,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { getApprovedStopPath } from '../../../../lib/stop-pages';
+import { ARRIVAL_STOP_IDS } from '../../../../lib/stop-pages';
 import { R3A_HUBS } from '../../../../lib/night-bus/registry';
 import hubsDoc from '../../../../data/night-bus-hubs.json';
 import {
@@ -201,7 +201,8 @@ export async function GET(
   const { stopId } = await context.params;
 
   // 승인 Stop 게이트(자율주행 Stop 7 + R3a 허브 ARS). 임의 arsId 를 프록시하지 않는다.
-  if (!getApprovedStopPath(stopId) && !HUB_ARS.has(stopId)) {
+  // R3b-1: 링크 함수(getApprovedStopPath)가 아니라 승인 7 ARS 리터럴로 판정한다 — 장소 페이지의 01020 은 여기 없다(Codex BLOCK 2).
+  if (!ARRIVAL_STOP_IDS.has(stopId) && !HUB_ARS.has(stopId)) {
     return NextResponse.json({ reason: 'UPSTREAM_ERROR' }, { status: 404 });
   }
 

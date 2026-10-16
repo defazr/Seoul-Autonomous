@@ -9,3 +9,23 @@
 .bannerText { color: var(--fg-2); font-size: 14px; margin-top: 6px; max-width: 60ch; }
 .bannerActions { display: grid; gap: 10px; justify-items: start; }
 @media (max-width: 640px) { .banner { grid-template-columns: 1fr; } }
+/* R3b-2 본문 (새벽·심야 묶음) — 노선 카드 + 공식 개요 한 묶음 · 규칙 · 올빼미 겹침 · 근거 */
+.item { border: 1px solid var(--line); border-radius: 16px; background: var(--bg-2); overflow: hidden; }
+.item > :first-child { border: 0; border-radius: 0; background: transparent; }
+.item > :first-child:hover { transform: none; }
+.item:has(> :first-child:hover) { border-color: var(--line-2); }
+.facts { margin: 0; padding: 12px 16px 14px; border-top: 1px solid var(--line); display: grid; gap: 6px; font-size: 13px; line-height: 1.5; }
+.facts div { display: flex; flex-wrap: wrap; gap: 2px 10px; }
+.facts dt { min-width: 7.5em; color: var(--fg-3); }
+.facts dd { margin: 0; color: var(--fg); }
+.note { margin-top: 14px; color: var(--fg-3); font-size: 13px; line-height: 1.6; }
+.rules { margin: 0; padding-left: 22px; display: grid; gap: 10px; font-size: 15px; line-height: 1.65; color: var(--fg); }
+.prose { display: grid; gap: 12px; font-size: 15px; line-height: 1.7; color: var(--fg); }
+.prose p { margin: 0; }
+.linkGroup { margin-top: 18px; }
+.linkLead { color: var(--fg-3); font-size: 13px; }
+.linkGroup .links { margin-top: 8px; }
+.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-top: 16px; }
+.panel { padding: 18px 20px; border-radius: 16px; background: var(--bg-2); border: 1px solid var(--line); }
+.panel h2 { font-size: 18px; margin-bottom: 10px; }
+.panel .prose { font-size: 14px; gap: 10px; }

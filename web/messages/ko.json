@@ -260,7 +260,7 @@
       "stopNames": {
         "field": "정류장 영문 명칭",
         "source": "서울특별시 「서울시 버스 정류소 노선도 다국어 목록 정보」",
-        "license": "공공누리 제1유형 — 정류소 ID와 영문 명칭만 발췌",
+        "license": "공공누리 제1유형 — 정류소 ID와 영문 명칭만 발췌하고, 철자를 고치지 않고 원문 그대로 씁니다",
         "asOf": "2025-03-14 기준"
       },
       "fare": {
@@ -353,8 +353,6 @@
     "routesDescription": "서울 자율주행 노선의 기·종점, 정류장과 표시된 운행 시각을 노선별로 확인하세요.",
     "routeDetailTitle": "{name} — Seoul Autonomous",
     "routeDetailDescription": "자율주행 버스 {name} 노선. 정류장, 운행시간, 지도를 확인하세요.",
-    "stopDetailTitle": "{name} 정류장 {ars} — Seoul Autonomous",
-    "stopDetailDescription": "{name} 정류장(ARS {ars})을 지나는 자율주행 노선 {routes}의 정차 순서와 이전·다음 정류장을 확인하세요. 다음 정류장: {nextStops}.",
     "howToRideTitle": "서울 올빼미버스·자율주행버스 타는 법 — Seoul Autonomous",
     "howToRideDescription": "올빼미버스 정류소 번호·방면·첫차 막차·교통카드 환승과 자율주행 버스·로보택시 이용 방법을 안내합니다.",
     "dataSourceTitle": "데이터 출처 — Seoul Autonomous",
@@ -367,7 +365,9 @@
     "termsDescription": "Seoul Autonomous 이용약관. 서울 자율주행 교통 정보 독립 안내 사이트.",
     "faqTitle": "자주 묻는 질문 — Seoul Autonomous",
     "faqDescription": "서울 자율주행 버스·로보택시 시범 서비스 이용 방법에 대한 자주 묻는 질문.",
-    "updatesTitle": "업데이트 — Seoul Autonomous"
+    "updatesTitle": "업데이트 — Seoul Autonomous",
+    "stopPlaceTitle": "{name} 정류장 {a}·{b} 어느 쪽에서 타나 — Seoul Autonomous",
+    "stopPlaceDescription": "{name} 정류소 {a}({aToward} 방면)·{b}({bToward} 방면)에 서는 자율주행 {routes}, 올빼미버스 {owl}. 정류소 번호·방면·이전·다음 정류장·지도 링크."
   },
   "updates": {
     "pageTitle": "업데이트",
@@ -382,18 +382,93 @@
     "backToUpdates": "← 전체 업데이트",
     "eventDate": "발생일",
     "sourceDate": "참고 자료 발행일",
-    "officialSource": "공식 출처: 서울특별시 보도자료"
+    "officialSource": "공식 출처: 서울특별시 보도자료",
+    "modifiedDate": "수정",
+    "extraSourcePrefix": "공식 출처:"
   },
   "routeGroups": {
     "earlyMorning": {
-      "title": "서울 새벽 자율주행 노선",
-      "description": "서울 새벽 자율주행 노선의 기·종점, 정류장과 표시된 출발 시각을 확인하세요.",
-      "intro": "오전 5시 이전에 운행하는 자율주행 버스 노선입니다. 탑승 전 카카오맵에서 최신 시간표를 확인하세요."
+      "title": "서울 새벽동행 자율주행버스 노선",
+      "description": "서울 새벽동행 자율주행버스 {names} 노선의 운행 지역, 운행 시작일, 정류소 수, 탑승 규칙과 올빼미버스와 같은 정류소를 비교합니다.",
+      "intro": "서울시 새벽동행 자율주행버스 {count}개 노선입니다. 모두 새벽 {time}에 기점을 한 번 출발해 왕복합니다.",
+      "introFallback": "오전 5시 이전에 운행하는 자율주행 버스 노선입니다. 탑승 전 카카오맵에서 최신 시간표를 확인하세요.",
+      "facts": {
+        "corridor": "지나는 곳",
+        "launched": "운행 시작",
+        "stops": "정류소",
+        "stopsValue": "{n}곳",
+        "owl": "올빼미버스와 같은 정류소",
+        "owlValue": "{shared}곳 · {routes}",
+        "owlNone": "없음",
+        "note": "지나는 곳과 운행 시작일은 서울시 발표(2026년 4월 27일 노선별 운행 개요) 기준입니다. 정류소 수와 올빼미버스 겹침은 이 사이트의 정류장 데이터로 셌습니다."
+      },
+      "rules": {
+        "title": "타기 전에 알아 둘 것",
+        "express": "A741·A148·A504는 첫차 이용이 많은 주요 정류소에만 서는 급행입니다. 평소 타던 정류소에 서는지 노선 페이지의 정류장 목록이나 지도 앱의 노선 번호 검색으로 먼저 확인하세요.",
+        "seats": "좌석이 다 차면 태우지 않습니다(입석 금지). 정류소 안내 전광판(BIT)이나 버스 앞면 LED 좌석표시기로 빈자리를 확인하세요.",
+        "tag": "타고 내릴 때 일반 시내버스처럼 교통카드를 태그합니다.",
+        "time": "이 사이트의 {time}은 기점 출발 시각입니다. 이번에 확인한 서울시 발표에는 정류소별 통과 시각이 없어 보여 주지 않습니다.",
+        "note": "위 1~3은 서울시가 A741(2026년 3월 29일)·A148(4월 15일)·A504(4월 27일) 개통 안내에서 밝힌 탑승 규칙입니다. 요금과 운행 요일은 노선 페이지의 표시를 따릅니다."
+      },
+      "owl": {
+        "title": "올빼미버스와 같은 정류소",
+        "schedule": "올빼미버스 {owlCount}개 노선의 막차는 기점 출발 기준 {lastMin}~{lastMax}이고, 새벽동행 {count}개 노선은 {time}에 기점을 출발합니다. 서울시는 새벽동행 버스를 일반 시내버스 첫차보다 30분 일찍 출발하는 버스로 소개합니다.",
+        "shared": "두 버스는 정류소 번호를 함께 쓰는 곳이 많습니다. {list}.",
+        "item": "{name} {total}곳 중 {shared}곳",
+        "unknown": "같은 정류소에서 어느 버스가 먼저 지나는지는 알 수 없습니다. 확인한 자료에 정류소별 통과 시각이 없고, 이 사이트는 도착 시각을 추정하지 않습니다.",
+        "stopsLead": "자율주행 노선과 올빼미버스를 한 페이지에 정리한 정류장",
+        "mapLink": "올빼미버스 노선도"
+      },
+      "sources": {
+        "title": "이 페이지의 근거",
+        "overview": "지나는 곳·운행 시작일",
+        "rules": "탑승 규칙",
+        "stops": "정류장·순서·출발 시각",
+        "stopsText": "카카오맵에 표시된 서울시 제공 노선 정보 · {date} 확인",
+        "owl": "올빼미버스 정류소·운행표",
+        "owlText": "서울열린데이터광장 「서울시 버스노선별 정류소정보」 {snapshot} · 서울시 「심야 전용 시내버스(올빼미버스) 운행」 {revisedOn}",
+        "report": "잘못된 정보를 발견하면 알려주세요"
+      }
     },
     "lateNight": {
-      "title": "서울 심야 자율주행 노선",
-      "description": "서울의 심야 자율주행버스와 로보택시 서비스를 노선별 상태와 확인된 정보 범위에 따라 살펴보세요.",
-      "intro": "오후 10시 이후에 운행하는 자율주행 서비스입니다. 탑승 전 카카오맵에서 최신 시간표를 확인하세요."
+      "title": "서울 심야 자율주행버스와 로보택시",
+      "description": "밤 10시 이후 운행하는 서울 자율주행 심야A21 버스와 강남 로보택시의 운행 시간, 기점 출발 시각, 요금, 호출 방법과 올빼미버스와 함께 고르는 기준을 정리했습니다.",
+      "intro": "이 페이지는 밤 10시 이후 서울의 자율주행 서비스 두 가지를 안내합니다. 정해진 노선을 도는 {bus} 버스와, 정해진 구역 안에서 부르는 {taxi}입니다.",
+      "introFallback": "오후 10시 이후에 운행하는 자율주행 서비스입니다. 탑승 전 카카오맵에서 최신 시간표를 확인하세요.",
+      "a21": {
+        "title": "심야A21 — 동대문역~합정역",
+        "route": "심야A21은 동대문역을 출발해 종로·광화문·서대문·신촌·홍대입구를 지나 합정역에서 돌아오는 노선입니다. 정류소는 {stops}곳입니다.",
+        "departures": "노선 정보의 운행 시각 {first}~{last}와 배차 간격 {headway}분으로 계산하면, 기점 출발은 {list}, 밤사이 {n}번입니다.",
+        "weekday": "평일 운행으로 표시돼 있습니다.",
+        "owlAll": "정류소 {stops}곳 모두 올빼미버스도 서는 정류소 번호입니다(올빼미 {owlN}개 노선). 기점 출발이 밤사이 {n}번이라, 같은 정류소에 서는 올빼미버스 노선도 함께 확인해 두세요.",
+        "owlSome": "정류소 {stops}곳 중 {shared}곳은 올빼미버스도 서는 정류소 번호입니다(올빼미 {owlN}개 노선). 같은 정류소에 서는 올빼미버스 노선도 함께 확인해 두세요.",
+        "stopsLead": "심야A21이 지나는 정류장 페이지"
+      },
+      "taxi": {
+        "title": "강남 로보택시 — 구역 안에서 부르는 차",
+        "area": "강남 로보택시는 정해진 노선과 정류소가 없습니다. {area}에서 출발지와 목적지를 정해 {app} 앱으로 부릅니다.",
+        "hours": "운행은 평일 {start}~{end}입니다.",
+        "fare": "요금은 거리·시간과 상관없는 시간대별 기본요금 {min}~{max}원이고, 요금을 내려면 앱에 결제 카드를 미리 등록해야 합니다.",
+        "fleet": "서울시는 2026년 8월 20일부터 차량을 19대로 늘렸습니다.",
+        "fleetLink": "19대 확대 내용 자세히 보기"
+      },
+      "choose": {
+        "title": "무엇을 탈지 고르는 기준",
+        "a21": "가려는 곳이 심야A21 노선(동대문~종로~광화문~신촌~합정) 위라면, 기점 출발 {list} 가운데 맞는 차가 있는지 보고 같은 정류소의 올빼미버스도 함께 확인하세요.",
+        "taxi": "출발지와 목적지가 모두 강남 시범운행지구 안이라면 평일 {start}~{end} 로보택시 운행 범위입니다.",
+        "owl": "그 밖의 밤 이동은 올빼미버스 {owlCount}개 노선도 확인해 보세요. 홈의 경로 찾기나 노선도에서 출발·도착 정류장을 고르면 됩니다.",
+        "days": "심야A21과 로보택시는 둘 다 평일 운행으로 안내돼 있습니다."
+      },
+      "sources": {
+        "title": "이 페이지의 근거",
+        "a21": "심야A21 정류장·순서·운행 시각",
+        "a21Text": "카카오맵에 표시된 서울시 제공 노선 정보 · {date} 확인",
+        "taxiHours": "로보택시 운행 시간·대수",
+        "taxiFare": "로보택시 요금·호출 방법",
+        "owl": "올빼미버스 정류소·운행표",
+        "owlText": "서울열린데이터광장 「서울시 버스노선별 정류소정보」 {snapshot} · 서울시 「심야 전용 시내버스(올빼미버스) 운행」 {revisedOn}",
+        "report": "잘못된 정보를 발견하면 알려주세요"
+      }
     }
   },
   "status": {
@@ -404,18 +479,6 @@
     "checkBeforeRiding": "탑승 전 확인"
   },
   "stopDetail": {
-    "ars": "ARS",
-    "nextStops": "다음 정류장",
-    "previousStop": "이전 정류장",
-    "routesTitle": "이 정류장을 지나는 자율주행 노선",
-    "sharedSentence": "{name} ARS {ars}에는 {routes} 노선이 함께 정차합니다.",
-    "positionTitle": "{route}에서의 위치",
-    "positionValue": "전체 {total}개 정류장 중 {seq}번째",
-    "viewRoute": "{route} 노선 보기",
-    "provenanceTitle": "정보 확인 기준",
-    "provenanceStopNames": "정류장 공식명 — 서울특별시 공공데이터",
-    "provenanceRouteData": "노선 정차 순서·이전·다음 정류장 — 카카오맵 기반 노선 데이터",
-    "checkedOn": "확인 {date}",
     "realtime": {
       "title": "도착정보 (조회 시각 기준)",
       "refresh": "새로고침",
@@ -743,9 +806,6 @@
       "eyebrow": "자율주행 노선",
       "hubLink": "동대문역 허브에서 올빼미버스 갈아타기"
     },
-    "stop": {
-      "eyebrow": "자율주행 정류장"
-    },
     "nightRoute": {
       "crumbMap": "심야버스 노선도"
     },
@@ -764,5 +824,48 @@
     "home": "홈에서 경로 찾기",
     "map": "올빼미버스 노선도",
     "routes": "자율주행 노선 목록"
+  },
+  "stopPlace": {
+    "eyebrow": "정류장",
+    "platformChip": "{ars} · {toward} 방면",
+    "summaryPair": "{a}에는 {aToward} 방면, {b}에는 {bToward} 방면 자율주행버스가 섭니다.",
+    "summaryDistance": "두 정류소는 서울시 좌표 기준 약 {m}m 떨어져 있습니다.",
+    "platformTitle": "정류소 {ars}",
+    "platformToward": "{toward} 방면",
+    "autoTitle": "자율주행 노선",
+    "autoToward": "{toward} 방면",
+    "autoLoop": "순환 노선",
+    "autoPosition": "전체 {total}곳 중 {seq}번째",
+    "prev": "이전",
+    "next": "다음",
+    "owlTitle": "같은 정류소에 서는 올빼미버스",
+    "owlNone": "이 정류소에 서는 올빼미버스는 없습니다.",
+    "owlToward": "<ko>{toward}</ko> 방면",
+    "whichTitle": "어느 쪽에서 타나",
+    "whichDistance": "{a} · {b} — 이름은 같지만 서는 버스의 방면이 반대입니다.",
+    "asymAuto": "{route} — {onlyAt}에만 섭니다. 반대 방향은 {oppName}({oppArs})에 서며, {other}에서 약 {m}m 거리입니다.",
+    "asymAutoNone": "{route} — {onlyAt}에만 섭니다. 반대 방향으로 갈 때는 이 장소의 정류소에 서지 않습니다.",
+    "asymOwl": "올빼미버스 {route} — {onlyAt}에만 섭니다. 반대 방향은 {oppName}({oppArs})에 서며, {other}에서 약 {m}m 거리입니다.",
+    "asymOwlNone": "올빼미버스 {route} — {onlyAt}에만 섭니다. 반대 방향으로 갈 때는 이 장소의 정류소에 서지 않습니다.",
+    "nearbyTitle": "직선 300m 안의 다른 올빼미버스 정류소",
+    "nearbyNote": "직선거리라 실제 걷는 길은 더 깁니다.",
+    "nearbyItem": "약 {m}m",
+    "nearbyNone": "직선 300m 안에 다른 올빼미버스 정류소는 없습니다.",
+    "linksTitle": "이어서 보기",
+    "mapLink": "올빼미버스 노선도",
+    "sourcesTitle": "이 페이지의 근거",
+    "srcStops": "정류소 번호·이름·좌표",
+    "srcStopsText": "서울시 버스노선별 정류소정보 {snapshot} · 영문 공식명 {namesDate}",
+    "srcAuto": "자율주행 정차 순서",
+    "srcAutoText": "카카오맵(서울시 제공 노선 정보) {date} 확인",
+    "srcOwl": "올빼미버스 방면·운행표",
+    "srcOwlText": "서울시 올빼미버스 운행표 {revisedOn}",
+    "report": "잘못된 정보를 발견하면 알려주세요",
+    "reportSubject": "[제보] {name} 정류장",
+    "jump": "{ars}로 이동",
+    "whichAuto": "자율주행",
+    "whichOwl": "올빼미버스",
+    "whichNext": "다음 정류장 {names}",
+    "whichNote": "방면은 각 노선이 이 정류소에서 향하는 끝 정류장 이름입니다."
   }
 }

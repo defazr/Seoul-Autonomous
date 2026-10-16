@@ -36,6 +36,8 @@ export type ArrivalCardProps = {
   ssotOrder: string[];
   /** 노선 표시명 (routeId → displayName). 실시간 응답의 노선명을 쓰지 않는다. */
   routeNames: Record<string, string>;
+  /** 장소 페이지(R3b-1)에서는 플랫폼 절(h2) 안이라 3. 기본 2 는 기존 동작. */
+  headingLevel?: 2 | 3;
 };
 
 type FetchResult =
@@ -72,7 +74,8 @@ function RefreshIcon() {
   );
 }
 
-export function ArrivalCard({ stopId, ssotOrder, routeNames }: ArrivalCardProps) {
+export function ArrivalCard({ stopId, ssotOrder, routeNames, headingLevel = 2 }: ArrivalCardProps) {
+  const Heading = headingLevel === 3 ? 'h3' : 'h2';
   const t = useTranslations('stopDetail.realtime');
   const [status, setStatus] = useState<Status>('loading');
   const [payload, setPayload] = useState<ArrivalPayload | null>(null);
@@ -145,9 +148,9 @@ export function ArrivalCard({ stopId, ssotOrder, routeNames }: ArrivalCardProps)
   return (
     <section className={styles.card} aria-labelledby="stop-realtime-title">
       <div className={styles.head}>
-        <h2 id="stop-realtime-title" className={styles.title}>
+        <Heading id="stop-realtime-title" className={styles.title}>
           {t('title')}
-        </h2>
+        </Heading>
         <button
           type="button"
           className={styles.refreshBtn}

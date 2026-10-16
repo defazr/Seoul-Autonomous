@@ -7,6 +7,15 @@ export type ArticleSection = {
   heading: { en: string; ko: string };
   paragraphs: { en: string[]; ko: string[] };
   bullets?: { en: string[]; ko: string[] };
+  /** 섹션 끝 내부 링크 줄 (R3b-2 · 노선·정류장 페이지로 이어지는 길). href 는 로케일 없는 경로. */
+  links?: { href: string; label: { en: string; ko: string } }[];
+};
+
+/** 본문이 기대는 추가 공식 출처 (R3b-2 · 대표 출처 sourceUrl 외). */
+export type ExtraSource = {
+  url: string;
+  publishedAt: string;
+  label: { en: string; ko: string };
 };
 
 export type UpdateEntry = {
@@ -24,6 +33,7 @@ export type UpdateEntry = {
   dateModified?: string;
   /** 공식 출처 URL. 있으면 기사 하단에 공식 출처 링크로 렌더된다 (Robotaxi Freshness에서 도입, optional). */
   sourceUrl?: string;
+  extraSources?: ExtraSource[];
   /** 공지형 고정 4섹션. articleSections 를 쓰는 콘텐츠형 기사에서는 생략한다. */
   sections?: {
     whatChanged: { en: string; ko: string };

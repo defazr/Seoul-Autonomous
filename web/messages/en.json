@@ -260,7 +260,7 @@
       "stopNames": {
         "field": "English stop names",
         "source": "Seoul Metropolitan Government multilingual bus stop name list",
-        "license": "KOGL Type 1 — only stop IDs and English names are extracted",
+        "license": "KOGL Type 1 — only stop IDs and English names are extracted; names are shown exactly as published, original spelling included",
         "asOf": "as of 2025-03-14"
       },
       "fare": {
@@ -353,8 +353,6 @@
     "routesDescription": "Browse Seoul autonomous routes with their endpoints, stops and listed operating times.",
     "routeDetailTitle": "{name} — Seoul Autonomous",
     "routeDetailDescription": "Autonomous bus route {name}. Check stops, hours, and map before riding.",
-    "stopDetailTitle": "Stop {ars} · {name} — Seoul Autonomous",
-    "stopDetailDescription": "Stop {ars} — {name}. Autonomous routes: {routes}. Stop order, previous and next stops on each route, checked against Seoul-provided information.",
     "howToRideTitle": "How to ride — Owl Bus and autonomous routes in Seoul",
     "howToRideDescription": "How to ride the Seoul Owl Bus: stop numbers, directions, first and last buses, card taps and transfers, plus autonomous buses and robotaxis.",
     "dataSourceTitle": "Data source — Seoul Autonomous",
@@ -367,7 +365,9 @@
     "termsDescription": "Terms of use for Seoul Autonomous, an independent guide to Seoul's autonomous transportation services.",
     "faqTitle": "FAQ — Seoul Autonomous",
     "faqDescription": "Common questions about how to ride Seoul's autonomous bus and robotaxi pilot services.",
-    "updatesTitle": "Updates — Seoul Autonomous"
+    "updatesTitle": "Updates — Seoul Autonomous",
+    "stopPlaceTitle": "{name} stops {a} & {b}: which side to board — Seoul Autonomous",
+    "stopPlaceDescription": "{name}: stop {a} (toward {aToward}) and stop {b} (toward {bToward}). Autonomous {routes} and owl buses {owl} — stop numbers, directions, previous and next stops, map links."
   },
   "updates": {
     "pageTitle": "Updates",
@@ -382,18 +382,93 @@
     "backToUpdates": "← All updates",
     "eventDate": "Event date",
     "sourceDate": "Source published",
-    "officialSource": "Official source: Seoul Metropolitan Government press release"
+    "officialSource": "Official source: Seoul Metropolitan Government press release",
+    "modifiedDate": "Updated",
+    "extraSourcePrefix": "Official source:"
   },
   "routeGroups": {
     "earlyMorning": {
-      "title": "Early morning autonomous routes in Seoul",
-      "description": "Check endpoints, stops and listed departure times for Seoul's early-morning autonomous routes.",
-      "intro": "These autonomous bus routes operate in the early morning hours before 5:00 AM. Check Kakao Map for the latest schedule before riding."
+      "title": "Seoul early-morning autonomous buses (Saebyeok routes)",
+      "description": "Compare Seoul's Saebyeok early-morning autonomous buses {names}: service areas, start dates, stop counts, boarding rules and the stops they share with owl night buses.",
+      "intro": "Seoul's {count} Saebyeok early-morning autonomous bus routes. Each leaves its starting stop once, at {time}, and makes one round trip.",
+      "introFallback": "These autonomous bus routes operate in the early morning hours before 5:00 AM. Check Kakao Map for the latest schedule before riding.",
+      "facts": {
+        "corridor": "Runs via",
+        "launched": "In service since",
+        "stops": "Stops",
+        "stopsValue": "{n}",
+        "owl": "Stops shared with owl buses",
+        "owlValue": "{shared} · {routes}",
+        "owlNone": "None",
+        "note": "Service areas and start dates follow Seoul's route overview of 27 April 2026. Stop counts and owl-bus overlaps were counted from this site's stop data."
+      },
+      "rules": {
+        "title": "Before you ride",
+        "express": "A741, A148 and A504 run express, stopping only at the main stops with the most first-bus riders. Check the stop list on the route page, or search the route number in a map app, to see whether your usual stop is served.",
+        "seats": "No standing: once every seat is taken the bus takes no more passengers. Check free seats on the stop's bus information display (BIT) or the LED seat indicator on the front of the bus.",
+        "tag": "Tap your transit card when boarding and alighting, as on regular city buses.",
+        "time": "{time} on this site is the departure time at the starting stop. The Seoul announcements checked give no passing times for each stop, so none are shown.",
+        "note": "Items 1–3 are the boarding rules Seoul gave in its launch notices for A741 (29 March 2026), A148 (15 April) and A504 (27 April). Fares and operating days follow what each route page shows."
+      },
+      "owl": {
+        "title": "Stops shared with owl night buses",
+        "schedule": "The last buses on the {owlCount} owl routes leave their starting stops between {lastMin} and {lastMax}; the {count} Saebyeok routes leave theirs at {time}. Seoul describes Saebyeok buses as departing 30 minutes before the regular first city buses.",
+        "shared": "Many stop numbers are shared by both: {list}.",
+        "item": "{name} {shared} of {total}",
+        "unknown": "Which bus passes a shared stop first cannot be told: the materials checked give no per-stop passing times, and this site does not estimate arrivals.",
+        "stopsLead": "Stop pages covering both autonomous routes and owl buses",
+        "mapLink": "Owl bus route map"
+      },
+      "sources": {
+        "title": "Sources for this page",
+        "overview": "Service areas · start dates",
+        "rules": "Boarding rules",
+        "stops": "Stops · order · departure time",
+        "stopsText": "Seoul route data shown on Kakao Map · checked {date}",
+        "owl": "Owl bus stops · timetable",
+        "owlText": "Seoul Open Data Plaza bus route stop dataset {snapshot} · Seoul owl bus timetable {revisedOn}",
+        "report": "Spotted something wrong? Let us know"
+      }
     },
     "lateNight": {
-      "title": "Late-night autonomous routes in Seoul",
-      "description": "Explore Seoul's late-night autonomous bus and robotaxi services with route status and clearly scoped information.",
-      "intro": "These autonomous services operate late at night after 10:00 PM. Check Kakao Map for the latest schedule before riding."
+      "title": "Seoul late-night autonomous bus and robotaxi",
+      "description": "Two late-night autonomous services in Seoul after 22:00 — the Simya A21 bus and the Gangnam robotaxi: hours, departures, fares, how to call, and how to choose alongside owl night buses.",
+      "intro": "This page covers two autonomous services in Seoul after 22:00: the {bus} bus on a fixed route, and the {taxi}, called within a set zone.",
+      "introFallback": "These autonomous services operate late at night after 10:00 PM. Check Kakao Map for the latest schedule before riding.",
+      "a21": {
+        "title": "Simya A21 — Dongdaemun Station to Hapjeong Station",
+        "route": "Simya A21 starts at Dongdaemun Station, runs through Jongno, Gwanghwamun, Seodaemun, Sinchon and the Hongik University area to Hapjeong Station, then returns. It has {stops} stops.",
+        "departures": "Worked out from the listed hours ({first}–{last}) and the {headway}-minute interval, it leaves the starting stop {n} times a night: {list}.",
+        "weekday": "It is listed as a weekday service.",
+        "owlAll": "All {stops} stops share their stop number with owl night buses ({owlN} owl routes). With only {n} departures a night, check the owl routes at the same stop as well.",
+        "owlSome": "{shared} of its {stops} stops share their stop number with owl night buses ({owlN} owl routes). Check the owl routes at the same stop as well.",
+        "stopsLead": "Stop pages on Simya A21"
+      },
+      "taxi": {
+        "title": "Gangnam Robotaxi — called within a zone",
+        "area": "The Gangnam Robotaxi has no fixed route or stops. Within the {area}, you set a pick-up point and destination and call it in the {app} app.",
+        "hours": "It runs on weekdays, {start}–{end}.",
+        "fare": "The fare is a flat base fare by time band, KRW {min}–{max}, regardless of distance or duration; a payment card must be registered in the app beforehand.",
+        "fleet": "Seoul expanded the fleet to 19 vehicles from 20 August 2026.",
+        "fleetLink": "Read about the 19-vehicle expansion"
+      },
+      "choose": {
+        "title": "How to choose",
+        "a21": "If your destination is on the Simya A21 line (Dongdaemun – Jongno – Gwanghwamun – Sinchon – Hapjeong), see whether one of its departures ({list}) fits, and check owl buses at the same stop.",
+        "taxi": "If both your start and destination are inside the Gangnam pilot zone, that is the robotaxi's service range on weekdays, {start}–{end}.",
+        "owl": "For other night trips, check the {owlCount} owl bus routes too: pick your start and end stops in the home route finder or on the route map.",
+        "days": "Both Simya A21 and the robotaxi are listed as weekday services."
+      },
+      "sources": {
+        "title": "Sources for this page",
+        "a21": "Simya A21 stops · order · times",
+        "a21Text": "Seoul route data shown on Kakao Map · checked {date}",
+        "taxiHours": "Robotaxi hours · fleet",
+        "taxiFare": "Robotaxi fares · how to call",
+        "owl": "Owl bus stops · timetable",
+        "owlText": "Seoul Open Data Plaza bus route stop dataset {snapshot} · Seoul owl bus timetable {revisedOn}",
+        "report": "Spotted something wrong? Let us know"
+      }
     }
   },
   "status": {
@@ -404,18 +479,6 @@
     "checkBeforeRiding": "CHECK BEFORE RIDING"
   },
   "stopDetail": {
-    "ars": "ARS",
-    "nextStops": "{count, plural, one {Next stop} other {Next stops}}",
-    "previousStop": "Previous stop",
-    "routesTitle": "Autonomous routes serving this stop",
-    "sharedSentence": "{routes} serve {name} (ARS {ars}).",
-    "positionTitle": "Position on {route}",
-    "positionValue": "Stop {seq} of {total} on this route",
-    "viewRoute": "View {route} route",
-    "provenanceTitle": "How this information was checked",
-    "provenanceStopNames": "Official stop names — Seoul Metropolitan Government open data",
-    "provenanceRouteData": "Stop order and neighboring stops — route data based on Kakao Map",
-    "checkedOn": "checked {date}",
     "realtime": {
       "title": "Arrivals (as of query time)",
       "refresh": "Refresh",
@@ -743,9 +806,6 @@
       "eyebrow": "Autonomous route",
       "hubLink": "Transfer to the Owl Bus at Dongdaemun hub (KO)"
     },
-    "stop": {
-      "eyebrow": "Autonomous stop"
-    },
     "nightRoute": {
       "crumbMap": "Night bus map"
     },
@@ -764,5 +824,48 @@
     "home": "Find a route on the home page",
     "map": "Owl Bus route map",
     "routes": "Autonomous routes"
+  },
+  "stopPlace": {
+    "eyebrow": "Stop",
+    "platformChip": "{ars} · toward {toward}",
+    "summaryPair": "Autonomous buses toward {aToward} stop at {a}; those toward {bToward} stop at {b}.",
+    "summaryDistance": "The two stops are about {m} m apart (Seoul coordinates).",
+    "platformTitle": "Stop {ars}",
+    "platformToward": "toward {toward}",
+    "autoTitle": "Autonomous routes",
+    "autoToward": "toward {toward}",
+    "autoLoop": "Loop route",
+    "autoPosition": "Stop {seq} of {total}",
+    "prev": "Previous",
+    "next": "Next",
+    "owlTitle": "Owl night buses at this stop",
+    "owlNone": "No owl night bus stops here.",
+    "owlToward": "toward <ko>{toward}</ko>",
+    "whichTitle": "Which side to board",
+    "whichDistance": "{a} · {b} — same name, opposite directions.",
+    "asymAuto": "{route} stops only at {onlyAt}. In the other direction it stops at {oppName} ({oppArs}), about {m} m from {other}.",
+    "asymAutoNone": "{route} stops only at {onlyAt}. In the other direction it does not stop at this place.",
+    "asymOwl": "Owl bus {route} stops only at {onlyAt}. In the other direction it stops at {oppName} ({oppArs}), about {m} m from {other}.",
+    "asymOwlNone": "Owl bus {route} stops only at {onlyAt}. In the other direction it does not stop at this place.",
+    "nearbyTitle": "Other owl bus stops within 300 m",
+    "nearbyNote": "Straight-line distances; the walk is longer.",
+    "nearbyItem": "about {m} m",
+    "nearbyNone": "No other owl bus stop within 300 m.",
+    "linksTitle": "See also",
+    "mapLink": "Owl bus route map",
+    "sourcesTitle": "Sources for this page",
+    "srcStops": "Stop numbers · names · coordinates",
+    "srcStopsText": "Seoul bus route stop data {snapshot} · official English names {namesDate}, spelling as published",
+    "srcAuto": "Autonomous stop order",
+    "srcAutoText": "Kakao Map (Seoul route data) · checked {date}",
+    "srcOwl": "Owl bus directions · timetable",
+    "srcOwlText": "Seoul owl bus timetable {revisedOn}",
+    "report": "Spotted something wrong? Let us know",
+    "reportSubject": "[Report] {name} stop",
+    "jump": "Go to stop {ars}",
+    "whichAuto": "Autonomous",
+    "whichOwl": "Owl buses",
+    "whichNext": "Next stop {names}",
+    "whichNote": "Each direction names the end of the line a route heads for from this stop."
   }
 }

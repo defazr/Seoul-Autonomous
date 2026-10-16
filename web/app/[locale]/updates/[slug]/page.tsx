@@ -166,7 +166,7 @@ export default async function UpdateDetailPage({
             '@type': 'Article',
             headline: title,
             datePublished: entry.date,
-            dateModified: entry.date,
+            dateModified: entry.dateModified ?? entry.date,
             author: {
               '@type': 'Organization',
               name: 'Seoul Autonomous',
@@ -198,6 +198,15 @@ export default async function UpdateDetailPage({
         <span className={styles.dateMeta}>
           {isKo ? '게시' : 'Posted'} {formatDate(entry.date, isKo)}
         </span>
+        {/* 다시 쓴 글(R3b-2)은 수정일을 함께 보인다 — JSON-LD dateModified 와 같은 값 */}
+        {entry.dateModified && entry.dateModified !== entry.date && (
+          <>
+            <span className={styles.dateSep}>·</span>
+            <span className={styles.dateMeta}>
+              {t('modifiedDate')} {formatDate(entry.dateModified, isKo)}
+            </span>
+          </>
+        )}
         {/* 사이트 자체 공지(게시일 = 발생일 = 자료일)는 날짜를 한 번만 보인다 */}
         {entry.eventDate !== entry.date && (
           <>
@@ -271,6 +280,15 @@ export default async function UpdateDetailPage({
                 ))}
               </ul>
             )}
+            {sec.links && (
+              <p className={styles.sectionLinks}>
+                {sec.links.map((l) => (
+                  <Link key={l.href} href={l.href} className={styles.sectionLink}>
+                    {isKo ? l.label.ko : l.label.en} →
+                  </Link>
+                ))}
+              </p>
+            )}
           </section>
         ))}
 
@@ -325,6 +343,18 @@ export default async function UpdateDetailPage({
             {`${t('officialSource')} · ${formatDate(entry.sourcePublishedAt, isKo)}`}
           </a>
         )}
+
+        {entry.extraSources?.map((src) => (
+          <a
+            key={src.url}
+            href={src.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.viewRoute}
+          >
+            {`${t('extraSourcePrefix')} ${isKo ? src.label.ko : src.label.en} · ${formatDate(src.publishedAt, isKo)}`}
+          </a>
+        ))}
 
         {entry.relatedRouteIds.map((id) => {
           const route = getRouteById(id);

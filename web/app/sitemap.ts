@@ -3,19 +3,15 @@ import { SITE_URL } from '../lib/seo/config';
 import routesData from '../data/routes.json';
 import type { FixedRoute } from '../lib/types/route';
 import { getAllUpdates } from '../data/updates';
-import { APPROVED_STOPS } from '../lib/stop-pages';
-import { buildGraph } from '../lib/graph/graph-core.mjs';
+import { STOP_PLACES } from '../lib/stop-pages';
+import { buildPlaceView } from '../lib/stop-places';
 import { R3A_NIGHT_ROUTES, R3A_HUBS } from '../lib/night-bus/registry';
 import nightBusDoc from '../data/night-bus-routes.json';
 
 const fixedRoutes = routesData.fixedRoutes as FixedRoute[];
 
-// Stop URL 은 승인 registry 7건만 나온다. 노선 소속은 Graph 파생이므로
-// lastModified 도 하드코딩하지 않고 멤버 노선의 lastChecked 에서 계산한다.
-const transitGraph = buildGraph(routesData);
-const lastCheckedByRouteId = new Map(
-  fixedRoutes.map((route) => [route.id, route.lastChecked]),
-);
+// 정류장 URL 은 장소 등록부 4곳(× ko/en)만 나온다 (R3b-1). 노선 소속은 Graph 파생이므로
+// lastModified 도 하드코딩하지 않고 두 플랫폼 노선 합집합의 lastChecked 최대로 계산한다 (stop-places.ts).
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const locales = ['en', 'ko'];
@@ -74,32 +70,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
-  for (const stop of APPROVED_STOPS) {
-    const graphStop = transitGraph.stopsById.get(stop.stopId);
-    if (!graphStop) {
-      throw new Error(`Approved stop ${stop.stopId} is not present in the transit graph`);
-    }
-    const memberDates = [...graphStop.routeIds]
-      .map((routeId) => lastCheckedByRouteId.get(routeId))
-      .filter((date): date is string => typeof date === 'string');
-    if (memberDates.length === 0) {
-      throw new Error(`Approved stop ${stop.stopId} has no member route lastChecked date`);
-    }
-    const lastModified = memberDates.reduce((latest, date) =>
-      date > latest ? date : latest,
-    );
-
+  for (const place of STOP_PLACES) {
+    const { lastChecked } = buildPlaceView(place);
     for (const locale of locales) {
       entries.push({
-        url: `${SITE_URL}/${locale}/stops/${stop.slug}`,
-        lastModified,
+        url: `${SITE_URL}/${locale}/stops/${place.slug}`,
+        lastModified: lastChecked,
         changeFrequency: 'monthly' as const,
         priority: 0.6,
         alternates: {
           languages: {
-            en: `${SITE_URL}/en/stops/${stop.slug}`,
-            'x-default': `${SITE_URL}/en/stops/${stop.slug}`,
-            ko: `${SITE_URL}/ko/stops/${stop.slug}`,
+            en: `${SITE_URL}/en/stops/${place.slug}`,
+            'x-default': `${SITE_URL}/en/stops/${place.slug}`,
+            ko: `${SITE_URL}/ko/stops/${place.slug}`,
           },
         },
       });
@@ -111,7 +94,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       // ko 전용 글 — en alternate 없음
       entries.push({
         url: `${SITE_URL}/ko/updates/${update.slug}`,
-        lastModified: update.date,
+        lastModified: update.dateModified ?? update.date,
         changeFrequency: 'monthly' as const,
         priority: 0.6,
       });
@@ -119,7 +102,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       for (const locale of locales) {
         entries.push({
           url: `${SITE_URL}/${locale}/updates/${update.slug}`,
-          lastModified: update.date,
+          lastModified: update.dateModified ?? update.date,
           changeFrequency: 'monthly' as const,
           priority: 0.6,
           alternates: {

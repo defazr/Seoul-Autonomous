@@ -24,15 +24,17 @@ export type ServiceHoursEntry = {
   routeDaysOfOperation: string;
 };
 
-export function StopServiceHours({ entries }: { entries: ServiceHoursEntry[] }) {
+/** headingLevel: 장소 페이지(R3b-1)에서는 플랫폼 절(h2) 안에 들어가므로 3 을 쓴다. 기본 2 는 기존 동작. */
+export function StopServiceHours({ entries, headingLevel = 2 }: { entries: ServiceHoursEntry[]; headingLevel?: 2 | 3 }) {
   const t = useTranslations('stopDetail.serviceHours');
   if (entries.length === 0) return null;
+  const Heading = headingLevel === 3 ? 'h3' : 'h2';
 
   return (
     <section className={styles.section} aria-labelledby="stop-service-hours-title">
-      <h2 id="stop-service-hours-title" className={styles.title}>
+      <Heading id="stop-service-hours-title" className={styles.title}>
         {t('title')}
-      </h2>
+      </Heading>
       <ul className={styles.list}>
         {entries.map((entry) => (
           <li key={entry.routeId} className={styles.row}>

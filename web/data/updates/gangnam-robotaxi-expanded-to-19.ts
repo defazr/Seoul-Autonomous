@@ -12,7 +12,17 @@ const entry: UpdateEntry = {
   summaryKo:
     '2026년 8월 20일부터 강남 심야 자율주행택시가 19대로 늘었습니다. 운행시간, 운행구역, 카카오T 호출 방법, 시간대별 요금을 한 번에 정리했습니다.',
   relatedRouteIds: ['gangnam-robotaxi'],
+  // R3b-2 (2026-10-16): 05-09 「강남 로보택시 서비스 확대」 글을 이 글로 통합(옛 URL 은 next.config redirects).
+  // 그 글의 3월 확대 내용 중 서울시 발표(516542)로 확인되는 것만 첫 섹션에 옮겼다.
+  dateModified: '2026-10-16',
   sourceUrl: 'https://www.seoul.go.kr/news/news_report.do?nttNo=464205',
+  extraSources: [
+    {
+      url: 'https://news.seoul.go.kr/traffic/archives/516542',
+      publishedAt: '2026-03-16',
+      label: { ko: '유료 전환·7대 확대 발표', en: 'Paid service and 7-vehicle expansion announcement' },
+    },
+  ],
   articleSections: [
     {
       heading: {
@@ -22,11 +32,13 @@ const entry: UpdateEntry = {
       paragraphs: {
         ko: [
           '서울시가 2026년 8월 19일, 강남 심야 자율주행택시를 8월 20일 밤 10시부터 7대에서 19대로 확대한다고 발표했습니다. 에스더블유엠(SWM)이 13대, 카카오모빌리티가 6대를 운행합니다.',
-          '이 서비스는 단계적으로 커져 왔습니다. 2024년 9월 3대 무료 시범으로 시작해 2026년 3월 7대로 늘었고, 같은 해 4월 유료로 전환된 뒤 이번이 세 번째 확대입니다.',
+          '이 서비스는 단계적으로 커져 왔습니다. 2024년 9월 3대 무료 시범으로 시작해 2026년 3월 7대로 늘었고, 같은 해 4월 유료로 바뀐 뒤, 이번에 19대로 늘어납니다.',
+          '2026년 3월 16일 7대로 늘 때는 기존 운행사 에스더블유엠이 2대를 늘리고 카카오모빌리티가 2대로 새로 참여했습니다. 같은 발표에서 서울시는 2024년 9월 26일부터 2026년 2월 28일까지 탑승이 7,754건이었다고 밝혔고, 유료 운행은 4월 6일부터 시작됐습니다.',
         ],
         en: [
           'On 19 August 2026 Seoul announced that its Gangnam late-night autonomous taxi fleet grows from 7 to 19 vehicles starting 20 August at 22:00. SWM operates 13 vehicles and Kakao Mobility 6.',
           'The service has grown in stages: it launched in September 2024 as a free pilot with 3 vehicles, expanded to 7 in March 2026, switched to paid service that April, and now reaches 19.',
+          'When the fleet grew to 7 on 16 March 2026, existing operator SWM added 2 vehicles and Kakao Mobility joined with 2. In that announcement Seoul reported 7,754 rides from 26 September 2024 to 28 February 2026; paid service began on 6 April.',
         ],
       },
     },
@@ -38,7 +50,7 @@ const entry: UpdateEntry = {
       paragraphs: {
         ko: [
           '운행 구역은 강남 자율주행자동차 시범운행지구 전역, 약 20.4㎢입니다.',
-          '정해진 노선을 도는 버스형 서비스가 아닙니다. 구역 안에서 출발지와 목적지를 직접 지정하면 로보택시가 그 지점으로 이동하는 목적지 지정 방식입니다.',
+          '정해진 노선을 도는 버스가 아닙니다. 구역 안에서 출발지와 목적지를 정해 부르면 로보택시가 그곳으로 갑니다.',
         ],
         en: [
           'The service covers the entire Gangnam autonomous driving pilot zone — approximately 20.4 km².',

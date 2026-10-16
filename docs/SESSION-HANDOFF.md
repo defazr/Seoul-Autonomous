@@ -1,9 +1,9 @@
 # Session Handoff
 
-> 마지막 업데이트: 2026-10-16 (**V8 배포 완료 14:39 KST · 73b0fa0 라이브 · candidate·라이브 QA 전항 PASS · latest 이동만 라이브 승인 대기 · 다음 = R3b 구현(10-17~) → Fable 복원 후 감사 → 재배포 → AdSense 5차**)
-> 현재 NEXT = **① V8.1(0061274) 라이브 — 포그린 iPhone 확인 → 라이브 승인 → latest 이동(아직 d55dbf7) ② 허브 지도 bakwijaguk 맞춤(§12.15) + 카카오 앱 링크·빈 창·iPhone 자동 밑줄(§12.16) = 코드 `e8aa58e` 커밋 · 푸시 · 재배포(V8.2) 진행 — 결과 R3A §12.17 · 포그린 실기기 피드백 루프 계속 ③ 배포 기록 docs 커밋(승인) ④ R3b 구현 = 약한 글 4 → 정류장 통합 (docs/worklogs/R3B-STOP-MERGE-DESIGN-20261016.md §0-1) ⑤ Fable 복원(10-18 14시) 후 감사 → 재배포 → Caddy 로그 크롤 확인 + 라이브 정책 재감사 → AdSense 5차** — 배포 기록 R3A §12.12(V8) · §12.14(V8.1) · 관측 T0 = 2026-10-16 14:39:55 KST · QA 는 Chromium + WebKit(iPhone 15) 둘 다.
-> 새 세션 첫 문구(클리어 후 그대로 입력): 「CLAUDE.md 절차대로 web/scripts/project-status.mjs 실측 → docs/SESSION-HANDOFF.md → docs/worklogs/R3B-STOP-MERGE-DESIGN-20261016.md(§0-1 결정·일정) 를 읽어. V8 은 라이브(73b0fa0)다. latest 이동과 배포 기록 docs 커밋이 아직이면 그것부터 물어봐. 그다음 R3b-2(약한 글 4) → R3b-1(정류장 통합)을 로컬에서 구현하고 127.0.0.1:3123 캡처로 보여 줘. 감사는 Fable 복원(10-18 14시) 후. 협업 구조는 10-15 확정 그대로 — 결정은 네가 하고 커밋·푸시·배포만 물어봐. 평문 보고, 끝에 「CC 이견 및 아이디어」와 정본 문서 경로 1건.」
-> 커밋: v2 셸 코드 `73b0fa0` · docs `43b14de` (푸시 완료 10-16 · local == origin) · 이후 docs(배포 기록 §12.12 · R3b 설계 · R3b Codex 결과 · 이 파일)는 미커밋 → 승인 후 docs-only 1건.
+> 마지막 업데이트: 2026-10-16 밤 (**V8.2 e8aa58e 라이브 · R3b 로컬 구현 + Codex 구현 검수 반영 = 빌드 26 · 코드 커밋 bce17fd(로컬 · 푸시 전) · latest 이동은 라이브 승인 대기 · routes.json 운영값(D6)은 포그린 명시 확인 대기 · 다음 = Fable 복원 후 정책 감사 → 푸시·재배포 → AdSense 5차**)
+> 현재 NEXT = **① V8.2(e8aa58e) 라이브 승인 → latest 이동(아직 d55dbf7) ② D6 자율주행 운영값 — 10-16 "추천대로" 지시로 적용하려다 로컬 자동 모드 안전장치가 routes.json(SSoT) 수정을 막음 → 포그린 명시 확인 후 적용(값·원문 = R3B §8.4 · data 커밋은 따로) ③ D4 현장 문장(선택) ④ Fable 복원(10-18 14시) 후 정책 에이전트 감사(Codex 구현 검수는 10-16 완료 = R3B §8.5) → 푸시 승인 → 재배포(배포 안전 계약) → Caddy 로그 크롤 확인 + 라이브 정책 재감사 → AdSense 5차** — 배포 기록 R3A §12.12(V8) · §12.14(V8.1) · §12.17(V8.2) · 관측 T0 = 2026-10-16 14:39:55 KST · QA 는 Chromium + WebKit(iPhone 15) 둘 다 · 지도 링크는 터치/마우스 분기(base.css) · 로컬 sitemap 71(라이브 79) · 보고는 쉬운 말로(포그린 10-16 "니가 얘기하는 게 너무 어려워서 잘 모르겠어").
+> 새 세션 첫 문구(클리어 후 그대로 입력): 「CLAUDE.md 절차대로 web/scripts/project-status.mjs 실측 → docs/SESSION-HANDOFF.md → docs/worklogs/R3B-STOP-MERGE-DESIGN-20261016.md(§8 구현 기록 · §8.4 남은 것 · §8.5 Codex 검수) 를 읽어. 라이브는 V8.2(e8aa58e)다. R3b 코드(bce17fd)와 docs 는 커밋됐고 푸시 전이다. latest 이동 · routes.json 운영값(D6) 적용이 아직이면 그것부터 쉬운 말로 물어봐. Fable 이 복원됐으면(10-18 14시 이후) 정책 에이전트 감사부터. 협업 구조는 10-15 확정 그대로 — 결정은 네가 하고 커밋·푸시·배포·routes.json 값 변경만 물어봐. 평문 + 쉬운 말 보고, 끝에 「CC 이견 및 아이디어」와 정본 문서 경로 1건.」
+> 커밋: R3b 코드 `bce17fd` + 그 다음 docs-only 1건(이 파일 · R3B §8 · STOP-URL-POLICY §17 · R3A §12.17) — 둘 다 로컬 · 푸시 전 (10-16 포그린 "너 추천대로 하고 … 코덱스 검수를 받어" 승인). 그 전 커밋: v2 셸 `73b0fa0` · docs `43b14de` · V8 후속 `0061274` · docs `bfb37bb` · V8.2 `e8aa58e` · docs `5dfc486` (푸시 완료).
 > (아래 "미커밋 작업 트리" 3줄은 `73b0fa0` 로 커밋된 내용의 역사 기록이다 — 현재 작업 트리 아님)
 > ⚠ 미커밋 작업 트리(2026-10-16 V4 끝 기준): 아래 V1~V3 목록 + V4 = app/[locale]/**/page.tsx 전부 · 각 page.module.css(토큰 치환·죽은 클래스 제거) · components/v2/transit/* · v2/ui/{Crumbs,MapLinks,Section,PageHero} · lib/transit-items.ts · lib/v2/map-links.ts · components/routes/RoutesList.tsx · components/legal/LegalDocument.tsx · components/night-bus-guide(s)/* · messages(pages 추가 · globalHeader/siteFooter/home/common 삭제) · scripts/qa-v2-all.mjs · 삭제 49파일(components/common·ui·home·layout · globals.css · legacy-bridge.css · design-preview · lib/fonts.ts · lib/design · routes/SearchBar · 옛 홈/early/late/privacy/terms page.module.css) · docs §12.4 · R3A-V4-REFRAME-CODEX-REVIEW-20261016.md. 캡처 ~/Desktop/seoul-shots/2026-10-16-v2-shell/01~24. **+ 10-16 아침 피드백 반영: components/v2/home/home.module.css · components/night-bus/HubMap.module.css · web/scripts/qa-v2-shots.mjs(popup 옵션) · docs §12.1·§12.5.** **+ V5: night-bus-map/{page.tsx,page.module.css,NightBusMap.tsx,night-bus-map.module.css} · components/night-bus/RouteExplorer.* · night-bus/[no]/page.tsx · messages nightBus.stopTap · scripts/qa-v2-shots.mjs(station·fs·stoptap). + V6: about/{page.tsx,page.module.css} · data-source/{page.tsx,page.module.css} · lib/night-bus/data.ts(NIGHT_META 타입) · data/updates/{index.ts,site-rebirth-night-bus-first.ts} · updates/[slug]/page.tsx · hubs/[slug]/page.tsx · routes/[id]/page.module.css · messages about·dataSource·metadata·routeDetail.disclaimer·updates.pageDescription · docs §12.6·§12.7.** **+ V7: app/[locale]/layout.tsx · lib/v2/client-messages.ts · app/[locale]/page.tsx · routes/page.tsx · stops/[slug]/page.tsx(페이지별 provider) · eslint.config.mjs(public/vendor 무시) · scripts/qa-links.mjs · faq/privacy/terms/routes[id]/stops 미사용 헬퍼 제거 · NightBusMap Codex FIX · docs §12.8 · R3A-V5V6-CODEX-REVIEW-20261016.md. 전체 = 수정 73 · 삭제 51 · 신규 묶음 25(기존 미추적 .playwright-mcp/ · docs/handoff/HANDOFF-2026* · route/ · round19 파일은 이 라운드 산출물 아님 — stage 금지).**
 > ⚠ 미커밋 작업 트리(2026-10-15 세션 2 · V1~V3): web/styles/v2/* · web/lib/v2/* · web/components/v2/** · web/lib/night-bus/client-model.ts·client-doc.ts·schematic.ts(HUB_NODE) · web/app/api/night-bus/client/route.ts · app/layout.tsx · app/[locale]/layout.tsx · app/[locale]/page.tsx · messages ko/en(shell·nightHome) · web/scripts/qa-v2-shots.mjs(캡처 QA) · R3A 문서 §12.1~12.3 · R3A-V2-SHELL-CODEX-REVIEW-20261015.md. 옛 components/common·ui·home·layout · app/globals.css 는 미참조 상태로 보존(V4 끝에 삭제). 커밋은 승인 후(코드 1 + docs 1).
@@ -398,11 +398,11 @@ ahead/behind = 0/0
 **Production axis — pin 가능 (docs 커밋으로 변하지 않음):**
 
 ```
-server checkout     006127405396670ce5960ffb70a9d4e6b395e025   (2026-10-16 15:37 V8.1 · iPhone 수정)
-Production runtime  006127405396670ce5960ffb70a9d4e6b395e025   ← OCI label로 직접 증명 가능
-image               sha256:a7875f34c6a1844a239331dfa816efb4b222c78bf42ee9c0ebd5510fdc86c0f2  (seoul-autonomous-web:0061274)
-latest              ⏳ 아직 d55dbf7d9afd…(b10c7d3) — 포그린 라이브 승인 후 0061274 로 이동
-previous runtime    73b0fa0 (이미지 51f33d1f9c77) ← rollback 기준점 (rollback-73b0fa0) · 그 전 b10c7d3 (rollback-b10c7d3)
+server checkout     e8aa58e7d3d244effff0c275de07ccd0a9492096   (2026-10-16 16:16 V8.2 · 카카오 앱 링크·허브 지도)
+Production runtime  e8aa58e7d3d244effff0c275de07ccd0a9492096   ← OCI label로 직접 증명 가능
+image               sha256:d90945140ec5caff7b0063ba47016912a3a6dcbf5742bb88cf51f04542e8181a  (seoul-autonomous-web:e8aa58e)
+latest              ⏳ 아직 d55dbf7d9afd…(b10c7d3) — 포그린 라이브 승인 후 e8aa58e 로 이동
+previous runtime    0061274 (이미지 a7875f34c6a1) ← rollback 기준점 (rollback-0061274) · 그 전 73b0fa0 (rollback-73b0fa0) · b10c7d3 (rollback-b10c7d3)
 sitemap             79 (v2 · Stop URL 14 유지 · 허브 3 · N노선 5 · 재탄생 글 ko/en 신규)
 v2 셸 코드 커밋      73b0fa0 (docs 43b14de)
 Stage 1 코드 커밋    f34ede8 구현 / 19ebf0e EN metadata polish
@@ -414,8 +414,8 @@ RT-2 코드 커밋       b10c7d3
 
 ```
 local HEAD == origin/main  ·  ahead/behind 0/0        ← docs axis (절대 SHA 대조 안 함)
-server checkout == runtime == 0061274                 ← Production axis (pin)
-running image == a7875f34c6a1…                        ← Production axis (pin)
+server checkout == runtime == e8aa58e                 ← Production axis (pin)
+running image == d90945140ec5…                        ← Production axis (pin)
 ```
 
 🚫 **`local/origin = <특정 SHA>` 를 current-state 기대값으로 쓰지 않는다** — 다음 docs 커밋에서 반드시 어긋난다.
@@ -431,6 +431,8 @@ docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revisi
 보존 자산 — **삭제·prune 금지**
 
 ```
+V8.2 backup   seoul_autonomous_web_backup_0061274_20261016-161637  (exited)
+V8.2 rollback seoul-autonomous-web:rollback-0061274 → a7875f34c6a1
 V8.1 backup   seoul_autonomous_web_backup_73b0fa0_20261016-153726  (exited)
 V8.1 rollback seoul-autonomous-web:rollback-73b0fa0 → 51f33d1f9c77
 V8 backup     seoul_autonomous_web_backup_b10c7d3_20261016-143955  (exited)
@@ -496,22 +498,25 @@ CSS 오버레이 유지, Fullscreen API 금지 / 전역 viewport·touch-action �
 --- AdSense ---
 ads.txt publisher ID = pub-7976139023602789 (layout.tsx client ID와 일치 유지)
 robots.txt 에 Disallow 추가 금지
---- Stop URL Policy (2026-08-26, 정본 docs/strategy/STOP-URL-POLICY-20260826.md) ---
+--- Stop URL Policy (2026-08-26 · 2026-10-16 개정 §17, 정본 docs/strategy/STOP-URL-POLICY-20260826.md) ---
 Policy B 확정(상한 64) + 이중 게이트 — **Stage 1의 33개는 생성 목표가 아니라 심사 상한이다**
 (최대 33 후보를 6/6로 개별 심사, 27개 통과면 27개만 — 숫자 채우기용 약한 페이지 생성 금지)
 최소 콘텐츠 계약 6/6 미달 = URL 생성 금지 / 무신호 single 182 영구 제외 / editorial 21 개별 심사
-slug = stopId-readable-name / EN fallback 6 = 생성+nameKo(품질 계약 동일) / URL identity = ARS stopId
-Stage 1→2 자동 진행 금지(Stage 2 미승인) / adjacent 링크 = 정책 통과 Stop끼리만 / noindex 페이지 0
---- Stage 1 Stop Pages (2026-08-27 CLOSED, 정본 docs/worklogs/STAGE1-STOP-PAGES-DEPLOYMENT-20260827.md) ---
-승인 Stop 7개 = URL 14개가 전부 — 이 목록(web/lib/stop-pages.ts 리터럴)을 넓히는 것은 별도 승인 사항
-Stop 페이지 관계·seq·이웃은 Graph Core 파생 단독 (하드코딩은 stopId/slug 뿐)
-방향쌍 구분 = ARS + 노선별 next-stop union / outbound·inbound·loop 노출 금지 / 창작 방향어 금지
-Stop→Stop 링크 v1 0 (이전·다음은 텍스트만) / Route↔Stop 양방향만 / StopsList 행은 비인터랙티브 유지
-  (승인 Stop 행에만 "정류장 상세" 링크 1개 — route chip 외 행 클릭 동작 금지)
-breadcrumb = JSON-LD 2-level [Home, Stop], 가시 breadcrumb 없음 / `/stops` index 페이지 없음(404)
-운영정보(운행시간·요금·배차·운행일)는 Stop 페이지에 복제하지 않는다 (route 페이지가 담당)
-EN metadata 어순 = `Stop {ars} · {name} — Seoul Autonomous` (방향쌍 SERP 구분용, KO는 이름 우선 유지)
-공식 EN 정류장명 원문 보존 — 축약·교정 금지 / Stop lastmod = 멤버 노선 lastChecked 최대(현재 날짜 금지)
+(10-16 개정) URL 단위 = 장소(같은 이름의 방향쌍 ARS 집합) · slug = 장소 이름 리터럴 · ARS = 페이지 안 절 앵커(#ars-XXXXX)
+  6/6 은 플랫폼마다 1·3·4항, 장소 전체에 2·5·6항 / 장소 밖 병합(다른 이름 묶기) 금지 / EN fallback 6 = 생성+nameKo(품질 계약 동일)
+Stage 1→2 자동 진행 금지(Stage 2 미승인) / adjacent 링크 = 같은 장소 안 앵커만 / noindex 페이지 0
+--- Stage 1 Stop Pages (2026-08-27 CLOSED · 2026-10-16 R3b-1 장소 통합, 정본 R3B-STOP-MERGE-DESIGN-20261016.md §8) ---
+장소 4 = URL 8 · 플랫폼 8(승인 7 + 01020) — 이 목록(web/lib/stop-pages.ts STOP_PLACES 리터럴)을 넓히는 것은 별도 승인 사항
+도착정보 API 허용 = ARRIVAL_STOP_IDS(승인 7 리터럴) + R3a 허브 ARS — 장소 등록부·링크 함수로 판정 금지(01020 불허)
+옛 ARS URL 14 → 장소 URL#ars 영구 이동(data/legacy-redirects.json · 308 1회) / sitemap 에 옛 URL 0
+장소 페이지 관계·seq·이웃·방면은 Graph Core·올빼미 데이터 파생 단독 (하드코딩은 slug/ARS 뿐)
+방향쌍 구분 = ARS 절 + 노선별 방면(정류장 배열 계산)·이전/다음 / outbound·inbound·loop 노출 금지 / 창작 방향어 금지
+Stop→Stop 링크 = 같은 장소 두 절의 앵커만 (근처 정류소는 텍스트) / Route↔Stop 양방향 / StopsList 행은 비인터랙티브 유지
+  (등록 플랫폼 행에만 "정류장 상세" 링크 1개 — route chip 외 행 클릭 동작 금지)
+breadcrumb = JSON-LD 3-level [Home, Routes, 장소] + 가시 Crumbs / `/stops` index 페이지 없음(404)
+운영정보(운행시간·요금·배차·운행일)는 정류장 페이지에 복제하지 않는다 — 유일한 예외 RT-2 01009 절의 노선 운행 시간 카드
+EN metadata = `{name} stops {a} & {b}: which side to board — Seoul Autonomous`
+공식 EN 정류장명 원문 보존 — 축약·교정 금지 / 장소 lastmod = 두 플랫폼 노선 합집합 lastChecked 최대(현재 날짜 금지)
 --- CTG (2026-08-25) ---
 web/data/routes.json 원본 무수정 (파생 레이어만) / 루트 routes.json 비접촉
 267 Stop 전량 페이지 생성 금지 / 노선 선 기하·night-bus-data.ts 수정 금지 유지

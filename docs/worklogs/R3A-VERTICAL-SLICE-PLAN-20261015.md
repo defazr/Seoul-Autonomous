@@ -417,6 +417,20 @@ cutover    15:37:26 · HEALTH=PASS · 중단 1.54초 · backup = seoul_autonomou
 코드     빌드 21(§12.15) + 22 합계 8 파일 — HubMap.tsx · HubMap.module.css · lib/v2/map-links.ts · v2/ui/MapLinks.tsx · NightBusMap.tsx · RouteExplorer.tsx · styles/v2/base.css · app/[locale]/layout.tsx
 ```
 
+### 12.17 V8.2 재배포 기록 (2026-10-16 16:16 KST · 코드 e8aa58e · docs 5dfc486 · 포그린 "해")
+
+```
+푸시       bfb37bb..5dfc486 (local == origin)
+Phase 0    운영 0061274(a7875f34c6a1) · 작업 트리 untracked Dockerfile 1건만 · Dockerfile pin 일치 · Caddyfile 7719a106f154… · 디스크 여유 35G · 타 컨테이너 재시작 0 · 다른 도메인 404 = opinet-proxy 루트뿐(정상)
+rollback   rollback-0061274 = a7875f34c6a1 (MATCH=PASS) · latest 여전히 d55dbf7d9afd(b10c7d3)
+build      e8aa58e… → sha256:d90945140ec5… · 85/85 · secret 0 · Dockerfile pin 3회 일치
+candidate  qa-links 79·81 정상 · 옛 79 URL 전부 200 · /api/arrivals 01009·22011 200 · 99999 404 · 비밀 노출 0 · 카카오 앱 링크 · 네이버 번호 링크 · format-detection 있음 · 운영 무접촉
+cutover    16:16:37 · HEALTH=PASS · 중단 1.67초 · backup = seoul_autonomous_web_backup_0061274_20261016-161637 · candidate 제거
+사후       Caddyfile 불변 · 타 컨테이너 재시작 0 · 다른 도메인 배포 전 == 후
+라이브 QA  qa-links 79·81 정상 · format-detection telephone=no, address=no, email=no · 보이는 지도 링크 iPhone 15 WebKit·Android = 카카오 m.map.kakao.com/actions/searchView?q={번호} 같은 탭 / 데스크톱 = /link/map 핀 새 탭 · 허브 지도 420px · 전체화면(iPhone 방식 화면 덮기) 393×659 → 끝내기 420 복귀 · 한 손가락 드래그 −121px · WebKit iPhone 전수 79 URL 문제 0
+남음       포그린 실기기 확인 → 라이브 승인 → latest 이동 · 이 기록 docs 커밋(승인 후)
+```
+
 ## CC 이견 및 아이디어
 
 1 GPT 의 브랜드명 교체 제안에는 반대 — 도메인 변경 없이 이름만 바꾸면 검색 결과에 두 이름이 섞여 신뢰가 떨어진다. 태그라인으로 해결.

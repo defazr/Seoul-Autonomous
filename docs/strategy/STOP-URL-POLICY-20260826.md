@@ -1,7 +1,7 @@
 # Stop URL Policy (정본) — SEO 안전 계약
 
 - 확정일: 2026-08-26 (포그린 7결정 / GPT 검수 / CC audit 실측 기반)
-- 상태: **APPROVED — 정책 확정. Stop 페이지 구현·생성은 아직 0** (별도 라운드·별도 승인)
+- 상태: **APPROVED — 2026-10-16 개정(§17 · 1 장소 = 1 페이지)**. 아래 §1~§16 은 2026-08-26 원문이며, §17 과 다르면 §17 이 우선한다.
 - 근거 audit: 2026-08-26 Stop URL 정책 READ-ONLY audit (판정 PROCEED WITH NARROWER GATE)
 
 ## 1. 목적
@@ -129,3 +129,56 @@ Stage 자동 확대 · 이름 기반 slug · 방향쌍 병합 URL · 비후보 �
 ## 개정 예고 (2026-10-16 · 포그린 결정)
 
 AdSense 5차 신청 전 보강(R3a §12.10 · GPT-REVIEW-20261016.md)에 따라 포그린이 **B(양방향 통합)** 를 선택했다. 적용 시 이 문서의 slug·"1 ARS = 1 페이지" 조항은 "1 장소(양방향) = 1 페이지 · 옛 ARS URL 은 301" 로 개정한다. §12 의 색인 안전 계약(사이트맵 포함 · noindex 0 · thin 생성 금지)은 유지한다. 개정 본문은 R3b 설계 문서 승인 뒤 쓴다.
+
+→ 개정 본문은 §17 (2026-10-16 R3b-1 구현과 함께 작성 · 옛 ARS URL 은 Next 영구 리다이렉트 308 — 301 은 Caddy 규칙이 필요해 배포 안전 계약상 쓰지 않는다).
+
+---
+
+## 17. 2026-10-16 개정 — 1 장소 = 1 페이지 (R3b-1 · 포그린 결정 B)
+
+근거: 포그린 결정 B(2026-10-16 · GPT-REVIEW-20261016.md BLOCK 1) · 설계 docs/worklogs/R3B-STOP-MERGE-DESIGN-20261016.md §2.10 · Codex 설계 감사 R3B-DESIGN-CODEX-REVIEW-20261016.md(BLOCK 1·2 · FIX 1~5 반영). 설계 결정(D1·D2·D7)은 포그린 위임("현재는 너 혼자 판단하면 된다")에 따라 CC 가 내렸다.
+
+### 17.1 조항별 개정
+
+```
+§4~§6 후보·게이트   후보 단위 = 장소(같은 이름의 방향쌍 ARS 집합). 상한 64 · 숫자 채우기 금지 · Stage 1 "심사 상한" 원칙 유지.
+                   6/6 최소 콘텐츠 계약은 플랫폼(ARS)마다 1·3·4항(공식명+ARS · 노선별 위치 · 앞/뒤 정류장),
+                   장소 전체에 2·5·6항(경유 노선 전부 · 구조 역할 · provenance)을 적용한다.
+§7 slug            URL = /{ko|en}/stops/<장소 이름 slug> (예: gwanghwamun-station). slug 는 등록부 리터럴(런타임 생성 금지 · 개칭에도 URL 안정).
+                   identity 는 장소의 ARS 집합이며, ARS 는 페이지 안 절의 앵커(#ars-01009)로 유지한다.
+§8 KO/EN           (유지) EN 도 같은 계약 · 공식 EN 정류장명 원문 보존(축약·교정 금지) · fallback 6 규칙 유지.
+§9 방향쌍           같은 이름의 양방향 정류소는 한 페이지의 두 절로 함께 다룬다. 방향·승차 위치·노선 관계는 절마다 분리해 적는다.
+                   방면 표기는 데이터 파생만(자율주행 = 노선 기·종점 · 올빼미 = 공식 기·종점) · outbound/inbound 노출 금지 · 창작 방향어 금지.
+§10 adjacent       같은 장소 안 두 절 사이의 앵커 링크만 허용. 근처 정류소는 텍스트(번호·이름·노선·직선거리)로만 적고 URL 을 만들지 않는다.
+§11 Stage 2        (유지+명시) 반대편 01020 추가는 승인 장소의 플랫폼 추가이지 Stage 2(turnaround∪terminal 31) 개방이 아니다 · 자동 확대 금지 유지.
+§12 색인 안전        (유지) 장소 URL 은 전부 sitemap 포함 · canonical 자기참조 · ko/en/x-default alternates · noindex 0 · thin 생성 금지.
+                   옛 ARS URL 은 영구 리다이렉트(Next permanent = 308 · 1회 이동)로 신호를 옮기고 sitemap 에서 뺀다.
+§13 Graph          (유지) 장소 페이지의 관계·순서·이웃·방면은 Graph Core·올빼미 데이터 파생 단독. 리터럴은 slug·ARS 뿐.
+§14 금지            "방향쌍 병합 URL" 삭제 → "장소 밖 병합(다른 이름의 정류소 묶기)" 금지로 교체. 나머지 금지 유지.
+```
+
+### 17.2 현재 등록부 (web/lib/stop-pages.ts · 2026-10-16)
+
+```
+장소 4 = URL 8 (ko/en) · 플랫폼 8
+  gwanghwamun-station                            01009 · 01010
+  jongno-2-ga                                    01013 · 01014
+  seoul-museum-of-history-gyeonghuigung-palace   01007 · 01008
+  jongno-5-ga-gwangjang-market                   01019 · 01020 (01020 = D2 · 심야A21 만 정차)
+옛 URL 14 (7 ARS × ko/en) → 장소 URL#ars-XXXXX 영구 리다이렉트 (data/legacy-redirects.json)
+도착정보 API 허용 범위 = ARRIVAL_STOP_IDS(승인 7 ARS 리터럴) + R3a 허브 ARS — 01020 은 들어가지 않는다(Codex BLOCK 2).
+  장소 등록부와 API 허용 술어는 분리돼 있다(링크 함수의 truthiness 를 승인 술어로 쓰지 않는다).
+RT-2 도착정보 카드 = ko · 01009 절 한 곳 그대로(확대 아님).
+```
+
+### 17.3 같이 바뀐 Stage 1 잠금 (SESSION-HANDOFF 잠금 절의 사후 명문화)
+
+```
+"승인 Stop 7개 = URL 14개가 전부"            → "장소 4 = URL 8 · 플랫폼 8(01020 포함)"
+"breadcrumb = JSON-LD 2-level · 가시 없음"    → 3-level [Home, Routes, 장소] + 가시 Crumbs (R3a V4·배포 전 점검 SEO FIX 6 에서 이미 바뀐 것을 명문화)
+"운영정보 복제 금지"                          → 유지. 유일한 예외 = RT-2 01009 절의 노선 운행 시간 카드(도착정보 카드 보조 · RT-2 설계 §3-2)
+"EN metadata 어순 Stop {ars} · {name}"       → 장소형 title "{name} stops {a} & {b}: which side to board"
+"Stop lastmod = 멤버 노선 lastChecked 최대"    → 두 플랫폼 노선 합집합의 lastChecked 최대
+"Stop→Stop 링크 v1 0"                        → 같은 장소 안 앵커만
+```
+

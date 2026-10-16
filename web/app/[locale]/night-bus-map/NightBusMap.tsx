@@ -1,11 +1,24 @@
 'use client';
 
-import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
+import { useState, useMemo, useRef, useCallback, useEffect, useLayoutEffect } from 'react';
 import {
   ROUTE_COLORS, ROUTE_LABEL, NODES, ROUTE_POLY, ROUTE_MEMBER,
   ROUTE_ORDER, RIVER,
 } from './night-bus-data';
 import styles from './night-bus-map.module.css';
+import { kakaoMapLink, naverMapLink } from '../../../lib/v2/map-links';
+import { onColor, routeDisplayColor } from '../../../lib/v2/route-color';
+
+/* ── 역 카드용 정류소 참조 — 서버(page.tsx)가 anchors.json + 노선 데이터로 조립해 넘긴다. 작도 데이터(night-bus-data.ts)는 무수정.
+   [노선, 방면 키, 정류소 번호, 정류장 이름, 위도, 경도] 튜플 — HTML 직렬화 크기를 줄이기 위해 키 없이 보낸다. ── */
+export type StopRef = [no: string, dir: 'out' | 'in', arsId: string, name: string, lat: number, lon: number];
+export type NightBusMapProps = {
+  stationStops?: Record<string, StopRef[]>;
+  /** 노선별 방면 이름 (out = 기점→종점 방향의 종점, in = 반대) */
+  towards?: Record<string, { out: string; in: string }>;
+  /** 노선 상세 페이지가 있는 노선 → locale 포함 경로 (등록부 5 + A21) */
+  routePaths?: Record<string, string>;
+};
 
 /* ── 역명 표시 (서울역만 예외 — 도시명 혼동 방지) ── */
 function shortName(name: string) {
@@ -13,11 +26,9 @@ function shortName(name: string) {
   return name.replace(/역$/, '');
 }
 
-/* ── 칩 글자색 자동 결정 (배경 밝기 기준) ── */
-function chipTextColor(hex: string) {
-  const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
-  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 < 0.6 ? '#fff' : '#191919';
-}
+/* ── 칩 색 — 글자색은 사이트 공용 규칙(lib/v2/route-color onColor · 휘도 0.2), 칩 배경은 표시색(N72 #1E1E1E → #C9CFDA: 어두운 틀에서 안 보임). 지도 선은 원색 그대로 ── */
+const chipBg = (id: string) => routeDisplayColor(id, ROUTE_COLORS[id]);
+function chipTextColor(hex: string) { return onColor(hex); }
 
 /* ── Constants ── */
 const VBX = -70, VBY = -65, VBW = 2560, VBH = 1600;
@@ -27,7 +38,7 @@ const DEFAULT_VB = { x: VBX, y: VBY, w: VBW, h: VBH };
 const MOBILE_VB = { x: 110, y: 17, w: 2200, h: 1436 };
 /* 전체화면 전용 — 전체 콘텐츠(저작권 포함) + 패딩, 중앙 정렬 */
 const FS_VB = { x: VBX - 20, y: VBY - 20, w: VBW + 40, h: VBH + 60 };
-const MIN_ZOOM = 1, MAX_ZOOM = 4;
+const MAX_ZOOM = 4;
 const REDUCED_MOTION = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 /* ── 전체화면 진입 제스처 상수 (데스크톱 더블클릭 + 모바일 한 손가락 더블탭) ── */
@@ -158,12 +169,12 @@ function useTouchZoom(
   baseVB: VB, isMobile: boolean,
 ) {
   const vbRef = useRef(vb);
-  vbRef.current = vb;
   const isZoomed = vb.w < baseVB.w * 0.95;
   const isZoomedRef = useRef(isZoomed);
-  isZoomedRef.current = isZoomed;
   const baseVBRef = useRef(baseVB);
-  baseVBRef.current = baseVB;
+  // 최신값은 렌더 중이 아니라 커밋 직후 ref 로 비춘다(react-hooks/refs). useLayoutEffect 라 paint 와 다음 터치 이벤트보다 먼저 반영된다 —
+  // passive effect 는 touchmove 같은 연속 이벤트 앞에서 flush 가 보장되지 않아 한 렌더 뒤처질 수 있다 (Codex V5 FIX).
+  useLayoutEffect(() => { vbRef.current = vb; isZoomedRef.current = isZoomed; baseVBRef.current = baseVB; });
   const touchState = useRef<{ dist: number; cx: number; cy: number; vb: VB; panning: boolean; sx: number; sy: number; moved: boolean } | null>(null);
 
   useEffect(() => {
@@ -232,7 +243,7 @@ function useTouchZoom(
       el.removeEventListener('touchmove', handleTouchMove);
       el.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [isMobile]);
+  }, [isMobile, setVb, stageRef]); // setVb·stageRef 는 호출부에서 useState setter·ref 라 안정적 — 의존성 명시만 추가
 
   const resetVB = useCallback(() => animateVB(vbRef.current, baseVBRef.current, setVb), [setVb]);
 
@@ -271,16 +282,16 @@ function SearchBox({ onPick, placeholder, selected }: { onPick: (n: string) => v
   const [q, setQ] = useState('');
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [active, setActive] = useState(-1); // 키보드로 고른 추천 (접근성 감사 B1 — 홈 AskCard 와 같은 콤보박스 패턴)
+  const listId = `obsr-${placeholder.replace(/[^가-힣a-zA-Z]/g, '').slice(0, 6)}`;
 
-  // Sync selected → q only when selected changes externally
-  const prevSelected = useRef(selected);
-  useEffect(() => {
-    if (prevSelected.current !== selected) {
-      prevSelected.current = selected;
-      if (selected && !editing) setQ(shortName(selected));
-      else if (!selected) setQ('');
-    }
-  }, [selected, editing]);
+  // 바깥에서 선택이 바뀌면 입력값을 따라간다 — 렌더 중 파생 상태 갱신(React 권장 패턴 · effect 안 setState 금지)
+  const [prevSelected, setPrevSelected] = useState(selected);
+  if (prevSelected !== selected) {
+    setPrevSelected(selected);
+    if (selected && !editing) setQ(shortName(selected));
+    else if (!selected) setQ('');
+  }
 
   const displayVal = editing ? q : (selected ? shortName(selected) : q);
   const query = q.trim();
@@ -288,6 +299,8 @@ function SearchBox({ onPick, placeholder, selected }: { onPick: (n: string) => v
   res.sort((a, b) => (stationMatch(a.slice(0, query.length), query) ? 0 : 1) - (stationMatch(b.slice(0, query.length), query) ? 0 : 1) || a.localeCompare(b, 'ko'));
   res = res.slice(0, 8);
 
+  const listOpen = open && !!query && res.length > 0;
+  const pick = (n: string) => { onPick(n); setQ(shortName(n)); setOpen(false); setActive(-1); };
   return (
     <div className={styles.obSearch}>
       <input
@@ -295,13 +308,25 @@ function SearchBox({ onPick, placeholder, selected }: { onPick: (n: string) => v
         value={displayVal}
         placeholder={placeholder}
         aria-label={placeholder}
-        onChange={(e) => { setQ(e.target.value); setEditing(true); setOpen(true); }}
+        role="combobox"
+        aria-expanded={listOpen}
+        aria-controls={listId}
+        aria-autocomplete="list"
+        aria-activedescendant={listOpen && active >= 0 ? `${listId}-${active}` : undefined}
+        onChange={(e) => { setQ(e.target.value); setEditing(true); setOpen(true); setActive(-1); }}
         onFocus={(e) => { setEditing(true); setOpen(true); e.target.select(); }}
-        onBlur={() => { setTimeout(() => { setOpen(false); setEditing(false); }, 150); }}
+        onBlur={() => { setTimeout(() => { setOpen(false); setEditing(false); setActive(-1); }, 150); }}
+        onKeyDown={(e) => {
+          if (!listOpen) return;
+          if (e.key === 'ArrowDown') { e.preventDefault(); setActive(a => (a + 1) % res.length); }
+          else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(a => (a <= 0 ? res.length - 1 : a - 1)); }
+          else if (e.key === 'Enter') { e.preventDefault(); pick(res[active >= 0 ? active : 0]); }
+          else if (e.key === 'Escape') { setOpen(false); setActive(-1); }
+        }}
       />
-      {open && query && res.length > 0 && (
-        <ul className={styles.obSr}>
-          {res.map(n => <li key={n} onMouseDown={() => { onPick(n); setQ(shortName(n)); setOpen(false); }}>{n}</li>)}
+      {listOpen && (
+        <ul className={styles.obSr} id={listId} role="listbox" aria-label={placeholder}>
+          {res.map((n, i) => <li key={n} id={`${listId}-${i}`} role="option" aria-selected={i === active} className={i === active ? styles.obSrActive : undefined} onMouseDown={() => pick(n)}>{n}</li>)}
         </ul>
       )}
       {open && query && res.length === 0 && (
@@ -342,11 +367,11 @@ function Legend({ sel, toggle }: { sel: Set<string>; toggle: (id: string) => voi
     <div className={styles.obLegend}>
       <div className={styles.obLegHead}>
         <svg viewBox="0 0 40 40" width={32} height={32} aria-hidden="true">
-          <rect x={8} y={9} width={24} height={19} rx={5} fill="#2b6fd6" />
-          <rect x={11} y={13} width={8} height={7} rx={1.5} fill="#cfe4ff" />
-          <rect x={21} y={13} width={8} height={7} rx={1.5} fill="#cfe4ff" />
-          <circle cx={14} cy={30} r={3} fill="#111" />
-          <circle cx={26} cy={30} r={3} fill="#111" />
+          <rect x={8} y={9} width={24} height={19} rx={5} fill="var(--accent)" />
+          <rect x={11} y={13} width={8} height={7} rx={1.5} fill="var(--accent-ink)" />
+          <rect x={21} y={13} width={8} height={7} rx={1.5} fill="var(--accent-ink)" />
+          <circle cx={14} cy={30} r={3} fill="#9AA3B2" />
+          <circle cx={26} cy={30} r={3} fill="#9AA3B2" />
         </svg>
         <span>올빼미버스</span>
         <span className={styles.obLegSite}>SeoulAutonomous.com</span>
@@ -358,7 +383,8 @@ function Legend({ sel, toggle }: { sel: Set<string>; toggle: (id: string) => voi
             <button
               key={id}
               className={`${styles.obChip}${on ? ` ${styles.on}` : ''}${dim ? ` ${styles.dim}` : ''}`}
-              style={{ background: ROUTE_COLORS[id], color: chipTextColor(ROUTE_COLORS[id]) }}
+              style={{ background: chipBg(id), color: chipTextColor(chipBg(id)) }}
+              aria-pressed={on}
               onClick={() => toggle(id)}
             >{ROUTE_LABEL[id]}</button>
           );
@@ -372,6 +398,7 @@ function Legend({ sel, toggle }: { sel: Set<string>; toggle: (id: string) => voi
               <button
                 className={`${styles.obChip} ${styles.a21}${on ? ` ${styles.on}` : ''}${dim ? ` ${styles.dim}` : ''}`}
                 style={{ background: ROUTE_COLORS.A21 }}
+                aria-pressed={on}
                 onClick={() => toggle(id)}
               >심야A21</button>
             );
@@ -384,30 +411,64 @@ function Legend({ sel, toggle }: { sel: Set<string>; toggle: (id: string) => voi
 }
 
 /* ── StationCard ── */
-function StationCard({ station, sel, toggle, setStation, setFrom, setTo, jFrom, jTo }: {
+function StationCard({ station, sel, toggle, setStation, setFrom, setTo, jFrom, jTo, stops = [], towards = {}, routePaths = {} }: {
   station: string; sel: Set<string>; toggle: (id: string) => void;
   setStation: (n: string | null) => void; setFrom: (n: string) => void; setTo: (n: string) => void;
   jFrom: string | null; jTo: string | null;
+  stops?: StopRef[]; towards?: Record<string, { out: string; in: string }>; routePaths?: Record<string, string>;
 }) {
   const routes = stationRoutes(station);
   const [warnOpen, setWarnOpen] = useState(false);
+  const [stopsOpen, setStopsOpen] = useState(true);
+  const pages = routes.filter(id => routePaths[id]);
+  // Esc 로 역 카드 닫기 (접근성 감사 F3)
+  useEffect(() => { const h = (e: KeyboardEvent) => { if (e.key === 'Escape') setStation(null); }; window.addEventListener('keydown', h); return () => window.removeEventListener('keydown', h); }, [setStation]);
   return (
     <div className={styles.obCard}>
-      <button className={styles.obCardX} onClick={() => setStation(null)}>×</button>
+      <button className={styles.obCardX} onClick={() => setStation(null)} aria-label="역 카드 닫기">×</button>
       <div className={styles.obCardSt}>{shortName(station)}</div>
       <div className={styles.obCardJbtns}>
-        <button className={`${styles.obBtn} ${styles.sm}${jFrom === station ? ` ${styles.on}` : ''}`} onClick={() => setFrom(station)}>여기서 출발</button>
-        <button className={`${styles.obBtn} ${styles.sm}${jTo === station ? ` ${styles.on}` : ''}`} onClick={() => setTo(station)}>여기로 도착</button>
+        <button className={`${styles.obBtn} ${styles.sm}${jFrom === station ? ` ${styles.on}` : ''}`} aria-pressed={jFrom === station} onClick={() => setFrom(station)}>여기서 출발</button>
+        <button className={`${styles.obBtn} ${styles.sm}${jTo === station ? ` ${styles.on}` : ''}`} aria-pressed={jTo === station} onClick={() => setTo(station)}>여기로 도착</button>
       </div>
       <div className={styles.obCardLab}>이 역을 지나는 노선</div>
       <div className={styles.obCardRoutes}>
         {routes.length ? routes.map(id => (
           <button key={id} className={`${styles.obChip} ${styles.sm}${sel.has(id) ? ` ${styles.on}` : ''}`}
-            style={{ background: ROUTE_COLORS[id], color: chipTextColor(ROUTE_COLORS[id]) }}
+            style={{ background: chipBg(id), color: chipTextColor(chipBg(id)) }}
+            aria-pressed={sel.has(id)}
             onClick={() => toggle(id)}>{ROUTE_LABEL[id]}</button>
         )) : <span className={styles.obCardNone}>현재 표시된 노선 없음</span>}
       </div>
-      <button className={styles.obCardWarnToggle} onClick={() => setWarnOpen(o => !o)}>
+      {stops.length > 0 && (
+        <>
+          <button className={styles.obCardStopsToggle} onClick={() => setStopsOpen(o => !o)} aria-expanded={stopsOpen}>
+            정류소 번호·방면 <span className={styles.obCardCount}>{stops.length}</span>
+            <span className={styles.obChevron}>{stopsOpen ? '▲' : '▼'}</span>
+          </button>
+          {stopsOpen && (
+            <ul className={styles.obCardStops} aria-label={`${shortName(station)} 정류소 번호와 방면`}>
+              {stops.map(([no, dir, arsId, name, lat, lon]) => (
+                <li key={`${no}-${dir}-${arsId}`}>
+                  <span className={styles.obCardStopRoute} style={{ background: chipBg(no), color: chipTextColor(chipBg(no)) }}>{ROUTE_LABEL[no]}</span>
+                  <span className={styles.obCardStopBody}>
+                    <span className={styles.obCardStopDir}>{towards[no]?.[dir] ?? ''} 방면</span>
+                    <span className={styles.obCardStopName}><b>{arsId}</b> {name}</span>
+                    <span className={styles.obCardStopLinks}>
+                      <a href={kakaoMapLink(name, lat, lon)} target="_blank" rel="noopener noreferrer">카카오맵</a>
+                      <a href={naverMapLink(name)} target="_blank" rel="noopener noreferrer">네이버지도</a>
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
+      {pages.length > 0 && (
+        <div className={styles.obCardPages}>노선 상세{pages.map(id => <a key={id} href={routePaths[id]}>{ROUTE_LABEL[id]} →</a>)}</div>
+      )}
+      <button className={styles.obCardWarnToggle} onClick={() => setWarnOpen(o => !o)} aria-expanded={warnOpen}>
         <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx={12} cy={10} r={3} />
         </svg>
@@ -416,7 +477,7 @@ function StationCard({ station, sel, toggle, setStation, setFrom, setTo, jFrom, 
       </button>
       {warnOpen && (
         <p className={styles.obCardWarnText}>
-          실제 정류장은 길 건너편이나 떨어진 곳일 수 있어요. 탑승 전 카카오맵에서 정확한 위치와 방향을 확인하세요.
+          실제 정류장은 길 건너편이나 떨어진 곳일 수 있어요. 탑승 전 위 정류소 번호의 지도 링크에서 정확한 위치와 방향을 확인하세요.
         </p>
       )}
     </div>
@@ -430,7 +491,7 @@ function TransferBar({ sel, transfer }: { sel: Set<string>; transfer: Set<string
   return (
     <div className={styles.obXfer}>
       <div><span className={styles.obXferK}>선택 노선</span>
-        {ids.map(id => <span key={id} className={styles.obXferPill} style={{ background: ROUTE_COLORS[id], color: chipTextColor(ROUTE_COLORS[id]) }}>{ROUTE_LABEL[id]}</span>)}
+        {ids.map(id => <span key={id} className={styles.obXferPill} style={{ background: chipBg(id), color: chipTextColor(chipBg(id)) }}>{ROUTE_LABEL[id]}</span>)}
       </div>
       <div><span className={styles.obXferK}>공유 환승역</span>
         <span className={styles.obXferV}>{shared.length ? shared.join(' · ') : '없음 — 이 노선들끼리는 직접 환승 불가'}</span>
@@ -454,17 +515,17 @@ function JourneyBar({ jFrom, jTo, journey, clearAll, focusedDirect, setFocusedDi
 
   // 직통 1개: 라벨 (클릭 안 됨)
   const labelChip = (id: string) => (
-    <span key={id} className={styles.obJourneyChip} style={{ background: ROUTE_COLORS[id], color: chipTextColor(ROUTE_COLORS[id]), cursor: 'default' }}>{ROUTE_LABEL[id]}</span>
+    <span key={id} className={styles.obJourneyChip} style={{ background: chipBg(id), color: chipTextColor(chipBg(id)), cursor: 'default' }}>{ROUTE_LABEL[id]}</span>
   );
   // 직통 복수: 셀렉트 (한 번에 하나)
   const selectChip = (id: string) => {
     const active = focusedDirect === id;
-    return <button key={id} className={`${styles.obJourneyChip}${active ? ` ${styles.obJourneyChipActive}` : ''}`} onClick={() => setFocusedDirect(active ? null : id)} style={{ background: ROUTE_COLORS[id], color: chipTextColor(ROUTE_COLORS[id]) }}>{ROUTE_LABEL[id]}</button>;
+    return <button key={id} className={`${styles.obJourneyChip}${active ? ` ${styles.obJourneyChipActive}` : ''}`} aria-pressed={active} onClick={() => setFocusedDirect(active ? null : id)} style={{ background: chipBg(id), color: chipTextColor(chipBg(id)) }}>{ROUTE_LABEL[id]}</button>;
   };
   // 환승: 숨김/표시 토글
   const toggleChip = (id: string) => {
     const hidden = hiddenLegs.has(id);
-    return <button key={id} className={`${styles.obJourneyChip}${hidden ? ` ${styles.obJourneyChipHidden}` : ''}`} onClick={() => toggleLeg(id)} style={{ background: ROUTE_COLORS[id], color: chipTextColor(ROUTE_COLORS[id]) }}>{ROUTE_LABEL[id]}</button>;
+    return <button key={id} className={`${styles.obJourneyChip}${hidden ? ` ${styles.obJourneyChipHidden}` : ''}`} aria-pressed={!hidden} onClick={() => toggleLeg(id)} style={{ background: chipBg(id), color: chipTextColor(chipBg(id)) }}>{ROUTE_LABEL[id]}</button>;
   };
 
   let body;
@@ -497,8 +558,12 @@ function JourneyBar({ jFrom, jTo, journey, clearAll, focusedDirect, setFocusedDi
       <div><span className={styles.obXferK}>경로</span><span className={styles.obJroute}>{jFrom ? st(jFrom) : <span className={styles.obPlaceholder}>출발역</span>} → {jTo ? st(jTo) : <span className={styles.obPlaceholder}>도착역</span>}</span></div>
       <div>{body}</div>
       <div className={styles.obJacts}>
-        {both && <a className={`${styles.obBtn} ${styles.sm} ${styles.kakao}`} href="https://map.kakao.com/?nil_profile=title&nil_src=local" target="_blank" rel="noopener noreferrer">카카오맵 길찾기</a>}
-        {both && <a className={`${styles.obBtn} ${styles.sm} ${styles.naver}`} href="https://map.naver.com/p/directions/-/-/-/transit?c=15.00,0,0,0,dh" target="_blank" rel="noopener noreferrer">네이버지도 길찾기</a>}
+        {both && (
+          <span className={styles.obMapLinks}>
+            <a href="https://map.kakao.com/?nil_profile=title&nil_src=local" target="_blank" rel="noopener noreferrer">카카오맵 길찾기</a>
+            <a href="https://map.naver.com/p/directions/-/-/-/transit?c=15.00,0,0,0,dh" target="_blank" rel="noopener noreferrer">네이버지도 길찾기</a>
+          </span>
+        )}
         {!hideReset && <button className={`${styles.obBtn} ${styles.sm} ${styles.ghost}`} onClick={clearAll}>초기화</button>}
       </div>
     </div>
@@ -598,7 +663,7 @@ function SvgMap({ svgRef, order, rOpacity, rWidth, isAll, activeNodes, transfer,
 }
 
 /* ── Main Component ── */
-export function NightBusMap() {
+export function NightBusMap({ stationStops = {}, towards = {}, routePaths = {} }: NightBusMapProps = {}) {
   const [sel, setSel] = useState<Set<string>>(() => new Set());
   const [station, setStation] = useState<string | null>(null);
   const [jFrom, setJFrom] = useState<string | null>(null);
@@ -611,10 +676,10 @@ export function NightBusMap() {
   // 환승: 숨긴 leg들
   const [hiddenLegs, setHiddenLegs] = useState<Set<string>>(() => new Set());
   const toggleLeg = useCallback((id: string) => {
-    setHiddenLegs(p => { const n = new Set(p); n.has(id) ? n.delete(id) : n.add(id); return n; });
+    setHiddenLegs(p => { const n = new Set(p); if (n.has(id)) n.delete(id); else n.add(id); return n; });
   }, []);
-  // 경로가 바뀌면 전부 리셋
-  useEffect(() => { setFocusedDirect(null); setHiddenLegs(new Set()); }, [jFrom, jTo]);
+  // 경로(출발·도착)가 바뀌면 직통 선택·숨긴 leg 를 함께 리셋 — effect 안 setState 대신 setter 와 같은 배치에서 (react-hooks/set-state-in-effect)
+  const resetJourneyUi = useCallback(() => { setFocusedDirect(null); setHiddenLegs(new Set()); }, []);
 
   /* ── Fullscreen state ── */
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -667,8 +732,7 @@ export function NightBusMap() {
 
   const sameStationGlobal = !!(jFrom && jTo && jFrom === jTo);
   const jActive = !!(journey && (journey as { routes?: string[] }).routes);
-  const allDirectRoutes: string[] = jActive && journey?.type === 'direct' ? [journey.routes![0], ...(journey.alt || [])] : [];
-  const isDirectMulti = allDirectRoutes.length > 1;
+  const allDirectRoutes = useMemo<string[]>(() => (jActive && journey?.type === 'direct' ? [journey.routes![0], ...(journey.alt || [])] : []), [jActive, journey]);
 
   // dispSel: 케이스별 보여줄 노선 집합
   const dispSel = (() => {
@@ -709,17 +773,17 @@ export function NightBusMap() {
   }, [jActive, journey, jFrom, jTo, focusedDirect, hiddenLegs, allDirectRoutes]);
 
   const toggle = useCallback((id: string) => {
-    if (jFrom || jTo) { setJFrom(null); setJTo(null); setSel(new Set([id])); return; }
-    setSel(p => { const n = new Set(p); n.has(id) ? n.delete(id) : n.add(id); return n; });
-  }, [jFrom, jTo]);
-  const clearSel = useCallback(() => { setSel(new Set()); setStation(null); setJFrom(null); setJTo(null); setFocusedDirect(null); setHiddenLegs(new Set()); }, []);
-  const setFrom = useCallback((n: string) => { setJFrom(n); setStation(null); }, []);
-  const setTo = useCallback((n: string) => { setJTo(n); setStation(null); }, []);
+    if (jFrom || jTo) { setJFrom(null); setJTo(null); resetJourneyUi(); setSel(new Set([id])); return; }
+    setSel(p => { const n = new Set(p); if (n.has(id)) n.delete(id); else n.add(id); return n; });
+  }, [jFrom, jTo, resetJourneyUi]);
+  const clearSel = useCallback(() => { setSel(new Set()); setStation(null); setJFrom(null); setJTo(null); resetJourneyUi(); }, [resetJourneyUi]);
+  const setFrom = useCallback((n: string) => { setJFrom(n); resetJourneyUi(); setStation(null); }, [resetJourneyUi]);
+  const setTo = useCallback((n: string) => { setJTo(n); resetJourneyUi(); setStation(null); }, [resetJourneyUi]);
   const pickStation = useCallback((n: string) => {
     setStation(n);
-    if (!jFrom) setJFrom(n);
-    else if (!jTo && n !== jFrom) setJTo(n);
-  }, [jFrom, jTo]);
+    if (!jFrom) { setJFrom(n); resetJourneyUi(); }
+    else if (!jTo && n !== jFrom) { setJTo(n); resetJourneyUi(); }
+  }, [jFrom, jTo, resetJourneyUi]);
 
   const activeNodes = useMemo(() => {
     if (isAll) return null;
@@ -737,7 +801,7 @@ export function NightBusMap() {
     } else dispSel.forEach(id => ROUTE_MEMBER[id]?.forEach(n => s.add(n)));
     if (jFrom) s.add(jFrom); if (jTo) s.add(jTo);
     return s;
-  }, [jActive, sel, journey, jFrom, jTo, isAll, dispSel]);
+  }, [jActive, journey, jFrom, jTo, isAll, dispSel]);
 
   const transfer = useMemo(() => {
     if (jActive && journey) {
@@ -782,13 +846,16 @@ export function NightBusMap() {
   const tapCandidateRef = useRef<{ x: number; y: number; t: number } | null>(null); // 완료된 첫 탭
   const activeTouchRef = useRef<{ id: number; x: number; y: number; moved: boolean; onSvg: boolean } | null>(null); // 진행 중 탭
 
+  const fsOverlayRef = useRef<HTMLDivElement | null>(null);
+  const fsReturnRef = useRef<HTMLElement | null>(null); // 닫은 뒤 포커스를 돌려줄 요소 (접근성 감사 B3)
   const openFullscreen = useCallback(() => {
+    fsReturnRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     savedOverflow.current = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     setFsVb(FS_VB);
     setFsShowHint(true);
     setIsFullscreen(true);
-  }, [isMobile]);
+  }, []);
 
   /* 진입 3경로(크게 보기 버튼·더블클릭·더블탭)가 전부 통과하는 단일 게이트.
      defer=true(더블탭)면 합성 click/dblclick 흐름이 끝난 다음 task에서 1회만 진입 —
@@ -889,11 +956,21 @@ export function NightBusMap() {
     }
   }, [isFullscreen]);
 
-  // Esc to close
+  // Esc to close · Tab 은 오버레이 안에서만 순환 (포커스 트랩) · 닫히면 트리거로 포커스 복귀
   useEffect(() => {
-    if (!isFullscreen) return;
+    if (!isFullscreen) {
+      const back = fsReturnRef.current; fsReturnRef.current = null;
+      if (back && document.contains(back)) requestAnimationFrame(() => back.focus());
+      return;
+    }
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') { e.preventDefault(); closeFullscreen(); }
+      if (e.key === 'Escape') { e.preventDefault(); closeFullscreen(); return; }
+      if (e.key !== 'Tab' || !fsOverlayRef.current) return;
+      const nodes = Array.from(fsOverlayRef.current.querySelectorAll<HTMLElement>('button, a[href], input, select, [tabindex]:not([tabindex="-1"])')).filter(n => !n.hasAttribute('disabled') && n.offsetParent !== null);
+      if (nodes.length === 0) return;
+      const first = nodes[0], last = nodes[nodes.length - 1], cur = document.activeElement;
+      if (e.shiftKey && (cur === first || !fsOverlayRef.current.contains(cur))) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && (cur === last || !fsOverlayRef.current.contains(cur))) { e.preventDefault(); first.focus(); }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
@@ -961,7 +1038,7 @@ export function NightBusMap() {
 
   return (
     <div className={styles.ob}>
-      <Header isAll={isAll && !jFrom && !jTo} clearSel={clearSel} exportPNG={exportPNG} onPickFrom={(n) => setJFrom(n)} onPickTo={(n) => setJTo(n)} jFrom={jFrom} jTo={jTo} onFullscreen={enterFullscreenNow} />
+      <Header isAll={isAll && !jFrom && !jTo} clearSel={clearSel} exportPNG={exportPNG} onPickFrom={(n) => { setJFrom(n); resetJourneyUi(); }} onPickTo={(n) => { setJTo(n); resetJourneyUi(); }} jFrom={jFrom} jTo={jTo} onFullscreen={enterFullscreenNow} />
       <Legend sel={dispSel} toggle={toggle} />
 
       {/* ── Inline map (항상 렌더 — 절대 언마운트 안 함) ── */}
@@ -977,7 +1054,7 @@ export function NightBusMap() {
         style={isMobile && isZoomed ? { touchAction: 'none' } : { touchAction: 'pan-y' }}
       >
         <SvgMap svgRef={svgRef} {...svgMapProps} vb={vb} />
-        {station && <StationCard station={station} sel={dispSel} toggle={toggle} setStation={setStation} setFrom={setFrom} setTo={setTo} jFrom={jFrom} jTo={jTo} />}
+        {station && <StationCard station={station} sel={dispSel} toggle={toggle} setStation={setStation} setFrom={setFrom} setTo={setTo} jFrom={jFrom} jTo={jTo} stops={stationStops[station] ?? []} towards={towards} routePaths={routePaths} />}
         {!jFrom && !jTo && sel.size >= 2 && <TransferBar sel={sel} transfer={transfer} />}
         {isMobile && isZoomed && (
           <button className={styles.obResetBtn} onClick={(e) => { e.stopPropagation(); resetVB(); }} aria-label="전체 보기">
@@ -989,7 +1066,7 @@ export function NightBusMap() {
 
       {/* ── Fullscreen overlay (인라인 위에 조건부로 얹음) ── */}
       {isFullscreen && (
-        <div className={styles.obOverlay} role="dialog" aria-label="전체화면 노선도">
+        <div ref={fsOverlayRef} className={styles.obOverlay} role="dialog" aria-modal="true" aria-label="전체화면 노선도">
           <button ref={fsCloseRef} className={styles.obFsClose} onClick={closeFullscreen} aria-label="전체화면 닫기">✕</button>
           <div className={styles.obFsControls}>
             <button className={`${styles.obFsCtrlBtn} ${styles.obFsCtrlPrimary}`} onClick={exportPNG}>PNG 저장</button>
@@ -1004,7 +1081,7 @@ export function NightBusMap() {
             <SvgMap {...svgMapProps} vb={fsVb} className={styles.obOverlaySvg} />
           </div>
           <div className={styles.obFsDock}>
-            {station && <StationCard station={station} sel={dispSel} toggle={toggle} setStation={setStation} setFrom={setFrom} setTo={setTo} jFrom={jFrom} jTo={jTo} />}
+            {station && <StationCard station={station} sel={dispSel} toggle={toggle} setStation={setStation} setFrom={setFrom} setTo={setTo} jFrom={jFrom} jTo={jTo} stops={stationStops[station] ?? []} towards={towards} routePaths={routePaths} />}
             {!jFrom && !jTo && sel.size >= 2 && <TransferBar sel={sel} transfer={transfer} />}
             {(jFrom || jTo) && <JourneyBar jFrom={jFrom} jTo={jTo} journey={journey} clearAll={clearSel} focusedDirect={focusedDirect} setFocusedDirect={setFocusedDirect} hiddenLegs={hiddenLegs} toggleLeg={toggleLeg} hideReset />}
           </div>

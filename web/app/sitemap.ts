@@ -19,7 +19,8 @@ const lastCheckedByRouteId = new Map(
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const locales = ['en', 'ko'];
-  const now = new Date().toISOString();
+  // 정적 안내 페이지의 lastmod = 마지막 내용 변경일(빌드 시각 X — SEO 감사 FIX 8). v2 재탄생(2026-10-16)에서 전부 다시 썼다.
+  const now = '2026-10-16';
 
   const staticPages = [
     { path: '', changeFrequency: 'weekly' as const, priority: 1.0 },
@@ -47,6 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         alternates: {
           languages: {
             en: `${SITE_URL}/en${page.path}`,
+            'x-default': `${SITE_URL}/en${page.path}`,
             ko: `${SITE_URL}/ko${page.path}`,
           },
         },
@@ -64,6 +66,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         alternates: {
           languages: {
             en: `${SITE_URL}/en/routes/${route.id}`,
+            'x-default': `${SITE_URL}/en/routes/${route.id}`,
             ko: `${SITE_URL}/ko/routes/${route.id}`,
           },
         },
@@ -95,6 +98,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         alternates: {
           languages: {
             en: `${SITE_URL}/en/stops/${stop.slug}`,
+            'x-default': `${SITE_URL}/en/stops/${stop.slug}`,
             ko: `${SITE_URL}/ko/stops/${stop.slug}`,
           },
         },
@@ -121,6 +125,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
           alternates: {
             languages: {
               en: `${SITE_URL}/en/updates/${update.slug}`,
+              'x-default': `${SITE_URL}/en/updates/${update.slug}`,
               ko: `${SITE_URL}/ko/updates/${update.slug}`,
             },
           },

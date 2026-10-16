@@ -3,17 +3,16 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import type { RouteListItem, RobotaxiListItem } from '../../lib/types/route';
-import { RouteCard } from '../ui/RouteCard';
-import { RobotaxiCard } from '../ui/RobotaxiCard';
-import { SegmentedControl } from '../ui/SegmentedControl';
-import { StatusDot } from '../ui/Pill';
-import { RouteGroupCard } from '../ui/RouteGroupCard';
-import { SearchBar } from './SearchBar';
+import { RouteCard } from '../v2/transit/RouteCard';
+import { RobotaxiCard } from '../v2/transit/RobotaxiCard';
+import { GroupCard } from '../v2/transit/GroupCard';
+import { SearchBar, SegmentedControl } from '../v2/transit/Controls';
+import { Pill } from '../v2/ui/Pill';
 import styles from './RoutesList.module.css';
 
 function MoonIcon() {
   return (
-    <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="var(--color-fg-2)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
     </svg>
   );
@@ -21,7 +20,7 @@ function MoonIcon() {
 
 function MoonStarIcon() {
   return (
-    <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="var(--color-fg-2)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
       <path d="M17 4l1 2 2 1-2 1-1 2-1-2-2-1 2-1z" />
     </svg>
@@ -64,19 +63,8 @@ function matchServiceQuery(service: RobotaxiListItem, q: string): boolean {
   return fields.some((f) => normalize(f).includes(nq));
 }
 
-function SensorIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="currentColor" strokeWidth={1.8}>
-      <circle cx={12} cy={12} r={9} />
-      <circle cx={12} cy={12} r={5} />
-      <circle cx={12} cy={12} r={1.5} fill="currentColor" />
-    </svg>
-  );
-}
-
 export function RoutesList({ routes, services, locale }: RoutesListProps) {
   const t = useTranslations('routes');
-  const ts = useTranslations('status');
 
   const [filter, setFilter] = useState<Filter>('ALL');
   const [query, setQuery] = useState('');
@@ -129,46 +117,36 @@ export function RoutesList({ routes, services, locale }: RoutesListProps) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.heading}>{t('title')}</h1>
-      </div>
-
       <SearchBar
         value={query}
         onChange={setQuery}
         placeholder={t('search.placeholder')}
       />
 
-      <SegmentedControl
-        options={filterOptions}
-        value={filter}
-        onChange={(v) => setFilter(v as Filter)}
-      />
-
-      <div className={styles.countRibbon}>
-        <StatusDot color="var(--color-accent)" size={6} />
-        <span className={styles.countText}>
+      <div className={styles.controls}>
+        <SegmentedControl options={filterOptions} value={filter} onChange={(v) => setFilter(v as Filter)} label={t('filterLabel')} />
+        <Pill tone="accent" dot on>
           {filter === 'ALL'
             ? t('countAll', { busCount: filteredBus.length, robotaxiCount: filteredTaxi.length })
             : filter === 'BUS'
               ? t('countBus', { count: filteredBus.length })
               : t('countTaxi', { count: filteredTaxi.length })}
-        </span>
+        </Pill>
       </div>
 
       {(earlyRoutes.length > 0 || lateCount > 0) && (
         <div className={styles.groupGrid}>
           {earlyRoutes.length > 0 && (
-            <RouteGroupCard
-              href={`/${locale}/routes/early-morning`}
+            <GroupCard
+              href="/routes/early-morning"
               icon={<MoonIcon />}
               title={t('groups.earlyMorningTitle')}
               meta={t('groups.meta', { count: earlyRoutes.length, range: getTimeRange(earlyRoutes) })}
             />
           )}
           {lateCount > 0 && (
-            <RouteGroupCard
-              href={`/${locale}/routes/late-night`}
+            <GroupCard
+              href="/routes/late-night"
               icon={<MoonStarIcon />}
               title={t('groups.lateNightTitle')}
               meta={t('groups.meta', { count: lateCount, range: getTimeRange(lateRoutes) })}

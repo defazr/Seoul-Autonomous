@@ -29,7 +29,7 @@ export const faqEn: FAQDocument = {
     {
       id: 'q5',
       question: 'Does this site provide real-time arrival information?',
-      answer: 'No. This site does not provide real-time arrival information. Information reflects checked stops and listed operating times and may not reflect live status. Always confirm with Kakao Map or the official source before riding.',
+      answer: 'On the hub pages (Gangnam Station, Hongik Univ. Station, Dongdaemun Station) and some stop pages, Seoul bus arrival information is fetched when you request it and shown with the time of the query. Other pages show timetable and check-date information only; this site does not refresh screens in real time. Before riding, also check the stop display or the official information.',
       sourceTags: ['data-source'],
     },
     {

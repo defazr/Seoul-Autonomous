@@ -1,9 +1,0 @@
-.section {
-  margin-bottom: var(--space-section-gap);
-}
-
-.row {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}

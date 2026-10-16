@@ -1,10 +1,10 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
 import { getAllUpdates } from '../../../data/updates';
-import { SiteFooter } from '../../../components/common/SiteFooter';
-import { PageTopBar } from '../../../components/ui/PageTopBar';
-import { PageContainer } from '../../../components/layout/PageContainer';
+import { Crumbs } from '../../../components/v2/ui/Crumbs';
+import { PageHero } from '../../../components/v2/ui/PageHero';
+import { Section } from '../../../components/v2/ui/Section';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import { buildPageMetadata } from '../../../lib/seo/metadata';
 import styles from './page.module.css';
@@ -23,7 +23,7 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: '/updates',
-    title: t('pageTitle'),
+    title: (await getTranslations({ locale, namespace: 'metadata' }))('updatesTitle'), // '업데이트' 단독 제목 → 브랜드 접미 (SEO 감사 FIX 4)
     description: t('pageDescription'),
   });
 }
@@ -46,13 +46,16 @@ export default async function UpdatesPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  setRequestLocale(locale); // 정적 프리렌더(next-intl) — 배포 전 점검 10-16
   const t = await getTranslations({ locale, namespace: 'updates' });
+  const tp = await getTranslations({ locale, namespace: 'pages' });
+  const ts = await getTranslations({ locale, namespace: 'shell' });
   const isKo = locale === 'ko';
   const allUpdates = getAllUpdates();
   const updates = allUpdates.filter(e => !e.customRender || locale === 'ko');
 
   return (
-    <PageContainer width="longform">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -68,14 +71,8 @@ export default async function UpdatesPage({
         }}
       />
 
-      <PageTopBar
-        href="/"
-        ariaLabel={isKo ? '홈으로 돌아가기' : 'Back to home'}
-      />
-      <div className={styles.header}>
-        <h1 className={styles.title}>{t('pageTitle')}</h1>
-      </div>
-
+      <PageHero eyebrow={tp('updates.eyebrow')} title={t('pageTitle')} lead={t('pageDescription')} crumbs={<Crumbs label={tp('crumbs')} items={[{ href: '/', label: ts('nav.home') }, { label: t('breadcrumb') }]} />} />
+      <Section size="tight" width="text" ariaLabel={t('pageTitle')}>
       <div className={styles.list}>
         {updates.map((entry) => (
           <Link
@@ -95,8 +92,7 @@ export default async function UpdatesPage({
           </Link>
         ))}
       </div>
-
-      <SiteFooter />
-    </PageContainer>
+      </Section>
+    </>
   );
 }

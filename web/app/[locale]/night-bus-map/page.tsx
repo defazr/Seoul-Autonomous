@@ -1,12 +1,18 @@
 import { notFound } from 'next/navigation';
 import { Link } from '../../../i18n/navigation';
-import { SiteFooter } from '../../../components/common/SiteFooter';
-import { PageContainer } from '../../../components/layout/PageContainer';
 import { SITE_URL, SITE_NAME } from '../../../lib/seo/config';
 import { NightBusMap } from './NightBusMap';
 import { NightBusGuideEn } from '../../../components/night-bus-guide/NightBusGuideEn';
 import { nightBusGuideEn } from '../../../data/night-bus-guide/night-bus-guide.en';
-import { ROUTE_COLORS } from './night-bus-data';
+import { ROUTE_COLORS, ROUTE_ORDER } from './night-bus-data';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getNightBus, ANCHORS, HUBS, NIGHT_META } from '../../../lib/night-bus/data';
+import { R3A_NIGHT_ROUTES, hubPath } from '../../../lib/night-bus/registry';
+import { MapLinks } from '../../../components/v2/ui/MapLinks';
+import type { StopRef } from './NightBusMap';
+import { Crumbs } from '../../../components/v2/ui/Crumbs';
+import { PageHero } from '../../../components/v2/ui/PageHero';
+import { Section } from '../../../components/v2/ui/Section';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import type { Metadata } from 'next';
 import styles from './page.module.css';
@@ -100,48 +106,15 @@ export async function generateMetadata({
 }
 
 /* ── SVG icons ── */
-function ChevronLeft() {
-  return (
-    <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M15 6l-6 6 6 6" />
-    </svg>
-  );
-}
-
 function AlertIcon() {
   return (
-    <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
       <line x1="12" y1="9" x2="12" y2="13" />
       <line x1="12" y1="17" x2="12.01" y2="17" />
     </svg>
   );
 }
-
-function ExternalLinkIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
-    </svg>
-  );
-}
-
-/* ── Hub data for HTML links ── */
-const clickableHubs = [
-  { label: '동대문', query: '동대문역' },
-  { label: '종로', query: '종로3가역' },
-  { label: '홍대입구', query: '홍대입구역' },
-  { label: '신촌', query: '신촌역' },
-  { label: '강남', query: '강남역' },
-  { label: '서울역', query: '서울역' },
-  { label: '합정', query: '합정역' },
-  { label: '신설동', query: '신설동역' },
-  { label: '청량리', query: '청량리역' },
-  { label: '잠실', query: '잠실역' },
-  { label: '사당', query: '사당역' },
-  { label: '영등포', query: '영등포역' },
-  { label: '건대입구', query: '건대입구역' },
-];
 
 /* ── Route descriptions ── */
 const routeDescriptions: { id: string; label: string; color: string; tag?: string; desc: string }[] = [
@@ -179,11 +152,11 @@ const routeDescriptions: { id: string; label: string; color: string; tag?: strin
   },
   {
     id: 'N51', label: 'N51', color: ROUTE_COLORS.N51,
-    desc: 'N51은 금천에서 영등포, 합정, 홍대입구, 신촌, 서울역, 광화문, 동대문, 청량리, 노원까지 이어지는 장거리 심야버스입니다. 서남권에서 도심을 거쳐 동북권까지 연결하며, 서울역 심야버스를 찾는 분들에게도 유용합니다.',
+    desc: '공식 기·종점: 시흥동~하계동. N51은 시흥동(금천)에서 구로디지털단지, 신도림, 영등포, 당산, 합정, 홍대입구, 신촌, 시청, 광화문, 동대문, 신설동, 고려대를 거쳐 하계(노원)까지 이어지는 장거리 심야버스입니다. 서남권에서 도심을 거쳐 동북권까지 연결합니다.',
   },
   {
     id: 'N61', label: 'N61', color: ROUTE_COLORS.N61,
-    desc: '공식 기·종점: 신정동~상계동. N61은 신정동, 사당, 강남, 잠실에서 건대입구, 군자, 면목, 노원까지 운행합니다. 강남권에서 동북부 외곽까지 이어지는 심야 노선으로, 대리기사 이동 경로와도 겹치는 구간이 많습니다.',
+    desc: '공식 기·종점: 신정동~상계동. N61은 신정동(양천)에서 신림, 서울대입구, 사당, 교대, 강남, 역삼, 선릉, 삼성, 건대입구, 군자, 태릉입구를 거쳐 노원·상계동까지 운행합니다. 강남권과 동북부 외곽을 잇는 심야 노선으로, 대리기사 이동 경로와 겹치는 구간이 많습니다.',
   },
   {
     id: 'N62', label: 'N62', color: ROUTE_COLORS.N62,
@@ -191,19 +164,19 @@ const routeDescriptions: { id: string; label: string; color: string; tag?: strin
   },
   {
     id: 'N64', label: 'N64', color: ROUTE_COLORS.N64,
-    desc: 'N64는 개화에서 영등포, 사당, 강남까지 운행하는 비교적 짧은 심야 노선입니다. 서부에서 남부 강남 방면으로 이동할 때 참고할 수 있습니다.',
+    desc: 'N64는 개화에서 마곡, 발산, 화곡, 목동, 영등포, 노량진, 이수, 교대, 강남, 역삼을 거쳐 염곡동까지 운행합니다. 서울 서부에서 한강 남쪽을 따라 강남 방면으로 이동할 때 참고할 수 있습니다.',
   },
   {
     id: 'N72', label: 'N72', color: ROUTE_COLORS.N72,
-    desc: '공식 기·종점: 수색동~신내동. N72는 수색동에서 합정, 홍대입구, 신촌, 서울역, 동대문, 신설동, 청량리를 거쳐 신내동까지 운행합니다. 서북권에서 도심을 거쳐 동북권으로 이동하는 심야 노선입니다.',
+    desc: '공식 기·종점: 수색동~신내동. N72는 수색동(은평)에서 상암, 합정, 홍대입구, 신촌, 공덕, 이태원, 약수, 신설동, 청량리, 상봉을 거쳐 신내동까지 운행합니다. 서북권에서 한강 북쪽을 따라 동북권으로 이동하는 심야 노선입니다.',
   },
   {
     id: 'N73', label: 'N73', color: ROUTE_COLORS.N73,
-    desc: 'N73은 복정, 잠실에서 건대입구, 성수, 왕십리, 서울역, 홍대입구를 거쳐 구파발까지 이어집니다. 동남권에서 서북부로 이동할 때 참고할 수 있는 심야버스입니다.',
+    desc: 'N73은 구산동(은평)에서 홍대입구, 신촌, 시청, 을지로입구, 왕십리, 성수, 건대입구, 잠실, 오금, 거여를 거쳐 복정·장지동까지 이어집니다. 서북권에서 도심과 동남권을 잇는 심야버스입니다.',
   },
   {
     id: 'N75', label: 'N75', color: ROUTE_COLORS.N75,
-    desc: '공식 기·종점: 진관동~신림동. N75는 구파발에서 신촌, 서울역, 강남, 사당, 신림동까지 운행합니다. 서북에서 서남까지 서울 서쪽을 종단하는 심야 노선으로, 동대문 심야버스와 함께 도심 이동의 보조 축 역할을 합니다.',
+    desc: '공식 기·종점: 진관동~신림동. N75는 진관동(은평)에서 연신내, 가좌, 신촌, 광화문, 시청, 서울역, 삼각지, 고속터미널, 논현, 강남, 교대, 사당, 서울대입구를 거쳐 신림동까지 운행합니다. 서북에서 도심을 지나 서남까지 서울 서쪽을 종단하는 심야 노선입니다.',
   },
 ];
 
@@ -214,6 +187,7 @@ export default async function NightBusMapPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  setRequestLocale(locale); // 정적 프리렌더(next-intl) — 배포 전 점검 10-16
 
   // en — English text guide
   if (locale === 'en') {
@@ -225,8 +199,37 @@ export default async function NightBusMapPage({
     notFound();
   }
 
+  const tp = await getTranslations({ locale, namespace: 'pages' });
+  const mapLabels = { kakao: tp('map.kakao'), naver: tp('map.naver'), aria: tp('map.aria') };
+
+  // 역 카드용 정류소 참조(V5): 노선도 역 노드 ↔ 서울시 정류소(anchors.json) · 방면별. 작도 데이터는 무수정, 파생값만 클라이언트로 넘긴다.
+  const nb = getNightBus();
+  const stationStops: Record<string, StopRef[]> = {};
+  const towards: Record<string, { out: string; in: string }> = {};
+  for (const [no, byDir] of Object.entries(ANCHORS)) {
+    const route = nb.routeByNo.get(no);
+    if (!route) continue;
+    const dOut = route.dirs.find((d) => d.key === 'out'), dIn = route.dirs.find((d) => d.key === 'in');
+    if (!dOut || !dIn) continue;
+    towards[no] = { out: dOut.toward, in: dIn.toward };
+    for (const key of ['out', 'in'] as const) {
+      const dir = key === 'out' ? dOut : dIn;
+      for (const a of byDir[key]) {
+        const stop = dir.stops.find((st) => st.arsId === a.arsId) ?? route.stops.find((st) => st.arsId === a.arsId);
+        if (!stop) continue;
+        (stationStops[a.node] ??= []).push([no, key, a.arsId, stop.nameKo, stop.lat, stop.lon]);
+      }
+    }
+  }
+  const order = ROUTE_ORDER as readonly string[];
+  for (const list of Object.values(stationStops)) list.sort((x, y) => order.indexOf(x[0]) - order.indexOf(y[0]) || (x[1] === y[1] ? 0 : x[1] === 'out' ? -1 : 1));
+  // 노선 상세 페이지가 있는 노선 (등록부 5 + 자율주행 A21) — 내부 링크
+  const routePaths: Record<string, string> = Object.fromEntries(R3A_NIGHT_ROUTES.map((n) => [n, `/night-bus/${n.toLowerCase()}`]));
+  routePaths.A21 = '/routes/simya-a21';
+  const mapRoutePaths = Object.fromEntries(Object.entries(routePaths).map(([k, v]) => [k, `/${locale}${v}`]));
+
   return (
-    <PageContainer width="default">
+    <>
       {/* JSON-LD: WebPage */}
       <script
         type="application/ld+json"
@@ -261,18 +264,9 @@ export default async function NightBusMapPage({
           ),
         }}
       />
-      {/* TopBar */}
-      <div className={styles.topBar}>
-        <Link href="/" className={styles.backBtn}>
-          <ChevronLeft />
-        </Link>
-      </div>
 
-      {/* Hero */}
-      <h1 className={styles.heading}>{PAGE_H1}</h1>
-      <p className={styles.subtitle}>
-        대리기사, 야간근무자, 막차 이후 귀가자를 위한 서울 심야버스 지도
-      </p>
+      <PageHero eyebrow="서울 심야버스" title={PAGE_H1} lead="대리기사, 야간근무자, 막차 이후 귀가자를 위한 서울 심야버스 지도" crumbs={<Crumbs label="경로 표시" items={[{ href: '/', label: '홈' }, { label: '심야버스 노선도' }]} />} />
+      <Section size="tight" ariaLabel={PAGE_H1}>
 
       {/* 도입 문단 — 네이버봇 최우선 구간 */}
       <p className={styles.intro}>
@@ -282,18 +276,17 @@ export default async function NightBusMapPage({
         대리운전이 끝난 뒤 귀가하거나 야간근무를 마치고 퇴근할 때 막차 이후 이동 경로를 찾는 데 활용할 수 있습니다.
       </p>
 
-      {/* 기준일 */}
-      <p className={styles.datestamp}>
-        기준일: <time dateTime="2026-06-08">2026-06-08</time> 카카오맵 노선 검색 기준
-      </p>
-
-      {/* 짧은 기능 안내 */}
-      <p className={styles.featureNote}>
-        노선을 선택하면 해당 경로가 강조됩니다. 출발역과 도착역을 입력하면 직통 또는 환승 경로를 확인할 수 있습니다.
-      </p>
-
-      {/* SVG 노선도 */}
-      <NightBusMap />
+      {/* 노선도 액자 — 어두운 틀 안의 밝은 지도 (V5) */}
+      <div className={styles.frame}>
+        <div className={styles.frameHead}>
+          <div>
+            <p className="v2-eyebrow">올빼미버스 노선도 · Seoul Autonomous 자체 제작</p>
+            <p className={styles.frameLead}>노선을 누르면 그 경로만 강조되고, 역을 누르면 지나는 노선과 정류소 번호·방면이 보입니다. 출발역과 도착역을 넣으면 직통 또는 환승 경로를 찾습니다.</p>
+          </div>
+          <p className={styles.frameMeta}>기준일 <time dateTime="2026-06-08">2026-06-08</time> 카카오맵 노선 검색 · 정류소 번호는 서울시 공식 데이터({NIGHT_META.stopsSource.snapshot}) · 역 위치는 권역 표시</p>
+        </div>
+        <NightBusMap stationStops={stationStops} towards={towards} routePaths={mapRoutePaths} />
+      </div>
 
       {/* H2: 노선도 한눈에 보기 */}
       <div className={styles.section}>
@@ -321,24 +314,22 @@ export default async function NightBusMapPage({
       <div className={styles.section}>
         <h2 className={styles.h2}>서울 N버스와 올빼미버스 환승 허브</h2>
         <p className={styles.bodyText}>
-          아래 13개 허브는 서울 심야버스 노선이 집중적으로 교차하는 주요 권역입니다.
-          노선도 안에서 역이나 허브를 선택하면 해당 지점을 지나는 노선을 확인할 수 있습니다.
-          실제 정류장 위치와 운행 방향은 아래 카카오맵 링크 또는 공식 지도 서비스에서 다시 확인하세요.
+          아래 16개 허브는 올빼미버스 3개 노선 이상이 만나는 곳입니다.
+          노선도 안에서 역이나 허브를 누르면 지나는 노선과 정류소 번호·방면이 보이고, 강남역·홍대입구역·동대문역은 승강장별 정류소 번호와 실제 지도를 담은 허브 페이지가 있습니다.
+          실제 정류장 위치와 운행 방향은 지도 링크 또는 공식 지도 서비스에서 다시 확인하세요.
         </p>
-        <div className={styles.hubList}>
-          {clickableHubs.map((hub) => (
-            <a
-              key={hub.query}
-              href={`https://map.kakao.com/?q=${encodeURIComponent(hub.query)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.hubLink}
-            >
-              {hub.label} 카카오맵에서 위치 보기
-              <ExternalLinkIcon />
-            </a>
-          ))}
-        </div>
+        <ul className={styles.hubList}>
+          {HUBS.map((hub) => { const p = hubPath(hub.slug); return (
+            <li key={hub.slug} className={styles.hubItem}>
+              <span className={styles.hubName}>{hub.nameKo}</span>
+              <span className={styles.hubRoutes}>{hub.routes.join(' · ')}</span>
+              <span className={styles.hubActions}>
+                {p ? <Link href={p} className={styles.hubPage}>허브 페이지 →</Link> : null}
+                <MapLinks name={hub.nameKo} lat={hub.lat} lon={hub.lon} labels={mapLabels} />
+              </span>
+            </li>
+          ); })}
+        </ul>
       </div>
 
       {/* H2: 노선별 핵심 경유지 */}
@@ -356,6 +347,7 @@ export default async function NightBusMapPage({
               {r.tag && <span className={styles.routeTag}>{r.tag}</span>}
             </div>
             <p className={styles.routeDesc}>{r.desc}</p>
+            {routePaths[r.id] && <Link href={routePaths[r.id]} className={styles.routeLink}>{r.label} 노선 상세 — 전체 정류장·정류소 번호·첫차 막차 →</Link>}
           </div>
         ))}
       </div>
@@ -379,7 +371,7 @@ export default async function NightBusMapPage({
         <ul className={styles.checkList}>
           <li>이 노선도는 추상 노선도이며, 실제 정류장 위치·순서와 다를 수 있습니다.</li>
           <li>탑승 전 카카오맵·네이버지도·서울시 공식 안내에서 실제 운행 여부와 정류장을 확인하세요.</li>
-          <li>심야버스 운행 시간은 보통 심야 23:30~새벽 05:00 전후이며, 노선별로 다릅니다.</li>
+          <li>올빼미버스는 밤 11시부터 새벽 6시 사이에 운행합니다. 기점 첫차는 노선별로 23:10~00:00, 막차는 03:10~04:10입니다(서울시 운행표 2026-03-20 기준). 각 노선 페이지와 홈 상태줄에서 노선별 첫차·막차를 확인하세요.</li>
           <li>서울 올빼미버스 요금은 카드 기준 2,500원입니다(서울시, 2026년 3월 20일 기준). 요금과 운행 정보는 변경될 수 있으므로 탑승 전 최신 안내를 확인하세요.</li>
           <li>환승 허브에서의 환승은 동일 정류장을 보장하지 않습니다. 실제 정류장 간 도보 이동이 필요할 수 있습니다.</li>
           <li>정류장·표시 시각을 확인한 자율주행 노선은 심야A21만 해당합니다. 나머지 14개는 일반 올빼미버스입니다.</li>
@@ -404,7 +396,7 @@ export default async function NightBusMapPage({
       </div>
 
       {/* Footer */}
-      <SiteFooter />
-    </PageContainer>
+      </Section>
+    </>
   );
 }

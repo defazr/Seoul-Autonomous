@@ -5,7 +5,7 @@
 
 .item {
   padding: 32px 0;
-  border-bottom: 1px solid var(--color-border-1);
+  border-bottom: 1px solid var(--line);
 }
 
 .item:first-child {
@@ -16,17 +16,17 @@
   font-weight: 600;
   font-size: 18px;
   line-height: 24px;
-  color: var(--color-fg-1);
+  color: var(--fg);
   letter-spacing: -0.18px;
   margin: 0 0 10px;
   padding-left: 16px;
-  border-left: 2px solid var(--color-accent);
+  border-left: 2px solid var(--accent);
 }
 
 .answer {
   font-size: 15px;
   line-height: 24px;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
   margin: 0;
 }
 

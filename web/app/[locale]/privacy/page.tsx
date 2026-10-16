@@ -1,14 +1,13 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '../../../i18n/routing';
-import { Link } from '../../../i18n/navigation';
 import { LegalDocument } from '../../../components/legal/LegalDocument';
 import privacyEn from '../../../data/legal/privacy.en';
 import privacyKo from '../../../data/legal/privacy.ko';
-import { SiteFooter } from '../../../components/common/SiteFooter';
-import { PageContainer } from '../../../components/layout/PageContainer';
+import { Crumbs } from '../../../components/v2/ui/Crumbs';
+import { PageHero } from '../../../components/v2/ui/PageHero';
+import { Section } from '../../../components/v2/ui/Section';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import { buildPageMetadata } from '../../../lib/seo/metadata';
-import styles from './page.module.css';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -29,48 +28,28 @@ export async function generateMetadata({
   });
 }
 
-function ChevronLeft() {
-  return (
-    <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M15 6l-6 6 6 6" />
-    </svg>
-  );
-}
-
-function InfoIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-      <circle cx={12} cy={12} r={10} />
-      <path d="M12 16v-4M12 8h.01" />
-    </svg>
-  );
-}
-
 export default async function PrivacyPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  setRequestLocale(locale); // 정적 프리렌더(next-intl) — 배포 전 점검 10-16
   const t = await getTranslations({ locale });
+  const tp = await getTranslations({ locale, namespace: 'pages' });
   const doc = locale === 'ko' ? privacyKo : privacyEn;
 
   return (
-    <PageContainer width="longform">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: doc.title, path: '/privacy' }], locale)) }}
       />
-      <div className={styles.topBar}>
-        <Link href="/" className={styles.backBtn}>
-          <ChevronLeft />
-        </Link>
 
-      </div>
-
-      <LegalDocument document={doc} locale={locale} />
-
-      <SiteFooter />
-    </PageContainer>
+      <PageHero eyebrow={tp('legal.eyebrow')} title={doc.title} crumbs={<Crumbs label={tp('crumbs')} items={[{ href: '/', label: t('shell.nav.home') }, { label: doc.title }]} />} />
+      <Section size="tight" width="text" ariaLabel={doc.title}>
+        <LegalDocument document={doc} locale={locale} />
+      </Section>
+    </>
   );
 }

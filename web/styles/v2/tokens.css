@@ -1,0 +1,78 @@
+/* ============================================================
+   Design System v2 — 토큰 (R3A §12 V1 · 시안 v2.3 template.html 승계)
+   한 장의 밤 세계: 잉크 네이비 바탕 · 노선색이 채도를 맡고 · 시안(cyan)은 상호작용에만.
+   ============================================================ */
+:root {
+  color-scheme: dark;
+
+  /* 바탕 — 깊은 곳 → 올라온 곳 */
+  --bg: #0A0F1E;
+  --bg-2: #121A33;
+  --bg-3: #1A2447;
+  --bg-4: #223058;
+  --bg-map: #0B1226;
+  --bg-glass: rgba(18, 26, 51, 0.86);
+
+  /* 경계선 */
+  --line: rgba(190, 205, 255, 0.12);
+  --line-2: rgba(190, 205, 255, 0.22);
+  --line-3: rgba(190, 205, 255, 0.36);
+
+  /* 글자 */
+  --fg: #F3F5FA;
+  --fg-2: #B4BCD0;
+  --fg-3: #7B8499;
+  --ink: #0B0F1A;
+
+  /* 포인트 — 시안은 '누를 수 있는 것' 에만 */
+  --accent: #3FD3FF;
+  --accent-ink: #06212B;
+  --accent-soft: rgba(63, 211, 255, 0.12);
+  --accent-line: rgba(63, 211, 255, 0.35);
+  --accent-hi: #7BE0FF;
+  --accent-lo: #1FB3DF;
+  --accent-glow: rgba(63, 211, 255, 0.32);
+  --info: #0072F5;
+  --ok: #4FD08A;
+  --ok-soft: rgba(79, 208, 138, 0.18);
+  --warn: #FFB224;
+  --danger: #FF6B6B;
+  --river: #14335C;
+  --lamp: #FFE9A8;
+
+  /* 노선색 — night-bus-data.ts ROUTE_COLORS 승계 (N72 공식색 #1E1E1E 는 다크 바탕에서 안 보여 표시색 별도) */
+  --nb-n13: #C9C23B; --nb-n15: #3FB8AE; --nb-n16: #E64134; --nb-n26: #7A3C8B; --nb-n30: #6E4A2C;
+  --nb-n31: #C07BC0; --nb-n37: #E84C97; --nb-n51: #B07A45; --nb-n61: #3D6B33; --nb-n62: #ED8B3A;
+  --nb-n64: #4274BB; --nb-n72: #1E1E1E; --nb-n72-display: #C9CFDA; --nb-n73: #8CC15F; --nb-n75: #3B2E80;
+  --nb-a21: #00D4FF;
+
+  /* 글꼴 — 변수 출처 lib/v2/fonts.ts */
+  --font-display: var(--font-gothic), var(--font-plex), 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --font-body: var(--font-plex), var(--font-pretendard), 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* 치수 */
+  --radius-xs: 4px; --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px; --radius-xl: 16px; --radius-2xl: 24px;
+  --radius-s: 10px;
+  --radius: 14px;
+  --radius-l: 20px;
+  --radius-pill: 999px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --max: 1180px;
+  --max-text: 720px;
+  --header-h: 58px;
+
+  /* 간격 (4pt) */
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px;
+  --space-6: 24px; --space-7: 32px; --space-8: 40px; --space-9: 48px; --space-10: 64px;
+  --space-screen: 20px; --space-card: 16px; --space-card-gap: 12px; --space-section-gap: 32px;
+
+  /* 그림자 · 움직임 */
+  --shadow-sm: 0 1px 2px rgba(3, 6, 14, 0.5);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 24px rgba(63, 211, 255, 0.32);
+  --shadow-card: 0 30px 80px rgba(0, 0, 0, 0.45);
+  --shadow-pop: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --ease-out: cubic-bezier(0.16, 0.8, 0.22, 1);
+}

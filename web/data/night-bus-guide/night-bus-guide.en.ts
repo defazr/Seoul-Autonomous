@@ -19,13 +19,13 @@ export const nightBusGuideEn = {
   quickFacts: [
     { label: 'Routes', value: '14' },
     { label: 'Buses in service', value: '140' },
-    { label: 'Operating hours', value: '23:00–06:00' },
+    { label: 'Operating hours', value: '23:00–06:00 (first buses 23:10–00:00, last buses 03:10–04:10 by route)' },
     { label: 'Card fare', value: 'KRW 2,500' },
   ],
   sections: {
     what: {
       title: 'What the Owl Bus is',
-      body: "The Owl Bus is Seoul's late-night bus network. As of March 20, 2026, 14 routes and 140 buses operate between 23:00 and 06:00.",
+      body: "The Owl Bus is Seoul's late-night bus network. As of March 20, 2026, 14 routes and 140 buses operate in the 23:00–06:00 window; depending on the route, the first bus leaves its terminal between 23:10 and 00:00 and the last between 03:10 and 04:10.",
     },
     when: {
       title: 'When this guide helps',

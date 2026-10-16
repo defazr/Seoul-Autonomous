@@ -2,3 +2,10 @@
 @media (min-width: 900px) { .map { aspect-ratio: 16 / 9; } }
 .marker { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: #0B0F1A; background: #F3F5FA; border: 2px solid #0A0F1E; border-radius: 999px; padding: 3px 8px; box-shadow: 0 2px 8px rgba(0,0,0,.5); cursor: pointer; line-height: 1.2; }
 .marker::after { content: ''; position: absolute; left: 50%; bottom: -7px; width: 10px; height: 10px; background: #F3F5FA; border-right: 2px solid #0A0F1E; border-bottom: 2px solid #0A0F1E; transform: translateX(-50%) rotate(45deg); }
+
+/* MapLibre 팝업 — 기본 흰 바탕에 글자색이 본문(--fg)을 상속해 글씨가 보이지 않던 문제(포그린 10-16). 마커 알약과 같은 밝은 바탕·어두운 글자 */
+.map :global(.maplibregl-popup-content) { background: #F3F5FA; color: #0B0F1A; font: 600 13px/1.4 var(--font-body); padding: 8px 12px; border-radius: 10px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); }
+.map :global(.maplibregl-popup-anchor-top .maplibregl-popup-tip), .map :global(.maplibregl-popup-anchor-top-left .maplibregl-popup-tip), .map :global(.maplibregl-popup-anchor-top-right .maplibregl-popup-tip) { border-bottom-color: #F3F5FA; }
+.map :global(.maplibregl-popup-anchor-bottom .maplibregl-popup-tip), .map :global(.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip), .map :global(.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip) { border-top-color: #F3F5FA; }
+.map :global(.maplibregl-popup-anchor-left .maplibregl-popup-tip) { border-right-color: #F3F5FA; }
+.map :global(.maplibregl-popup-anchor-right .maplibregl-popup-tip) { border-left-color: #F3F5FA; }

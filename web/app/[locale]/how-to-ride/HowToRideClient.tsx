@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
-import { SegmentedControl } from '../../../components/ui/SegmentedControl';
+import { SegmentedControl } from '../../../components/v2/transit/Controls';
 
 type Props = {
   filterBuses: string;
@@ -36,7 +36,7 @@ export function HowToRideClient({
     fontWeight: 500,
     fontSize: 11,
     lineHeight: '14px',
-    color: 'var(--color-fg-3)',
+    color: 'var(--fg-2)',
     letterSpacing: '0.88px',
     textTransform: 'uppercase',
     marginBottom: 12,
@@ -51,26 +51,25 @@ export function HowToRideClient({
             { value: 'TAXI', label: filterRobotaxis },
           ]}
           value={tab}
-          onChange={setTab}
-        />
+          onChange={setTab} label="Service type" />
       </div>
 
       {heroSection}
 
-      <div style={sectionTitleStyle}>{faqSectionTitle}</div>
+      <h2 style={sectionTitleStyle}>{faqSectionTitle}</h2>
       {faqSection}
 
-      <div style={sectionTitleStyle}>{stepsSectionTitle}</div>
+      <h2 style={sectionTitleStyle}>{stepsSectionTitle}</h2>
       {stepsSection}
 
       {tab === 'TAXI' && (
         <>
-          <div style={sectionTitleStyle}>{kakaoSectionTitle}</div>
+          <h2 style={sectionTitleStyle}>{kakaoSectionTitle}</h2>
           {kakaoSection}
         </>
       )}
 
-      <div style={sectionTitleStyle}>{tipsSectionTitle}</div>
+      <h2 style={sectionTitleStyle}>{tipsSectionTitle}</h2>
       {tipsSection}
     </>
   );

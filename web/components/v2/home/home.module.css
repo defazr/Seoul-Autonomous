@@ -1,0 +1,153 @@
+/* ===== Hero (시안 v2.3 .hero) ===== */
+.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); background: radial-gradient(1200px 500px at 70% 20%, #17204A 0%, var(--bg) 60%); }
+.heroMap { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.heroMapMobile { display: none; }
+.hero::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(640px 380px at 86% 88%, rgba(10, 15, 30, 0.78) 0%, rgba(10, 15, 30, 0.36) 46%, rgba(10, 15, 30, 0) 76%), linear-gradient(90deg, rgba(10, 15, 30, 0.94) 0%, rgba(10, 15, 30, 0.72) 30%, rgba(10, 15, 30, 0.08) 58%, rgba(10, 15, 30, 0) 100%); }
+.heroWrap { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 440px) 1fr; gap: 32px; padding-block: 44px 56px; min-height: 620px; align-items: start; }
+.heroLeft { display: grid; gap: 18px; }
+/* 헤드라인 패널 — 노선 위에 맨글자로 얹으면 안 읽힌다(포그린 10-16). 질문 카드와 같은 유리 패널 + 바탕 안개(.hero::after 의 radial) */
+.heroSide { align-self: end; justify-self: end; text-align: right; color: var(--fg-2); font-size: 13px; max-width: 470px; display: grid; gap: 8px; justify-items: end; word-break: keep-all; padding: 22px 24px 20px; background: var(--bg-glass); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border: 1px solid var(--line-2); border-radius: var(--radius-l); box-shadow: var(--shadow-card); }
+.heroSide::before { content: ''; width: 36px; height: 3px; border-radius: 2px; background: var(--accent); margin-bottom: 4px; }
+.heroSide strong { display: block; font-family: var(--font-display); font-size: clamp(22px, 3vw, 34px); font-weight: 900; color: var(--fg); line-height: 1.12; margin-bottom: 4px; white-space: pre-line; word-break: keep-all; }
+.heroSide span { line-height: 1.5; }
+.mapLink { color: var(--accent); font-weight: 600; font-size: 13px; }
+.mapLink:hover { text-decoration: underline; }
+@media (max-width: 860px) {
+  .heroMapDesk { display: none; } .heroMapMobile { display: block; }
+  .hero::after { background: linear-gradient(180deg, rgba(10, 15, 30, 0.55) 0%, rgba(10, 15, 30, 0.82) 100%); }
+  .heroWrap { grid-template-columns: 1fr; min-height: 0; padding-block: 22px 32px; gap: 20px; }
+  .heroSide { justify-self: stretch; max-width: none; text-align: left; justify-items: start; margin-top: 4px; padding: 18px 18px 16px; }
+  .heroSide strong { font-size: 22px; }
+}
+
+/* 노선도 SVG — 작도 무보정 · 운행 상태에 따라 밝기만 */
+.river { fill: none; stroke: var(--river); stroke-width: 48.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0.95; }
+.line { fill: none; stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; transition: opacity 0.6s; }
+.draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.8s cubic-bezier(0.3, 0.7, 0.2, 1) forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.lit { opacity: 0.96; } .dim { opacity: 0.14; } .soft { opacity: 0.7; }
+.node { fill: var(--bg); stroke: #D9DFEC; stroke-width: 3; opacity: 0.9; }
+.hubnode { fill: var(--fg); stroke: var(--bg); stroke-width: 4; }
+.lbl { font: 600 26px var(--font-body); fill: var(--fg); paint-order: stroke; stroke: var(--bg); stroke-width: 7px; stroke-linejoin: round; }
+@media (prefers-reduced-motion: reduce) { .draw { animation: none; stroke-dashoffset: 0; } }
+
+/* ===== Ask card ===== */
+.ask { display: grid; gap: 10px; }
+.ask h1 { font-size: clamp(26px, 4vw, 36px); font-weight: 900; margin-bottom: 2px; }
+.askSub { color: var(--fg-2); font-size: 14px; margin-bottom: 8px; }
+.field { display: grid; gap: 6px; position: relative; }
+.label { font-size: 12px; color: var(--fg-3); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
+.row { display: flex; gap: 8px; }
+.input { flex: 1; min-width: 0; background: var(--bg); border: 1px solid var(--line-2); border-radius: 12px; padding: 12px 14px; color: var(--fg); font-size: 16px; transition: border-color 0.15s; }
+.input::placeholder { color: var(--fg-3); }
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.sugs { position: absolute; left: 0; right: 0; top: 100%; z-index: 5; margin-top: 6px; background: var(--bg-2); border: 1px solid var(--line-2); border-radius: 12px; box-shadow: var(--shadow-pop); overflow: hidden; list-style: none; max-height: 300px; overflow-y: auto; }
+.sug { display: flex; align-items: center; gap: 10px; padding: 10px 12px; cursor: pointer; font-size: 14px; }
+.sug + .sug { border-top: 1px solid var(--line); }
+.sug[aria-selected='true'], .sug:hover { background: var(--bg-3); }
+.sugName { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sugKind { font-size: 11px; color: var(--accent); font-family: var(--font-mono); border: 1px solid var(--accent-line); border-radius: 6px; padding: 1px 6px; }
+.sugRoutes { display: flex; gap: 4px; flex: none; }
+.sugRoutes span { font-family: var(--font-mono); font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 6px; }
+.go { margin-top: 4px; }
+.note { font-size: 12px; color: var(--fg-3); line-height: 1.5; }
+.noteOk { color: var(--ok); }
+.noteWarn { color: var(--warn); }
+.examples { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; color: var(--fg-3); }
+.exBtn { border: 1px solid var(--line-2); border-radius: var(--radius-pill); padding: 4px 10px; font-size: 12px; color: var(--fg-2); }
+.exBtn:hover { border-color: var(--accent); color: var(--fg); }
+
+/* ===== Result stage (시안 .stage) ===== */
+.stage { border-bottom: 1px solid var(--line); background: var(--bg-2); scroll-margin-top: calc(var(--header-h) + 8px); }
+.stageWrap { padding-block: 30px 40px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 28px; align-items: start; }
+@media (max-width: 860px) { .stageWrap { grid-template-columns: 1fr; } }
+.resultHead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.resultHead h2 { font-size: 20px; }
+.resultMeta { font-size: 12px; color: var(--fg-3); font-variant-numeric: tabular-nums; }
+.road { position: relative; height: 200px; border-radius: 16px; background: linear-gradient(180deg, #0E1530 0%, #0A0F1E 70%); border: 1px solid var(--line); overflow: hidden; }
+.road::after { content: ''; position: absolute; left: 0; right: 0; bottom: 34px; height: 2px; background: repeating-linear-gradient(90deg, var(--line-2) 0 28px, transparent 28px 48px); }
+.ground { position: absolute; left: 0; right: 0; bottom: 0; height: 34px; background: #0D1326; border-top: 1px solid var(--line-2); }
+.stopsign { position: absolute; left: 28px; bottom: 34px; width: 3px; height: 70px; background: var(--fg-3); }
+.stopsign::before { content: attr(data-ars); position: absolute; left: -14px; top: -30px; width: 60px; height: 26px; border-radius: 6px; background: var(--fg); color: var(--ink); font-family: var(--font-mono); font-size: 12px; line-height: 26px; text-align: center; font-weight: 600; }
+.bus { position: absolute; bottom: 28px; left: 50%; width: min(300px, 70%); height: auto; transform: translateX(140vw); filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6)); }
+.busArrive { animation: arrive 1.7s cubic-bezier(0.16, 0.8, 0.22, 1) 0.15s forwards; }
+.busArrive .wheel { animation: spin 1.3s cubic-bezier(0.2, 0.7, 0.3, 1) 0.15s; }
+.busArrive .beam { animation: beam 2.4s ease-out 0.6s forwards; }
+.busDepart { transform: translateX(-40%); animation: depart 1.1s cubic-bezier(0.6, 0.05, 0.9, 0.4) forwards; }
+.busDepart .wheel { animation: spin 1.1s cubic-bezier(0.6, 0.05, 0.9, 0.4); }
+.busDepart .beam { opacity: 0.18; }
+.busParked { transform: translateX(-40%); }
+.busParked .beam { opacity: 0.18; }
+@keyframes arrive { from { transform: translateX(140vw); } to { transform: translateX(-40%); } }
+@keyframes depart { from { transform: translateX(-40%); } to { transform: translateX(-170vw); } }
+@keyframes spin { from { transform: rotate(0); } to { transform: rotate(-900deg); } }
+@keyframes beam { 0% { opacity: 0; } 40% { opacity: 0.5; } 100% { opacity: 0.18; } }
+.wheel { transform-origin: center; transform-box: fill-box; }
+.beam { opacity: 0.18; }
+.idle .bus { transform: translateX(-40%); opacity: 0.35; filter: grayscale(0.6); }
+.stopsign::before { transition: background 0.3s; }
+.signSwap::before { background: var(--accent); color: var(--accent-ink); }
+.phase { position: absolute; top: 12px; right: 12px; font-size: 12px; color: var(--fg-2); background: rgba(10, 15, 30, 0.7); border: 1px solid var(--line-2); border-radius: var(--radius-pill); padding: 4px 10px; display: inline-flex; gap: 6px; align-items: center; }
+.phase b { font-family: var(--font-mono); font-weight: 600; color: var(--fg); }
+.step.active { border-color: var(--accent-line); box-shadow: 0 0 0 3px var(--accent-soft); }
+@media (prefers-reduced-motion: reduce) { .busArrive, .busDepart { animation: none; transform: translateX(-40%); } .busArrive .wheel, .busArrive .beam, .busDepart .wheel { animation: none; } }
+.steps { display: grid; gap: 10px; }
+.step { display: grid; grid-template-columns: 44px 1fr; gap: 14px; padding: 14px 16px; border-radius: 14px; background: var(--bg); border: 1px solid var(--line); }
+.k { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-family: var(--font-display); font-weight: 900; font-size: 15px; background: var(--bg-3); color: var(--fg-2); }
+.board .k { background: var(--route, var(--accent)); color: var(--route-ink, var(--ink)); }
+.t { font-weight: 600; font-size: 15px; }
+.d { color: var(--fg-2); font-size: 13px; margin-top: 2px; }
+.m { font-size: 12px; color: var(--fg-3); margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; font-variant-numeric: tabular-nums; }
+.m a { color: var(--accent); font-family: var(--font-body); font-weight: 600; }
+.m a:hover { text-decoration: underline; }
+.empty { padding: 18px; border: 1px dashed var(--line-2); border-radius: 14px; color: var(--fg-2); font-size: 14px; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* ===== Quick strip ===== */
+.quick { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-block: 18px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--fg-3); }
+.quickLabel { margin-right: 4px; }
+.quickHub { border: 1px solid var(--line-2); border-radius: var(--radius-pill); padding: 4px 12px; color: var(--fg); font-weight: 600; font-size: 13px; }
+.quickHub:hover { border-color: var(--accent); }
+.quickSep { width: 1px; height: 18px; background: var(--line-2); margin-inline: 4px; }
+
+/* ===== Hub board ===== */
+.hubs { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; list-style: none; }
+@media (max-width: 640px) { .hubs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } .hub { padding: 14px 12px; gap: 8px; } .hubName { font-size: 17px; } .hubFoot { flex-direction: column; align-items: flex-start; gap: 6px; } }
+@media (max-width: 359px) { .hubs { grid-template-columns: 1fr; } }
+.hub { padding: 16px; border-radius: 16px; background: var(--bg-2); border: 1px solid var(--line); display: grid; gap: 10px; transition: transform 0.2s, border-color 0.2s; }
+.hub:hover { transform: translateY(-2px); border-color: var(--line-2); }
+.hubName { font-family: var(--font-display); font-weight: 900; font-size: 19px; line-height: 1.2; }
+.hubSub { font-size: 12px; color: var(--fg-3); margin-top: 2px; }
+.hubCnt { font-size: 12px; color: var(--fg-3); margin-top: 4px; font-variant-numeric: tabular-nums; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.hubFoot { border-top: 1px solid var(--line); padding-top: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--fg-3); }
+.hubService { display: inline-flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; }
+.hubActions { display: flex; gap: 10px; align-items: center; }
+.hubAct { color: var(--fg-2); font-weight: 600; font-size: 12px; }
+.hubAct:hover { color: var(--accent); }
+.hubLink { color: var(--accent); font-weight: 600; font-size: 12px; }
+.hubLink:hover { text-decoration: underline; }
+
+/* ===== Route gallery (fleet) ===== */
+.fleet { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scrollbar-width: thin; list-style: none; }
+.routeCard { scroll-snap-align: start; flex: 0 0 260px; padding: 0 0 14px; border-radius: 16px; background: var(--bg-2); border: 1px solid var(--line); overflow: hidden; display: grid; gap: 8px; transition: transform 0.2s, border-color 0.2s; color: inherit; }
+.routeCard:hover { transform: translateY(-2px); border-color: var(--line-2); }
+.bar { height: 8px; background: var(--c); }
+.no { font-family: var(--font-display); font-weight: 900; font-size: 26px; padding: 10px 16px 0; color: var(--ct, var(--c)); line-height: 1; } /* --ct = 글자용 밝힌 노선색 (대비 3:1) */
+.ends { padding: 0 16px; font-weight: 600; }
+.meta { padding: 0 16px; font-size: 12px; color: var(--fg-3); display: grid; gap: 3px; font-variant-numeric: tabular-nums; }
+.cardLink { padding: 4px 16px 0; font-size: 12px; color: var(--accent); font-weight: 600; }
+.scrollHint { font-size: 12px; color: var(--fg-3); }
+
+/* ===== Three · A21 ===== */
+.three { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.num { font-family: var(--font-display); font-weight: 900; font-size: 30px; color: var(--accent); line-height: 1; }
+.tile h3 { margin-top: 8px; }
+.tile p { color: var(--fg-2); font-size: 14px; margin-top: 6px; }
+.a21 { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; padding: 20px; border-radius: 16px; border: 1px solid var(--accent-line); background: linear-gradient(90deg, rgba(63, 211, 255, 0.08), transparent); }
+.badge { font-family: var(--font-display); font-weight: 900; font-size: 22px; color: var(--accent); border: 2px solid var(--accent); border-radius: 12px; padding: 8px 12px; }
+.a21 p { color: var(--fg-2); font-size: 14px; margin-top: 4px; }
+.a21Foot { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 8px; font-size: 12px; color: var(--fg-3); }
+.a21Link { color: var(--accent); font-weight: 600; font-size: 13px; }
+.a21Link:hover { text-decoration: underline; }
+@media (max-width: 480px) { .a21 { grid-template-columns: 1fr; } }

@@ -1,9 +1,9 @@
 import { SITE_URL, SITE_NAME } from './config';
 import type { Metadata } from 'next';
 
-const OG_IMAGE_URL = `${SITE_URL}/og/seoul-autonomous-og.png`;
+const OG_IMAGE_URL = `${SITE_URL}/og/seoul-autonomous-og.jpg`; // PNG 964KB → JPG 210KB (배포 전 점검 10-16)
 const OG_IMAGE_ALT =
-  'Seoul Autonomous — guide to autonomous bus and robotaxi routes in Seoul';
+  'Seoul Autonomous — Seoul late-night travel guide: Owl Bus routes, stops and transfers';
 
 export function buildPageMetadata({
   locale,

@@ -6,7 +6,7 @@
   font-weight: 700;
   font-size: 32px;
   line-height: 38px;
-  color: var(--color-fg-1);
+  color: var(--fg);
   letter-spacing: -0.96px;
   margin: 0 0 12px;
 }
@@ -14,15 +14,15 @@
 .summary {
   font-size: 15px;
   line-height: 23px;
-  color: var(--color-fg-2);
+  color: var(--fg);
   margin: 0 0 8px;
 }
 
 .asOf {
-  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: 11px;
   line-height: 16px;
-  color: var(--color-fg-4);
+  color: var(--fg-3);
   letter-spacing: 0.33px;
   margin: 0;
 }
@@ -35,7 +35,7 @@
   font-weight: 600;
   font-size: 18px;
   line-height: 24px;
-  color: var(--color-fg-1);
+  color: var(--fg);
   margin: 0 0 12px;
 }
 
@@ -43,14 +43,14 @@
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  color: var(--color-fg-1);
+  color: var(--fg);
   margin: 18px 0 8px;
 }
 
 .body {
   font-size: 14px;
   line-height: 22px;
-  color: var(--color-fg-2);
+  color: var(--fg);
   margin: 0 0 10px;
 }
 
@@ -64,26 +64,26 @@
 
 .fareTable th,
 .fareTable td {
-  border: 1px solid var(--color-border-1);
+  border: 1px solid var(--line);
   padding: 10px 12px;
   text-align: center;
 }
 
 .fareTable thead th {
-  background: var(--color-bg-2);
+  background: var(--bg-2);
   font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.36px;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
 }
 
 .fareTable tbody th {
   font-weight: 600;
-  color: var(--color-fg-1);
+  color: var(--fg);
 }
 
 .fareTable tbody td {
-  color: var(--color-fg-2);
+  color: var(--fg);
 }
 
 .stepList {
@@ -94,7 +94,7 @@
 .stepList li {
   font-size: 14px;
   line-height: 22px;
-  color: var(--color-fg-2);
+  color: var(--fg);
   margin-bottom: 8px;
 }
 
@@ -106,7 +106,7 @@
 .bulletList li {
   font-size: 14px;
   line-height: 22px;
-  color: var(--color-fg-2);
+  color: var(--fg);
   margin-bottom: 6px;
 }
 
@@ -124,7 +124,7 @@
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  color: var(--color-accent);
+  color: var(--accent);
   text-decoration: none;
 }
 
@@ -135,7 +135,7 @@
 .externalLink {
   font-size: 14px;
   line-height: 20px;
-  color: var(--color-fg-2);
+  color: var(--fg);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -167,9 +167,9 @@
   width: 40px;
   height: 40px;
   border-radius: 999px;
-  background-color: var(--color-bg-2);
-  border: 1px solid var(--color-border-2);
+  background-color: var(--bg-2);
+  border: 1px solid var(--line-2);
   cursor: pointer;
-  color: var(--color-fg-1);
+  color: var(--fg);
   text-decoration: none;
 }

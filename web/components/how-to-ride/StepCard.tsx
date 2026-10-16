@@ -8,7 +8,7 @@ type StepCardProps = {
 
 function PinIcon() {
   return (
-    <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="var(--color-accent)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="var(--accent)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
       <circle cx={12} cy={10} r={3} />
     </svg>
@@ -17,7 +17,7 @@ function PinIcon() {
 
 function ClockIcon() {
   return (
-    <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="var(--color-accent)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="var(--accent)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx={12} cy={12} r={10} />
       <path d="M12 6v6l4 2" />
     </svg>
@@ -26,7 +26,7 @@ function ClockIcon() {
 
 function PhoneIcon() {
   return (
-    <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="var(--color-accent)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="var(--accent)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x={6} y={3} width={12} height={18} rx={2} />
       <path d="M9 7h6" />
       <circle cx={12} cy={17} r={1.2} />
@@ -36,7 +36,7 @@ function PhoneIcon() {
 
 function BusIcon() {
   return (
-    <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="var(--color-accent)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="var(--accent)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x={4} y={4} width={16} height={14} rx={2} />
       <circle cx={8} cy={20} r={1.5} />
       <circle cx={16} cy={20} r={1.5} />

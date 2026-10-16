@@ -1,3 +1,4 @@
+import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { SITE_URL, SITE_NAME } from '../../../lib/seo/config';
@@ -11,7 +12,7 @@ export function generateStaticParams() {
 
 /* ── Metadata: ko only, self-canonical, no hreflang ── */
 const PAGE_URL = `${SITE_URL}/ko/after-last-train`;
-const OG_IMAGE_URL = `${SITE_URL}/og/seoul-autonomous-og.png`;
+const OG_IMAGE_URL = `${SITE_URL}/og/seoul-autonomous-og.jpg`;
 
 export async function generateMetadata({
   params,
@@ -60,6 +61,7 @@ export default async function AfterLastTrainPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  setRequestLocale(locale); // 정적 프리렌더(next-intl) — 배포 전 점검 10-16
 
   // ko only — /en/after-last-train → 404
   if (locale !== 'ko') {

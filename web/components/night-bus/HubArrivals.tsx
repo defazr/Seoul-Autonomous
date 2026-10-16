@@ -1,5 +1,6 @@
 'use client';
 
+import { onColor } from '../../lib/v2/route-color';
 import { useState } from 'react';
 import styles from './HubArrivals.module.css';
 
@@ -32,7 +33,7 @@ export function HubArrivals({ platforms, labels, colors }: { platforms: { arsId:
         <div role="status">
           <p className={styles.basis}>{labels.basis.replace('{time}', kst(state.data.fetchedAt))}</p>
           {items.length === 0 ? <p className={styles.empty}>{labels.empty}</p> : (
-            <ul className={styles.list}>{items.map((i, k) => <li key={k}><span className={styles.chip} style={{ background: colors[i.routeId] ?? '#9AA3B2' }}>{i.routeId}</span><span className={styles.raw}>{i.raw}</span></li>)}</ul>
+            <ul className={styles.list}>{items.map((i, k) => <li key={k}><span className={styles.chip} style={{ background: colors[i.routeId] ?? '#9AA3B2', color: onColor(colors[i.routeId] ?? '#9AA3B2') }}>{i.routeId}</span><span className={styles.raw}>{i.raw}</span></li>)}</ul>
           )}
         </div>
       )}

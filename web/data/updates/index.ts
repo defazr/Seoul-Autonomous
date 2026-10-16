@@ -3,8 +3,9 @@ import a504 from './a504-early-morning-start';
 import gangnam from './gangnam-robotaxi-expanded';
 import gangnam19 from './gangnam-robotaxi-expanded-to-19';
 import nightBusMap from './night-bus-map-launch';
+import rebirth from './site-rebirth-night-bus-first';
 
-const updates: UpdateEntry[] = [a504, gangnam, gangnam19, nightBusMap];
+const updates: UpdateEntry[] = [a504, gangnam, gangnam19, nightBusMap, rebirth];
 
 // Sort newest first
 updates.sort((a, b) => b.date.localeCompare(a.date));

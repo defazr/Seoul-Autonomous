@@ -112,7 +112,7 @@ const document: LegalDocument = {
         'Personalized or non-personalized ads may be displayed based on information such as previous visits.',
       ],
       paragraphsAfter: [
-        'Users can manage ad personalization through Google Ads Settings.',
+        'Users can manage ad personalization at Google Ads Settings (https://adssettings.google.com). How Google uses cookies in advertising is described at https://policies.google.com/technologies/ads, and opt-outs for third-party advertising cookies in general are available at https://www.aboutads.info/choices.',
         'Users in certain regions, including the European Economic Area, the United Kingdom, and Switzerland, may be shown a regional consent message depending on applicable requirements and service settings.',
       ],
     },
@@ -161,7 +161,7 @@ const document: LegalDocument = {
   ],
   contact: {
     developerLabel: 'Operator',
-    developer: 'Seoul Autonomous',
+    developer: 'Dapala Corp (Seoul Autonomous)',
     email: 'seoulautonomous@protonmail.com',
     location: 'Seoul, Republic of Korea',
   },

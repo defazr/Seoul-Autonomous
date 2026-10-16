@@ -1,8 +1,8 @@
 .card {
   flex: 1 1 calc(50% - 5px);
   min-width: 140px;
-  background-color: var(--color-bg-2);
-  border: 1px solid var(--color-border-1);
+  background-color: var(--bg-2);
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: 16px;
 }
@@ -11,8 +11,8 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background-color: var(--color-bg-3);
-  border: 1px solid var(--color-border-2);
+  background-color: var(--bg-3);
+  border: 1px solid var(--line-2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,7 +23,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
   line-height: 14px;
-  color: var(--color-fg-4);
+  color: var(--fg-3);
   letter-spacing: 0.66px;
   margin-bottom: 4px;
 }
@@ -32,7 +32,7 @@
   font-weight: 600;
   font-size: 15px;
   line-height: 20px;
-  color: var(--color-fg-1);
+  color: var(--fg);
   letter-spacing: -0.15px;
   margin-bottom: 4px;
 }
@@ -40,5 +40,5 @@
 .desc {
   font-size: 13px;
   line-height: 18px;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
 }

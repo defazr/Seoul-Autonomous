@@ -115,7 +115,7 @@ const document: LegalDocument = {
         '이용자의 이전 방문 정보 등을 바탕으로 맞춤 광고 또는 비맞춤 광고가 표시될 수 있습니다.',
       ],
       paragraphsAfter: [
-        '이용자는 Google 광고 설정에서 광고 개인 최적화 사용 여부를 관리할 수 있습니다.',
+        '이용자는 Google 광고 설정(https://adssettings.google.com)에서 광고 개인 최적화 사용 여부를 관리할 수 있습니다. Google 의 광고 쿠키 사용 방식은 https://policies.google.com/technologies/ads 에, 제3자 광고 쿠키 전반의 선택 해제는 https://www.aboutads.info/choices 에 안내되어 있습니다.',
         '유럽경제지역(EEA), 영국, 스위스 등 일부 지역의 이용자에게는 관련 규정과 서비스 설정에 따라 지역별 동의 메시지가 표시될 수 있습니다.',
       ],
     },
@@ -166,7 +166,7 @@ const document: LegalDocument = {
   ],
   contact: {
     developerLabel: '운영자',
-    developer: 'Seoul Autonomous',
+    developer: '다파라코프 (Seoul Autonomous)',
     email: 'seoulautonomous@protonmail.com',
     location: '대한민국 서울',
   },

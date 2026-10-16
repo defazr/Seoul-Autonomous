@@ -1,12 +1,13 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
 import { FAQList } from '../../../components/faq/FAQList';
 import { faqEn } from '../../../data/faq/faq.en';
 import { faqKo } from '../../../data/faq/faq.ko';
 import type { FAQDocument } from '../../../lib/types/faq';
-import { SiteFooter } from '../../../components/common/SiteFooter';
-import { PageContainer } from '../../../components/layout/PageContainer';
+import { Crumbs } from '../../../components/v2/ui/Crumbs';
+import { PageHero } from '../../../components/v2/ui/PageHero';
+import { Section } from '../../../components/v2/ui/Section';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import { buildPageMetadata } from '../../../lib/seo/metadata';
 import styles from './page.module.css';
@@ -30,27 +31,10 @@ export async function generateMetadata({
   });
 }
 
-function ChevronLeft() {
-  return (
-    <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M15 6l-6 6 6 6" />
-    </svg>
-  );
-}
-
 function ArrowRight() {
   return (
-    <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M5 12h14M12 5l7 7-7 7" />
-    </svg>
-  );
-}
-
-function InfoIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-      <circle cx={12} cy={12} r={10} />
-      <path d="M12 16v-4M12 8h.01" />
     </svg>
   );
 }
@@ -61,7 +45,9 @@ export default async function FAQPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  setRequestLocale(locale); // 정적 프리렌더(next-intl) — 배포 전 점검 10-16
   const t = await getTranslations({ locale });
+  const tp = await getTranslations({ locale, namespace: 'pages' });
   const faqDoc: FAQDocument = locale === 'ko' ? faqKo : faqEn;
 
   const jsonLd = {
@@ -78,7 +64,7 @@ export default async function FAQPage({
   };
 
   return (
-    <PageContainer width="longform">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -88,24 +74,10 @@ export default async function FAQPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: t('faq.title'), path: '/faq' }], locale)) }}
       />
 
-      {/* TopBar */}
-      <div className={styles.topBar}>
-        <Link href="/" className={styles.backBtn}>
-          <ChevronLeft />
-        </Link>
-
-      </div>
-
-      {/* Header */}
-      <h1 className={styles.heading}>{t('faq.title')}</h1>
-      <p className={styles.intro}>{t('faq.intro')}</p>
-
-      {/* FAQ List */}
-      <div className={styles.section}>
+      <PageHero eyebrow={tp('faq.eyebrow')} title={t('faq.title')} lead={t('faq.intro')} crumbs={<Crumbs label={tp('crumbs')} items={[{ href: '/', label: t('shell.nav.home') }, { label: t('faq.title') }]} />} />
+      <Section size="tight" width="text" ariaLabel={t('faq.title')}>
         <FAQList items={faqDoc.items} />
-      </div>
 
-      {/* Cross-links */}
       <div className={styles.links}>
         <Link href="/how-to-ride" className={styles.pageLink}>
           {t('faq.howToRideLink')}
@@ -116,9 +88,7 @@ export default async function FAQPage({
           <ArrowRight />
         </Link>
       </div>
-
-      {/* Footer */}
-      <SiteFooter />
-    </PageContainer>
+      </Section>
+    </>
   );
 }

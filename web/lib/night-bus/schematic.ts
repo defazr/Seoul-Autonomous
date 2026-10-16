@@ -42,3 +42,11 @@ export function routeBBox(no: string, pad = 140): { x: number; y: number; w: num
   return { x: x0, y: y0, w: Math.max(w, h * 1.6), h: Math.max(h, w / 1.6) };
 }
 export const shortName = (n: string) => (n === '서울역' ? n : n.replace(/역$/, ''));
+
+/** 허브 slug → 노선도 역 노드(NODES 키). 라벨용 짧은 이름은 shortName. 작도 무수정. */
+export const HUB_NODE: Record<string, string> = {
+  'gangnam-station': '강남역', 'hongdae-entrance': '홍대입구역', sinchon: '신촌역', 'dongdaemun-station': '동대문역', 'jongno-2ga-jonggak': '종각역',
+  'seoul-station': '서울역', 'dongdaemun-history-culture-park': '동대문역사문화공원역', 'city-hall-euljiro': '시청역', 'sinsa-nonhyeon': '논현역',
+  'samseong-seolleung': '삼성역', 'gyodae-station': '교대역', 'seoul-national-univ-station': '서울대입구역', 'konkuk-univ-station': '건대입구역',
+  'hapjeong-station': '합정역', 'cheongnyangni-station': '청량리역',
+};

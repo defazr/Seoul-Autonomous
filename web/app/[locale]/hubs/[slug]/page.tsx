@@ -1,10 +1,13 @@
+import { onColor, routeTextColor } from '../../../../lib/v2/route-color';
 import { notFound } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import { Link } from '../../../../i18n/navigation';
-import { SiteFooter } from '../../../../components/common/SiteFooter';
-import { PageContainer } from '../../../../components/layout/PageContainer';
 import { SITE_URL, SITE_NAME } from '../../../../lib/seo/config';
+import { Crumbs } from '../../../../components/v2/ui/Crumbs';
+import { CONTACT_MAIL } from '../../../../components/v2/shell/Footer';
+import { PageHero } from '../../../../components/v2/ui/PageHero';
+import { MapLinks } from '../../../../components/v2/ui/MapLinks';
 import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
 import { R3A_HUBS, R3A_NIGHT_ROUTES } from '../../../../lib/night-bus/registry';
 import { NIGHT_META, routeColor } from '../../../../lib/night-bus/data';
@@ -32,20 +35,22 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function HubPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params; const hub = getHub(slug);
+  setRequestLocale(locale); // 정적 프리렌더(next-intl) — 배포 전 점검 10-16
   if (locale !== 'ko' || !hub || !exposed(slug)) notFound();
   const t = await getTranslations({ locale, namespace: 'hubs' });
+  const tp = await getTranslations({ locale, namespace: 'pages' });
+  const ts = await getTranslations({ locale, namespace: 'shell' });
+  const mapLabels = { kakao: tp('map.kakao'), naver: tp('map.naver'), aria: tp('map.aria') };
   const platforms = hubPlatforms(hub); const geo = hubGeoJson(hub); const routes = routesOf(hub); const related = relatedHubs(hub);
   const colors = Object.fromEntries(routes.map((r) => [r.no, routeColor(r)]));
   const jsonLd = breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: t('crumbMap'), path: '/night-bus-map' }, { name: hub.nameKo, path: `/hubs/${slug}` }], locale);
   return (
-    <PageContainer width="default">
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <header className={styles.hero}>
-        <p className={styles.eyebrow}>{t('eyebrow')}</p>
-        <h1 className={styles.title}>{t('title', { name: hub.nameKo })}</h1>
-        <p className={styles.sub}>{t('sub', { n: hub.routes.length, stops: hub.ars.length })}</p>
-        <div className={styles.chips}>{hub.routes.map((no) => routeExposed(no) ? <Link key={no} href={`/night-bus/${no.toLowerCase()}`} className={styles.chip} style={{ background: colors[no] }}>{no}</Link> : <span key={no} className={styles.chip} style={{ background: colors[no] }}>{no}</span>)}</div>
-      </header>
+      <PageHero eyebrow={t('eyebrow')} title={t('title', { name: hub.nameKo })} lead={t('sub', { n: hub.routes.length, stops: hub.ars.length })} crumbs={<Crumbs label={tp('crumbs')} items={[{ href: '/', label: ts('nav.home') }, { href: '/night-bus-map', label: t('crumbMap') }, { label: hub.nameKo }]} />}>
+        <div className={styles.chips}>{hub.routes.map((no) => routeExposed(no) ? <Link key={no} href={`/night-bus/${no.toLowerCase()}`} className={styles.chip} style={{ background: colors[no], color: onColor(colors[no] ?? '#9AA3B2') }}>{no}</Link> : <span key={no} className={styles.chip} style={{ background: colors[no], color: onColor(colors[no] ?? '#9AA3B2') }}>{no}</span>)}</div>
+      </PageHero>
+      <div className="v2-wrap v2-body">
 
       <section className={styles.section} aria-labelledby="pf-title">
         <h2 id="pf-title" className={styles.h2}>{t('platformsTitle')}</h2>
@@ -54,7 +59,8 @@ export default async function HubPage({ params }: { params: Promise<{ locale: st
           {platforms.map((p) => (
             <li key={p.arsId} className={styles.platform}>
               <div className={styles.pfHead}><span className={styles.ars}>{p.arsId}</span><span className={styles.pfName}>{p.name}</span></div>
-              <ul className={styles.lines}>{p.lines.map((l, i) => <li key={`${l.no}-${i}`}><span className={styles.miniChip} style={{ background: colors[l.no] }}>{l.no}</span><span>{l.label}</span></li>)}</ul>
+              <MapLinks name={p.name} lat={p.lat} lon={p.lon} labels={mapLabels} />
+              <ul className={styles.lines}>{p.lines.map((l, i) => <li key={`${l.no}-${i}`}><span className={styles.miniChip} style={{ background: colors[l.no], color: onColor(colors[l.no] ?? '#9AA3B2') }}>{l.no}</span><span>{l.label}</span></li>)}</ul>
             </li>
           ))}
         </ul>
@@ -71,9 +77,9 @@ export default async function HubPage({ params }: { params: Promise<{ locale: st
         <ul className={styles.board}>
           {routes.map((r) => (
             <li key={r.no} className={styles.brow} style={{ ['--c' as string]: colors[r.no] }}>
-              <span className={styles.bno}>{r.no}</span>
+              <span className={styles.bno} style={{ color: routeTextColor(r.no, colors[r.no]) }}>{r.no}</span>
               <span className={styles.bmain}><span className={styles.bends}>{r.ends[0]} ↔ {r.ends[1]}</span><span className={styles.bsched}>{r.official ? `${r.official.firstBus}~${r.official.lastBus} · ${t('headway')} ${r.official.headway}` : ''}</span></span>
-              {routeExposed(r.no) ? <Link href={`/night-bus/${r.no.toLowerCase()}`} className={styles.blink}>{t('routeLink')} →</Link> : <span className={styles.bsoon}>{t('routeSoon')}</span>}
+              {routeExposed(r.no) ? <Link href={`/night-bus/${r.no.toLowerCase()}`} className={styles.blink}>{t('routeLink')} →</Link> : <Link href="/night-bus-map" className={styles.blink}>{t('routeSoon')} →</Link>}
             </li>
           ))}
         </ul>
@@ -98,9 +104,9 @@ export default async function HubPage({ params }: { params: Promise<{ locale: st
       <section className={styles.section} aria-labelledby="src-title">
         <h2 id="src-title" className={styles.h2}>{t('sourceTitle')}</h2>
         <ul className={styles.sources}><li>{t('sourceStops', { snapshot: NIGHT_META.stopsSource.snapshot })}</li><li>{t('sourceLive')}</li><li>{t('sourceWhy')}</li></ul>
-        <p className={styles.report}>{t('report')}: <span className={styles.mail}>seoulautonomous@protonmail.com</span></p>
+        <p className={styles.report}>{t('report')}: <a className={styles.mail} href={`mailto:${CONTACT_MAIL}?subject=${encodeURIComponent(`[제보] ${hub.nameKo} 허브`)}`}>{CONTACT_MAIL}</a></p>
       </section>
-      <SiteFooter />
-    </PageContainer>
+      </div>
+    </>
   );
 }

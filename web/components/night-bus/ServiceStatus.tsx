@@ -20,7 +20,7 @@ export function ServiceStatus({ first, last, labels }: Props) {
     tick(); const id = setInterval(tick, 30000); return () => clearInterval(id);
   }, [first, last, labels]);
   return (
-    <div className={styles.box} aria-live="polite">
+    <div className={styles.box}>
       <span className={`${styles.dot}${text?.on ? ` ${styles.on}` : ''}`} aria-hidden="true" />
       <span className={styles.label}>{labels.label}</span>
       <span className={styles.msg}>{text?.msg ?? `${first} ~ ${last}`}</span>

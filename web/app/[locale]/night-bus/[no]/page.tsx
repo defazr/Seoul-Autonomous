@@ -1,10 +1,12 @@
 import { notFound } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import { Link } from '../../../../i18n/navigation';
-import { SiteFooter } from '../../../../components/common/SiteFooter';
-import { PageContainer } from '../../../../components/layout/PageContainer';
 import { SITE_URL, SITE_NAME } from '../../../../lib/seo/config';
+import { Crumbs } from '../../../../components/v2/ui/Crumbs';
+import { onColor, routeDisplayColor } from '../../../../lib/v2/route-color';
+import { CONTACT_MAIL } from '../../../../components/v2/shell/Footer';
+import { PageHero } from '../../../../components/v2/ui/PageHero';
 import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
 import { R3A_NIGHT_ROUTES, R3A_HUBS } from '../../../../lib/night-bus/registry';
 import { getNightRoute, hubsForRoute, routesAtName, routeColor, ANCHORS, NIGHT_META, HUBS } from '../../../../lib/night-bus/data';
@@ -41,9 +43,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function NightRoutePage({ params }: { params: Promise<{ locale: string; no: string }> }) {
   const { locale, no } = await params;
+  setRequestLocale(locale); // 정적 프리렌더(next-intl) — 배포 전 점검 10-16
   const route = getNightRoute(no);
   if (locale !== 'ko' || !route?.official || !(R3A_NIGHT_ROUTES as readonly string[]).includes(route.no)) notFound();
   const t = await getTranslations({ locale, namespace: 'nightBus' });
+  const tp = await getTranslations({ locale, namespace: 'pages' });
+  const ts = await getTranslations({ locale, namespace: 'shell' });
   const o = route.official;
   const color = routeColor(route);
   const hubs = hubsForRoute(route.no);
@@ -56,7 +61,7 @@ export default async function NightRoutePage({ params }: { params: Promise<{ loc
     const placed = placeStopsOnMap(route.no, stops, ANCHORS[route.no]?.[d.key] ?? [], route.turnaround.index);
     return {
       key: d.key, label: d.label, toward: d.toward, outside: placed.outside, ticks: placed.ticks, anchors: placed.anchorsOnMap,
-      stops: stops.map((s) => { const h = hubByArs.get(s.arsId); return { seq: s.seq, arsId: s.arsId, name: s.nameKo, others: routesAtName(s.nameKo, route.no), turn: s.idx === route.turnaround.index, hubSlug: h && exposedHub(h.slug) ? h.slug : undefined, hubName: h?.nameKo }; }),
+      stops: stops.map((s) => { const h = hubByArs.get(s.arsId); return { seq: s.seq, arsId: s.arsId, name: s.nameKo, lat: s.lat, lon: s.lon, others: routesAtName(s.nameKo, route.no), turn: s.idx === route.turnaround.index, hubSlug: h && exposedHub(h.slug) ? h.slug : undefined, hubName: h?.nameKo }; }),
     };
   });
   const via = (ANCHORS[route.no]?.out ?? []).map((a) => a.node);
@@ -69,15 +74,11 @@ export default async function NightRoutePage({ params }: { params: Promise<{ loc
   const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
 
   return (
-    <PageContainer width="default">
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 
-      <header className={styles.hero} style={{ ['--c' as string]: color }}>
-        <p className={styles.eyebrow}>{t('eyebrow')}</p>
-        <div className={styles.no} aria-hidden="true">{route.no}</div>
-        <h1 className={styles.title}>{t('title', { no: route.no })}</h1>
-        <p className={styles.ends}>{t('ends', { a: o.ends[0], b: o.ends[1] })}</p>
+      <PageHero eyebrow={t('eyebrow')} no={route.no} color={color} title={t('title', { no: route.no })} lead={t('ends', { a: o.ends[0], b: o.ends[1] })} crumbs={<Crumbs label={tp('crumbs')} items={[{ href: '/', label: ts('nav.home') }, { href: '/night-bus-map', label: t('crumbMap') }, { label: route.no }]} />}>
         <dl className={styles.facts}>
           <div><dt>{t('facts.first')}</dt><dd>{o.firstBus}</dd></div>
           <div><dt>{t('facts.last')}</dt><dd>{o.lastBus}</dd></div>
@@ -88,7 +89,8 @@ export default async function NightRoutePage({ params }: { params: Promise<{ loc
         </dl>
         <ServiceStatus first={o.firstBus} last={o.lastBus} labels={{ label: t('status.label'), running: t.raw('status.running'), before: t.raw('status.before'), beforeSoon: t.raw('status.beforeSoon'), note: t('status.note') }} />
         <Link href="/night-bus-map" className={styles.mapLink}>{t('allMap')} →</Link>
-      </header>
+      </PageHero>
+      <div className="v2-wrap v2-body">
 
       {ed && (
         <section className={styles.section} aria-labelledby="when-title">
@@ -114,8 +116,8 @@ export default async function NightRoutePage({ params }: { params: Promise<{ loc
             {hubs.map((h) => (
               <li key={h.slug} className={styles.hub}>
                 <span className={styles.hubName}>{h.nameKo}</span>
-                <span className={styles.hubRoutes}>{h.routes.map((r) => <span key={r} className={styles.miniChip} style={{ background: r === 'N72' ? '#C9CFDA' : ROUTE_COLORS[r] ?? '#9AA3B2' }}>{r}</span>)}</span>
-                {exposedHub(h.slug) ? <a className={styles.hubLink} href={`/${locale}/hubs/${h.slug}`}>{t('hubLink')} →</a> : <span className={styles.hubSoon}>{t('hubsSoon')}</span>}
+                <span className={styles.hubRoutes}>{h.routes.map((r) => <span key={r} className={styles.miniChip} style={{ background: routeDisplayColor(r, ROUTE_COLORS[r]), color: onColor(routeDisplayColor(r, ROUTE_COLORS[r])) }}>{r}</span>)}</span>
+                {exposedHub(h.slug) ? <a className={styles.hubLink} href={`/${locale}/hubs/${h.slug}`}>{t('hubLink')} →</a> : <Link href="/night-bus-map" className={styles.hubLink}>{t('hubsSoon')} →</Link>}
               </li>
             ))}
           </ul>
@@ -126,14 +128,13 @@ export default async function NightRoutePage({ params }: { params: Promise<{ loc
         <h2 id="dir-title" className={styles.h2}>{t('dirTitle')}</h2>
         <p className={styles.note}>{t('dirNote')}</p>
         <RouteExplorer no={route.no} color={color} colors={ROUTE_COLORS} dirs={dirs} map={map} hubBase={`/${locale}/hubs`}
-          labels={{ dirStops: t.raw('dirStops'), meets: t('meets'), hubLink: t('hubLink'), turnaround: t('turnaround'), mapNote: t('mapNote'), mapOutside: t.raw('mapOutside'), boardText: t.raw('boardText') }} />
+          labels={{ dirStops: t.raw('dirStops'), meets: t('meets'), hubLink: t('hubLink'), turnaround: t('turnaround'), mapNote: t('mapNote'), mapOutside: t.raw('mapOutside'), boardText: t.raw('boardText'), stopTap: t('stopTap'), kakao: tp('map.kakao'), naver: tp('map.naver'), mapAria: tp('map.aria') }} />
         <p className={styles.transfer}>{t('boardTransfer')}</p>
       </section>
 
       <section className={styles.section} aria-labelledby="live-title">
         <h2 id="live-title" className={styles.h2}>{t('liveTitle')}</h2>
         <p className={styles.note}>{t('liveText')}</p>
-        <p className={styles.soon}>{t('liveSoon')}</p>
       </section>
 
       <section className={styles.section} aria-labelledby="faq-title">
@@ -149,9 +150,9 @@ export default async function NightRoutePage({ params }: { params: Promise<{ loc
           <li>{t('sourceMap')}</li>
           <li>{t('sourceWhy')}</li>
         </ul>
-        <p className={styles.report}>{t('report')}: <span className={styles.mail}>{t('reportMail')}</span></p>
+        <p className={styles.report}>{t('report')}: <a className={styles.mail} href={`mailto:${CONTACT_MAIL}?subject=${encodeURIComponent(`[제보] ${route.no} 올빼미버스`)}`}>{CONTACT_MAIL}</a></p>
       </section>
-      <SiteFooter />
-    </PageContainer>
+      </div>
+    </>
   );
 }

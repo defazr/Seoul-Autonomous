@@ -14,13 +14,13 @@
 .lineTop {
   width: 1px;
   height: 8px;
-  background-color: var(--color-border-2);
+  background-color: var(--line-2);
 }
 
 .lineBottom {
   width: 1px;
   flex: 1;
-  background-color: var(--color-border-2);
+  background-color: var(--line-2);
 }
 
 .lineHidden {
@@ -31,14 +31,14 @@
   width: 10px;
   height: 10px;
   border-radius: 999px;
-  background-color: var(--color-bg-1);
-  border: 1.5px solid var(--color-fg-5);
+  background-color: var(--bg);
+  border: 1.5px solid var(--fg-3);
   flex-shrink: 0;
 }
 
 .stopDotTurnaround {
-  border-color: var(--color-accent);
-  background-color: var(--color-accent-faint);
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
   width: 12px;
   height: 12px;
 }
@@ -58,7 +58,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
   line-height: 14px;
-  color: var(--color-fg-4);
+  color: var(--fg-3);
   letter-spacing: 0.44px;
 }
 
@@ -66,13 +66,13 @@
   font-weight: 500;
   font-size: 15px;
   line-height: 20px;
-  color: var(--color-fg-1);
+  color: var(--fg);
 }
 
 .stopNameSub {
   font-size: 13px;
   line-height: 18px;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
   margin-top: 1px;
   margin-left: 30px;
 }
@@ -124,8 +124,8 @@
 
 .summary {
   height: 40px;
-  background-color: var(--color-bg-2);
-  border: 1px solid var(--color-border-1);
+  background-color: var(--bg-2);
+  border: 1px solid var(--line);
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
@@ -133,7 +133,7 @@
   margin-top: 4px;
   cursor: pointer;
   width: 100%;
-  color: var(--color-fg-2);
+  color: var(--fg);
   font-weight: 500;
   font-size: 13px;
   line-height: 16px;
@@ -145,7 +145,7 @@
 }
 
 .summary:hover {
-  background-color: var(--color-bg-3);
+  background-color: var(--bg-3);
 }
 
 .details[open] .summary {
@@ -162,7 +162,7 @@
   margin: 0 0 12px;
   font-size: 13px;
   line-height: 18px;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
 }
 
 /* shared stop 행 전용 보조 줄 — 행 자체는 비인터랙티브 유지, chip <a>만 focus 대상 */
@@ -178,7 +178,7 @@
 .otherRoutesLabel {
   font-size: 12px;
   line-height: 16px;
-  color: var(--color-fg-4);
+  color: var(--fg-3);
 }
 
 /* Stage 1 승인 Stop 행 전용 링크 — 행은 비인터랙티브 유지, 이 <a> 만 추가된다 */
@@ -193,7 +193,7 @@
   font-size: 12px;
   line-height: 16px;
   font-weight: 500;
-  color: var(--color-accent);
+  color: var(--accent);
   text-decoration: none;
 }
 
@@ -205,18 +205,18 @@
   display: inline-flex;
   align-items: center;
   padding: 4px 12px;
-  border: 1px solid var(--color-border-1);
+  border: 1px solid var(--line);
   border-radius: 999px;
   font-size: 12px;
   line-height: 16px;
   font-weight: 500;
-  color: var(--color-fg-2);
-  background-color: var(--color-bg-2);
+  color: var(--fg);
+  background-color: var(--bg-2);
   text-decoration: none;
 }
 
 .routeChip:hover {
-  border-color: var(--color-accent);
-  color: var(--color-fg-1);
-  background-color: var(--color-bg-3);
+  border-color: var(--accent);
+  color: var(--fg);
+  background-color: var(--bg-3);
 }

@@ -1,8 +1,9 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '../../../i18n/routing';
 import { Link } from '../../../i18n/navigation';
-import { SiteFooter } from '../../../components/common/SiteFooter';
-import { PageContainer } from '../../../components/layout/PageContainer';
+import { Crumbs } from '../../../components/v2/ui/Crumbs';
+import { PageHero } from '../../../components/v2/ui/PageHero';
+import { Section } from '../../../components/v2/ui/Section';
 import { breadcrumbJsonLd } from '../../../lib/seo/jsonld';
 import { buildPageMetadata } from '../../../lib/seo/metadata';
 import { HeroCard } from '../../../components/how-to-ride/HeroCard';
@@ -32,48 +33,15 @@ export async function generateMetadata({
   });
 }
 
-function ChevronLeft() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={18}
-      height={18}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M15 6l-6 6 6 6" />
-    </svg>
-  );
-}
-
-function InfoIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={16}
-      height={16}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx={12} cy={12} r={10} />
-      <path d="M12 16v-4M12 8h.01" />
-    </svg>
-  );
-}
-
 export default async function HowToRidePage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  setRequestLocale(locale); // 정적 프리렌더(next-intl) — 배포 전 점검 10-16
   const t = await getTranslations({ locale });
+  const tp = await getTranslations({ locale, namespace: 'pages' });
   const isKo = locale === 'ko';
 
   const faqs = [
@@ -180,26 +148,36 @@ export default async function HowToRidePage({
     </div>
   );
 
+  // 올빼미버스 타는 법 (배포 전 점검 10-16 · 정책 감사 FIX 1 — 사이트 정체성 = 심야 이동 중심)
+  const owlSection = (
+    <>
+      <h2 className={styles.h2}>{t('howToRide.owl.title')}</h2>
+      <p className={styles.introText}>{t('howToRide.owl.intro')}</p>
+      <div className={styles.section}>
+        <div className={styles.stepsGrid}>
+          {[1, 2, 3, 4].map((i) => <StepCard key={i} step={i} title={t(`howToRide.owl.s${i}.title`)} description={t(`howToRide.owl.s${i}.desc`)} />)}
+        </div>
+      </div>
+      <p className={styles.introText}>
+        {isKo ? <><Link href="/night-bus-fare" className={styles.inlineLink}>{t('howToRide.owl.fareLink')} →</Link>{' · '}</> : null}
+        <Link href="/night-bus-map" className={styles.inlineLink}>{t('howToRide.owl.mapLink')} →</Link>
+      </p>
+    </>
+  );
+
   return (
-    <PageContainer width="default">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: t('howToRide.title'), path: '/how-to-ride' }], locale)) }}
       />
-      {/* TopBar */}
-      <div className={styles.topBar}>
-        <Link href="/" className={styles.backBtn}>
-          <ChevronLeft />
-        </Link>
-        <Link href="/" className={styles.topTitle}>{t('howToRide.title')}</Link>
 
-      </div>
-
-      {/* H1 */}
-      <h1 className={styles.heading}>{t('howToRide.webTitle')}</h1>
+      <PageHero eyebrow={tp('howToRide.eyebrow')} title={t('howToRide.webTitle')} crumbs={<Crumbs label={tp('crumbs')} items={[{ href: '/', label: t('shell.nav.home') }, { label: t('howToRide.title') }]} />} />
+      <Section size="tight" ariaLabel={t('howToRide.webTitle')}>
 
       {isKo ? (
         <>
+          {owlSection}
           {/* Korean SEO structure with H2s */}
           <h2 className={styles.h2}>{koH2.intro}</h2>
           <p className={styles.introText}>
@@ -253,6 +231,7 @@ export default async function HowToRidePage({
       ) : (
         <>
           {/* English: app structure with SegmentedControl */}
+          {owlSection}
           <HowToRideClient
             filterBuses={t('howToRide.filter.buses')}
             filterRobotaxis={t('howToRide.filter.robotaxis')}
@@ -268,8 +247,7 @@ export default async function HowToRidePage({
           />
         </>
       )}
-
-      <SiteFooter />
-    </PageContainer>
+      </Section>
+    </>
   );
 }

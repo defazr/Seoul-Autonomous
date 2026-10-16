@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // 벤더 워커(압축 파일 · maplibre) — 린트 대상 아님
+    "public/vendor/**",
   ]),
 ]);
 

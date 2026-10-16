@@ -1,34 +1,19 @@
 import { Link } from '../../i18n/navigation';
-import { PageContainer } from '../layout/PageContainer';
-import { SiteFooter } from '../common/SiteFooter';
+import { PageHero } from '../v2/ui/PageHero';
+import { Section } from '../v2/ui/Section';
+import { Crumbs } from '../v2/ui/Crumbs';
 import { afterLastTrainKo } from '../../data/night-bus-guides/after-last-train.ko';
 import styles from './AfterLastTrainGuideKo.module.css';
-
-function ChevronLeft() {
-  return (
-    <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M15 6l-6 6 6 6" />
-    </svg>
-  );
-}
 
 export function AfterLastTrainGuideKo() {
   const g = afterLastTrainKo;
 
   return (
-    <PageContainer width="default">
-      {/* TopBar */}
-      <div className={styles.topBar}>
-        <Link href="/" className={styles.backBtn}>
-          <ChevronLeft />
-        </Link>
-      </div>
-
-      <div className={styles.hero}>
-        <h1 className={styles.heading}>{g.hero.h1}</h1>
-        <p className={styles.summary}>{g.hero.summary}</p>
+    <>
+      <PageHero eyebrow="서울 심야버스" title={g.hero.h1} lead={g.hero.summary} crumbs={<Crumbs label="경로 표시" items={[{ href: '/', label: '홈' }, { href: '/night-bus-map', label: '심야버스 노선도' }, { label: '막차 이후 이동' }]} />}>
         <p className={styles.asOf}>{g.hero.asOf}</p>
-      </div>
+      </PageHero>
+      <Section size="tight" width="text" ariaLabel={g.hero.h1}>
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{g.firstCheck.title}</h2>
@@ -133,7 +118,7 @@ export function AfterLastTrainGuideKo() {
         </ul>
       </section>
 
-      <SiteFooter />
-    </PageContainer>
+      </Section>
+    </>
   );
 }

@@ -27,7 +27,7 @@ export function getNightBus(): NightBus {
 export function getNightRoute(no: string): NightRoute | undefined { return getNightBus().routeByNo.get(no.toUpperCase()); }
 export const HUBS: Hub[] = (hubsDoc as { hubs: Hub[] }).hubs;
 export const ANCHORS = (anchorsDoc as { anchors: Record<string, Record<'out' | 'in', Anchor[]>> }).anchors;
-export const NIGHT_META = (routesDoc as { _meta: { stopsSource: { snapshot: string; license: string }; scheduleSource: { revisedOn: string; url: string } } })._meta;
+export const NIGHT_META = (routesDoc as { _meta: { stopsSource: { dataset: string; url: string; snapshot: string; license: string }; scheduleSource: { title: string; url: string; publisher: string; revisedOn: string } } })._meta;
 /** 다크 바탕에서 보이지 않는 공식색의 표시 대체 (SSoT 값은 보존). */
 export const DISPLAY_COLOR: Record<string, string> = { N72: '#C9CFDA' };
 export function routeColor(r: { no: string; color: string | null }): string { return DISPLAY_COLOR[r.no] ?? r.color ?? '#9AA3B2'; }

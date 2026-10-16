@@ -10,7 +10,7 @@ type KakaoCardProps = {
 
 function PhoneIcon() {
   return (
-    <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="var(--color-accent)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="var(--accent)" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x={6} y={2} width={12} height={20} rx={2.5} />
       <path d="M11 18h2" />
     </svg>

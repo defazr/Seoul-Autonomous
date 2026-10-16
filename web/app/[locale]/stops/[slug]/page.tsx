@@ -1,14 +1,17 @@
 import { notFound } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '../../../../i18n/routing';
 import { Link } from '../../../../i18n/navigation';
-import { PageContainer } from '../../../../components/layout/PageContainer';
-import { SiteFooter } from '../../../../components/common/SiteFooter';
+import { Crumbs } from '../../../../components/v2/ui/Crumbs';
+import { PageHero } from '../../../../components/v2/ui/PageHero';
+import { MapLinks } from '../../../../components/v2/ui/MapLinks';
 import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
 import { buildPageMetadata } from '../../../../lib/seo/metadata';
 import { getOfficialStopNameEn, stopNamesSourceMeta } from '../../../../lib/stops';
 import { getRouteById } from '../../../../lib/routes';
 import { APPROVED_STOPS, getApprovedStopBySlug } from '../../../../lib/stop-pages';
+import { NextIntlClientProvider } from 'next-intl';
+import { clientMessages } from '../../../../lib/v2/client-messages';
 import { ArrivalCard } from '../../../../components/stop/ArrivalCard';
 import { StopServiceHours } from '../../../../components/stop/StopServiceHours';
 import routesData from '../../../../data/routes.json';
@@ -130,23 +133,6 @@ function formatDate(iso: string, isKo: boolean): string {
   return `${monthName} ${Number(day)}, ${year}`;
 }
 
-function ChevronLeft() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={18}
-      height={18}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M15 6l-6 6 6 6" />
-    </svg>
-  );
-}
-
 export function generateStaticParams() {
   const params: { locale: string; slug: string }[] = [];
   for (const locale of routing.locales) {
@@ -198,6 +184,7 @@ export default async function StopDetailPage({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
+  setRequestLocale(locale); // 정적 프리렌더(next-intl) — 배포 전 점검 10-16
   const approved = getApprovedStopBySlug(slug);
 
   // 승인 목록에 없는 slug 는 페이지를 만들지 않는다 (redirect 없음).
@@ -206,6 +193,7 @@ export default async function StopDetailPage({
   }
 
   const t = await getTranslations({ locale });
+  const tp = await getTranslations({ locale, namespace: 'pages' });
   const isKo = locale === 'ko';
   const data = buildStopPageData(approved.stopId);
 
@@ -228,14 +216,14 @@ export default async function StopDetailPage({
   );
 
   return (
-    <PageContainer width="default">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             breadcrumbJsonLd(
               [
-                { name: 'Home', path: '' },
+                { name: 'Home', path: '' }, { name: 'Routes', path: '/routes' },
                 {
                   name: `${primaryName} ${data.stopId}`,
                   path: `/stops/${approved.slug}`,
@@ -247,21 +235,13 @@ export default async function StopDetailPage({
         }}
       />
 
-      <div className={styles.topBar}>
-        <Link href="/routes" className={styles.backBtn}>
-          <ChevronLeft />
-        </Link>
-      </div>
 
       {/* Hero — 공식명 + ARS + 노선별 다음 정류장. 동명 방향쌍은 이 두 줄로 갈린다. */}
-      <div className={styles.hero}>
-        <h1 className={styles.heading}>{primaryName}</h1>
-        {secondaryName && secondaryName !== primaryName ? (
-          <div className={styles.subName}>{secondaryName}</div>
-        ) : null}
+      <PageHero eyebrow={tp('stop.eyebrow')} title={primaryName} lead={secondaryName && secondaryName !== primaryName ? secondaryName : undefined} crumbs={<Crumbs label={tp('crumbs')} items={[{ href: '/', label: t('shell.nav.home') }, { href: '/routes', label: t('routes.title') }, { label: `${primaryName} ${data.stopId}` }]} />}>
         <div className={styles.arsLine}>
           <span className={styles.arsLabel}>{t('stopDetail.ars')}</span>
           <span className={styles.arsValue}>{data.stopId}</span>
+          <MapLinks name={data.nameKo} labels={{ kakao: tp('map.kakao'), naver: tp('map.naver'), aria: tp('map.aria') }} />
         </div>
         {nextUnionNames.length > 0 ? (
           <p className={styles.nextLine}>
@@ -271,19 +251,22 @@ export default async function StopDetailPage({
             <span className={styles.nextValue}>{nextUnionNames.join(' · ')}</span>
           </p>
         ) : null}
-      </div>
+      </PageHero>
+      <div className="v2-wrap v2-body">
 
       {/* RT-2 pilot gate — KO 01009 한정. expansion 시 이 조건은 제거한다.
           정적 안내는 항상 남는 base layer 이고, 실시간 카드는 그 위에 조건부로 추가된다. */}
       {isKo && data.stopId === '01009' ? (
         <>
-          <ArrivalCard
-            stopId={data.stopId}
-            ssotOrder={data.cards.map((card) => card.routeId)}
-            routeNames={Object.fromEntries(
-              data.cards.map((card, index) => [card.routeId, routeNames[index]]),
-            )}
-          />
+          <NextIntlClientProvider locale={locale} messages={await clientMessages(locale, ['stopDetail'])}>
+            <ArrivalCard
+              stopId={data.stopId}
+              ssotOrder={data.cards.map((card) => card.routeId)}
+              routeNames={Object.fromEntries(
+                data.cards.map((card, index) => [card.routeId, routeNames[index]]),
+              )}
+            />
+          </NextIntlClientProvider>
           <StopServiceHours entries={data.cards.map((card, index) => ({
             routeId: card.routeId,
             routeName: routeNames[index],
@@ -397,11 +380,9 @@ export default async function StopDetailPage({
       </section>
 
       <Link href="/routes" className={styles.allRoutesLink}>
-        <ChevronLeft />
-        {t('nav.viewAllRoutes')}
+        ← {t('nav.viewAllRoutes')}
       </Link>
-
-      <SiteFooter />
-    </PageContainer>
+      </div>
+    </>
   );
 }

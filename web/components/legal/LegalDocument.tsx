@@ -115,7 +115,6 @@ export function LegalDocument({ document: doc, locale }: Props) {
 
   return (
     <div>
-      <h1 className={styles.heading}>{doc.title}</h1>
       <p className={styles.caption}>
         {isKo ? `시행일자: ${doc.effectiveDate}` : `Effective date: ${doc.effectiveDate}`}
       </p>

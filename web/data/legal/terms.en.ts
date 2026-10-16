@@ -14,7 +14,7 @@ const document: LegalDocument = {
     {
       title: '2. Description of Service',
       paragraphs: [
-        'Seoul Autonomous is an information website that provides details about autonomous vehicle routes (including buses and robotaxis) available or announced in Seoul, Republic of Korea. The Website is provided free of charge.',
+        'Seoul Autonomous is an information website about late-night travel in Seoul, Republic of Korea: Seoul Owl Bus (N-bus) routes, stops and transfers, and autonomous vehicle routes (including buses and robotaxis) available or announced in Seoul. The Website is provided free of charge.',
       ],
     },
     {
@@ -35,7 +35,7 @@ const document: LegalDocument = {
         {
           title: '3.3 Verify Before Riding',
           paragraphs: [
-            'Before using any autonomous vehicle service listed on the Website, you must verify the following from official sources:',
+            'Before using any transit service listed on the Website, you must verify the following from official sources:',
           ],
           bulletPoints: [
             'Current operating status (operating / suspended / discontinued)',
@@ -121,7 +121,7 @@ const document: LegalDocument = {
   ],
   contact: {
     developerLabel: 'Operator',
-    developer: 'Seoul Autonomous',
+    developer: 'Dapala Corp (Seoul Autonomous)',
     email: 'seoulautonomous@protonmail.com',
     location: 'Seoul, Republic of Korea',
   },

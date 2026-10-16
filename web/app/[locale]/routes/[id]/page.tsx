@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getVerifiedRoutes, getRouteById } from '../../../../lib/routes';
 import { routeContextKo } from '../../../../data/route-context/route-context.ko';
 import { routeContextEn } from '../../../../data/route-context/route-context.en';
@@ -10,10 +10,10 @@ import { StopsList } from '../../../../components/route-detail/StopsList';
 import { getOfficialStopNameEn } from '../../../../lib/stops';
 import { getApprovedStopPath } from '../../../../lib/stop-pages';
 import { MapLinkButton } from '../../../../components/route-detail/MapLinkButton';
-import { Pill, StatusDot } from '../../../../components/ui/Pill';
+import { Pill } from '../../../../components/v2/ui/Pill';
 import { Link } from '../../../../i18n/navigation';
-import { SiteFooter } from '../../../../components/common/SiteFooter';
-import { PageContainer } from '../../../../components/layout/PageContainer';
+import { Crumbs } from '../../../../components/v2/ui/Crumbs';
+import { PageHero } from '../../../../components/v2/ui/PageHero';
 import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
 import { buildPageMetadata } from '../../../../lib/seo/metadata';
 import routesData from '../../../../data/routes.json';
@@ -79,67 +79,13 @@ function formatDate(dateStr: string, isKo: boolean): string {
   });
 }
 
-function ChevronLeft() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={18}
-      height={18}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M15 6l-6 6 6 6" />
-    </svg>
-  );
-}
-
-function BusIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={12}
-      height={12}
-      fill="none"
-      stroke="var(--color-fg-3)"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x={4} y={4} width={16} height={14} rx={2} />
-      <circle cx={8} cy={20} r={1.5} />
-      <circle cx={16} cy={20} r={1.5} />
-      <path d="M4 12h16M9 4v8M15 4v8" />
-    </svg>
-  );
-}
-
-function InfoIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={16}
-      height={16}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx={12} cy={12} r={10} />
-      <path d="M12 16v-4M12 8h.01" />
-    </svg>
-  );
-}
-
 export default async function RouteDetailPage({
   params,
 }: {
   params: Promise<{ locale: string; id: string }>;
 }) {
   const { locale, id } = await params;
+  setRequestLocale(locale); // 정적 프리렌더(next-intl) — 배포 전 점검 10-16
   const route = getRouteById(id);
 
   if (!route) {
@@ -147,6 +93,7 @@ export default async function RouteDetailPage({
   }
 
   const t = await getTranslations({ locale });
+  const tp = await getTranslations({ locale, namespace: 'pages' });
   const isKo = locale === 'ko';
 
   const name = isKo ? route.displayNameKo : route.displayName;
@@ -333,45 +280,19 @@ export default async function RouteDetailPage({
   const statusKey = statusKeyByLevel[route.verificationLevel] ?? 'verified';
 
   return (
-    <PageContainer width="default">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: 'Routes', path: '/routes' }, { name, path: '/routes/' + route.id }], locale)) }}
       />
-      {/* TopBar */}
-      <div className={styles.topBar}>
-        <Link href="/routes" className={styles.backBtn}>
-          <ChevronLeft />
-        </Link>
-        <div className={styles.badges}>
-          <span className={styles.codeBadge}>
-            {route.displayName.toUpperCase()}
-          </span>
-          <span className={styles.typeBadge}>
-            <BusIcon />
-            BUS
-          </span>
+      <PageHero eyebrow={`${route.displayName.toUpperCase()} · ${tp('routeDetail.eyebrow')}`} title={name} lead={subName} crumbs={<Crumbs label={tp('crumbs')} items={[{ href: '/', label: t('shell.nav.home') }, { href: '/routes', label: t('routes.title') }, { label: name }]} />}>
+        <div className={styles.heroMeta}>
+          <Pill tone="accent" dot on>{t(`status.${statusKey}`)}</Pill>
+          <span className={styles.checkedDate}>{`${t('routeDetail.info.verified')} ${formatDate(route.lastChecked, isKo)}`}</span>
         </div>
-        <div className={styles.statusGroup}>
-          <Pill variant="accent">
-            <StatusDot color="var(--color-accent)" size={5} />
-            <span>{t(`status.${statusKey}`)}</span>
-          </Pill>
-        </div>
-      </div>
-
-      {/* Title */}
-      <div className={styles.titleSection}>
-        <h1 className={styles.heading}>{name}</h1>
-        <div className={styles.subName}>{subName}</div>
-        <div className={styles.checkedDate}>
-          {`${t('routeDetail.info.verified')} ${formatDate(route.lastChecked, isKo)}`}
-        </div>
-        <div className={styles.disclaimer}>
-          {t('routeDetail.disclaimer')}
-        </div>
-      </div>
-
+        <p className={styles.disclaimer}>{t('routeDetail.disclaimer')}</p>
+      </PageHero>
+      <div className="v2-wrap v2-body">
       {/* Route context */}
       <section
         className={styles.contextSection}
@@ -537,8 +458,7 @@ export default async function RouteDetailPage({
             </div>
 
             <Link href="/routes" className={styles.allRoutesLink}>
-              <ChevronLeft />
-              {t('nav.viewAllRoutes')}
+              ← {t('nav.viewAllRoutes')}
             </Link>
           </div>
         </aside>
@@ -608,10 +528,12 @@ export default async function RouteDetailPage({
           <Link href="/night-bus-map" className={styles.nightBusCtaLink}>
             서울 심야버스 전체 노선도 보기 →
           </Link>
+          <Link href="/hubs/dongdaemun-station" className={styles.nightBusCtaLink}>
+            {tp('routeDetail.hubLink')} →
+          </Link>
         </div>
       )}
-
-      <SiteFooter />
-    </PageContainer>
+      </div>
+    </>
   );
 }

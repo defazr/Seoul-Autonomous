@@ -1,0 +1,45 @@
+/* ===== 자율주행 노선·로보택시 카드 (v2) ===== */
+.card { display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; align-items: start; padding: 16px; border-radius: 16px; background: var(--bg-2); border: 1px solid var(--line); color: inherit; transition: transform 0.2s, border-color 0.2s; }
+a.card:hover { transform: translateY(-2px); border-color: var(--line-2); }
+.glyph { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--bg-3); color: var(--fg-2); }
+.code { font-family: var(--font-display); font-weight: 900; font-size: 13px; color: var(--accent); letter-spacing: 0.02em; }
+.name { display: block; font-family: var(--font-display); font-weight: 900; font-size: 17px; line-height: 1.25; }
+.sub { display: block; font-size: 12px; color: var(--fg-3); margin-top: 2px; }
+.line { display: block; font-size: 14px; color: var(--fg-2); margin-top: 8px; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; margin-top: 8px; font-size: 12px; color: var(--fg-3); font-variant-numeric: tabular-nums; }
+.meta b { font-family: var(--font-mono); font-weight: 500; color: var(--fg); }
+.dot { width: 3px; height: 3px; border-radius: 50%; background: var(--fg-3); }
+.chev { color: var(--fg-3); align-self: center; }
+.topRow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+.type { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); font-weight: 600; }
+.tag { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; color: var(--warn); }
+.tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--warn); }
+.ops { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); display: grid; gap: 8px; }
+.opsRow { display: grid; grid-template-columns: 88px 1fr; gap: 10px; font-size: 13px; }
+.opsLabel { color: var(--fg-3); }
+.opsValue { color: var(--fg-2); }
+.fare { list-style: none; display: grid; gap: 2px; }
+.fare li { display: flex; gap: 10px; font-variant-numeric: tabular-nums; }
+.fare li span:first-child { font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); min-width: 96px; }
+.src { margin-top: 10px; font-size: 12px; color: var(--fg-3); display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.src a { color: var(--fg-2); }
+.src a:hover { color: var(--accent); }
+@media (max-width: 480px) { .card { grid-template-columns: 40px 1fr; } .chev { display: none; } .opsRow { grid-template-columns: 1fr; gap: 2px; } }
+
+/* ===== 그룹 카드 (새벽·심야) ===== */
+.group { display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; align-items: center; padding: 14px 16px; border-radius: 14px; background: var(--bg-2); border: 1px solid var(--line); transition: transform 0.2s, border-color 0.2s; }
+.group:hover { transform: translateY(-2px); border-color: var(--accent-line); }
+.groupTitle { font-weight: 700; font-size: 15px; }
+.groupMeta { font-size: 12px; color: var(--fg-3); margin-top: 2px; font-variant-numeric: tabular-nums; }
+
+/* ===== 검색·필터 ===== */
+.search { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--line-2); border-radius: 12px; padding: 0 14px; }
+.search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.search svg { color: var(--fg-3); flex: none; }
+.search input { flex: 1; min-width: 0; background: none; border: 0; padding: 12px 0; font-size: 16px; color: var(--fg); }
+.search input::placeholder { color: var(--fg-3); }
+.search input:focus { outline: none; }
+.seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: 12px; padding: 3px; gap: 3px; }
+.segBtn { padding: 8px 14px; border-radius: 9px; font-weight: 600; font-size: 13px; color: var(--fg-2); }
+.segBtn:hover { color: var(--fg); }
+.segBtn[aria-checked='true'] { background: var(--accent); color: var(--accent-ink); }

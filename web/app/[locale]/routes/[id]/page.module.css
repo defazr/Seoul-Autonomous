@@ -1,225 +1,105 @@
-.container {
-}
-
-/* TopBar */
-.topBar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 0 16px;
-}
-
-.statusGroup {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-.backBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  background-color: var(--color-bg-2);
-  border: 1px solid var(--color-border-2);
-  cursor: pointer;
-  color: var(--color-fg-1);
-  text-decoration: none;
-  flex-shrink: 0;
-}
-
-.backBtn:hover {
-  background-color: var(--color-bg-3);
-}
-
-.badges {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
-}
-
-.codeBadge {
-  padding: 4px 8px;
-  border-radius: 6px;
-  background-color: var(--color-bg-3);
-  border: 1px solid var(--color-border-2);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  line-height: 14px;
-  color: var(--color-fg-2);
-  letter-spacing: 0.66px;
-  text-transform: uppercase;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.typeBadge {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 8px;
-  border-radius: 6px;
-  border: 1px solid var(--color-border-2);
-  font-weight: 500;
-  font-size: 11px;
-  line-height: 14px;
-  color: var(--color-fg-3);
-  letter-spacing: 0.88px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* Title section */
-.titleSection {
-  margin-bottom: 32px;
-}
-
-.heading {
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 36px;
-  color: var(--color-fg-1);
-  letter-spacing: -0.96px;
-  margin: 0;
-}
-
-.subName {
-  font-size: 16px;
-  line-height: 22px;
-  color: var(--color-fg-3);
-  margin-top: 4px;
-}
-
 .checkedDate {
   font-family: var(--font-mono);
   font-size: 11px;
   line-height: 14px;
-  color: var(--color-fg-4);
+  color: var(--fg-3);
   letter-spacing: 0.44px;
   margin-top: 6px;
 }
-
 .disclaimer {
-  font-size: 11px;
-  line-height: 14px;
-  color: var(--color-warning);
-  letter-spacing: 0.22px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--fg-2);
   margin-top: 4px;
+  max-width: 70ch;
 }
-
 /* Route context section */
 .contextSection {
   margin-bottom: 32px;
 }
-
 .contextSection h2 {
   font-weight: 600;
   font-size: 18px;
   line-height: 24px;
-  color: var(--color-fg-1);
+  color: var(--fg);
   margin: 0 0 12px;
 }
-
 .contextBody {
   font-size: 14px;
   line-height: 22px;
-  color: var(--color-fg-2);
+  color: var(--fg);
   margin: 0 0 10px;
 }
-
-/* Section spacing */
-.section {
-  margin-bottom: 32px;
-}
-
 .sectionTitle {
   font-weight: 500;
   font-size: 11px;
   line-height: 14px;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
   letter-spacing: 0.88px;
   text-transform: uppercase;
   margin-bottom: 12px;
 }
-
 /* Meta list */
 .metaList {
   display: flex;
   flex-direction: column;
 }
-
 .metaRow {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   padding: 12px 0;
 }
-
 .metaRowBorder {
-  border-bottom: 1px solid rgba(31, 31, 31, 0.4);
+  border-bottom: 1px solid var(--line);
 }
-
 .metaLabel {
   font-weight: 500;
   font-size: 11px;
   line-height: 14px;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
   letter-spacing: 0.88px;
   text-transform: uppercase;
 }
-
 .metaValue {
   font-weight: 500;
   font-size: 15px;
   line-height: 20px;
-  color: var(--color-fg-1);
+  color: var(--fg);
 }
-
 .metaValueMuted {
   font-weight: 500;
   font-size: 15px;
   line-height: 20px;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
 }
-
 /* 2-column layout */
 .twoColumn {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
-
 .mainCol {
   flex: 1;
   min-width: 0;
 }
-
 .sidebar {
   width: 100%;
 }
-
 .sidebarSticky {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
-
 .stopsCard {
-  background-color: var(--color-bg-2);
-  border: 1px solid var(--color-border-1);
+  background-color: var(--bg-2);
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: 24px;
 }
-
 .sidebarCard {
-  background-color: var(--color-bg-2);
-  border: 1px solid var(--color-border-1);
+  background-color: var(--bg-2);
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: 20px;
   display: flex;
@@ -228,46 +108,22 @@
 }
 
 @media (min-width: 1024px) {
-  .twoColumn {
+.twoColumn {
     flex-direction: row;
     align-items: flex-start;
     gap: 40px;
   }
-
-  .mainCol {
+.mainCol {
     flex: 1;
   }
-
-  .sidebar {
+.sidebar {
     width: 340px;
     flex-shrink: 0;
   }
-
-  .sidebarSticky {
+.sidebarSticky {
     position: sticky;
     top: 24px;
   }
-}
-
-/* Footer */
-.footerNote {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid var(--color-border-1);
-}
-
-.footerIcon {
-  flex-shrink: 0;
-  color: var(--color-fg-3);
-}
-
-.footerText {
-  font-size: 12px;
-  line-height: 18px;
-  color: var(--color-fg-3);
 }
 
 /* All routes link */
@@ -275,7 +131,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
   font-weight: 500;
   font-size: 13px;
   line-height: 20px;
@@ -283,122 +139,84 @@
   transition: color 0.15s;
   padding: 4px 0;
 }
-
 .allRoutesLink:hover {
-  color: var(--color-accent);
+  color: var(--accent);
 }
-
 .allRoutesLink svg {
   width: 14px;
   height: 14px;
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-  .topBar {
-    flex-wrap: wrap;
-  }
-
-  .badges {
-    flex: 1 1 auto;
-  }
-
-  .statusGroup {
-    flex-basis: 100%;
-    justify-content: flex-end;
-    margin-left: 0;
-  }
-
-  .heading {
-    font-size: 24px;
-    line-height: 28px;
-    letter-spacing: -0.48px;
-  }
 }
 
 /* AEO FAQ section */
 .aeoSection {
   margin-top: 72px;
   padding-top: 40px;
-  border-top: 1px solid var(--color-border-1);
+  border-top: 1px solid var(--line);
 }
-
 .aeoTitle {
   font-weight: 600;
   font-size: 18px;
   line-height: 24px;
-  color: var(--color-fg-1);
+  color: var(--fg);
   margin: 0 0 24px;
 }
-
 .aeoList {
   margin: 0;
   padding: 0;
 }
-
 .aeoItem {
   padding: 16px 0;
-  border-bottom: 1px solid rgba(31, 31, 31, 0.4);
+  border-bottom: 1px solid var(--line);
 }
-
 .aeoItem:last-child {
   border-bottom: none;
 }
-
 .aeoQ {
   font-weight: 600;
   font-size: 15px;
   line-height: 22px;
-  color: var(--color-fg-1);
+  color: var(--fg);
   margin-bottom: 8px;
 }
-
 .aeoA {
   font-size: 14px;
   line-height: 22px;
-  color: var(--color-fg-2);
+  color: var(--fg);
   margin: 0;
 }
-
 .aeoLink {
-  color: var(--color-accent);
+  color: var(--accent);
   text-decoration: none;
   border-bottom: 1px solid rgba(0, 212, 255, 0.3);
 }
-
 .aeoLink:hover {
-  border-bottom-color: var(--color-accent);
+  border-bottom-color: var(--accent);
 }
-
 /* Night bus map CTA */
 .nightBusCta {
   margin-top: 32px;
   padding: 20px 24px;
-  background-color: var(--color-bg-2);
-  border: 1px solid var(--color-border-2);
+  background-color: var(--bg-2);
+  border: 1px solid var(--line-2);
   border-radius: var(--radius-lg);
 }
-
 .nightBusCtaText {
   font-size: 14px;
   line-height: 22px;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
   margin: 0 0 12px;
 }
-
 .nightBusCtaLink {
   display: inline-flex;
   align-items: center;
   font-size: 14px;
   font-weight: 600;
-  color: var(--color-accent);
+  color: var(--accent);
   text-decoration: none;
 }
-
 .nightBusCtaLink:hover {
   opacity: 0.8;
 }
-
 /* 26-C2O: 공식 확인된 운영정보 */
 .opsList {
   display: flex;
@@ -406,22 +224,19 @@
   gap: 12px;
   margin: 0 0 16px;
   padding: 16px 0 0;
-  border-top: 1px solid var(--color-border-2);
+  border-top: 1px solid var(--line-2);
 }
-
 .opsRow {
   display: flex;
   flex-direction: column;
   gap: 3px;
 }
-
 .opsLabel {
   font-size: 12px;
   font-weight: 500;
   line-height: 16px;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
 }
-
 .opsValue {
   display: flex;
   flex-direction: column;
@@ -430,93 +245,82 @@
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
-  color: var(--color-fg-1);
+  color: var(--fg);
   overflow-wrap: anywhere;
 }
-
 .opsNote {
   font-size: 12px;
   line-height: 17px;
   font-weight: 400;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
 }
-
 .opsSource {
   display: flex;
   flex-direction: column;
   gap: 3px;
 }
-
 .opsSourceLink {
   font-size: 11px;
   line-height: 15px;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
   text-decoration: underline;
   text-underline-offset: 2px;
   overflow-wrap: anywhere;
 }
-
 .opsSourceLink:hover {
-  color: var(--color-fg-2);
+  color: var(--fg);
 }
-
 .opsReverification {
   margin: 0 0 16px;
   padding: 12px 14px;
-  border: 1px solid var(--color-border-2);
+  border: 1px solid var(--line-2);
   border-radius: var(--radius-md);
-  background-color: var(--color-bg-3);
+  background-color: var(--bg-3);
   font-size: 12px;
   line-height: 18px;
-  color: var(--color-fg-2);
+  color: var(--fg);
   overflow-wrap: anywhere;
 }
-
 /* 26-C3: 노선 콘텐츠 구조 */
 .contextSubTitle {
   margin: 24px 0 8px;
   font-size: 15px;
   font-weight: 600;
   line-height: 22px;
-  color: var(--color-fg-1);
+  color: var(--fg);
 }
-
 .factList {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin: 0;
   padding: 14px 16px;
-  border: 1px solid var(--color-border-2);
+  border: 1px solid var(--line-2);
   border-radius: var(--radius-md);
-  background-color: var(--color-bg-2);
+  background-color: var(--bg-2);
 }
-
 .factRow {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 12px;
   align-items: baseline;
 }
-
 .factLabel {
   flex: 0 0 auto;
   min-width: 108px;
   font-size: 12px;
   line-height: 18px;
-  color: var(--color-fg-3);
+  color: var(--fg-2);
 }
-
 .factValue {
   flex: 1 1 auto;
   margin: 0;
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
-  color: var(--color-fg-1);
+  color: var(--fg);
   overflow-wrap: anywhere;
 }
-
 .keyStopList {
   display: flex;
   flex-direction: column;
@@ -524,10 +328,11 @@
   margin: 0;
   padding: 0 0 0 18px;
 }
-
 .keyStopItem {
   font-size: 14px;
   line-height: 21px;
-  color: var(--color-fg-2);
+  color: var(--fg);
   overflow-wrap: anywhere;
 }
+/* v2 hero */
+.heroMeta { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }

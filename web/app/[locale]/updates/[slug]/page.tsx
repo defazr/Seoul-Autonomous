@@ -1,11 +1,12 @@
 import { notFound } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '../../../../i18n/routing';
 import { Link } from '../../../../i18n/navigation';
 import { getAllUpdates, getUpdateBySlug } from '../../../../data/updates';
 import { getOnDemandServices, getRouteById } from '../../../../lib/routes';
-import { SiteFooter } from '../../../../components/common/SiteFooter';
-import { PageContainer } from '../../../../components/layout/PageContainer';
+import { Crumbs } from '../../../../components/v2/ui/Crumbs';
+import { PageHero } from '../../../../components/v2/ui/PageHero';
+import { Section } from '../../../../components/v2/ui/Section';
 import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
 import { buildPageMetadata } from '../../../../lib/seo/metadata';
 import { NightBusMapLaunch, nightBusMapFaqJsonLd } from '../../../../components/updates/NightBusMapLaunch';
@@ -87,6 +88,7 @@ export default async function UpdateDetailPage({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
+  setRequestLocale(locale); // 정적 프리렌더(next-intl) — 배포 전 점검 10-16
   const entry = getUpdateBySlug(slug);
 
   if (!entry || (entry.customRender && locale !== 'ko')) {
@@ -94,6 +96,8 @@ export default async function UpdateDetailPage({
   }
 
   const t = await getTranslations({ locale, namespace: 'updates' });
+  const tp = await getTranslations({ locale, namespace: 'pages' });
+  const ts = await getTranslations({ locale, namespace: 'shell' });
   const isKo = locale === 'ko';
   const title = isKo ? entry.titleKo : entry.titleEn;
   const s = entry.sections;
@@ -101,7 +105,7 @@ export default async function UpdateDetailPage({
   // 전용 렌더 분기 (A안 — 껍데기 기존, 내용만 전용)
   if (entry.customRender === 'night-bus-map-launch') {
     return (
-      <PageContainer width="longform">
+      <>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -113,6 +117,8 @@ export default async function UpdateDetailPage({
               datePublished: entry.date,
               dateModified: entry.dateModified ?? entry.date,
               author: { '@type': 'Organization', name: 'Seoul Autonomous' },
+              publisher: { '@type': 'Organization', name: 'Seoul Autonomous', logo: { '@type': 'ImageObject', url: 'https://seoulautonomous.com/icon.png' } },
+              mainEntityOfPage: `https://seoulautonomous.com/ko/updates/${entry.slug}`,
               image: 'https://seoulautonomous.com/images/updates/updates-night-bus-map-01-full.jpg',
             }),
           }}
@@ -136,23 +142,22 @@ export default async function UpdateDetailPage({
             ),
           }}
         />
-        <div className={styles.topBar}>
-          <Link href="/updates" className={styles.backLink}>{t('backToUpdates')}</Link>
-        </div>
-        <h1 className={styles.heading}>{entry.h1Ko ?? title}</h1>
+        <PageHero eyebrow={tp('updates.eyebrow')} title={entry.h1Ko ?? title} crumbs={<Crumbs label={tp('crumbs')} items={[{ href: '/', label: ts('nav.home') }, { href: '/updates', label: t('breadcrumb') }, { label: title }]} />}>
         <div className={styles.dates}>
           <span className={styles.dateMeta}>{isKo ? '게시' : 'Posted'} {formatDate(entry.date, isKo)}</span>
         </div>
+        </PageHero>
+        <Section size="tight" width="text" ariaLabel={entry.h1Ko ?? title}>
         <div className={styles.body}>
           <NightBusMapLaunch />
         </div>
-        <SiteFooter />
-      </PageContainer>
+      </Section>
+      </>
     );
   }
 
   return (
-    <PageContainer width="longform">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -166,6 +171,9 @@ export default async function UpdateDetailPage({
               '@type': 'Organization',
               name: 'Seoul Autonomous',
             },
+            publisher: { '@type': 'Organization', name: 'Seoul Autonomous', logo: { '@type': 'ImageObject', url: 'https://seoulautonomous.com/icon.png' } },
+            mainEntityOfPage: `https://seoulautonomous.com/${locale}/updates/${entry.slug}`,
+            image: 'https://seoulautonomous.com/og/seoul-autonomous-og.jpg',
           }),
         }}
       />
@@ -185,28 +193,31 @@ export default async function UpdateDetailPage({
         }}
       />
 
-      <div className={styles.topBar}>
-        <Link href="/updates" className={styles.backLink}>
-          {t('backToUpdates')}
-        </Link>
-      </div>
-
-      <h1 className={styles.heading}>{title}</h1>
-
+      <PageHero eyebrow={tp('updates.eyebrow')} title={title} crumbs={<Crumbs label={tp('crumbs')} items={[{ href: '/', label: ts('nav.home') }, { href: '/updates', label: t('breadcrumb') }, { label: title }]} />}>
       <div className={styles.dates}>
         <span className={styles.dateMeta}>
           {isKo ? '게시' : 'Posted'} {formatDate(entry.date, isKo)}
         </span>
-        <span className={styles.dateSep}>·</span>
-        <span className={styles.dateMeta}>
-          {t('eventDate')} {formatDate(entry.eventDate, isKo)}
-        </span>
-        <span className={styles.dateSep}>·</span>
-        <span className={styles.dateMeta}>
-          {t('sourceDate')} {formatDate(entry.sourcePublishedAt, isKo)}
-        </span>
+        {/* 사이트 자체 공지(게시일 = 발생일 = 자료일)는 날짜를 한 번만 보인다 */}
+        {entry.eventDate !== entry.date && (
+          <>
+            <span className={styles.dateSep}>·</span>
+            <span className={styles.dateMeta}>
+              {t('eventDate')} {formatDate(entry.eventDate, isKo)}
+            </span>
+          </>
+        )}
+        {entry.sourcePublishedAt !== entry.date && (
+          <>
+            <span className={styles.dateSep}>·</span>
+            <span className={styles.dateMeta}>
+              {t('sourceDate')} {formatDate(entry.sourcePublishedAt, isKo)}
+            </span>
+          </>
+        )}
       </div>
-
+      </PageHero>
+      <Section size="tight" width="text" ariaLabel={title}>
       {entry.relatedRouteIds.length > 0 && (
         <div className={styles.relatedRoutes}>
           <span className={styles.relatedLabel}>{t('relatedRoutes')}:</span>
@@ -327,8 +338,7 @@ export default async function UpdateDetailPage({
           return null;
         })}
       </div>
-
-      <SiteFooter />
-    </PageContainer>
+      </Section>
+    </>
   );
 }

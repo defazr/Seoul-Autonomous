@@ -10,7 +10,7 @@ type FAQItemProps = {
 
 function PlusIcon() {
   return (
-    <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="var(--color-fg-2)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="var(--fg)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M12 5v14M5 12h14" />
     </svg>
   );
@@ -18,7 +18,7 @@ function PlusIcon() {
 
 function MinusIcon() {
   return (
-    <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="var(--color-fg-2)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="var(--fg)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M5 12h14" />
     </svg>
   );
@@ -33,6 +33,7 @@ export function FAQItem({ question, answer }: FAQItemProps) {
         className={styles.header}
         onClick={() => setOpen(!open)}
         type="button"
+        aria-expanded={open}
       >
         <span className={styles.question}>{question}</span>
         <span className={styles.toggle}>

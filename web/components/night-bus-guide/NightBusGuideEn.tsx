@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { PageContainer } from '../layout/PageContainer';
-import { SiteFooter } from '../common/SiteFooter';
-import { PageTopBar } from '../ui/PageTopBar';
+import { PageHero } from '../v2/ui/PageHero';
+import { Section } from '../v2/ui/Section';
+import { Crumbs } from '../v2/ui/Crumbs';
 import { nightBusGuideEn } from '../../data/night-bus-guide/night-bus-guide.en';
 import styles from './NightBusGuideEn.module.css';
 
@@ -9,13 +9,11 @@ export function NightBusGuideEn() {
   const g = nightBusGuideEn;
 
   return (
-    <PageContainer width="default">
-      <PageTopBar href="/" ariaLabel="Back to home" />
-      <div className={styles.hero}>
-        <h1 className={styles.heading}>{g.hero.h1}</h1>
-        <p className={styles.summary}>{g.hero.summary}</p>
+    <>
+      <PageHero eyebrow="Seoul night bus" title={g.hero.h1} lead={g.hero.summary} crumbs={<Crumbs label="Breadcrumb" items={[{ href: '/', label: 'Home' }, { label: 'Night bus guide' }]} />}>
         <p className={styles.asOf}>{g.hero.asOf}</p>
-      </div>
+      </PageHero>
+      <Section size="tight" ariaLabel={g.hero.h1}>
 
       <dl className={styles.quickFacts}>
         {g.quickFacts.map((f) => (
@@ -67,7 +65,7 @@ export function NightBusGuideEn() {
         <p className={styles.body}>{g.beforeYouRide.body}</p>
       </section>
 
-      <SiteFooter />
-    </PageContainer>
+      </Section>
+    </>
   );
 }

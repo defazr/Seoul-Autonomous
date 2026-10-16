@@ -379,6 +379,44 @@ cutover    14:39:55 KST · HEALTH=PASS · 중단 1.94초(Caddy 경유 probe 4회
 교훈    자동 QA 에 WebKit(iPhone) 전수 측정을 상시 포함한다 — Chromium 만으로는 iPhone 결함(입력창 폭)을 놓친다
 ```
 
+### 12.14 V8.1 재배포 기록 (2026-10-16 15:37 KST · 코드 0061274 · docs bfb37bb · 포그린 "추천대로 · 배포해서 확인하자")
+
+```
+푸시       43b14de..bfb37bb (코드 0061274 + docs bfb37bb · local == origin)
+Phase 0    운영 73b0fa0(51f33d1f9c77) · 작업 트리 untracked Dockerfile 1건만 · Dockerfile pin 일치 · Caddyfile 7719a106f154… · 디스크 여유 36G · 타 컨테이너 재시작 0 · 다른 도메인 응답 배포 전 기록(/root/domains-before-0061274.txt · 404 = opinet-proxy 루트뿐 = 정상)
+rollback   rollback-73b0fa0 = 51f33d1f9c77 (MATCH=PASS) · latest 여전히 d55dbf7d9afd(b10c7d3)
+build      0061274… → sha256:a7875f34c6a1… · 85/85 · 에러 0 · secret 0 · Dockerfile pin 3회 일치
+candidate  qa-links 79 페이지 · 81 링크 정상 · 옛 79 URL 전부 200 · /api/arrivals 01009·22011 200 · 99999 404 · 비밀 노출 0 · 네이버 번호 링크 있음 · "두 손가락" 안내 없음 · 운영 무접촉
+cutover    15:37:26 · HEALTH=PASS · 중단 1.54초 · backup = seoul_autonomous_web_backup_73b0fa0_20261016-153726 · candidate 제거
+사후       Caddyfile 불변 · 타 컨테이너 재시작 0 · 다른 도메인 응답 배포 전 == 후
+라이브 QA  qa-links 79·81 정상 · 허브 지도 CDP 한 손가락 드래그 마커 −121px · WebKit iPhone 15 전수 79 URL 문제 0 · 캡처 81~83 (홈 · 노선도 · 홍대입구 허브 · 메뉴 오른쪽 끝 · 오류 0)
+남음       포그린 실기기 확인 → 라이브 승인 → latest 이동 / 지도 위 스와이프 시 페이지 스크롤 = bakwijaguk.com 방식 조사 후 다음 배포 / 이 기록 docs 커밋 = 승인 후
+```
+
+### 12.15 허브 지도를 bakwijaguk.com 방식에 맞춤 (2026-10-16 · 빌드 21 · 코드 `e8aa58e` 에 포함)
+
+```
+입력     포그린: "바퀴자국(bakwijaguk.com)은 한 손가락 이동과 스크롤이 다 정상 — 그것처럼"
+조사     bakwijaguk.com/routes/hangang (읽기 전용 · CDP 터치): MapLibre · cooperativeGestures 꺼짐 · 지도 위 한 손가락 세로·가로 스와이프 모두 지도가 받고 페이지 스크롤 0 = 우리 V8.1 과 같은 동작 / 차이 2 = 지도 박스 높이 고정(h-[420px] sm:h-[500px] lg:h-[600px]) · 전체화면 버튼(MapLibre FullscreenControl) / 지도 전용 커스텀 터치 처리 코드는 번들에서 발견되지 않음
+반영     HubMap.module.css 높이 420 / 500(≥640) / 600(≥1024) — 로더 자리 표시도 같은 클래스라 동일 · HubMap.tsx FullscreenControl 추가 + 한국어 라벨("전체화면으로 보기" / "전체화면 끝내기")
+검증     WebKit iPhone 15: 지도 420px · Fullscreen API 를 지운 상태(= iPhone Safari)에서 버튼 → MapLibre 화면 덮기(pseudo fullscreen) 393×659 · 끝내기 → 420 복귀 · 오류 0 / Chromium 768px 500 · 1440px 600 / 한 손가락 드래그 마커 −121px 유지
+캡처     84 전체화면 · 85 일반 (iPhone 15)
+계약     Round 27 "Fullscreen API 금지 · CSS 오버레이 유지" 는 /ko/night-bus-map 자체 노선도 전용 — 허브 실제 지도의 MapLibre 표준 컨트롤은 대상 아님(iPhone 에서는 API 없이 화면 덮기로 동작)
+```
+
+### 12.16 iPhone 실기기 피드백 2차 — 카카오맵 웹 경유·빈 창 · 자동 밑줄 (2026-10-16 · 빌드 22 · 코드 `e8aa58e` · 포그린 "해" 승인)
+
+```
+입력     포그린(iPhone · Chrome): ① 카카오맵을 누르면 웹(m.map.kakao.com)을 거치고 새 빈 창이 하나 뜸(노선도 허브 목록 "종로2가·종각") ② "신내동 방면 · 구산동 방면 · 14016" 점선 밑줄을 누르면 구글 지도로 감
+원인 ①  카카오맵 앱의 유니버설 링크 목록(m.map.kakao.com/.well-known/apple-app-site-association)이 "NOT /link/*" 로 /link/ 경로를 일부러 제외 → 우리 /link/map 링크는 앱이 있어도 웹 · target=_blank 라 Chrome 에 빈 탭이 남음
+원인 ②  iOS 데이터 자동 인식(주소·전화번호) — 우리가 만든 링크가 아님
+반영 ①  터치 기기(hover:none + pointer:coarse = 폰·태블릿): 카카오 = https://m.map.kakao.com/actions/searchView?q={정류소 번호} (목록에 있는 경로 · 앱 있으면 앱, 없으면 모바일 웹 검색 · 웹에서도 22011·01009 해당 서울 정류장이 첫 줄) · 네이버 = 번호 검색 · 둘 다 같은 탭(빈 창 없음) / 마우스 기기: 기존 그대로(카카오 좌표 핀 /link/map · 네이버 번호 검색 · 새 탭) / 분기 = styles/v2/base.css .v2-touch-only · .v2-pointer-only (JS 없음) / 허브 목록의 합친 이름은 앞부분으로 검색("종로2가·종각" → 종로2가) / 적용 4곳 = MapLinks(허브 승강장·정류장 페이지·노선도 허브 목록) · 노선도 역 카드 · N노선 정류장
+반영 ②  app/[locale]/layout.tsx metadata formatDetection { telephone: false, address: false, email: false } → <meta name="format-detection" content="telephone=no, address=no, email=no">
+보류     네이버 앱 직접 열기 — 네이버 지도 유니버설 링크는 /launchApp/* 뿐이고 형식이 공식 문서로 확인되지 않음(nmap:// 스킴은 앱이 없을 때 폴백 문제) → 웹 번호 검색 유지
+검증     보이는 링크: iPhone 15 WebKit · Android 크롬 에뮬 = 앱 링크 · 같은 탭 / 데스크톱 = 웹 · 새 탭 · WebKit iPhone 전수 79 URL 문제 0 · tsc 0 · eslint 0 · 85/85
+코드     빌드 21(§12.15) + 22 합계 8 파일 — HubMap.tsx · HubMap.module.css · lib/v2/map-links.ts · v2/ui/MapLinks.tsx · NightBusMap.tsx · RouteExplorer.tsx · styles/v2/base.css · app/[locale]/layout.tsx
+```
+
 ## CC 이견 및 아이디어
 
 1 GPT 의 브랜드명 교체 제안에는 반대 — 도메인 변경 없이 이름만 바꾸면 검색 결과에 두 이름이 섞여 신뢰가 떨어진다. 태그라인으로 해결.

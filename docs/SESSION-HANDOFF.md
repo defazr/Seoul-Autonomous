@@ -1,7 +1,7 @@
 # Session Handoff
 
 > 마지막 업데이트: 2026-10-16 (**V8 배포 완료 14:39 KST · 73b0fa0 라이브 · candidate·라이브 QA 전항 PASS · latest 이동만 라이브 승인 대기 · 다음 = R3b 구현(10-17~) → Fable 복원 후 감사 → 재배포 → AdSense 5차**)
-> 현재 NEXT = **① iPhone 실기기 피드백 5건 수정 = 코드 `0061274` 커밋 · 푸시 · 재배포(V8.1) 진행 — 결과는 R3A §12.14 · 지도 위 스와이프 시 페이지 스크롤 처리는 bakwijaguk.com 방식 조사 후 다음 배포(포그린 요청) ② 재배포 후 포그린 라이브 승인 → latest 이동(아직 b10c7d3 의 d55dbf7) ③ R3b 구현 = 약한 글 4 → 정류장 통합 (설계 docs/worklogs/R3B-STOP-MERGE-DESIGN-20261016.md §0-1 · D6 만 포그린 지시 대기) ④ Fable 복원(10-18 14시) 후 Codex·정책 에이전트 감사 ⑤ 재배포 → Caddy 로그 크롤 확인 + 라이브 정책 재감사 BLOCK 0 → AdSense 5차** — V8 배포 기록 §12.12 · 관측 T0 = 2026-10-16 14:39:55 KST · 로컬 127.0.0.1:3123 = 빌드 20(수정 포함 · 라이브보다 앞섬) · QA 는 Chromium + WebKit(iPhone 15) 둘 다.
+> 현재 NEXT = **① V8.1(0061274) 라이브 — 포그린 iPhone 확인 → 라이브 승인 → latest 이동(아직 d55dbf7) ② 허브 지도 bakwijaguk 맞춤(§12.15) + 카카오 앱 링크·빈 창·iPhone 자동 밑줄(§12.16) = 코드 `e8aa58e` 커밋 · 푸시 · 재배포(V8.2) 진행 — 결과 R3A §12.17 · 포그린 실기기 피드백 루프 계속 ③ 배포 기록 docs 커밋(승인) ④ R3b 구현 = 약한 글 4 → 정류장 통합 (docs/worklogs/R3B-STOP-MERGE-DESIGN-20261016.md §0-1) ⑤ Fable 복원(10-18 14시) 후 감사 → 재배포 → Caddy 로그 크롤 확인 + 라이브 정책 재감사 → AdSense 5차** — 배포 기록 R3A §12.12(V8) · §12.14(V8.1) · 관측 T0 = 2026-10-16 14:39:55 KST · QA 는 Chromium + WebKit(iPhone 15) 둘 다.
 > 새 세션 첫 문구(클리어 후 그대로 입력): 「CLAUDE.md 절차대로 web/scripts/project-status.mjs 실측 → docs/SESSION-HANDOFF.md → docs/worklogs/R3B-STOP-MERGE-DESIGN-20261016.md(§0-1 결정·일정) 를 읽어. V8 은 라이브(73b0fa0)다. latest 이동과 배포 기록 docs 커밋이 아직이면 그것부터 물어봐. 그다음 R3b-2(약한 글 4) → R3b-1(정류장 통합)을 로컬에서 구현하고 127.0.0.1:3123 캡처로 보여 줘. 감사는 Fable 복원(10-18 14시) 후. 협업 구조는 10-15 확정 그대로 — 결정은 네가 하고 커밋·푸시·배포만 물어봐. 평문 보고, 끝에 「CC 이견 및 아이디어」와 정본 문서 경로 1건.」
 > 커밋: v2 셸 코드 `73b0fa0` · docs `43b14de` (푸시 완료 10-16 · local == origin) · 이후 docs(배포 기록 §12.12 · R3b 설계 · R3b Codex 결과 · 이 파일)는 미커밋 → 승인 후 docs-only 1건.
 > (아래 "미커밋 작업 트리" 3줄은 `73b0fa0` 로 커밋된 내용의 역사 기록이다 — 현재 작업 트리 아님)
@@ -398,11 +398,11 @@ ahead/behind = 0/0
 **Production axis — pin 가능 (docs 커밋으로 변하지 않음):**
 
 ```
-server checkout     73b0fa08757b651c180501dcaa478984c8af8932   (2026-10-16 V8 · v2 셸 재탄생)
-Production runtime  73b0fa08757b651c180501dcaa478984c8af8932   ← OCI label로 직접 증명 가능
-image               sha256:51f33d1f9c7750a08b9fb6cbcf035f85cacee44d9a7eb8979d72915c2405075a  (seoul-autonomous-web:73b0fa0)
-latest              ⏳ 아직 d55dbf7d9afd…(b10c7d3) — 포그린 라이브 승인 후 73b0fa0 으로 이동
-previous runtime    b10c7d3 (이미지 d55dbf7d9afd) ← rollback 기준점 (rollback-b10c7d3)
+server checkout     006127405396670ce5960ffb70a9d4e6b395e025   (2026-10-16 15:37 V8.1 · iPhone 수정)
+Production runtime  006127405396670ce5960ffb70a9d4e6b395e025   ← OCI label로 직접 증명 가능
+image               sha256:a7875f34c6a1844a239331dfa816efb4b222c78bf42ee9c0ebd5510fdc86c0f2  (seoul-autonomous-web:0061274)
+latest              ⏳ 아직 d55dbf7d9afd…(b10c7d3) — 포그린 라이브 승인 후 0061274 로 이동
+previous runtime    73b0fa0 (이미지 51f33d1f9c77) ← rollback 기준점 (rollback-73b0fa0) · 그 전 b10c7d3 (rollback-b10c7d3)
 sitemap             79 (v2 · Stop URL 14 유지 · 허브 3 · N노선 5 · 재탄생 글 ko/en 신규)
 v2 셸 코드 커밋      73b0fa0 (docs 43b14de)
 Stage 1 코드 커밋    f34ede8 구현 / 19ebf0e EN metadata polish
@@ -414,8 +414,8 @@ RT-2 코드 커밋       b10c7d3
 
 ```
 local HEAD == origin/main  ·  ahead/behind 0/0        ← docs axis (절대 SHA 대조 안 함)
-server checkout == runtime == 73b0fa0                 ← Production axis (pin)
-running image == 51f33d1f9c77…                        ← Production axis (pin)
+server checkout == runtime == 0061274                 ← Production axis (pin)
+running image == a7875f34c6a1…                        ← Production axis (pin)
 ```
 
 🚫 **`local/origin = <특정 SHA>` 를 current-state 기대값으로 쓰지 않는다** — 다음 docs 커밋에서 반드시 어긋난다.
@@ -431,6 +431,8 @@ docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revisi
 보존 자산 — **삭제·prune 금지**
 
 ```
+V8.1 backup   seoul_autonomous_web_backup_73b0fa0_20261016-153726  (exited)
+V8.1 rollback seoul-autonomous-web:rollback-73b0fa0 → 51f33d1f9c77
 V8 backup     seoul_autonomous_web_backup_b10c7d3_20261016-143955  (exited)
 V8 rollback   seoul-autonomous-web:rollback-b10c7d3 → d55dbf7d9afd
 RT2 backup    seoul_autonomous_web_backup_19ebf0e_20260901-190732  (exited)

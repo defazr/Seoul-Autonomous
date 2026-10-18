@@ -695,7 +695,7 @@
       "firstBus": "03:30",
       "lastBus": "03:30",
       "headway": "Unknown",
-      "daysOfOperation": "Unknown",
+      "daysOfOperation": "weekday",
       "fare": {
         "value": {
           "kind": "temporary_free",
@@ -997,7 +997,7 @@
       "firstBus": "03:30",
       "lastBus": "03:30",
       "headway": "Unknown",
-      "daysOfOperation": "Unknown",
+      "daysOfOperation": "weekday",
       "fare": {
         "value": {
           "kind": "temporary_free",
@@ -2521,20 +2521,50 @@
       "firstBus": "03:30",
       "lastBus": "03:30",
       "headway": "Unknown",
-      "daysOfOperation": "Unknown",
+      "daysOfOperation": "weekday",
       "fare": {
-        "value": null,
-        "verificationGrade": "media_reference",
-        "currentState": "unverified",
-        "reason": "secondary_only",
-        "sources": []
+        "value": {
+          "kind": "temporary_free",
+          "cardTagRequired": true,
+          "condition": "until_service_stabilizes"
+        },
+        "verificationGrade": "official_confirmed",
+        "currentState": "confirmed",
+        "reason": null,
+        "sources": [
+          {
+            "title": "새벽을 여는 'A504(금천~시청)' 노선 29일(수) 개통…동서남북 자율주행으로 연결",
+            "publisher": "서울특별시",
+            "url": "https://www.seoul.go.kr/news/news_report.do?nttNo=456975",
+            "publishedAt": "2026-04-27",
+            "effectiveAt": "2026-04-29"
+          }
+        ]
       },
       "operator": {
-        "value": null,
-        "verificationGrade": "unverified",
-        "currentState": "unverified",
-        "reason": "no_current_source",
-        "sources": []
+        "value": {
+          "entities": [
+            {
+              "name": "㈜에스유엠",
+              "roles": [
+                "transport_operator",
+                "vehicle_operator"
+              ]
+            }
+          ]
+        },
+        "verificationGrade": "official_confirmed",
+        "currentState": "confirmed",
+        "reason": null,
+        "sources": [
+          {
+            "title": "새벽을 여는 'A504(금천~시청)' 노선 29일(수) 개통…동서남북 자율주행으로 연결",
+            "publisher": "서울특별시",
+            "url": "https://www.seoul.go.kr/news/news_report.do?nttNo=456975",
+            "publishedAt": "2026-04-27",
+            "effectiveAt": "2026-04-29"
+          }
+        ]
       },
       "reservationRequired": {
         "value": null,

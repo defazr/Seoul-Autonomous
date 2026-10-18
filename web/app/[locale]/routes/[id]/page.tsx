@@ -34,6 +34,7 @@ export function generateStaticParams() {
   }
   return params;
 }
+export const dynamicParams = false; // 생성 목록 밖 경로(다른 로케일·없는 id)는 요청 시점 notFound() 대신 정적 전역 404 로 (R3b-4 · 2026-10-18)
 
 export async function generateMetadata({
   params,

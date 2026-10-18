@@ -8,7 +8,7 @@ const entry: UpdateEntry = {
   titleEn: 'Gangnam Late-night Robotaxi Expanded to 19: Hours, Zone, How to Call',
   titleKo: '강남 심야 자율주행택시 19대 확대 운행시간 구역 호출방법',
   summaryEn:
-    'From 20 August 2026 Seoul runs 19 late-night robotaxis across the entire Gangnam pilot zone. Operating hours, service area, Kakao T call steps and fares in one guide.',
+    'From 20 August 2026 Seoul runs 19 late-night robotaxis across the Gangnam pilot zone: operating hours, service area, Kakao T call steps and fares in one guide.',
   summaryKo:
     '2026년 8월 20일부터 강남 심야 자율주행택시가 19대로 늘었습니다. 운행시간, 운행구역, 카카오T 호출 방법, 시간대별 요금을 한 번에 정리했습니다.',
   relatedRouteIds: ['gangnam-robotaxi'],
@@ -141,14 +141,13 @@ const entry: UpdateEntry = {
       },
       bullets: {
         ko: [
-          '차량당 최대 승객 3명, 시험운전자 1명 상시 동승',
-          '일부 좁은 구간은 수동 운전으로 운행 (공식 안내 기준)',
+          // 옛 글의 "승객 3명·시험운전자 동승"·"좁은 구간 수동 운전" 은 이번에 확인한 두 발표(516542·464205)에 없어 뺐다 — 464205 는 보호구역 수동운전 의무 폐지를 적는다 (정책 감사 10-18 FIX 2)
+          '교통약자 보호구역 안 수동운전 의무는 2026년 1월 규정 개정으로 없어졌고, 서울시는 허가를 받아 운행구역 안 보호구역까지 자율주행을 단계적으로 넓힐 계획입니다 (2026년 8월 발표)',
           '평일에만 운행 — 주말 미운행',
           '발표 기준 2024년 9월 이후 누적 15,140건, 유료 전환 이후 6,176건 운행',
         ],
         en: [
-          'Up to 3 passengers per vehicle; a safety driver is always on board',
-          'Some narrow sections are driven manually, per the official notice',
+          'The manual-driving requirement inside protected zones for vulnerable road users was removed by a January 2026 rule change; Seoul plans to extend autonomous driving to those zones within the service area step by step, subject to approval (August 2026 announcement)',
           'Weekdays only — no weekend service',
           'Per the announcement: 15,140 cumulative rides since September 2024, 6,176 since paid service began',
         ],

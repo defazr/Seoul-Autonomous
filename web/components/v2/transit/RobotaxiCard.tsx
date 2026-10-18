@@ -29,7 +29,7 @@ export function RobotaxiCard({ service, locale = 'en', labels }: { service: Robo
           {pending ? <Pill tone="neutral" dot>{labels?.checkBeforeRiding ?? 'Check before riding'}</Pill> : <Pill tone="ok" dot on>OFFICIAL</Pill>}
         </div>
         <div className={styles.name}>{ko ? service.displayNameKo : service.displayName}</div>
-        <div className={styles.sub}>{ko ? service.displayName : service.displayNameKo}</div>
+        <div className={styles.sub} lang={ko ? 'en' : 'ko'}>{ko ? service.displayName : service.displayNameKo}</div>
         <div className={styles.line}>{ko ? service.serviceAreaKo : service.serviceArea}</div>
         {service.app && <div className={styles.tag}>{labels?.appRequired ?? 'Kakao T (Korean app) required'}</div>}
         {hasOps && (
@@ -38,12 +38,12 @@ export function RobotaxiCard({ service, locale = 'en', labels }: { service: Robo
             {service.hoursText && <div className={styles.opsRow}><dt className={styles.opsLabel}>{labels?.hoursTitle ?? 'Hours'}</dt><dd className={styles.opsValue}>{service.hoursText}</dd></div>}
             {service.reservation && <div className={styles.opsRow}><dt className={styles.opsLabel}>{labels?.reservationTitle ?? 'How to ride'}</dt><dd className={styles.opsValue}>{labels?.reservationRealtimeCall ?? 'No advance reservation; request a ride in Kakao T'}</dd></div>}
             {service.app && <div className={styles.opsRow}><dt className={styles.opsLabel}>{labels?.appTitle ?? 'Required app'}</dt><dd className={styles.opsValue}>{`${service.app.appName ?? ''}${labels?.appPurposes ? ` — ${labels.appPurposes}` : ''}`}</dd></div>}
-            {service.operatorNames.length > 0 && <div className={styles.opsRow}><dt className={styles.opsLabel}>{labels?.operatorTitle ?? 'Operated by'}</dt><dd className={styles.opsValue}>{service.operatorNames.join(', ')}</dd></div>}
+            {service.operatorNames.length > 0 && <div className={styles.opsRow}><dt className={styles.opsLabel}>{labels?.operatorTitle ?? 'Operated by'}</dt><dd className={styles.opsValue} lang={ko ? undefined : 'ko'}>{service.operatorNames.join(', ')}</dd></div>}
           </dl>
         )}
         {service.source && (
           <p className={styles.src}>
-            <a href={service.source.url} target="_blank" rel="noopener noreferrer">{`${labels?.sourcePrefix ?? 'Official source'}: ${service.source.publisher} · ${formatDate(service.source.publishedAt, ko)}`}</a>
+            <a href={service.source.url} target="_blank" rel="noopener noreferrer">{`${labels?.sourcePrefix ?? 'Official source'}: `}<span lang={ko ? undefined : 'ko'}>{service.source.publisher}</span>{` · ${formatDate(service.source.publishedAt, ko)}`}</a>
             {service.source.effectiveAt && <span>{`${formatDate(service.source.effectiveAt, ko)} ${labels?.effectivePrefix ?? 'effective'}`}</span>}
           </p>
         )}

@@ -55,7 +55,7 @@ export default async function EarlyMorningPage({ params }: { params: Promise<{ l
   const stopLinks = [...new Map(routes.flatMap((r) => stopPagesOnRoute(r, ko)).map((s) => [s.name, s])).values()];
   const checked = routes.reduce((d, r) => (r.lastChecked > d ? r.lastChecked : d), '');
   const src = (s: { title: string; url: string; publishedAt: string }) => (
-    <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer">{`「${s.title}」 ${s.publishedAt}`}</a>
+    <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer" lang={ko ? undefined : 'ko'}>{`「${s.title}」 ${s.publishedAt}`}<span className="v2-sr"> {tp('map.newTab')}</span></a>
   );
   return (
     <>

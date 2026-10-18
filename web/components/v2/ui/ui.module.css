@@ -59,7 +59,8 @@ a.chip:hover { filter: brightness(1.1); }
 /* ===== Crumbs ===== */
 .crumbs { font-size: 12px; color: var(--fg-3); }
 .crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
-.crumbs li + li::before { content: '›'; margin-right: 8px; color: var(--fg-3); }
+/* 구분자는 앞 항목 뒤에 둔다 — 긴 현재 제목이 줄을 바꿔도 '›' 가 줄 머리에 오지 않는다 (접근성 감사 10-18 FIX 7). 현재 항목은 그냥 줄바꿈 — nowrap 말줄임은 flex 항목 폭을 키워 모바일 가로 넘침(12~71px)을 만들었다(빌드 29 실측) */
+.crumbs li:not(:last-child)::after { content: '›'; margin-left: 8px; color: var(--fg-3); }
 .crumbs a { color: var(--fg-2); }
 .crumbs a:hover { color: var(--accent); }
 .crumbs span[aria-current] { color: var(--fg); }
@@ -76,5 +77,5 @@ a.chip:hover { filter: brightness(1.1); }
 
 /* ===== MapLinks ===== */
 .mapLinks { display: inline-flex; gap: 6px; align-items: center; font-size: 12px; }
-.mapLinks a { color: var(--accent); font-weight: 600; border: 1px solid var(--accent-line); border-radius: var(--radius-pill); padding: 2px 9px; white-space: nowrap; }
+.mapLinks a { color: var(--accent); font-weight: 600; border: 1px solid var(--accent-line); border-radius: var(--radius-pill); padding: 6px 10px; white-space: nowrap; }
 .mapLinks a:hover { background: var(--accent-soft); }

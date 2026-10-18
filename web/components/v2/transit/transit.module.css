@@ -11,7 +11,7 @@ a.card:hover { transform: translateY(-2px); border-color: var(--line-2); }
 .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--fg-3); }
 .chev { color: var(--fg-3); align-self: center; }
 .topRow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
-.type { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); font-weight: 600; }
+.type { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); font-weight: 600; }
 .tag { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; color: var(--warn); }
 .tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--warn); }
 .ops { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); display: grid; gap: 8px; }

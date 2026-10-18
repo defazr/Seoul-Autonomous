@@ -10,11 +10,14 @@ export function buildPageMetadata({
   path,
   title,
   description,
+  type = 'website',
 }: {
   locale: string;
   path: string;
   title: string;
   description: string;
+  /** 업데이트 글은 article (기술 SEO 감사 10-18 FIX 4) */
+  type?: 'website' | 'article';
 }): Metadata {
   const pageUrl = `${SITE_URL}/${locale}${path}`;
 
@@ -34,7 +37,7 @@ export function buildPageMetadata({
       description,
       url: pageUrl,
       siteName: SITE_NAME,
-      type: 'website',
+      type,
       locale: locale === 'ko' ? 'ko_KR' : 'en_US',
       images: [
         {

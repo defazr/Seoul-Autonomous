@@ -9,6 +9,7 @@ import { PageHero } from '../../../../components/v2/ui/PageHero';
 import { Section } from '../../../../components/v2/ui/Section';
 import { breadcrumbJsonLd } from '../../../../lib/seo/jsonld';
 import { buildPageMetadata } from '../../../../lib/seo/metadata';
+import { koSpans } from '../../../../lib/v2/ko-spans';
 import { NightBusMapLaunch, nightBusMapFaqJsonLd } from '../../../../components/updates/NightBusMapLaunch';
 import styles from './page.module.css';
 
@@ -24,6 +25,7 @@ export function generateStaticParams() {
   }
   return params;
 }
+export const dynamicParams = false; // 생성 목록 밖 경로(다른 로케일·없는 id)는 요청 시점 notFound() 대신 정적 전역 404 로 (R3b-4 · 2026-10-18)
 
 export async function generateMetadata({
   params,
@@ -67,6 +69,7 @@ export async function generateMetadata({
     path: `/updates/${slug}`,
     title: locale === 'ko' ? entry.titleKo : entry.titleEn,
     description: locale === 'ko' ? entry.summaryKo : entry.summaryEn,
+    type: 'article',
   });
 }
 
@@ -165,6 +168,7 @@ export default async function UpdateDetailPage({
             '@context': 'https://schema.org',
             '@type': 'Article',
             headline: title,
+            description: locale === 'ko' ? entry.summaryKo : entry.summaryEn,
             datePublished: entry.date,
             dateModified: entry.dateModified ?? entry.date,
             author: {
@@ -271,12 +275,12 @@ export default async function UpdateDetailPage({
           <section key={i} className={styles.section}>
             <h2 className={styles.h2}>{isKo ? sec.heading.ko : sec.heading.en}</h2>
             {(isKo ? sec.paragraphs.ko : sec.paragraphs.en).map((p, j) => (
-              <p key={j} className={styles.paragraph}>{p}</p>
+              <p key={j} className={styles.paragraph}>{isKo ? p : koSpans(p)}</p>
             ))}
             {sec.bullets && (
               <ul className={styles.infoList}>
                 {(isKo ? sec.bullets.ko : sec.bullets.en).map((item, j) => (
-                  <li key={j} className={styles.infoItem}>{item}</li>
+                  <li key={j} className={styles.infoItem}>{isKo ? item : koSpans(item)}</li>
                 ))}
               </ul>
             )}

@@ -12,6 +12,9 @@ import { Footer } from '../../components/v2/shell/Footer';
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+/** 등록되지 않은 첫 segment(/nothing · /api/nope …)는 이 레이아웃을 그리지 않고 정적 전역 404(app/not-found.tsx)로 간다 —
+ *  요청 시점에 notFound() 를 던지면 Next 16 은 빈 __next_error__ 문서를 내보내기 때문 (R3b-4 · 2026-10-18 · 배포 전 점검 10-16 BLOCK 3). */
+export const dynamicParams = false;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -38,7 +41,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
       <body>
         <NextIntlClientProvider locale={locale} messages={{}}>
           <Header />
-          <main className="v2-main">{children}</main>
+          <main id="main" className="v2-main">{children}</main>
           <Footer />
         </NextIntlClientProvider>
       </body>

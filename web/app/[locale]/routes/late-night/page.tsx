@@ -58,7 +58,7 @@ export default async function LateNightPage({ params }: { params: Promise<{ loca
   const won = (n: number) => n.toLocaleString('en-US');
   const area = taxi ? (ko ? taxi.serviceAreaKo : taxi.serviceArea.charAt(0).toLowerCase() + taxi.serviceArea.slice(1)) : '';
   const src = (s: OperationalSource | undefined) => s && (
-    <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer">{`「${s.title}」 ${s.publishedAt}`}</a>
+    <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer" lang={ko ? undefined : 'ko'}>{`「${s.title}」 ${s.publishedAt}`}<span className="v2-sr"> {tp('map.newTab')}</span></a>
   );
   const intro = a21 && taxi ? t('intro', { bus: ko ? a21.displayNameKo : a21.displayName, taxi: ko ? taxi.displayNameKo : taxi.displayName }) : t('introFallback');
   return (

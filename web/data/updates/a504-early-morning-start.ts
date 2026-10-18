@@ -10,10 +10,10 @@ const entry: UpdateEntry = {
   dateModified: '2026-10-16',
   eventDate: '2026-04-29',
   sourcePublishedAt: '2026-04-27',
-  titleEn: 'Saebyeok A504 Early-morning Autonomous Bus: Geumcheon-gu Office to City Hall, Times, Stops and How to Ride',
+  titleEn: 'Saebyeok A504 Early-morning Autonomous Bus: Geumcheon-gu Office to City Hall',
   titleKo: '새벽동행 자율주행버스 A504 금천구청~시청역 운행시간 정류소 탑승방법',
   summaryEn:
-    'Saebyeok A504 started on 29 April 2026: a 03:30 weekday departure from Geumcheon-gu Office, 32 express stops to City Hall, boarding rules, and the owl night-bus stops it shares.',
+    'Saebyeok A504 since 29 April 2026: a 03:30 weekday departure from Geumcheon-gu Office, 32 express stops to City Hall, boarding rules and shared owl-bus stops.',
   summaryKo:
     '2026년 4월 29일 운행을 시작한 새벽동행 자율주행버스 A504의 노선, 평일 새벽 3시 30분 출발, 주요 정류소 32곳 급행 정차, 탑승 규칙, 올빼미버스와 같은 정류소를 정리했습니다.',
   relatedRouteIds: ['saebyeok-a504'],
@@ -23,6 +23,12 @@ const entry: UpdateEntry = {
       url: 'https://mediahub.seoul.go.kr/archives/2017965',
       publishedAt: '2026-04-27',
       label: { ko: '내 손안에 서울 · 노선별 운행 개요 표', en: 'Seoul city news portal · route overview table' },
+    },
+    {
+      // "일반 버스 첫차보다 30분 일찍 출발" 설명의 근거 (정책 감사 10-18 FIX 4)
+      url: 'https://mediahub.seoul.go.kr/archives/2017838',
+      publishedAt: '2026-04-15',
+      label: { ko: '내 손안에 서울 · A148 개통 · 첫차보다 30분 일찍 출발', en: 'Seoul city news portal · A148 launch · 30 minutes before the first buses' },
     },
   ],
   articleSections: [
@@ -137,11 +143,11 @@ const entry: UpdateEntry = {
       },
       paragraphs: {
         ko: [
-          'A504 정류소 32곳 가운데 30곳은 올빼미버스도 서는 정류소 번호입니다. 노량진역3번출구에는 N15가, 숙대입구역과 서울역버스환승센터에는 N15·N75가, 소공동주민센터에는 N16·N51·N62·N73·N75가 섭니다. 올빼미버스가 서지 않는 두 곳은 독산고개와 노량진역2번출구입니다.',
+          'A504 정류소 32곳 가운데 30곳은 올빼미버스도 서는 정류소 번호입니다. 노량진역3번출구에는 N15가, 숙대입구역과 서울역버스환승센터에는 N15·N75가, 소공동주민센터(정류소 02128)에는 N16·N51·N62·N73·N75가 섭니다. 올빼미버스가 서지 않는 두 곳은 독산고개와 노량진역2번출구입니다.',
           '올빼미버스 막차는 기점 출발 기준 03:10~04:10이고, A504는 03:30에 기점을 출발합니다. 같은 정류소에서 어느 버스가 먼저 지나는지는 확인한 자료에 정류소별 통과 시각이 없어 알 수 없습니다.',
         ],
         en: [
-          'Of A504’s 32 stops, 30 share their stop number with owl night buses. N15 stops at Noryangjin Station (Exit 3); N15 and N75 stop at Sookmyung Women’s Univ. station and Seoul Station Bus Transfer Center, Site of Kang Woo-kyu; N16, N51, N62, N73 and N75 stop at City hall front. The two stops without owl buses are Doksangogae and Noryangjin Station (Exit 2).',
+          'Of A504’s 32 stops, 30 share their stop number with owl night buses. N15 stops at Noryangjin Station (Exit 3); N15 and N75 stop at Sookmyung Women’s Univ. station and Seoul Station Bus Transfer Center, Site of Kang Woo-kyu; N16, N51, N62, N73 and N75 stop at City hall front (stop 02128). The two stops without owl buses are Doksangogae and Noryangjin Station (Exit 2).',
           'The last owl buses leave their starting stops between 03:10 and 04:10; A504 leaves its starting stop at 03:30. Which bus passes a shared stop first cannot be told from the materials checked, as they do not list passing times per stop.',
         ],
       },

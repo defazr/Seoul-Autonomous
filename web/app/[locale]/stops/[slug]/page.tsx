@@ -18,7 +18,7 @@ import { onColor } from '../../../../lib/v2/route-color';
 import { getOfficialStopNameEn, stopNamesSourceMeta } from '../../../../lib/stops';
 import { NIGHT_META } from '../../../../lib/night-bus/data';
 import { STOP_PLACES, getPlaceBySlug, platformAnchor } from '../../../../lib/stop-pages';
-import { assertStopPlaces, buildPlaceView, roundM, stopNameEn, type Platform, type PlaceView } from '../../../../lib/stop-places';
+import { assertStopPlaces, buildPlaceView, roundM, stopNameEn, type AutoVisit, type Platform, type PlaceView } from '../../../../lib/stop-places';
 import styles from './page.module.css';
 
 // R3b-1 (2026-10-16) — 한 장소(같은 이름의 방향쌍 ARS 2개) = 한 페이지. 관계·순서·방면은 Graph·올빼미 데이터 파생이다.
@@ -46,14 +46,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const t = await getTranslations({ locale, namespace: 'metadata' });
   const [a, b] = v.platforms;
   const sep = ko ? '·' : ', ';
+  // EN 설명은 160자 안에 들도록 노선 번호(A160 …)만 쓴다 — 방면 목록은 본문에 있다 (기술 SEO 감사 10-18 FIX 2)
+  const shortRoute = (x: AutoVisit) => (ko ? routeName(x, true) : (x.route.displayName.match(/A\d{2,3}/)?.[0] ?? x.route.displayName));
   return buildPageMetadata({
     locale,
     path: `/stops/${place.slug}`,
     title: t('stopPlaceTitle', { name: placeName(v, ko), a: a.ars, b: b.ars }),
     description: t('stopPlaceDescription', {
       name: placeName(v, ko), a: a.ars, b: b.ars,
-      aToward: autoTowards(a, ko).join(sep), bToward: autoTowards(b, ko).join(sep),
-      routes: uniq(v.platforms.flatMap((p) => p.auto.map((x) => routeName(x, ko)))).join(sep),
+      routes: uniq(v.platforms.flatMap((p) => p.auto.map(shortRoute))).join(sep),
       owl: uniq(v.platforms.flatMap((p) => p.owl.map((o) => o.no))).sort().join(sep),
     }),
   });
@@ -74,7 +75,7 @@ export default async function StopPlacePage({ params }: { params: Promise<{ loca
   const sep = ko ? '·' : ', ';
   const name = placeName(v, ko);
   const secondary = ko ? stopNameEn(a.ars, place.nameKo) : place.nameKo;
-  const mapLabels = { kakao: tp('map.kakao'), naver: tp('map.naver'), aria: tp('map.aria') };
+  const mapLabels = { kakao: tp('map.kakao'), naver: tp('map.naver'), aria: tp('map.aria'), newTab: tp('map.newTab') };
   const nameOf = (ars: string, nameKo: string) => (ko ? nameKo : stopNameEn(ars, nameKo));
   /** EN 페이지에서 공식 영문명이 없어 한국어로 보이는 이름은 lang="ko" 로 감싼다. */
   const NameOf = ({ ars, nameKo }: { ars: string; nameKo: string }) => (ko || getOfficialStopNameEn(ars) ? <>{nameOf(ars, nameKo)}</> : <span lang="ko">{nameKo}</span>);

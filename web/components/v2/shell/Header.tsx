@@ -27,6 +27,7 @@ export async function Header() {
 
   return (
     <header className={styles.header}>
+      <a href="#main" className="v2-skip">{t('skip')}</a>
       <div className={`v2-wrap ${styles.bar}`}>
         <Link href="/" className={styles.brand} aria-label={`Seoul Autonomous — ${t('tagline')}`}>
           <span className={styles.mark} aria-hidden="true" />

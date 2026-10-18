@@ -71,7 +71,7 @@
 .footBrand .brand { font-size: 15px; }
 .footAbout { max-width: 42ch; line-height: 1.6; }
 .footGroup { display: grid; gap: 4px; align-content: start; }
-.footH { font-family: var(--font-body); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); font-weight: 600; margin-bottom: 6px; }
+.footH { font-family: var(--font-body); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); font-weight: 600; margin-bottom: 6px; }
 .footLink { color: var(--fg-2); line-height: 2; width: fit-content; }
 .footLink:hover { color: var(--fg); }
 .footMeta { margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--line); display: grid; gap: 6px; line-height: 1.6; }

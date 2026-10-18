@@ -9,10 +9,10 @@ const entry: UpdateEntry = {
   date: '2026-10-16',
   eventDate: '2026-10-16',
   sourcePublishedAt: '2026-10-16',
-  titleEn: 'Seoul Autonomous rebuilt around the Owl Bus: route finder, 16 hubs, stop numbers on the map',
+  titleEn: 'Rebuilt around the Owl Bus: route finder, 16 hubs and stop numbers on the map',
   titleKo: '올빼미버스 중심으로 다시 만들었습니다 — 경로 찾기, 허브 16곳, 노선도 정류소 번호',
-  summaryEn: 'The site now starts from one question: where do you want to go after 11 pm? Direct and one-transfer Owl Bus routes are found on your device from official stop data, hubs and route pages show stop numbers and directions, and the route map opens stop numbers when you tap a station.',
-  summaryKo: '밤 11시 이후 "어디로 가고 싶으세요?" 한 질문에서 시작하도록 사이트를 다시 만들었습니다. 올빼미버스 직통·1회 환승 경로를 서울시 정류소 데이터로 기기 안에서 찾고, 허브와 노선 페이지에 정류소 번호·방면을 넣었으며, 노선도에서 역을 누르면 정류소 번호가 열립니다.',
+  summaryEn: 'The site now starts from one question — where do you want to go after 11 pm? Direct and one-transfer Owl Bus routes, hubs and stop numbers on every route page.',
+  summaryKo: '밤 11시 이후 "어디로 가고 싶으세요?" 한 질문에서 시작하도록 사이트를 다시 만들었습니다. 올빼미버스 직통·1회 환승 경로를 서울시 정류소 데이터로 찾고, 허브와 노선 페이지에 정류소 번호·방면을 넣었습니다.',
   relatedRouteIds: [],
   articleSections: [
     {

@@ -26,7 +26,7 @@ export function RouteCard({ route, locale = 'en' }: { route: RouteListItem; loca
       <span className={styles.glyph}>{code ? <span className={styles.code}>{code}</span> : <BusIcon />}</span>
       <span>
         <span className={styles.name}>{name}</span>
-        <span className={styles.sub}>{sub}</span>
+        <span className={styles.sub} lang={ko ? 'en' : 'ko'}>{sub}</span>
         <span className={styles.line}>{ko ? route.startPointKo : route.startPoint} → {ko ? route.endPointKo : route.endPoint}</span>
         <span className={styles.meta}>
           <b>{route.firstBus === route.lastBus ? route.firstBus : `${route.firstBus} – ${route.lastBus}`}</b>

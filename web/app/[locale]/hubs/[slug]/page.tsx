@@ -40,7 +40,7 @@ export default async function HubPage({ params }: { params: Promise<{ locale: st
   const t = await getTranslations({ locale, namespace: 'hubs' });
   const tp = await getTranslations({ locale, namespace: 'pages' });
   const ts = await getTranslations({ locale, namespace: 'shell' });
-  const mapLabels = { kakao: tp('map.kakao'), naver: tp('map.naver'), aria: tp('map.aria') };
+  const mapLabels = { kakao: tp('map.kakao'), naver: tp('map.naver'), aria: tp('map.aria'), newTab: tp('map.newTab') };
   const platforms = hubPlatforms(hub); const geo = hubGeoJson(hub); const routes = routesOf(hub); const related = relatedHubs(hub);
   const colors = Object.fromEntries(routes.map((r) => [r.no, routeColor(r)]));
   const jsonLd = breadcrumbJsonLd([{ name: 'Home', path: '' }, { name: t('crumbMap'), path: '/night-bus-map' }, { name: hub.nameKo, path: `/hubs/${slug}` }], locale);

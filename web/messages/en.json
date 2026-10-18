@@ -348,7 +348,7 @@
   },
   "metadata": {
     "homeTitle": "Seoul Autonomous Transit & Night Travel Guide",
-    "homeDescription": "Seoul Owl Bus (N-bus) routes: stop numbers, directions, first and last buses, direct and one-transfer trips, 16 transfer hubs, plus autonomous night routes. An independent guide built on official data with reference dates.",
+    "homeDescription": "Seoul Owl Bus (N-bus) routes — stop numbers, directions, first and last buses, direct and one-transfer trips, 16 hubs, plus autonomous night routes.",
     "routesTitle": "Routes — Seoul Autonomous",
     "routesDescription": "Browse Seoul autonomous routes with their endpoints, stops and listed operating times.",
     "routeDetailTitle": "{name} — Seoul Autonomous",
@@ -358,7 +358,7 @@
     "dataSourceTitle": "Data source — Seoul Autonomous",
     "dataSourceDescription": "Sources, licenses and reference dates by field: Owl Bus stops and timetables, the route map, hubs, autonomous routes and map tiles.",
     "aboutTitle": "About — Seoul Autonomous",
-    "aboutDescription": "Seoul Autonomous is an independent guide to late-night travel in Seoul (Owl Bus and autonomous night routes), built on official data with reference dates. Who runs it, why, and how it is made.",
+    "aboutDescription": "An independent guide to late-night travel in Seoul — Owl Bus and autonomous night routes — built on official data with reference dates. Who runs it and how.",
     "privacyTitle": "Privacy Policy — Seoul Autonomous",
     "privacyDescription": "Learn how Seoul Autonomous uses Google Analytics and cookies, what data is processed, why it is used, how long it is retained, and what choices users have.",
     "termsTitle": "Terms of Use — Seoul Autonomous",
@@ -367,7 +367,7 @@
     "faqDescription": "Common questions about how to ride Seoul's autonomous bus and robotaxi pilot services.",
     "updatesTitle": "Updates — Seoul Autonomous",
     "stopPlaceTitle": "{name} stops {a} & {b}: which side to board — Seoul Autonomous",
-    "stopPlaceDescription": "{name}: stop {a} (toward {aToward}) and stop {b} (toward {bToward}). Autonomous {routes} and owl buses {owl} — stop numbers, directions, previous and next stops, map links."
+    "stopPlaceDescription": "{name}: stops {a} and {b}. Which side to board for autonomous buses {routes} and owl buses {owl}."
   },
   "updates": {
     "pageTitle": "Updates",
@@ -389,7 +389,7 @@
   "routeGroups": {
     "earlyMorning": {
       "title": "Seoul early-morning autonomous buses (Saebyeok routes)",
-      "description": "Compare Seoul's Saebyeok early-morning autonomous buses {names}: service areas, start dates, stop counts, boarding rules and the stops they share with owl night buses.",
+      "description": "Seoul's Saebyeok early-morning autonomous buses A160, A741, A148 and A504: service areas, start dates, stop counts, boarding rules and shared owl-bus stops.",
       "intro": "Seoul's {count} Saebyeok early-morning autonomous bus routes. Each leaves its starting stop once, at {time}, and makes one round trip.",
       "introFallback": "These autonomous bus routes operate in the early morning hours before 5:00 AM. Check Kakao Map for the latest schedule before riding.",
       "facts": {
@@ -432,7 +432,7 @@
     },
     "lateNight": {
       "title": "Seoul late-night autonomous bus and robotaxi",
-      "description": "Two late-night autonomous services in Seoul after 22:00 — the Simya A21 bus and the Gangnam robotaxi: hours, departures, fares, how to call, and how to choose alongside owl night buses.",
+      "description": "Seoul's two late-night autonomous services after 22:00 — the Simya A21 bus and the Gangnam robotaxi: hours, departures, fares, how to call and how to choose.",
       "intro": "This page covers two autonomous services in Seoul after 22:00: the {bus} bus on a fixed route, and the {taxi}, called within a set zone.",
       "introFallback": "These autonomous services operate late at night after 10:00 PM. Check Kakao Map for the latest schedule before riding.",
       "a21": {
@@ -630,7 +630,8 @@
       "report": "Report",
       "reportText": "Spotted something wrong? Let us know:",
       "copyright": "© 2026 Dapala Corp · Seoul Autonomous. Independent guide."
-    }
+    },
+    "skip": "Skip to content"
   },
   "nightHome": {
     "status": {
@@ -815,7 +816,8 @@
     "map": {
       "kakao": "Kakao Map",
       "naver": "Naver Map",
-      "aria": "Open in an external map"
+      "aria": "Open in an external map",
+      "newTab": "(new tab)"
     }
   },
   "notFound": {

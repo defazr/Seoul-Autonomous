@@ -1,5 +1,5 @@
 import { getLocale, getTranslations } from 'next-intl/server';
-import { Link } from '../../../i18n/navigation';
+import Link from 'next/link';
 import { NIGHT_BUS_GUIDE_PATH } from '../../../lib/nav';
 import { NIGHT_META } from '../../../lib/night-bus/data';
 import { getLatestVerifiedDate } from '../../../lib/routes';
@@ -11,7 +11,15 @@ export const CONTACT_MAIL = 'seoulautonomous@protonmail.com';
 export async function Footer() {
   const locale = await getLocale();
   const t = await getTranslations({ locale, namespace: 'shell' });
+  return <FooterView locale={locale} t={(key) => t(key as Parameters<typeof t>[0])} />;
+}
+
+/** 요청 문맥 없이 그리는 푸터 본체 — 전역 404(app/not-found.tsx)가 en 메시지로 직접 쓴다.
+ *  루트 not-found 는 모든 페이지 렌더에 함께 실행되므로 거기서는 getLocale()·setRequestLocale() 을 부를 수 없다(전 페이지가 동적이 되거나 로케일이 바뀜 · 10-18 실측).
+ *  링크는 next/link + 로케일 접두사 수동 — next-intl 서버 Link 는 getLocale() 을 부른다. */
+export function FooterView({ locale, t }: { locale: string; t: (key: string) => string }) {
   const ko = locale === 'ko';
+  const href = (path: string) => `/${locale}${path === '/' ? '' : path}`;
   const groups = [
     { title: t('groups.guide'), items: [{ href: '/', label: t('nav.home') }, { href: NIGHT_BUS_GUIDE_PATH, label: t('nav.map') }, { href: '/routes', label: t('nav.routes') }, { href: '/updates', label: t('nav.updates') }] },
     { title: t('groups.night'), items: [...(ko ? [{ href: '/night-bus-fare', label: t('nav.fare') }, { href: '/after-last-train', label: t('nav.afterLastTrain') }] : []), { href: '/how-to-ride', label: t('nav.howToRide') }, { href: '/faq', label: t('nav.faq') }] },
@@ -28,7 +36,7 @@ export async function Footer() {
           {groups.map((g) => (
             <nav key={g.title} className={styles.footGroup} aria-label={g.title}>
               <p className={styles.footH}>{g.title}</p>
-              {g.items.map((it) => <Link key={it.href} href={it.href} className={styles.footLink}>{it.label}</Link>)}
+              {g.items.map((it) => <Link key={it.href} href={href(it.href)} className={styles.footLink}>{it.label}</Link>)}
             </nav>
           ))}
         </div>

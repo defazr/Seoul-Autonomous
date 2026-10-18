@@ -367,7 +367,7 @@
     "faqDescription": "서울 자율주행 버스·로보택시 시범 서비스 이용 방법에 대한 자주 묻는 질문.",
     "updatesTitle": "업데이트 — Seoul Autonomous",
     "stopPlaceTitle": "{name} 정류장 {a}·{b} 어느 쪽에서 타나 — Seoul Autonomous",
-    "stopPlaceDescription": "{name} 정류소 {a}({aToward} 방면)·{b}({bToward} 방면)에 서는 자율주행 {routes}, 올빼미버스 {owl}. 정류소 번호·방면·이전·다음 정류장·지도 링크."
+    "stopPlaceDescription": "{name} 정류소 {a}·{b} — 자율주행 {routes}, 올빼미버스 {owl}. 어느 쪽에서 타는지, 이전·다음 정류장, 지도 링크를 정리했습니다."
   },
   "updates": {
     "pageTitle": "업데이트",
@@ -630,7 +630,8 @@
       "report": "제보",
       "reportText": "잘못된 정보를 발견하면 알려주세요",
       "copyright": "© 2026 다파라코프 · Seoul Autonomous. 독립 안내 사이트."
-    }
+    },
+    "skip": "본문으로 건너뛰기"
   },
   "nightHome": {
     "status": {
@@ -815,7 +816,8 @@
     "map": {
       "kakao": "카카오맵",
       "naver": "네이버지도",
-      "aria": "외부 지도에서 위치 보기"
+      "aria": "외부 지도에서 위치 보기",
+      "newTab": "(새 창)"
     }
   },
   "notFound": {

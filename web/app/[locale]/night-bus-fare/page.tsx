@@ -9,6 +9,7 @@ import { NightBusFareGuideKo } from '../../../components/night-bus-guides/NightB
 export function generateStaticParams() {
   return [{ locale: 'ko' }];
 }
+export const dynamicParams = false; // 생성 목록 밖 경로(다른 로케일·없는 id)는 요청 시점 notFound() 대신 정적 전역 404 로 (R3b-4 · 2026-10-18)
 
 /* ── Metadata: ko only, self-canonical, no hreflang ── */
 const PAGE_URL = `${SITE_URL}/ko/night-bus-fare`;

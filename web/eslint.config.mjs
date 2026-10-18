@@ -9,6 +9,8 @@ const eslintConfig = defineConfig([
   globalIgnores([
     // Default ignores of eslint-config-next:
     ".next/**",
+    // 검증용 두 번째 빌드 출력(NEXT_DIST_DIR=.next-check) — 린트 대상 아님 (10-18: 빠뜨리면 13,000건 경고가 쏟아진다)
+    ".next-check/**",
     "out/**",
     "build/**",
     "next-env.d.ts",

@@ -1,6 +1,6 @@
 # R3b 설계 — 정류장 B 통합 · 약한 페이지 4 · 자율주행 재검증 대조표 (2026-10-16)
 
-상태: **R3b-2 · R3b-1 구현 + Codex 검수 반영 = 코드 커밋 bce17fd (2026-10-16) → 배포 전 read-only 감사 3개(정책·SEO·접근성) BLOCK 0 · FIX 18 반영 + 404 셸 해소 = 빌드 30 (2026-10-18 · 127.0.0.1:3123 · 미커밋 · 커밋 승인 대기 · §8.6)** · routes.json 데이터 변경 0(D6 = 포그린 명시 확인 대기 §8.4) · 구현 기록 §8 · Codex 검수 §8.5 · 감사 §8.6
+상태: **V9 라이브 (2026-10-18 15:33:39 KST · 코드 b4ce981 · 포그린 "올리고 반영해") — R3b-2 · R3b-1 + Codex 검수(bce17fd) + 배포 전 감사 3개 반영·404 셸(32454da) + D6 data(3a96318) + docs(b4ce981) · 배포 기록 §8.7 · latest = e24339f9bd01(포그린 확인 후 이동)** · routes.json 데이터 변경 0(D6 = 포그린 명시 확인 대기 §8.4) · 구현 기록 §8 · Codex 검수 §8.5 · 감사 §8.6
 입력: R3A-VERTICAL-SLICE-PLAN-20261015.md §12.10(포그린 결정 B) · GPT-REVIEW-20261016.md(BLOCK 1~3) · docs/strategy/STOP-URL-POLICY-20260826.md · 실측(web/lib/graph/graph-core.mjs · lib/night-bus/core.mjs · data/stops/stop-names.json · 서울시 보도자료)
 순서(§12.10): V8 배포 → 4주 관측창 동안 R3b 보강(이 문서) → 재배포 → AdSense 5차. 이 문서는 분석→설계 단계이며 구현은 포그린 결정(§0) 뒤에 시작한다.
 작성 시점의 상태: 코드 `73b0fa0` · docs `43b14de` 커밋 완료 · 푸시·배포 승인 대기. 이 문서는 미커밋.
@@ -502,4 +502,25 @@ QA (빌드 30)      tsc 0 · eslint 0 errors(경고 6 변동 없음 · .next-che
 캡처              ~/Desktop/seoul-shots/2026-10-16-v2-shell/105~109
 빌드 31           D6 적용 후 재빌드 — 프리렌더 78 · qa-links 71/71 · 깨진 0 · legacy 16 · qa-v2-all 142 검사 bad 2(기존 로컬 예외만) · 커밋 코드 32454da · data 3a96318 · A504 ko 페이지 "당분간 무료 · 교통카드 태그 · 제작·운행 ㈜에스유엠 · 평일" · A741/A148 평일 · 심야 묶음 choose.days 문장 노출
 로컬 서버          127.0.0.1:3123 = 빌드 31 (.next standalone)
+```
+
+### 8.7 V9 배포 기록 (2026-10-18 15:33 KST · 코드 32454da + data 3a96318 + docs b4ce981 · 포그린 "올리고 반영해")
+
+```
+푸시       5dfc486..b4ce981 → origin/main (5 커밋: bce17fd · e2d4ee5 · 32454da · 3a96318 · b4ce981 · local == origin 0/0)
+Phase 0    서버 실행 e8aa58e(d90945140ec5) · 작업 트리 untracked Dockerfile 1건만 · Dockerfile pin 01429bd8… 일치(전·후) · Caddyfile(컨테이너 안) 7719a106… · 디스크 여유 35G · secret 600 root(키 이름 1) · 타 컨테이너 19개 · 라이브 sitemap 79 저장
+rollback   rollback-e8aa58e = d90945140ec5 (MATCH=PASS) · latest = d90945140ec5(오늘 낮 e8aa58e 로 이동한 그대로 · 미이동)
+⚠ 사고      첫 pull 이 조용히 실패해 HEAD 가 e8aa58e 인 채로 빌드가 시작됨 → 즉시 중단·이미지 삭제(라이브 무영향) · fetch 재실행 뒤 ff-only · HEAD 를 기대 SHA 와 대조하는 게이트를 추가해 재빌드 (pkill -f 가 자기 ssh 세션을 죽인 1회 포함 · 교훈은 memory deploy-safety)
+build      b4ce9818c464… --label revision · -t seoul-autonomous-web:b4ce981 → sha256:e24339f9bd01… · 55초(캐시) · EXIT=0 · 이미지 env 에 secret 0
+candidate  외부 트래픽 0 · 컨테이너 안 qa-links: 71쪽 200 · 내부 href 74 · 깨진 0 · 리다이렉트 경유 0 · canonical 0 · hreflang 없음 13 · legacy 16 ok · 404/robots/ads 정상
+           옛 라이브 sitemap 79 URL = 63 직접 200 + 16 → 308 1회 → 200 · 실패 0 / /api/arrivals 01009 200 · 22011 200 · 01020 404 · 99999 404 / 404 셸 5경로(lang·nav 4·footer·title) / 비밀 값·이름 노출 0 / 새 sitemap 71
+cutover    15:33:39 KST · HEALTH=PASS · 중단 1.66초(Caddy 경유 probe 3회) · backup = seoul_autonomous_web_backup_e8aa58e_20261018-153337 · revision b4ce981 · restart unless-stopped · hostname 0.0.0.0 · candidate 제거
+사후       Caddyfile 해시 불변 · 타 컨테이너 19개 상태 불변 · debt.newsforgreens.com 200 · www → 301
+라이브 QA  qa-links https://seoulautonomous.com: 71쪽 200 · href 74 · 깨진 0 · 리다이렉트 경유 0 · canonical 0 · legacy 16 ok · / → 307 /en · 404 정상
+           옛 URL 308 → #ars 유지 → 200 · 404 셸(lang en · nav 4 · footer · title) · /api/arrivals 01009 200 · 01020/99999 404 · sitemap 71 · apple-icon 200 · 삭제 자산 404 · og jpg 200 · ads/robots 200
+           x-nextjs-prerender 1 · s-maxage · nosniff · EN 장소 description 155자 · A504 노선 페이지 "당분간 무료·㈜에스유엠·평일" 노출
+           WebKit iPhone 15(GA·AdSense 차단): 홈 ko · 광화문역 · 404 · A504 노선 — overflow 0 · h1 1 · 푸터 1 · 콘솔 오류 0(404 는 자기 응답 404 1줄) · 404 페이지에 GA/AdSense 요청 0(설계)
+캡처       ~/Desktop/seoul-shots/2026-10-16-v2-shell/110~113
+latest     ✅ 2026-10-18 포그린 실기기 확인 9항("전부 확인 완료") → seoul-autonomous-web:latest = e24339f9bd01(b4ce981) · 이전 d90945140ec5(e8aa58e) 는 rollback-e8aa58e 태그 + backup 컨테이너로 보존
+남음       Caddy 로그 크롤 확인(2~3일 뒤 · read-only) · 라이브 정책 재감사 · 11-13 무렵 AdSense 5차 판단 · D4 현장 문장(선택)
 ```

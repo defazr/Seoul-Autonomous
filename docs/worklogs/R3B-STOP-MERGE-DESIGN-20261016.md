@@ -1,6 +1,6 @@
 # R3b 설계 — 정류장 B 통합 · 약한 페이지 4 · 자율주행 재검증 대조표 (2026-10-16)
 
-상태: **R3b-2 · R3b-1 로컬 구현 + Codex 구현 검수 반영 완료 (2026-10-16 · 빌드 26 · 127.0.0.1:3123 · 코드 커밋 bce17fd · 푸시 전)** · routes.json 데이터 변경 0(D6 = 포그린 명시 확인 대기 §8.4) · 정책 에이전트 감사는 Fable 복원 후 · 구현 기록 §8 · Codex 검수 §8.5
+상태: **R3b-2 · R3b-1 구현 + Codex 검수 반영 = 코드 커밋 bce17fd (2026-10-16) → 배포 전 read-only 감사 3개(정책·SEO·접근성) BLOCK 0 · FIX 18 반영 + 404 셸 해소 = 빌드 30 (2026-10-18 · 127.0.0.1:3123 · 미커밋 · 커밋 승인 대기 · §8.6)** · routes.json 데이터 변경 0(D6 = 포그린 명시 확인 대기 §8.4) · 구현 기록 §8 · Codex 검수 §8.5 · 감사 §8.6
 입력: R3A-VERTICAL-SLICE-PLAN-20261015.md §12.10(포그린 결정 B) · GPT-REVIEW-20261016.md(BLOCK 1~3) · docs/strategy/STOP-URL-POLICY-20260826.md · 실측(web/lib/graph/graph-core.mjs · lib/night-bus/core.mjs · data/stops/stop-names.json · 서울시 보도자료)
 순서(§12.10): V8 배포 → 4주 관측창 동안 R3b 보강(이 문서) → 재배포 → AdSense 5차. 이 문서는 분석→설계 단계이며 구현은 포그린 결정(§0) 뒤에 시작한다.
 작성 시점의 상태: 코드 `73b0fa0` · docs `43b14de` 커밋 완료 · 푸시·배포 승인 대기. 이 문서는 미커밋.
@@ -437,10 +437,12 @@ RT-2 부품         ArrivalCard·StopServiceHours 에 headingLevel(기본 2) 추
 ### 8.4 남은 것 (10-16 밤 갱신)
 
 ```
-감사              Fable 복원(10-18 14시) 후 정책 에이전트 감사 — §2.9 매트릭스와 §8 실측 대조. Codex 구현 검수는 10-16 완료(§8.5)
+감사              ✅ 10-18 Fable 로 완료(§8.6 · BLOCK 0 · FIX 18 중 15 반영 · 정본 R3B-PREDEPLOY-AGENT-AUDITS-20261018.md) — 남은 결정 1 = §2.9 목표(템플릿 50% 미만 · ko 1,200자) 미달 상태로 배포할지(🔸 CC 추천 = 배포 · D4 는 뒤에)
 커밋              코드 bce17fd(R3b-2·R3b-1 + Codex 검수 반영 · 로컬) + docs 1(이 문서 · STOP-URL-POLICY §17 · SESSION-HANDOFF · R3A §12.17)
                  포그린 "너 추천대로 하고 … 코덱스 검수를 받어"(10-16) 승인 · 푸시·배포는 Fable 감사 뒤 별도 승인
-D6               자율주행 값 — 같은 "추천대로" 지시로 적용하려 했으나 로컬 자동 모드 안전장치가 routes.json(SSoT) 수정을 막았다 → 포그린 명시 확인 후 적용
+                 + 10-18 감사 반영분(코드 31파일 + 신규 2 · 빌드 30 · §8.6) = 코드 커밋 1 + docs 커밋 1 → 포그린 승인 대기 → 푸시 승인 → 재배포(배포 안전 계약 · AdSense 사전 점검 = 이번 감사가 그 역할)
+D6               ✅ 2026-10-18 적용(포그린 "다 해" = "노선 정보 고쳐도 돼") — A741·A148·A504 daysOfOperation weekday · A504 fare temporary_free(교통카드 태그·안정화까지)·operator ㈜에스유엠(출처 456975) · lastChecked 유지 · validate-graph PASS · 빌드 31 렌더 확인(노선 페이지 평일·당분간 무료·제작·운행 ㈜에스유엠 · EN Weekdays/free) · data 커밋 별도
+                 (아래는 적용 전 기록) 같은 "추천대로" 지시로 적용하려 했으나 로컬 자동 모드 안전장치가 routes.json(SSoT) 수정을 막았다 → 포그린 명시 확인 후 적용
                  적용할 값(원문 재확인 10-16 · 저장본 scratchpad/src):
                    A741·A148·A504 daysOfOperation Unknown → weekday
                      (455157 "평일(월~금) 새벽 3시 30분" · 456237 "평일 새벽 상계역을 출발" · 456975 "평일 새벽 3시 30분에 금천구청을 출발")
@@ -451,7 +453,7 @@ D6               자율주행 값 — 같은 "추천대로" 지시로 적용하�
                  lastChecked 는 올리지 않는다 — 카카오맵 정류장 확인일이고 정류장은 다시 보지 않았다
                  적용 후: 노선 카드·노선 페이지의 운행일 표시 · A504 요금·운영사 표시 · validate-graph · qa-links 재확인 → data 커밋 1(코드·docs 와 분리)
 D4               현장 문장 — 광화문역(01009·01010 출구·횡단보도) · 종로5가(광장시장 정문 기준) · 서울역사박물관(01123 과 01008 의 보도 관계)
-latest           V8.2 라이브 승인 대기 — 승인 시 서버 latest 를 e8aa58e 이미지(d90945140ec5…)로 이동
+latest           ✅ 2026-10-18 이동(포그린 "다 해" = "사이트 괜찮아") — 실행 중 이미지 d90945140ec5(e8aa58e) 확인 후 docker tag → seoul-autonomous-web:latest = d90945140ec5 (이전 d55dbf7d9afd=b10c7d3 · rollback 태그 전부 보존 · 컨테이너 무접촉)
 ```
 
 ### 8.5 Codex 구현 검수 반영 (2026-10-16 · read-only · 빌드 26)
@@ -482,4 +484,22 @@ QA (빌드 26)      tsc 0 · eslint 오류 0(경고 6 = 손대지 않은 옛 스
                  정류장 ko 템플릿 비율 0.48 · 0.50 · 0.55 · 0.49 (광화문 · 종로2가 · 서울역사박물관 · 종로5가 — 50% 미만 2곳) · Jaccard 0.36/0.41
                  정류장 en 템플릿 0.64 · 0.61 · 0.66 · 0.64 · Jaccard 0.48/0.57
 로컬 서버          127.0.0.1:3123 = 빌드 26 (.next standalone)
+```
+
+### 8.6 배포 전 read-only 감사 3개와 반영 (2026-10-18 · Fable 5.1 · 빌드 26 → 30 · 정본 docs/worklogs/R3B-PREDEPLOY-AGENT-AUDITS-20261018.md)
+
+```
+방식              10-16 V8 배포 전 점검과 같은 형식 — read-only 에이전트 3개 병렬(① 정책·잠금 계약·콘텐츠 가치 ② 기술 SEO ③ 접근성·모바일) · 대상 빌드 26 + 저장소 · 저장소 수정 0 · 외부 네트워크 0
+결과              BLOCK 0 · 0 · 0 — 잠금 계약 대조표(SESSION-HANDOFF 잠금 절 + STOP-URL-POLICY §17) 전 조항 준수 · 저장 원문 7건 대조 사실 오류 0 · 옛 URL 16 → 308 1회 · sitemap 71 · 깨진 링크 0 · 대비 미달 0 · 앵커 보정 실증
+반영 ✅           로보택시 글 근거 없는 불릿 2개 삭제(464205 근거 1개로 교체) · 02128 번호 병기 ko/en · 2017838 출처 추가 · meta description 160자 초과 12건 → 71쪽 전부 ≤160(장소 템플릿 = 노선 번호만)
+                 a504 EN 제목 106 → 76 · 재탄생 EN 제목 91 → 77 · 업데이트 og:type article + Article description · 미사용 자산 2건 삭제(1.1MB) · apple-touch-icon
+                 EN 페이지 한글 lang="ko" 9곳(카드 보조줄·운영사·출처 · lib/v2/ko-spans.tsx) · 건너뛰기 링크(shell.skip · main#main) · 지도 링크 그룹 라벨에 정류소 번호 · 숨은 "(새 창)" · 11px → 12px 2곳 · 칩·지도 링크 세로 패딩 · 크럼 구분자 위치(현재 항목 말줄임은 모바일 넘침을 만들어 되돌림 · 빌드 29→30)
+404 셸 (R3b-4)    ⛔ → ✅ 요청 시점 notFound() 를 없애고(dynamicParams=false 6곳 · catch-all 삭제) 전역 404 를 정적 셸로 — 15경로 전부 404 + lang·header·nav·footer·title·noindex
+                 ⚠ 교훈: 루트 not-found 는 모든 페이지 렌더에 실행된다 — getLocale() 을 쓰자 프리렌더 78 → 6(전부 ƒ) · setRequestLocale('en') 을 쓰자 ko 링크가 전부 /en (빌드 27·28 실측) → not-found 는 next-intl 서버 API·provider 없이 JSON + next/link 만 (상세 정본 §3)
+보류 🔸·▫          §2.9 콘텐츠 밀도 목표 미달(템플릿 ko 0.53~0.62 · en 0.64~0.70 · ko 1,200자 1/4 — 포그린 결정 · 다음 수단 D4) · D6(포그린 확인) · manifest · 업데이트·노선 페이지 출처 링크 새 창 표식 · OFFICIAL 배지 11px(Pill 공통) · 크럼·푸터 메일 터치 타깃
+QA (빌드 30)      tsc 0 · eslint 0 errors(경고 6 변동 없음 · .next-check/** 린트 제외) · validate-graph PASS · 프리렌더 78(○ /_not-found · ● 19) · qa-links 71/71 · href 74 · 깨진 0 · 리다이렉트 경유 0 · legacy 16 ok
+                 description 최대 159 · title 최대 109(장소 EN 잠금 형식) · ko 페이지 링크 /ko 33 · /en 0 · 404 매트릭스 15 · WebKit 앵커 4경로 top 84 · 건너뛰기 Tab→Enter→main 실측 · qa-v2-all = 정본 §4.1
+캡처              ~/Desktop/seoul-shots/2026-10-16-v2-shell/105~109
+빌드 31           D6 적용 후 재빌드 — 프리렌더 78 · qa-links 71/71 · 깨진 0 · legacy 16 · qa-v2-all 142 검사 bad 2(기존 로컬 예외만) · 커밋 코드 32454da · data 3a96318 · A504 ko 페이지 "당분간 무료 · 교통카드 태그 · 제작·운행 ㈜에스유엠 · 평일" · A741/A148 평일 · 심야 묶음 choose.days 문장 노출
+로컬 서버          127.0.0.1:3123 = 빌드 31 (.next standalone)
 ```

@@ -429,6 +429,7 @@ cutover    16:16:37 · HEALTH=PASS · 중단 1.67초 · backup = seoul_autonomou
 사후       Caddyfile 불변 · 타 컨테이너 재시작 0 · 다른 도메인 배포 전 == 후
 라이브 QA  qa-links 79·81 정상 · format-detection telephone=no, address=no, email=no · 보이는 지도 링크 iPhone 15 WebKit·Android = 카카오 m.map.kakao.com/actions/searchView?q={번호} 같은 탭 / 데스크톱 = /link/map 핀 새 탭 · 허브 지도 420px · 전체화면(iPhone 방식 화면 덮기) 393×659 → 끝내기 420 복귀 · 한 손가락 드래그 −121px · WebKit iPhone 전수 79 URL 문제 0
 남음       포그린 실기기 확인 → 라이브 승인 → latest 이동 · 이 기록 docs 커밋(승인 후)
+latest     ✅ 2026-10-18 이동(포그린 "다 해") — seoul-autonomous-web:latest = d90945140ec5(e8aa58e) · 이전 d55dbf7d9afd(b10c7d3) · rollback 태그 보존 · 컨테이너 무접촉 · 기록 R3B §8.4
 ```
 
 ## CC 이견 및 아이디어
